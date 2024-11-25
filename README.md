@@ -1,4 +1,4 @@
-## MT
+## Chordal
 
 [![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://github.com/Oujox/mt/blob/main/LICENSE)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
