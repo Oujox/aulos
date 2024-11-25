@@ -1,0 +1,69 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Activate venv",
+      "type": "shell",
+      "command": "${workspaceFolder}/venv-3.13/Scripts/activate",
+      "problemMatcher": []
+    },
+    {
+      "label": "Deactivate venv",
+      "type": "shell",
+      "command": "${workspaceFolder}/venv-3.13/Scripts/deactivate",
+      "problemMatcher": []
+    },
+    {
+      "label": "Output ClassDiagram",
+      "type": "shell",
+      "command": "pyreverse ./src/mt -o png -d ./documents/design/class-diagram ; pyreverse ./src/mt -o puml -d ./documents/design/class-diagram",
+      "problemMatcher": []
+    },
+    {
+      "label": "test",
+      "type": "shell",
+      "command": "python -m pytest --benchmark-skip",
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "test with coverage",
+      "type": "shell",
+      "command": "python -m pytest --benchmark-skip --cov=./src/mt --cov-report=html:./documents/coverage/html",
+      "group": {
+        "kind": "test"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "test with benchmark",
+      "type": "shell",
+      "command": "python -m pytest --benchmark-only --benchmark-autosave --benchmark-histogram=./documents/benchmark/benchmark-histogram",
+      "group": {
+        "kind": "test"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "format",
+      "type": "shell",
+      "command": "black ./src/mt ./tests/mt ; isort ./src/mt ./tests/mt",
+      "problemMatcher": []
+    },
+    {
+      "label": "lint",
+      "type": "shell",
+      "command": "pylint ./src/mt ./tests/mt",
+      "problemMatcher": []
+    },
+    {
+      "label": "type-check",
+      "type": "shell",
+      "command": "mypy ./src/mt",
+      "problemMatcher": []
+    }
+  ]
+}

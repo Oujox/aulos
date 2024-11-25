@@ -1,0 +1,15 @@
+branchName: short
+autoLinkIssue: true
+autoCloseIssue: true
+conventionalPrTitles: true
+conventionalStyle: semver
+
+branches:
+  - label: enhancement
+    name: main
+    prefix: feature/
+    prTarget: main
+    skip: false
+
+  - label: "*"
+    skip: true

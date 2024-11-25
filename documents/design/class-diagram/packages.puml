@@ -1,0 +1,116 @@
+@startuml packages
+set namespaceSeparator none
+package "mt" as mt {
+}
+package "mt.__main__" as mt.__main__ {
+}
+package "mt._core" as mt._core {
+}
+package "mt._core.context" as mt._core.context {
+}
+package "mt._core.context._inject" as mt._core.context._inject {
+}
+package "mt._core.interfaces" as mt._core.interfaces {
+}
+package "mt._core.interfaces.ring" as mt._core.interfaces.ring {
+}
+package "mt._core.object" as mt._core.object {
+}
+package "mt._core.setting" as mt._core.setting {
+}
+package "mt._core.settings" as mt._core.settings {
+}
+package "mt._core.settings.notenumber" as mt._core.settings.notenumber {
+}
+package "mt._core.settings.notenumber_presentation" as mt._core.settings.notenumber_presentation {
+}
+package "mt._core.settings.scheme" as mt._core.settings.scheme {
+}
+package "mt._core.settings.setting" as mt._core.settings.setting {
+}
+package "mt._core.shared" as mt._core.shared {
+}
+package "mt._core.shared.harmonicsystem" as mt._core.shared.harmonicsystem {
+}
+package "mt._core.shared.intervals" as mt._core.shared.intervals {
+}
+package "mt._core.utils" as mt._core.utils {
+}
+package "mt._core.utils.array" as mt._core.utils.array {
+}
+package "mt._core.utils.calculation" as mt._core.utils.calculation {
+}
+package "mt._core.utils.decorators" as mt._core.utils.decorators {
+}
+package "mt._errors" as mt._errors {
+}
+package "mt._version" as mt._version {
+}
+package "mt._warnings" as mt._warnings {
+}
+package "mt.chord" as mt.chord {
+}
+package "mt.note" as mt.note {
+}
+package "mt.note._base" as mt.note._base {
+}
+package "mt.note.key" as mt.note.key {
+}
+package "mt.note.note" as mt.note.note {
+}
+package "mt.note.pitchclass" as mt.note.pitchclass {
+}
+package "mt.scale" as mt.scale {
+}
+package "mt.scale._base" as mt.scale._base {
+}
+package "mt.scale.mode" as mt.scale.mode {
+}
+package "mt.scale.scale" as mt.scale.scale {
+}
+package "mt.tuner" as mt.tuner {
+}
+package "mt.tuner._base" as mt.tuner._base {
+}
+package "mt.tuner.tuner" as mt.tuner.tuner {
+}
+package "mt.utils" as mt.utils {
+}
+package "mt.utils.context" as mt.utils.context {
+}
+mt --> mt._core
+mt --> mt._version
+mt --> mt.note
+mt --> mt.utils
+mt._core --> mt._core.object
+mt._core --> mt._core.setting
+mt._core.context --> mt._core.context._inject
+mt._core.interfaces --> mt._core.interfaces.ring
+mt._core.object --> mt._core.setting
+mt._core.object --> mt._core.shared
+mt._core.setting --> mt._core.settings
+mt._core.setting --> mt._core.shared
+mt._core.settings --> mt._core.setting
+mt._core.settings.notenumber --> mt._core.settings.notenumber_presentation
+mt._core.settings.setting --> mt._core.settings.notenumber
+mt._core.settings.setting --> mt._core.settings.scheme
+mt._core.shared --> mt._core.shared.harmonicsystem
+mt._core.shared --> mt._core.shared.intervals
+mt._core.shared.intervals --> mt._core.shared.harmonicsystem
+mt._core.utils --> mt._core.utils.array
+mt._core.utils --> mt._core.utils.calculation
+mt._core.utils --> mt._core.utils.decorators
+mt.note --> mt.note.key
+mt.note --> mt.note.pitchclass
+mt.note.key --> mt.note._base
+mt.note.note --> mt.note._base
+mt.note.pitchclass --> mt.note._base
+mt.scale --> mt.scale.mode
+mt.scale --> mt.scale.scale
+mt.scale.mode --> mt.scale._base
+mt.scale.mode --> mt.scale.scale
+mt.scale.scale --> mt.scale._base
+mt.tuner --> mt.tuner.tuner
+mt.tuner.tuner --> mt.tuner._base
+mt.utils --> mt.utils.context
+@enduml

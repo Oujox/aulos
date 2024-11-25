@@ -1,0 +1,59 @@
+from ..implements.scale import HarmonicMinor, Major, MelodicMinor
+from ..mode import Mode
+
+
+class Ionian(Mode, scale=Major, shift=0): ...
+
+
+class Dorian(Mode, scale=Major, shift=1): ...
+
+
+class Phrygian(Mode, scale=Major, shift=2): ...
+
+
+class Lydian(Mode, scale=Major, shift=3): ...
+
+
+class Mixolydian(Mode, scale=Major, shift=4): ...
+
+
+class Aeorian(Mode, scale=Major, shift=5): ...
+
+
+class Locrian(Mode, scale=Major, shift=6): ...
+
+
+class Dorian_f2(Mode, scale=MelodicMinor, shift=1): ...
+
+
+class Lydian_s5(Mode, scale=MelodicMinor, shift=2): ...
+
+
+class Lydian_f7(Mode, scale=MelodicMinor, shift=3): ...
+
+
+class Mixolydian_f6(Mode, scale=MelodicMinor, shift=4): ...
+
+
+class Aeorian_f5(Mode, scale=MelodicMinor, shift=5): ...
+
+
+class SuperLocrian(Mode, scale=MelodicMinor, shift=6): ...
+
+
+class Locrian_n6(Mode, scale=HarmonicMinor, shift=1): ...
+
+
+class Ionian_s5(Mode, scale=HarmonicMinor, shift=2): ...
+
+
+class Dorian_s4(Mode, scale=HarmonicMinor, shift=3): ...
+
+
+class Mixolydian_f9(Mode, scale=HarmonicMinor, shift=4): ...  # PhrygianDominant
+
+
+class Lydian_s2(Mode, scale=HarmonicMinor, shift=5): ...
+
+
+class AlteredSuperLocrian(Mode, scale=HarmonicMinor, shift=6): ...
