@@ -1,4 +1,4 @@
-name: Issue Branch
+name: branch
 on:
   issues:
     types: [assigned]
