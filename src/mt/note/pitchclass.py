@@ -10,7 +10,7 @@ from ._base import BaseNote
 
 # type annotaion
 if TYPE_CHECKING:
-    from scale import Scale
+    from scale import Scale  # pragma: no cover
 
 
 class PitchClass(BaseNote, ObjectMT):
@@ -94,7 +94,7 @@ class PitchClass(BaseNote, ObjectMT):
         return self._pitchclass
 
     def __str__(self) -> str:
-        return str(self.pitchname)
+        return self.pitchname or ""
 
     def __repr__(self) -> str:
         return "<NoteOctave: {}>".format(self.pitchname or str(self.pitchnames))
