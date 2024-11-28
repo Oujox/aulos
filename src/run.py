@@ -7,7 +7,8 @@ from mt.scale import *
 path = pathlib.Path(os.path.dirname(__file__)) / "setting.toml"
 
 with Context(path) as c:
+    from pprint import pprint
 
     for k in c.setting.get().scheme.pitchnames:
         if len(k) <= 2:
-            print(k, Dorian(Key(k)).diatonics)
+            pprint(Key(k).accsidentals)
