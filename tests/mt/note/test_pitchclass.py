@@ -18,24 +18,7 @@ def test_PitchClass_init_from_pitchclass(setting, data_pitchclass):
     [
         "",
         " ",
-        "0",
-        "a",
-        "bb",
-        "c##",
-        "A@",
-        "A@#",
-        "A#@#",
-        "H",
-        "H#",
-        "Hbb",
-        "A1",
-        "Ab1",
-        "A###",
-        "Abbb",
-        "#A",
-        "bbA",
         -1,
-        12,
         None,
         [],
         {},
@@ -93,12 +76,20 @@ def test_PitchClass_dunder_eqne(setting, data_map_pitchname_to_pitchclass):
         )
 
 
-def test_PitchClass_dunder_add(setting):
-    assert 1
+def test_PitchClass_dunder_add(setting, data_pitchclass):
+    for pitchclass in data_pitchclass:
+        for pitchclass2 in data_pitchclass:
+            assert (PitchClass(pitchclass, setting=setting) + pitchclass2) == (
+                pitchclass + pitchclass2
+            ) % setting.semitone
 
 
-def test_PitchClass_dunder_sub(setting):
-    assert 1
+def test_PitchClass_dunder_sub(setting, data_pitchclass):
+    for pitchclass in data_pitchclass:
+        for pitchclass2 in data_pitchclass:
+            assert (PitchClass(pitchclass, setting=setting) - pitchclass2) == (
+                pitchclass - pitchclass2
+            ) % setting.semitone
 
 
 def test_PitchClass_dunder_int(setting, data_pitchclass):

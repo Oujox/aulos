@@ -54,12 +54,17 @@ SETTING_DICT_FOR_HSYS12 = {
 }
 
 
-@pytest.fixture(params=[SETTING_DICT_FOR_HSYS12])
+@pytest.fixture(params=[SETTING_DICT_FOR_HSYS12], scope="session")
 def setting(request) -> SettingMT:
     return SettingMT(request.param)
 
 
-@pytest.fixture
+@pytest.fixture(scope="module")
+def data_pitchclass(setting) -> list[int]:
+    return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+
+
+@pytest.fixture(scope="module")
 def data_pitchname(setting) -> list[str]:
     return [
         "Abb",
@@ -100,12 +105,7 @@ def data_pitchname(setting) -> list[str]:
     ]
 
 
-@pytest.fixture
-def data_pitchclass(setting) -> list[int]:
-    return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
-
-
-@pytest.fixture
+@pytest.fixture(scope="module")
 def data_map_pitchclass_to_pitchnames(setting) -> dict[int, str | None]:
     return {
         0: ["Bbb", None, "A", None, "G##"],
@@ -123,7 +123,7 @@ def data_map_pitchclass_to_pitchnames(setting) -> dict[int, str | None]:
     }
 
 
-@pytest.fixture
+@pytest.fixture(scope="module")
 def data_map_pitchname_to_pitchclass(setting) -> dict[str, int]:
     return {
         "Abb": 10,
@@ -162,8 +162,3 @@ def data_map_pitchname_to_pitchclass(setting) -> dict[str, int]:
         "G#": 11,
         "G##": 0,
     }
-
-
-@pytest.fixture
-def data_scale():
-    return []
