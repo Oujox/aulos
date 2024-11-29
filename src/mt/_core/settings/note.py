@@ -1,19 +1,19 @@
 import typing as t
 from dataclasses import dataclass, field
 
-from .notenumber_presentation import NoteNumberPresentationSetting
+from .note_presentation import NotePresentationSetting
 
 
 @dataclass(frozen=True)
-class NoteNumberSetting:
+class NoteSetting:
     max: int
     min: int
 
     current: int = field(init=False, default=0)
-    presentations: list[NoteNumberPresentationSetting]
+    presentations: list[NotePresentationSetting]
 
     @property
-    def presentation(self) -> NoteNumberPresentationSetting:
+    def presentation(self) -> NotePresentationSetting:
         return self.presentations[self.current]
 
     def is_notenumber(self, notenumber: t.Any) -> t.TypeGuard[int]:

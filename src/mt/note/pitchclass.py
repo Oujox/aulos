@@ -3,7 +3,7 @@ from __future__ import annotations
 import typing as t
 from typing import TYPE_CHECKING
 
-from .._core import ObjectMT
+from .._core import Object
 from .._core.context import inject
 from .._core.utils import index
 from ._base import BaseNote
@@ -13,7 +13,7 @@ if TYPE_CHECKING:
     from scale import Scale  # pragma: no cover
 
 
-class PitchClass(BaseNote, ObjectMT):
+class PitchClass(BaseNote, Object):
 
     @inject
     def __init__(

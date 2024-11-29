@@ -2,7 +2,7 @@ from abc import ABCMeta, abstractmethod
 from typing import Self
 
 
-class BaseMT(metaclass=ABCMeta):
+class Base(metaclass=ABCMeta):
     @abstractmethod
     def __eq__(self, other: Self) -> bool: ...
 

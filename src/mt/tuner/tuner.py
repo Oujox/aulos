@@ -1,13 +1,13 @@
 import typing as t
 
-from .._core import ObjectMT
+from .._core import Object
 from ._base import BaseTuner
 from .processing.frequency_ratio import (fivelimit_tuning_table,
                                          meantone_tuning_table,
                                          pythagorean_tuning_table)
 
 
-class JustIntonationTuner(BaseTuner, ObjectMT):
+class JustIntonationTuner(BaseTuner, Object):
 
     ratios: t.Final[tuple[float]] = fivelimit_tuning_table()
 
@@ -19,7 +19,7 @@ class JustIntonationTuner(BaseTuner, ObjectMT):
         return self.root * (notenumber - self.origin_notenumber)
 
 
-class MeantoneTuner(BaseTuner, ObjectMT):
+class MeantoneTuner(BaseTuner, Object):
 
     ratios: t.Final[tuple[int]] = meantone_tuning_table()
 
@@ -30,7 +30,7 @@ class MeantoneTuner(BaseTuner, ObjectMT):
         return self.root * (note_number - 69)
 
 
-class PythagoreanTuner(BaseTuner, ObjectMT):
+class PythagoreanTuner(BaseTuner, Object):
 
     def __init__(self, root: float) -> None:
         self.root = root
@@ -39,7 +39,7 @@ class PythagoreanTuner(BaseTuner, ObjectMT):
         return self.root * (note_number - 69)
 
 
-class EqualTuner(BaseTuner, ObjectMT):
+class EqualTuner(BaseTuner, Object):
 
     def __init__(self, root: float) -> None:
         self.root = root

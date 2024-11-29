@@ -1,33 +1,35 @@
 import typing as t
 
-from .bases.base import BaseMT
-from .setting import SettingMT
-from .shared import HarmonicSystem
+from .bases.base import Base
+from .coexistence import Coexistence
+from .scheme import Scheme
+from .setting import Setting
 
 
-class ObjectMT(HarmonicSystem, BaseMT):
+class Object(Coexistence, Base):
 
     def __new__(cls, *args, **kwargs) -> t.Self:
-        if cls is ObjectMT:
+        if cls is Object:
             raise TypeError("ObjectMT cannot be instantiated directly.")
         return super().__new__(cls)
 
-    def __init__(self, setting: t.Optional[SettingMT] = None) -> None:
-        if not isinstance(setting, SettingMT):
+    def __init__(self, setting: t.Optional[Setting] = None) -> None:
+        if not isinstance(setting, Setting):
             raise ValueError(
                 "Initialization error: 'setting' argument is missing. "
                 "Please provide a valid setting object."
             )
         self._setting = setting
-        super(ObjectMT, self).__init__(setting.semitone)
+        self._scheme = Scheme(setting)
+        super(Object, self).__init__(setting.pitchclass.semitone)
 
     @property
-    def setting(self) -> SettingMT:
+    def setting(self):
         return self._setting
 
     @property
     def scheme(self):
-        return self._setting.scheme
+        return self._scheme
 
     def __eq__(self, other: t.Self) -> bool:
         return super(object, self).__eq__(other)

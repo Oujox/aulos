@@ -1,15 +1,16 @@
 import pytest
-from src.mt import SettingMT
+from dacite import from_dict
 
+from src.mt import Setting
 
 SETTING_DICT_FOR_HSYS12 = {
-    "scheme": {
+    "pitchclass": {
         "semitone": 12,
         "intervals": [2, 1, 2, 2, 1, 2, 2],
         "symbols": ["A", "B", "C", "D", "E", "F", "G"],
         "accidental": {"limit": 2, "upper_symbol": "#", "lower_symbol": "b"},
     },
-    "notenumber": {
+    "note": {
         "min": 0,
         "max": 128,
         "presentations": [
@@ -55,8 +56,8 @@ SETTING_DICT_FOR_HSYS12 = {
 
 
 @pytest.fixture(params=[SETTING_DICT_FOR_HSYS12], scope="session")
-def setting(request) -> SettingMT:
-    return SettingMT(request.param)
+def setting(request) -> Setting:
+    return from_dict(Setting, request.param)
 
 
 @pytest.fixture(scope="module")

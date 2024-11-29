@@ -3,12 +3,12 @@ from __future__ import annotations
 import typing as t
 from functools import cached_property
 
-from .._core import ObjectMT
+from .._core import Object
 from .._core.context import inject
 from ._base import BaseNote
 
 
-class Key(BaseNote, ObjectMT):
+class Key(BaseNote, Object):
 
     @inject
     def __init__(self, name: str, **kwargs) -> None:
