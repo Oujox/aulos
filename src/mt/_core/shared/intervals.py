@@ -2,12 +2,11 @@ from __future__ import annotations
 
 import typing as t
 from collections import deque
-from itertools import islice
 
-from .harmonicsystem import HarmonicSystem
+from ..coexistence import Coexistence
 
 
-class Intervals(t.Sequence, HarmonicSystem):
+class Intervals(t.Sequence, Coexistence):
 
     def __init__(self, iterable: t.Iterable[int]) -> None:
         super().__init__(semitone=len(iterable))

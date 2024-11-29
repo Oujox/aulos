@@ -5,7 +5,7 @@ def is_semitone(value: t.Any) -> t.TypeGuard[int]:
     return isinstance(value, int) and 0 <= value
 
 
-class HarmonicSystem:
+class Coexistence:
     """
     A base class representing a harmonic system (musical temperament).
 
@@ -37,11 +37,11 @@ class HarmonicSystem:
 
     def __init__(self, semitone: t.Optional[int] = None) -> None:
         self._i_semitone = semitone if is_semitone(semitone) else None
-        return super(HarmonicSystem, self).__init__()
+        return super(Coexistence, self).__init__()
 
     def __init_subclass__(cls, semitone: t.Optional[int] = None) -> None:
         cls._t_semitone = semitone if is_semitone(semitone) else None
-        return super(HarmonicSystem, cls).__init_subclass__()
+        return super(Coexistence, cls).__init_subclass__()
 
     @property
     def semitone(self) -> int:

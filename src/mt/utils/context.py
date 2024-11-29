@@ -1,25 +1,31 @@
 import pathlib
+import tomllib
 import typing as t
 from contextlib import ContextDecorator
 from contextvars import ContextVar
 
-from .._core import SettingMT
+from dacite import from_dict
+
+from .._core import Object, Setting
 
 
 @t.final
-class Context(ContextDecorator):
+class Context(ContextDecorator, Object):
 
-    setting: t.Final[ContextVar[SettingMT]] = ContextVar("setting")
+    internal: t.Final[ContextVar[Setting]] = ContextVar("internal")
 
-    def __init__(self, path: pathlib.Path) -> None:
-        self.load(path)
-
-    def load(self, path: pathlib.Path) -> t.Self:
-        self.__token = self.setting.set(SettingMT.from_path(path))
-        return self
+    def __init__(self, setting: Setting) -> None:
+        self.__token = self.internal.set(setting)
+        super().__init__(setting)
 
     def __enter__(self) -> t.Self:
         return self
 
     def __exit__(self, *tracebacks):
-        self.setting.reset(self.__token)
+        self.internal.reset(self.__token)
+
+    @classmethod
+    def from_toml(cls, path: pathlib.Path) -> t.Self:
+        setting = tomllib.load(open(path, mode="rb"))
+        setting = from_dict(Setting, setting)
+        return cls(setting)

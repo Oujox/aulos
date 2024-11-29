@@ -1,6 +1,7 @@
 import pytest
+
 from src.mt.note import PitchClass
-from src.mt.scale import Major, Minor, Locrian
+from src.mt.scale import Locrian, Major, Minor
 
 
 def test_PitchClass_init_from_pitchname(setting, data_pitchname):
@@ -81,7 +82,7 @@ def test_PitchClass_dunder_add(setting, data_pitchclass):
         for pitchclass2 in data_pitchclass:
             assert (PitchClass(pitchclass, setting=setting) + pitchclass2) == (
                 pitchclass + pitchclass2
-            ) % setting.semitone
+            ) % setting.pitchclass.semitone
 
 
 def test_PitchClass_dunder_sub(setting, data_pitchclass):
@@ -89,7 +90,7 @@ def test_PitchClass_dunder_sub(setting, data_pitchclass):
         for pitchclass2 in data_pitchclass:
             assert (PitchClass(pitchclass, setting=setting) - pitchclass2) == (
                 pitchclass - pitchclass2
-            ) % setting.semitone
+            ) % setting.pitchclass.semitone
 
 
 def test_PitchClass_dunder_int(setting, data_pitchclass):

@@ -9,7 +9,7 @@ class NoteNumberPresentationReferenceSetting:
 
 
 @dataclass(frozen=True)
-class NoteNumberPresentationSetting:
+class NotePresentationSetting:
     name: str
     symbols: list[str]
     reference: NoteNumberPresentationReferenceSetting

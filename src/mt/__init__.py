@@ -2,7 +2,7 @@
 """
 
 from . import scale, tuner
-from ._core import SettingMT
+from ._core import Setting
 from ._errors import *
 from ._version import *
 from ._warnings import *
