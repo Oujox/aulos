@@ -1,10 +1,5 @@
 @startuml classes
 set namespaceSeparator none
-class "AccidentalSetting" as mt._core.settings.scheme.AccidentalSetting {
-  limit : int
-  lower_symbol : str
-  upper_symbol : str
-}
 class "BaseNote" as mt.note._base.BaseNote {
   pitchclass
   pitchname
@@ -15,16 +10,16 @@ class "BaseScale" as mt.scale._base.BaseScale {
 class "BaseTuner" as mt.tuner._base.BaseTuner {
   {abstract}hz(note_number: int) -> float
 }
+class "Coexistence" as mt._core.coexistence.Coexistence {
+  semitone
+}
 class "Context" as mt.utils.context.Context {
-  setting : t.Final[ContextVar[SettingMT]]
-  load(path: pathlib.Path) -> t.Self
+  internal : t.Final[ContextVar[Setting]]
+  from_toml(path: pathlib.Path) -> t.Self
 }
 class "EqualTuner" as mt.tuner.tuner.EqualTuner {
   root : float
   hz(note_number: int) -> float
-}
-class "HarmonicSystem" as mt._core.shared.harmonicsystem.HarmonicSystem {
-  semitone
 }
 class "Intervals" as mt._core.shared.intervals.Intervals {
   downward(index: int, step: int)
@@ -58,30 +53,9 @@ class "Note" as mt.note.note.Note {
   is_notename(value: t.Any) -> t.TypeGuard[str]
   is_notenumber(notenumber: t.Any) -> t.TypeGuard[int]
 }
-class "NoteNumberPresentationReferenceSetting" as mt._core.settings.notenumber_presentation.NoteNumberPresentationReferenceSetting {
-  number : int
-  symbol : int
-}
-class "NoteNumberPresentationSetting" as mt._core.settings.notenumber_presentation.NoteNumberPresentationSetting {
-  name : str
-  reference
-  symbols : list[str]
-}
-class "NoteNumberSetting" as mt._core.settings.notenumber.NoteNumberSetting {
-  current : int
-  max : int
-  min : int
-  presentation
-  presentations : list[NoteNumberPresentationSetting]
-  is_notenumber(notenumber: t.Any) -> t.TypeGuard[int]
-}
-class "ObjectMT" as mt._core.object.ObjectMT {
+class "Object" as mt._core.object.Object {
   scheme
   setting
-}
-class "ParsedSetting" as mt._core.settings.setting.ParsedSetting {
-  notenumber
-  scheme
 }
 class "PitchClass" as mt.note.pitchclass.PitchClass {
   pitchclass
@@ -105,16 +79,11 @@ class "Scale" as mt.scale.scale.Scale {
   omits
   positions
 }
-class "SchemeSetting" as mt._core.settings.scheme.SchemeSetting {
-  accidental
-  class2name : dict[int, tuple[str]]
-  intervals : list[int]
-  name2class : dict[str, int]
+class "Scheme" as mt._core.scheme.Scheme {
+  intervals
   pitchclasses
   pitchnames
-  positions : tuple[int]
-  semitone : int
-  symbols : list[str]
+  positions
   convert_pitchclass_to_pitchname(pitchclass: int, accidental: int) -> t.Optional[str]
   convert_pitchclass_to_pitchnames(pitchclass: int) -> tuple[t.Optional[str]]
   convert_pitchclass_to_symbol(pitchclass: int) -> t.Optional[str]
@@ -126,39 +95,36 @@ class "SchemeSetting" as mt._core.settings.scheme.SchemeSetting {
   is_pitchname(value: t.Any) -> t.TypeGuard[str]
   is_symbol(value: t.Any) -> t.TypeGuard[str]
 }
-class "SettingMT" as mt._core.setting.SettingMT {
-  notenumber
-  scheme
-  from_path(path: pathlib.Path) -> t.Self
+class "Setting" as mt._core.setting.Setting {
+  note : NoteSetting
+  pitchclass : PitchClassSetting
 }
 class "classproperty" as mt._core.utils.decorators.classproperty {
 }
-mt._core.object.ObjectMT --|> mt._core.shared.harmonicsystem.HarmonicSystem
-mt._core.setting.SettingMT --|> mt._core.shared.harmonicsystem.HarmonicSystem
-mt._core.shared.intervals.Intervals --|> mt._core.shared.harmonicsystem.HarmonicSystem
-mt.note.key.Key --|> mt._core.object.ObjectMT
+mt._core.object.Object --|> mt._core.coexistence.Coexistence
+mt._core.scheme.Scheme --|> mt._core.coexistence.Coexistence
+mt._core.shared.intervals.Intervals --|> mt._core.coexistence.Coexistence
+mt.note.key.Key --|> mt._core.object.Object
 mt.note.key.Key --|> mt.note._base.BaseNote
-mt.note.note.Note --|> mt._core.object.ObjectMT
+mt.note.note.Note --|> mt._core.object.Object
 mt.note.note.Note --|> mt.note._base.BaseNote
-mt.note.pitchclass.PitchClass --|> mt._core.object.ObjectMT
+mt.note.pitchclass.PitchClass --|> mt._core.object.Object
 mt.note.pitchclass.PitchClass --|> mt.note._base.BaseNote
-mt.scale.mode.Mode --|> mt._core.object.ObjectMT
+mt.scale.mode.Mode --|> mt._core.object.Object
 mt.scale.mode.Mode --|> mt.scale._base.BaseScale
-mt.scale.scale.Scale --|> mt._core.object.ObjectMT
+mt.scale.scale.Scale --|> mt._core.object.Object
 mt.scale.scale.Scale --|> mt.scale._base.BaseScale
-mt.tuner.tuner.EqualTuner --|> mt._core.object.ObjectMT
+mt.tuner.tuner.EqualTuner --|> mt._core.object.Object
 mt.tuner.tuner.EqualTuner --|> mt.tuner._base.BaseTuner
-mt.tuner.tuner.JustIntonationTuner --|> mt._core.object.ObjectMT
+mt.tuner.tuner.JustIntonationTuner --|> mt._core.object.Object
 mt.tuner.tuner.JustIntonationTuner --|> mt.tuner._base.BaseTuner
-mt.tuner.tuner.MeantoneTuner --|> mt._core.object.ObjectMT
+mt.tuner.tuner.MeantoneTuner --|> mt._core.object.Object
 mt.tuner.tuner.MeantoneTuner --|> mt.tuner._base.BaseTuner
-mt.tuner.tuner.PythagoreanTuner --|> mt._core.object.ObjectMT
+mt.tuner.tuner.PythagoreanTuner --|> mt._core.object.Object
 mt.tuner.tuner.PythagoreanTuner --|> mt.tuner._base.BaseTuner
-mt._core.settings.notenumber.NoteNumberSetting --* mt._core.settings.setting.ParsedSetting : notenumber
-mt._core.settings.notenumber_presentation.NoteNumberPresentationReferenceSetting --* mt._core.settings.notenumber_presentation.NoteNumberPresentationSetting : reference
-mt._core.settings.scheme.AccidentalSetting --* mt._core.settings.scheme.SchemeSetting : accidental
-mt._core.settings.scheme.SchemeSetting --* mt._core.settings.setting.ParsedSetting : scheme
-mt._core.settings.setting.ParsedSetting --* mt._core.setting.SettingMT : _setting
+mt.utils.context.Context --|> mt._core.object.Object
+mt._core.scheme.Scheme --* mt._core.object.Object : _scheme
+mt._core.setting.Setting --o mt._core.scheme.Scheme : _setting
 mt.note.key.Key --o mt.scale.mode.Mode : _key
 mt.note.key.Key --o mt.scale.scale.Scale : _key
 @enduml

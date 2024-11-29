@@ -6,6 +6,8 @@ package "mt.__main__" as mt.__main__ {
 }
 package "mt._core" as mt._core {
 }
+package "mt._core.coexistence" as mt._core.coexistence {
+}
 package "mt._core.context" as mt._core.context {
 }
 package "mt._core.context._inject" as mt._core.context._inject {
@@ -16,21 +18,11 @@ package "mt._core.interfaces.ring" as mt._core.interfaces.ring {
 }
 package "mt._core.object" as mt._core.object {
 }
+package "mt._core.scheme" as mt._core.scheme {
+}
 package "mt._core.setting" as mt._core.setting {
 }
-package "mt._core.settings" as mt._core.settings {
-}
-package "mt._core.settings.notenumber" as mt._core.settings.notenumber {
-}
-package "mt._core.settings.notenumber_presentation" as mt._core.settings.notenumber_presentation {
-}
-package "mt._core.settings.scheme" as mt._core.settings.scheme {
-}
-package "mt._core.settings.setting" as mt._core.settings.setting {
-}
 package "mt._core.shared" as mt._core.shared {
-}
-package "mt._core.shared.harmonicsystem" as mt._core.shared.harmonicsystem {
 }
 package "mt._core.shared.intervals" as mt._core.shared.intervals {
 }
@@ -86,17 +78,13 @@ mt._core --> mt._core.object
 mt._core --> mt._core.setting
 mt._core.context --> mt._core.context._inject
 mt._core.interfaces --> mt._core.interfaces.ring
+mt._core.object --> mt._core.coexistence
+mt._core.object --> mt._core.scheme
 mt._core.object --> mt._core.setting
-mt._core.object --> mt._core.shared
-mt._core.setting --> mt._core.settings
-mt._core.setting --> mt._core.shared
-mt._core.settings --> mt._core.setting
-mt._core.settings.notenumber --> mt._core.settings.notenumber_presentation
-mt._core.settings.setting --> mt._core.settings.notenumber
-mt._core.settings.setting --> mt._core.settings.scheme
-mt._core.shared --> mt._core.shared.harmonicsystem
+mt._core.scheme --> mt._core.coexistence
+mt._core.scheme --> mt._core.utils
+mt._core.setting --> mt._core.scheme
 mt._core.shared --> mt._core.shared.intervals
-mt._core.shared.intervals --> mt._core.shared.harmonicsystem
 mt._core.utils --> mt._core.utils.array
 mt._core.utils --> mt._core.utils.calculation
 mt._core.utils --> mt._core.utils.decorators
@@ -113,4 +101,5 @@ mt.scale.scale --> mt.scale._base
 mt.tuner --> mt.tuner.tuner
 mt.tuner.tuner --> mt.tuner._base
 mt.utils --> mt.utils.context
+mt._core.scheme ..> mt._core.setting
 @enduml
