@@ -1,4 +1,4 @@
-name: branch
+name: 🌱 Create Branch from Issue
 on:
   issues:
     types: [assigned]
