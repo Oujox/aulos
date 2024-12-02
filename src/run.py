@@ -1,8 +1,8 @@
 import os
 import pathlib
 
-from mt import *
-from mt.scale import *
+from aulos import *
+from aulos.scale import *
 
 path = pathlib.Path(os.path.dirname(__file__)) / "setting.toml"
 

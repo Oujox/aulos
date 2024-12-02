@@ -1,7 +1,7 @@
 import pytest
 from dacite import from_dict
 
-from src.mt import Setting
+from src.aulos import Setting
 
 SETTING_DICT_FOR_HSYS12 = {
     "pitchclass": {
