@@ -2,7 +2,7 @@ import typing as t
 
 from .bases.base import Base
 from .coexistence import Coexistence
-from .scheme import Scheme
+from .schema import Schema
 from .setting import Setting
 
 
@@ -20,7 +20,7 @@ class Object(Coexistence, Base):
                 "Please provide a valid setting object."
             )
         self._setting = setting
-        self._scheme = Scheme(setting)
+        self._scheme = Schema(setting)
         super(Object, self).__init__(setting.pitchclass.semitone)
 
     @property
