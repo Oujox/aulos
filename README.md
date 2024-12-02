@@ -16,30 +16,35 @@ A Python library for exploring and utilizing music theory concepts in an intuiti
 ## usage
 
 ```python
-from chordal import PitchClass
-
-c = PitchClass("C")
-```
-
-```python
 from chordal import Note
 
-c = Note("C1")
+a1 = Note("A4")
+
+print(a1)
+>> <Note: 'A4'>
 ```
 
 ```python
-from chordal import Major, Locrian, Key
+from chordal import scale, Key
 
 c = Key("C")
 
-major = Major(c)
-locrian = Locrian(c)
+major = scale.Major(c)
+locrian = scale.Locrian(c)
+
+print(major)
+>> <Scale: 'Major'>
+
+print(locrian.diatonics)
+>> ['C','D','E','F','G','A','B']
 ```
 
 ```python
 from chordal import Chord
 
 cm7b5 = Chord("Cm7b5")
+
+print(cm7b5)
 ```
 
 ```python
