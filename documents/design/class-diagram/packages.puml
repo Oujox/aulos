@@ -1,105 +1,105 @@
 @startuml packages
 set namespaceSeparator none
-package "mt" as mt {
+package "aulos" as aulos {
 }
-package "mt.__main__" as mt.__main__ {
+package "aulos.__main__" as aulos.__main__ {
 }
-package "mt._core" as mt._core {
+package "aulos._core" as aulos._core {
 }
-package "mt._core.coexistence" as mt._core.coexistence {
+package "aulos._core.coexistence" as aulos._core.coexistence {
 }
-package "mt._core.context" as mt._core.context {
+package "aulos._core.context" as aulos._core.context {
 }
-package "mt._core.context._inject" as mt._core.context._inject {
+package "aulos._core.context._inject" as aulos._core.context._inject {
 }
-package "mt._core.interfaces" as mt._core.interfaces {
+package "aulos._core.interfaces" as aulos._core.interfaces {
 }
-package "mt._core.interfaces.ring" as mt._core.interfaces.ring {
+package "aulos._core.interfaces.ring" as aulos._core.interfaces.ring {
 }
-package "mt._core.object" as mt._core.object {
+package "aulos._core.object" as aulos._core.object {
 }
-package "mt._core.scheme" as mt._core.scheme {
+package "aulos._core.schema" as aulos._core.schema {
 }
-package "mt._core.setting" as mt._core.setting {
+package "aulos._core.setting" as aulos._core.setting {
 }
-package "mt._core.shared" as mt._core.shared {
+package "aulos._core.shared" as aulos._core.shared {
 }
-package "mt._core.shared.intervals" as mt._core.shared.intervals {
+package "aulos._core.shared.intervals" as aulos._core.shared.intervals {
 }
-package "mt._core.utils" as mt._core.utils {
+package "aulos._core.utils" as aulos._core.utils {
 }
-package "mt._core.utils.array" as mt._core.utils.array {
+package "aulos._core.utils.array" as aulos._core.utils.array {
 }
-package "mt._core.utils.calculation" as mt._core.utils.calculation {
+package "aulos._core.utils.calculation" as aulos._core.utils.calculation {
 }
-package "mt._core.utils.decorators" as mt._core.utils.decorators {
+package "aulos._core.utils.decorators" as aulos._core.utils.decorators {
 }
-package "mt._errors" as mt._errors {
+package "aulos._errors" as aulos._errors {
 }
-package "mt._version" as mt._version {
+package "aulos._version" as aulos._version {
 }
-package "mt._warnings" as mt._warnings {
+package "aulos._warnings" as aulos._warnings {
 }
-package "mt.chord" as mt.chord {
+package "aulos.chord" as aulos.chord {
 }
-package "mt.note" as mt.note {
+package "aulos.note" as aulos.note {
 }
-package "mt.note._base" as mt.note._base {
+package "aulos.note._base" as aulos.note._base {
 }
-package "mt.note.key" as mt.note.key {
+package "aulos.note.key" as aulos.note.key {
 }
-package "mt.note.note" as mt.note.note {
+package "aulos.note.note" as aulos.note.note {
 }
-package "mt.note.pitchclass" as mt.note.pitchclass {
+package "aulos.note.pitchclass" as aulos.note.pitchclass {
 }
-package "mt.scale" as mt.scale {
+package "aulos.scale" as aulos.scale {
 }
-package "mt.scale._base" as mt.scale._base {
+package "aulos.scale._base" as aulos.scale._base {
 }
-package "mt.scale.mode" as mt.scale.mode {
+package "aulos.scale.mode" as aulos.scale.mode {
 }
-package "mt.scale.scale" as mt.scale.scale {
+package "aulos.scale.scale" as aulos.scale.scale {
 }
-package "mt.tuner" as mt.tuner {
+package "aulos.tuner" as aulos.tuner {
 }
-package "mt.tuner._base" as mt.tuner._base {
+package "aulos.tuner._base" as aulos.tuner._base {
 }
-package "mt.tuner.tuner" as mt.tuner.tuner {
+package "aulos.tuner.tuner" as aulos.tuner.tuner {
 }
-package "mt.utils" as mt.utils {
+package "aulos.utils" as aulos.utils {
 }
-package "mt.utils.context" as mt.utils.context {
+package "aulos.utils.context" as aulos.utils.context {
 }
-mt --> mt._core
-mt --> mt._version
-mt --> mt.note
-mt --> mt.utils
-mt._core --> mt._core.object
-mt._core --> mt._core.setting
-mt._core.context --> mt._core.context._inject
-mt._core.interfaces --> mt._core.interfaces.ring
-mt._core.object --> mt._core.coexistence
-mt._core.object --> mt._core.scheme
-mt._core.object --> mt._core.setting
-mt._core.scheme --> mt._core.coexistence
-mt._core.scheme --> mt._core.utils
-mt._core.setting --> mt._core.scheme
-mt._core.shared --> mt._core.shared.intervals
-mt._core.utils --> mt._core.utils.array
-mt._core.utils --> mt._core.utils.calculation
-mt._core.utils --> mt._core.utils.decorators
-mt.note --> mt.note.key
-mt.note --> mt.note.pitchclass
-mt.note.key --> mt.note._base
-mt.note.note --> mt.note._base
-mt.note.pitchclass --> mt.note._base
-mt.scale --> mt.scale.mode
-mt.scale --> mt.scale.scale
-mt.scale.mode --> mt.scale._base
-mt.scale.mode --> mt.scale.scale
-mt.scale.scale --> mt.scale._base
-mt.tuner --> mt.tuner.tuner
-mt.tuner.tuner --> mt.tuner._base
-mt.utils --> mt.utils.context
-mt._core.scheme ..> mt._core.setting
+aulos --> aulos._core
+aulos --> aulos._version
+aulos --> aulos.note
+aulos --> aulos.utils
+aulos._core --> aulos._core.object
+aulos._core --> aulos._core.setting
+aulos._core.context --> aulos._core.context._inject
+aulos._core.interfaces --> aulos._core.interfaces.ring
+aulos._core.object --> aulos._core.coexistence
+aulos._core.object --> aulos._core.schema
+aulos._core.object --> aulos._core.setting
+aulos._core.schema --> aulos._core.coexistence
+aulos._core.schema --> aulos._core.utils
+aulos._core.setting --> aulos._core.schema
+aulos._core.shared --> aulos._core.shared.intervals
+aulos._core.utils --> aulos._core.utils.array
+aulos._core.utils --> aulos._core.utils.calculation
+aulos._core.utils --> aulos._core.utils.decorators
+aulos.note --> aulos.note.key
+aulos.note --> aulos.note.pitchclass
+aulos.note.key --> aulos.note._base
+aulos.note.note --> aulos.note._base
+aulos.note.pitchclass --> aulos.note._base
+aulos.scale --> aulos.scale.mode
+aulos.scale --> aulos.scale.scale
+aulos.scale.mode --> aulos.scale._base
+aulos.scale.mode --> aulos.scale.scale
+aulos.scale.scale --> aulos.scale._base
+aulos.tuner --> aulos.tuner.tuner
+aulos.tuner.tuner --> aulos.tuner._base
+aulos.utils --> aulos.utils.context
+aulos._core.schema ..> aulos._core.setting
 @enduml

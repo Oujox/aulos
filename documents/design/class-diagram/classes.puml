@@ -1,47 +1,47 @@
 @startuml classes
 set namespaceSeparator none
-class "BaseNote" as mt.note._base.BaseNote {
+class "BaseNote" as aulos.note._base.BaseNote {
   pitchclass
   pitchname
 }
-class "BaseScale" as mt.scale._base.BaseScale {
+class "BaseScale" as aulos.scale._base.BaseScale {
   diatonics
 }
-class "BaseTuner" as mt.tuner._base.BaseTuner {
+class "BaseTuner" as aulos.tuner._base.BaseTuner {
   {abstract}hz(note_number: int) -> float
 }
-class "Coexistence" as mt._core.coexistence.Coexistence {
+class "Coexistence" as aulos._core.coexistence.Coexistence {
   semitone
 }
-class "Context" as mt.utils.context.Context {
+class "Context" as aulos.utils.context.Context {
   internal : t.Final[ContextVar[Setting]]
   from_toml(path: pathlib.Path) -> t.Self
 }
-class "EqualTuner" as mt.tuner.tuner.EqualTuner {
+class "EqualTuner" as aulos.tuner.tuner.EqualTuner {
   root : float
   hz(note_number: int) -> float
 }
-class "Intervals" as mt._core.shared.intervals.Intervals {
+class "Intervals" as aulos._core.shared.intervals.Intervals {
   downward(index: int, step: int)
   upward(index: int, step: int)
 }
-class "JustIntonationTuner" as mt.tuner.tuner.JustIntonationTuner {
+class "JustIntonationTuner" as aulos.tuner.tuner.JustIntonationTuner {
   ratios : t.Final[tuple[float]]
   root : float
   hz(notenumber: int) -> float
 }
-class "Key" as mt.note.key.Key {
+class "Key" as aulos.note.key.Key {
   accsidentals
   pitchclass
   pitchname
   is_keyname(value: t.Any) -> t.TypeGuard[str]
 }
-class "MeantoneTuner" as mt.tuner.tuner.MeantoneTuner {
+class "MeantoneTuner" as aulos.tuner.tuner.MeantoneTuner {
   ratios : t.Final[tuple[int]]
   root : float
   hz(note_number: int) -> float
 }
-class "Mode" as mt.scale.mode.Mode {
+class "Mode" as aulos.scale.mode.Mode {
   accidentals
   diatonics
   intervals
@@ -49,15 +49,15 @@ class "Mode" as mt.scale.mode.Mode {
   omits
   positions
 }
-class "Note" as mt.note.note.Note {
+class "Note" as aulos.note.note.Note {
   is_notename(value: t.Any) -> t.TypeGuard[str]
   is_notenumber(notenumber: t.Any) -> t.TypeGuard[int]
 }
-class "Object" as mt._core.object.Object {
+class "Object" as aulos._core.object.Object {
   scheme
   setting
 }
-class "PitchClass" as mt.note.pitchclass.PitchClass {
+class "PitchClass" as aulos.note.pitchclass.PitchClass {
   pitchclass
   pitchname
   pitchnames
@@ -65,13 +65,13 @@ class "PitchClass" as mt.note.pitchclass.PitchClass {
   is_pitchclass(pitchclass: int) -> t.TypeGuard[int]
   is_pitchname(pitchname: str) -> t.TypeGuard[str]
 }
-class "PythagoreanTuner" as mt.tuner.tuner.PythagoreanTuner {
+class "PythagoreanTuner" as aulos.tuner.tuner.PythagoreanTuner {
   root : float
   hz(note_number: int) -> float
 }
-class "Ring" as mt._core.interfaces.ring.Ring {
+class "Ring" as aulos._core.interfaces.ring.Ring {
 }
-class "Scale" as mt.scale.scale.Scale {
+class "Scale" as aulos.scale.scale.Scale {
   accidentals
   diatonics
   intervals
@@ -79,7 +79,7 @@ class "Scale" as mt.scale.scale.Scale {
   omits
   positions
 }
-class "Scheme" as mt._core.scheme.Scheme {
+class "Schema" as aulos._core.schema.Schema {
   intervals
   pitchclasses
   pitchnames
@@ -95,36 +95,36 @@ class "Scheme" as mt._core.scheme.Scheme {
   is_pitchname(value: t.Any) -> t.TypeGuard[str]
   is_symbol(value: t.Any) -> t.TypeGuard[str]
 }
-class "Setting" as mt._core.setting.Setting {
+class "Setting" as aulos._core.setting.Setting {
   note : NoteSetting
   pitchclass : PitchClassSetting
 }
-class "classproperty" as mt._core.utils.decorators.classproperty {
+class "classproperty" as aulos._core.utils.decorators.classproperty {
 }
-mt._core.object.Object --|> mt._core.coexistence.Coexistence
-mt._core.scheme.Scheme --|> mt._core.coexistence.Coexistence
-mt._core.shared.intervals.Intervals --|> mt._core.coexistence.Coexistence
-mt.note.key.Key --|> mt._core.object.Object
-mt.note.key.Key --|> mt.note._base.BaseNote
-mt.note.note.Note --|> mt._core.object.Object
-mt.note.note.Note --|> mt.note._base.BaseNote
-mt.note.pitchclass.PitchClass --|> mt._core.object.Object
-mt.note.pitchclass.PitchClass --|> mt.note._base.BaseNote
-mt.scale.mode.Mode --|> mt._core.object.Object
-mt.scale.mode.Mode --|> mt.scale._base.BaseScale
-mt.scale.scale.Scale --|> mt._core.object.Object
-mt.scale.scale.Scale --|> mt.scale._base.BaseScale
-mt.tuner.tuner.EqualTuner --|> mt._core.object.Object
-mt.tuner.tuner.EqualTuner --|> mt.tuner._base.BaseTuner
-mt.tuner.tuner.JustIntonationTuner --|> mt._core.object.Object
-mt.tuner.tuner.JustIntonationTuner --|> mt.tuner._base.BaseTuner
-mt.tuner.tuner.MeantoneTuner --|> mt._core.object.Object
-mt.tuner.tuner.MeantoneTuner --|> mt.tuner._base.BaseTuner
-mt.tuner.tuner.PythagoreanTuner --|> mt._core.object.Object
-mt.tuner.tuner.PythagoreanTuner --|> mt.tuner._base.BaseTuner
-mt.utils.context.Context --|> mt._core.object.Object
-mt._core.scheme.Scheme --* mt._core.object.Object : _scheme
-mt._core.setting.Setting --o mt._core.scheme.Scheme : _setting
-mt.note.key.Key --o mt.scale.mode.Mode : _key
-mt.note.key.Key --o mt.scale.scale.Scale : _key
+aulos._core.object.Object --|> aulos._core.coexistence.Coexistence
+aulos._core.schema.Schema --|> aulos._core.coexistence.Coexistence
+aulos._core.shared.intervals.Intervals --|> aulos._core.coexistence.Coexistence
+aulos.note.key.Key --|> aulos._core.object.Object
+aulos.note.key.Key --|> aulos.note._base.BaseNote
+aulos.note.note.Note --|> aulos._core.object.Object
+aulos.note.note.Note --|> aulos.note._base.BaseNote
+aulos.note.pitchclass.PitchClass --|> aulos._core.object.Object
+aulos.note.pitchclass.PitchClass --|> aulos.note._base.BaseNote
+aulos.scale.mode.Mode --|> aulos._core.object.Object
+aulos.scale.mode.Mode --|> aulos.scale._base.BaseScale
+aulos.scale.scale.Scale --|> aulos._core.object.Object
+aulos.scale.scale.Scale --|> aulos.scale._base.BaseScale
+aulos.tuner.tuner.EqualTuner --|> aulos._core.object.Object
+aulos.tuner.tuner.EqualTuner --|> aulos.tuner._base.BaseTuner
+aulos.tuner.tuner.JustIntonationTuner --|> aulos._core.object.Object
+aulos.tuner.tuner.JustIntonationTuner --|> aulos.tuner._base.BaseTuner
+aulos.tuner.tuner.MeantoneTuner --|> aulos._core.object.Object
+aulos.tuner.tuner.MeantoneTuner --|> aulos.tuner._base.BaseTuner
+aulos.tuner.tuner.PythagoreanTuner --|> aulos._core.object.Object
+aulos.tuner.tuner.PythagoreanTuner --|> aulos.tuner._base.BaseTuner
+aulos.utils.context.Context --|> aulos._core.object.Object
+aulos._core.schema.Schema --* aulos._core.object.Object : _scheme
+aulos._core.setting.Setting --o aulos._core.schema.Schema : _setting
+aulos.note.key.Key --o aulos.scale.mode.Mode : _key
+aulos.note.key.Key --o aulos.scale.scale.Scale : _key
 @enduml

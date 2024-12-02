@@ -1,4 +1,4 @@
-""" MT (library for music theory)
+""" aulos (library for music theory)
 """
 
 from . import scale, tuner

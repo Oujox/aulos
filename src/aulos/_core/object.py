@@ -10,7 +10,7 @@ class Object(Coexistence, Base):
 
     def __new__(cls, *args, **kwargs) -> t.Self:
         if cls is Object:
-            raise TypeError("ObjectMT cannot be instantiated directly.")
+            raise TypeError("Object cannot be instantiated directly.")
         return super().__new__(cls)
 
     def __init__(self, setting: t.Optional[Setting] = None) -> None:
@@ -38,11 +38,7 @@ class Object(Coexistence, Base):
         return super(object, self).__ne__(other)
 
     def __str__(self) -> str:
-        return "<ObjectMT: semitone={}, setting={}>".format(
-            self.semitone, self._setting
-        )
+        return "<Object: semitone={}, setting={}>".format(self.semitone, self._setting)
 
     def __repr__(self) -> str:
-        return "<ObjectMT: semitone={}, setting={}>".format(
-            self.semitone, self._setting
-        )
+        return "<Object: semitone={}, setting={}>".format(self.semitone, self._setting)
