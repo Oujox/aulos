@@ -12,7 +12,7 @@ if TYPE_CHECKING:
     from .setting import Setting  # pragma: no cover
 
 
-class Scheme(Coexistence, Base):
+class Schema(Coexistence, Base):
 
     def __init__(self, setting: Setting) -> None:
         self._setting = setting
@@ -25,10 +25,10 @@ class Scheme(Coexistence, Base):
         return not self.__eq__(other)
 
     def __str__(self) -> str:
-        return "<Scheme>"
+        return "<Schema>"
 
     def __repr__(self) -> str:
-        return "<Scheme>"
+        return "<Schema>"
 
     @property
     def intervals(self) -> tuple[int]:
