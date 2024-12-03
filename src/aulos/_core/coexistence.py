@@ -9,18 +9,21 @@ class Coexistence:
     """
     A class for managing coexistence of hashable objects stored in dictionaries at the instance and class levels.
 
+    This class allows for defining hashable dictionaries at both the instance and class levels,
+    and provides a method to check whether two Coexistence objects can coexist based on their values.
+
     Attributes:
-        _i_coexistence (dict[str, Hashable]): An instance-level dictionary containing hashable objects for coexistence.
-        _t_coexistence (ClassVar[dict[str, Hashable]]): A class-level dictionary containing hashable objects for coexistence.
+        _i_coexistence (Optional[dict[str, Hashable]]): An instance-level dictionary containing hashable objects for coexistence.
+        _t_coexistence (ClassVar[Optional[dict[str, Hashable]]]): A class-level dictionary containing hashable objects for coexistence.
 
     Methods:
-        __init__(**coexistencable: Hashable): Initializes the instance with keyword arguments representing hashable objects.
-        __init_subclass__(**coexistencable: Hashable): Initializes subclasses with keyword arguments representing hashable objects.
-        canCoexist(other: Self) -> bool: Determines whether two Coexistence objects can coexist based on their hash values.
+        __init__(**coexistencable: Hashable): Initializes the instance with keyword arguments representing hashable objects stored in a dictionary.
+        __init_subclass__(**coexistencable: Hashable): Initializes the subclass with keyword arguments representing hashable objects stored in a dictionary.
+        canCoexist(other: Self) -> bool: Determines whether two Coexistence objects can coexist based on the equality of their dictionaries.
     """
 
-    _i_coexistence: dict[str, t.Hashable]
-    _t_coexistence: t.ClassVar[dict[str, t.Hashable]]
+    _i_coexistence: t.Optional[dict[str, t.Hashable]]
+    _t_coexistence: t.ClassVar[t.Optional[dict[str, t.Hashable]]]
 
     def __init__(self, /, **coexistencable: t.Hashable) -> None:
         self._i_coexistence = (
@@ -38,15 +41,15 @@ class Coexistence:
         """
         Determines whether two Coexistence objects can coexist.
 
-        Coexistence is determined by comparing the hash values of their instance-level (_i_coexistence)
-        or class-level (_t_coexistence) coexistence dictionaries.
+        Coexistence is determined by comparing the equality of the dictionaries of hashable objects
+        stored at the instance (_i_coexistence) or class (_t_coexistence) levels.
 
         Args:
             other (Self): Another Coexistence object to compare against.
 
         Returns:
-            bool: True if the two objects can coexist (their hash values are equal); otherwise, False.
+            bool: True if the two objects can coexist (their dictionaries are equal); otherwise, False.
         """
-        return hash(self._i_coexistence or self._t_coexistence) == hash(
-            other._i_coexistence or other._t_coexistence
+        return (self._t_coexistence or self._i_coexistence) == (
+            other._t_coexistence or other._i_coexistence
         )
