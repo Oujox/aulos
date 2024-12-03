@@ -15,8 +15,8 @@ class Context(ContextDecorator, Object):
     internal: t.Final[ContextVar[Setting]] = ContextVar("internal")
 
     def __init__(self, setting: Setting) -> None:
-        self._token = self.internal.set(setting)
         super().__init__(setting)
+        self._token = self.internal.set(setting)
 
     def __enter__(self) -> t.Self:
         return self
