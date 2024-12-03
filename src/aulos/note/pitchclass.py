@@ -67,7 +67,7 @@ class PitchClass(BaseNote, Object):
         from ..scale import Mode, Scale
 
         if isinstance(scale, (Scale, Mode)):
-            pitchclass = (self.pitchclass - scale.key.pitchclass) % self.semitone
+            pitchclass = (self.pitchclass - scale.key.pitchclass) % self.schema.semitone
             if (idx := index(scale.positions, pitchclass)) is None:
                 return
             acc, kacc = scale.accidentals[idx], scale.key.accsidentals[idx]
@@ -83,11 +83,11 @@ class PitchClass(BaseNote, Object):
         return not self.__eq__(other)
 
     def __add__(self, other: int | BaseNote) -> PitchClass:
-        pitchclass = (int(self) + int(other)) % self.semitone
+        pitchclass = (int(self) + int(other)) % self.schema.semitone
         return PitchClass(pitchclass, scale=self.scale, setting=self.setting)
 
     def __sub__(self, other: int | BaseNote) -> PitchClass:
-        pitchclass = (int(self) - int(other)) % self.semitone
+        pitchclass = (int(self) - int(other)) % self.schema.semitone
         return PitchClass(pitchclass, scale=self.scale, setting=self.setting)
 
     def __int__(self) -> int:

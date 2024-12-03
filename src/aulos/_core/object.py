@@ -19,9 +19,11 @@ class Object(Coexistence, Base):
                 "Initialization error: 'setting' argument is missing. "
                 "Please provide a valid setting object."
             )
+        super(Object, self).__init__(
+            semitone=setting.pitchclass.semitone, intervals=setting.pitchclass.intervals
+        )
         self._setting = setting
         self._schema = Schema(setting)
-        super(Object, self).__init__(setting.pitchclass.semitone)
 
     @property
     def setting(self):
@@ -38,7 +40,11 @@ class Object(Coexistence, Base):
         return super(object, self).__ne__(other)
 
     def __str__(self) -> str:
-        return "<Object: semitone={}, setting={}>".format(self.semitone, self._setting)
+        return "<Object: semitone={}, setting={}>".format(
+            self.schema.semitone, self._setting
+        )
 
     def __repr__(self) -> str:
-        return "<Object: semitone={}, setting={}>".format(self.semitone, self._setting)
+        return "<Object: semitone={}, setting={}>".format(
+            self.schema.semitone, self._setting
+        )

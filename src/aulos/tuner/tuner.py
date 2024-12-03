@@ -2,9 +2,11 @@ import typing as t
 
 from .._core import Object
 from ._base import BaseTuner
-from .processing.frequency_ratio import (fivelimit_tuning_table,
-                                         meantone_tuning_table,
-                                         pythagorean_tuning_table)
+from .processing.frequency_ratio import (
+    fivelimit_tuning_table,
+    meantone_tuning_table,
+    pythagorean_tuning_table,
+)
 
 
 class JustIntonationTuner(BaseTuner, Object):
@@ -46,5 +48,5 @@ class EqualTuner(BaseTuner, Object):
 
     def hz(self, note_number: int) -> float:
         return self.root * 2 ** (
-            (note_number - self.setting.notenumber.origin) / self.semitone
+            (note_number - self.setting.notenumber.origin) / self.schema.semitone
         )

@@ -15,8 +15,10 @@ if TYPE_CHECKING:
 class Schema(Coexistence, Base):
 
     def __init__(self, setting: Setting) -> None:
+        super(Schema, self).__init__(
+            semitone=setting.pitchclass.semitone, intervals=setting.pitchclass.intervals
+        )
         self._setting = setting
-        super().__init__(semitone=setting.pitchclass.semitone)
 
     def __eq__(self, other: t.Self) -> bool:
         return self._setting == other._setting
@@ -29,6 +31,10 @@ class Schema(Coexistence, Base):
 
     def __repr__(self) -> str:
         return "<Schema>"
+
+    @property
+    def semitone(self) -> int:
+        return self._setting.pitchclass.semitone
 
     @property
     def intervals(self) -> tuple[int]:

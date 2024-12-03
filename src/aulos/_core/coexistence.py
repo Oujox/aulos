@@ -1,62 +1,52 @@
 import typing as t
 
 
-def is_semitone(value: t.Any) -> t.TypeGuard[int]:
-    return isinstance(value, int) and 0 <= value
+def is_coexistancable(value: t.Any) -> t.TypeGuard[dict]:
+    return isinstance(value, dict) and 0 < len(value)
 
 
 class Coexistence:
     """
-    A base class representing a harmonic system (musical temperament).
-
-    This class is designed to specify the temperament (number of semitones) associated with musical objects
-    such as note names or scales. It clarifies the harmonic context these objects operate within and ensures
-    consistent behavior across the music theory library.
+    A class for managing coexistence of hashable objects stored in dictionaries at the instance and class levels.
 
     Attributes:
-        _i_semitone (Optional[int]): The temperament specified at the instance level, if valid.
-        _t_semitone (ClassVar[Optional[int]]): The temperament specified at the class level during subclass definition, if valid.
-
-    Purpose:
-    - To ensure that each musical object operates within the appropriate harmonic context.
-    - To unify shared characteristics across temperaments based on the same semitone count, such as 12-tone equal temperament,
-      Pythagorean tuning, or just intonation.
-
-    Example Use Case:
-    If the `semitone` property of an object is 12, it indicates the object is based on a harmonic system with 12 semitones,
-    such as 12-tone equal temperament, Pythagorean tuning, or just intonation.
+        _i_coexistence (dict[str, Hashable]): An instance-level dictionary containing hashable objects for coexistence.
+        _t_coexistence (ClassVar[dict[str, Hashable]]): A class-level dictionary containing hashable objects for coexistence.
 
     Methods:
-        __init__: Initializes the instance with a specified temperament, if valid.
-        __init_subclass__: Sets the class-wide temperament during subclass definition.
-        semitone (property): Returns the active temperament in semitones, prioritizing class-level over instance-level values.
+        __init__(**coexistencable: Hashable): Initializes the instance with keyword arguments representing hashable objects.
+        __init_subclass__(**coexistencable: Hashable): Initializes subclasses with keyword arguments representing hashable objects.
+        canCoexist(other: Self) -> bool: Determines whether two Coexistence objects can coexist based on their hash values.
     """
 
-    _i_semitone: t.Optional[int]
-    _t_semitone: t.ClassVar[t.Optional[int]]
+    _i_coexistence: dict[str, t.Hashable]
+    _t_coexistence: t.ClassVar[dict[str, t.Hashable]]
 
-    def __init__(self, semitone: t.Optional[int] = None) -> None:
-        self._i_semitone = semitone if is_semitone(semitone) else None
+    def __init__(self, /, **coexistencable: t.Hashable) -> None:
+        self._i_coexistence = (
+            coexistencable if is_coexistancable(coexistencable) else None
+        )
         return super(Coexistence, self).__init__()
 
-    def __init_subclass__(cls, semitone: t.Optional[int] = None) -> None:
-        cls._t_semitone = semitone if is_semitone(semitone) else None
+    def __init_subclass__(cls, /, **coexistencable: t.Hashable) -> None:
+        cls._t_coexistence = (
+            coexistencable if is_coexistancable(coexistencable) else None
+        )
         return super(Coexistence, cls).__init_subclass__()
 
-    @property
-    def semitone(self) -> int:
+    def canCoexist(self, other: t.Self) -> bool:
         """
-        Returns the active temperament's semitone count.
+        Determines whether two Coexistence objects can coexist.
 
-        The semitone count is determined by the following priority:
-        1. The class-level temperament (_t_semitone) set during subclass definition.
-        2. The instance-level temperament (_i_semitone) set during object initialization.
-        3. Defaults to 0 if neither is specified.
+        Coexistence is determined by comparing the hash values of their instance-level (_i_coexistence)
+        or class-level (_t_coexistence) coexistence dictionaries.
 
-        This property provides a unified way to access the harmonic system's semitone value,
-        ensuring consistent behavior across instances and subclasses.
+        Args:
+            other (Self): Another Coexistence object to compare against.
 
         Returns:
-            int: The semitone count representing the active harmonic system.
+            bool: True if the two objects can coexist (their hash values are equal); otherwise, False.
         """
-        return self._t_semitone or self._i_semitone or 0
+        return hash(self._i_coexistence or self._t_coexistence) == hash(
+            other._i_coexistence or other._t_coexistence
+        )
