@@ -16,7 +16,7 @@ class Key(BaseNote, Object):
 
         if self.is_keyname(name):
             self._name = name
-            self._pitchclass = self.scheme.convert_pitchname_to_picthclass(name)
+            self._pitchclass = self.schema.convert_pitchname_to_picthclass(name)
 
         else:
             raise ValueError()
@@ -31,7 +31,7 @@ class Key(BaseNote, Object):
 
     @cached_property
     def accsidentals(self) -> tuple[int]:
-        return self.scheme.generate_accidentals(self._name)
+        return self.schema.generate_accidentals(self._name)
 
     def __eq__(self, other: int | BaseNote) -> bool:
         return self._pitchclass == int(other)
@@ -49,4 +49,4 @@ class Key(BaseNote, Object):
         return "<Key: {}>".format(self._name)
 
     def is_keyname(self, value: t.Any) -> t.TypeGuard[str]:
-        return isinstance(value, str) and value in self.scheme.pitchnames
+        return isinstance(value, str) and value in self.schema.pitchnames

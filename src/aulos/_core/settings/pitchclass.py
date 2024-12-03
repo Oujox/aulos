@@ -46,11 +46,11 @@ class PitchClassSetting:
         object.__setattr__(self, "class2name", dict(class2name))
 
 
-def create_upper_sequences(scheme: PitchClassSetting) -> list[list[str]]:
+def create_upper_sequences(setting: PitchClassSetting) -> list[list[str]]:
     sequences = []
-    for i in range(1, scheme.accidental.limit + 1):
+    for i in range(1, setting.accidental.limit + 1):
         sequence = create_symbol_sequence(
-            scheme, suffix=scheme.accidental.upper_symbol * i
+            setting, suffix=setting.accidental.upper_symbol * i
         )
         for _ in range(i):
             sequence.insert(0, sequence.pop())
@@ -58,11 +58,11 @@ def create_upper_sequences(scheme: PitchClassSetting) -> list[list[str]]:
     return sequences
 
 
-def create_lower_sequences(scheme: PitchClassSetting) -> list[list[str]]:
+def create_lower_sequences(setting: PitchClassSetting) -> list[list[str]]:
     sequences = []
-    for i in range(1, scheme.accidental.limit + 1):
+    for i in range(1, setting.accidental.limit + 1):
         sequence = create_symbol_sequence(
-            scheme, suffix=scheme.accidental.lower_symbol * i
+            setting, suffix=setting.accidental.lower_symbol * i
         )
         for _ in range(i):
             sequence.append(sequence.pop(0))
@@ -71,13 +71,13 @@ def create_lower_sequences(scheme: PitchClassSetting) -> list[list[str]]:
 
 
 def create_symbol_sequence(
-    scheme: PitchClassSetting, *, prefix: str = "", suffix: str = ""
+    setting: PitchClassSetting, *, prefix: str = "", suffix: str = ""
 ) -> list[str]:
     sequence = []
-    for deg in range(scheme.semitone):
-        if deg in scheme.positions:
-            index = scheme.positions.index(deg)
-            sequence.append(prefix + scheme.symbols[index] + suffix)
+    for deg in range(setting.semitone):
+        if deg in setting.positions:
+            index = setting.positions.index(deg)
+            sequence.append(prefix + setting.symbols[index] + suffix)
         else:
             sequence.append(None)
     return sequence

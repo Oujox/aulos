@@ -15,7 +15,9 @@ class "Coexistence" as aulos._core.coexistence.Coexistence {
 }
 class "Context" as aulos.utils.context.Context {
   internal : t.Final[ContextVar[Setting]]
-  from_toml(path: pathlib.Path) -> t.Self
+  from_json(path: Path) -> t.Self
+  from_toml(path: Path) -> t.Self
+  setting() -> t.Optional[Setting]
 }
 class "EqualTuner" as aulos.tuner.tuner.EqualTuner {
   root : float
@@ -54,7 +56,7 @@ class "Note" as aulos.note.note.Note {
   is_notenumber(notenumber: t.Any) -> t.TypeGuard[int]
 }
 class "Object" as aulos._core.object.Object {
-  scheme
+  schema
   setting
 }
 class "PitchClass" as aulos.note.pitchclass.PitchClass {
@@ -123,7 +125,7 @@ aulos.tuner.tuner.MeantoneTuner --|> aulos.tuner._base.BaseTuner
 aulos.tuner.tuner.PythagoreanTuner --|> aulos._core.object.Object
 aulos.tuner.tuner.PythagoreanTuner --|> aulos.tuner._base.BaseTuner
 aulos.utils.context.Context --|> aulos._core.object.Object
-aulos._core.schema.Schema --* aulos._core.object.Object : _scheme
+aulos._core.schema.Schema --* aulos._core.object.Object : _schema
 aulos._core.setting.Setting --o aulos._core.schema.Schema : _setting
 aulos.note.key.Key --o aulos.scale.mode.Mode : _key
 aulos.note.key.Key --o aulos.scale.scale.Scale : _key

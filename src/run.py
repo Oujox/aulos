@@ -11,6 +11,6 @@ with Context.from_toml(path) as c:
 
     pprint(Scale.mro())
 
-    for k in c.scheme.pitchnames:
+    for k in c.schema.pitchnames:
         if len(k) <= 2:
             pprint(Locrian(Key(k)).diatonics)

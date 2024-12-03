@@ -20,7 +20,7 @@ class Object(Coexistence, Base):
                 "Please provide a valid setting object."
             )
         self._setting = setting
-        self._scheme = Schema(setting)
+        self._schema = Schema(setting)
         super(Object, self).__init__(setting.pitchclass.semitone)
 
     @property
@@ -28,8 +28,8 @@ class Object(Coexistence, Base):
         return self._setting
 
     @property
-    def scheme(self):
-        return self._scheme
+    def schema(self):
+        return self._schema
 
     def __eq__(self, other: t.Self) -> bool:
         return super(object, self).__eq__(other)

@@ -20,7 +20,7 @@ class Note(BaseNote, Object):
         super().__init__(**kwargs)
 
     def is_notenumber(self, notenumber: t.Any) -> t.TypeGuard[int]:
-        return self.scheme.is_notenumber(notenumber)
+        return self.schema.is_notenumber(notenumber)
 
     def is_notename(self, value: t.Any) -> t.TypeGuard[str]:
         return

@@ -22,7 +22,7 @@ class PitchClass(BaseNote, Object):
         super().__init__(**kwargs)
 
         if self.is_pitchclass(identify):
-            pitchnames = self.scheme.convert_pitchclass_to_pitchnames(identify)
+            pitchnames = self.schema.convert_pitchclass_to_pitchnames(identify)
             self._pitchclass: int = identify
             self._pitchnames: tuple[str] = pitchnames
             self._pitchname: t.Optional[str] = None
@@ -30,8 +30,8 @@ class PitchClass(BaseNote, Object):
             self.scale = scale
 
         elif self.is_pitchname(identify):
-            pitchclass = self.scheme.convert_pitchname_to_picthclass(identify)
-            pitchnames = self.scheme.convert_pitchclass_to_pitchnames(pitchclass)
+            pitchclass = self.schema.convert_pitchname_to_picthclass(identify)
+            pitchnames = self.schema.convert_pitchclass_to_pitchnames(pitchclass)
             self._pitchclass: int = pitchclass
             self._pitchnames: tuple[str] = pitchnames
             self._pitchname: t.Optional[str] = identify
@@ -71,7 +71,7 @@ class PitchClass(BaseNote, Object):
             if (idx := index(scale.positions, pitchclass)) is None:
                 return
             acc, kacc = scale.accidentals[idx], scale.key.accsidentals[idx]
-            self._pitchname = self.scheme.convert_pitchclass_to_pitchname(
+            self._pitchname = self.schema.convert_pitchclass_to_pitchname(
                 self.pitchclass, acc + kacc
             )
             self._scale = scale
@@ -100,7 +100,7 @@ class PitchClass(BaseNote, Object):
         return "<NoteOctave: {}>".format(self.pitchname or str(self.pitchnames))
 
     def is_pitchname(self, pitchname: str) -> t.TypeGuard[str]:
-        return self.scheme.is_pitchname(pitchname)
+        return self.schema.is_pitchname(pitchname)
 
     def is_pitchclass(self, pitchclass: int) -> t.TypeGuard[int]:
-        return self.scheme.is_pitchclass(pitchclass)
+        return self.schema.is_pitchclass(pitchclass)
