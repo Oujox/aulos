@@ -15,9 +15,7 @@ if TYPE_CHECKING:
 class Schema(Coexistence, Base):
 
     def __init__(self, setting: Setting) -> None:
-        super(Schema, self).__init__(
-            semitone=setting.pitchclass.semitone, intervals=setting.pitchclass.intervals
-        )
+        super(Schema, self).__init__(intervals=setting.pitchclass.intervals)
         self._setting = setting
 
     def __eq__(self, other: t.Self) -> bool:
