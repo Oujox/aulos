@@ -5,6 +5,7 @@ from functools import cached_property
 
 from .._core import Object
 from .._core.context import inject
+from .._core.utils import diff
 from ._base import BaseNote
 
 
@@ -31,7 +32,18 @@ class Key(BaseNote, Object):
 
     @cached_property
     def accsidentals(self) -> tuple[int]:
-        return self.schema.generate_accidentals(self._name)
+        positions = []
+        r_symbol = self.schema.convert_pitchname_to_symbol(self.pitchname)
+        r_pitchclass = self.schema.convert_pitchname_to_picthclass(self.pitchname)
+
+        idx = self.schema.symbols.index(r_symbol)
+        symbols = self.schema.symbols[idx:] + self.schema.symbols[:idx]
+
+        for pos, symbol in zip(self.schema.positions, symbols):
+            n_pos = self.schema.convert_pitchname_to_picthclass(symbol)
+            a_pos = (r_pitchclass + pos) % self.schema.semitone
+            positions.append(diff(a_pos, n_pos, self.schema.semitone))
+        return positions
 
     def __eq__(self, other: int | BaseNote) -> bool:
         return self._pitchclass == int(other)

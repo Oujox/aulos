@@ -6,7 +6,6 @@ from typing import TYPE_CHECKING
 
 from .bases.base import Base
 from .coexistence import Coexistence
-from .utils import diff
 
 if TYPE_CHECKING:
     from .setting import Setting  # pragma: no cover
@@ -30,6 +29,10 @@ class Schema(Coexistence, Base):
     def __repr__(self) -> str:
         return "<Schema>"
 
+    """
+    PitchClass
+    """
+
     @property
     def semitone(self) -> int:
         return self._setting.pitchclass.semitone
@@ -42,6 +45,10 @@ class Schema(Coexistence, Base):
     def positions(self) -> tuple[int]:
         return self._setting.pitchclass.positions
 
+    @property
+    def symbols(self) -> tuple[str]:
+        return self._setting.pitchclass.symbols
+
     @cached_property
     def pitchnames(self) -> tuple[str]:
         return tuple(self._setting.pitchclass.name2class.keys())
@@ -49,26 +56,6 @@ class Schema(Coexistence, Base):
     @cached_property
     def pitchclasses(self) -> tuple[int]:
         return tuple(self._setting.pitchclass.class2name.keys())
-
-    def generate_accidentals(self, pitchname: str) -> tuple[int]:
-        if not self.is_pitchname(pitchname):
-            raise ValueError(f"Invalid notename: '{pitchname}'.")
-
-        positions = []
-        r_symbol = self.convert_pitchname_to_symbol(pitchname)
-        r_pitchclass = self.convert_pitchname_to_picthclass(pitchname)
-
-        idx = self._setting.pitchclass.symbols.index(r_symbol)
-        symbols = (
-            self._setting.pitchclass.symbols[idx:]
-            + self._setting.pitchclass.symbols[:idx]
-        )
-
-        for pos, symbol in zip(self._setting.pitchclass.positions, symbols):
-            n_pos = self.convert_pitchname_to_picthclass(symbol)
-            a_pos = (r_pitchclass + pos) % self.semitone
-            positions.append(diff(a_pos, n_pos, self.semitone))
-        return positions
 
     def count_accidental(self, pitchname: str) -> t.Optional[int]:
         if self.is_pitchname(pitchname):
