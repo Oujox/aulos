@@ -27,11 +27,11 @@ class Mode(BaseScale, Object):
         super().__init__(**kwargs)
         self._key = key
 
-    def __init_subclass__(cls, shift: int, scale: Scale) -> None:
-        cls._shift = -shift
+    def __init_subclass__(cls, scale: Scale, shift: int) -> None:
         cls._scale = scale
+        cls._shift = -shift
         cls._intervals = tuple(rotate(cls._scale.intervals, cls._shift))
-        return super().__init_subclass__(semitone=sum(cls._intervals))
+        return super().__init_subclass__(intervals=cls.intervals)
 
     @property
     def key(self) -> Key:

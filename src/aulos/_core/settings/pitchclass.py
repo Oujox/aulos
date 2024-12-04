@@ -3,26 +3,32 @@ from itertools import accumulate, chain
 
 
 @dataclass(frozen=True)
+class AccidentalSymbolSetting:
+    sharp: str
+    flat: str
+
+
+@dataclass(frozen=True)
 class AccidentalSetting:
     limit: int
-    upper_symbol: str
-    lower_symbol: str
+    symbol: AccidentalSymbolSetting
 
 
 @dataclass(frozen=True)
 class PitchClassSetting:
-    semitone: int
-    symbols: list[str]
-    intervals: list[int]
+    intervals: tuple[int]
+    symbols: tuple[str]
     accidental: AccidentalSetting
 
+    semitone: int = field(init=False)
     positions: tuple[int] = field(init=False)
     name2class: dict[str, int] = field(init=False)
     class2name: dict[int, tuple[str]] = field(init=False)
 
     def __post_init__(self):
+        object.__setattr__(self, "semitone", sum(self.intervals))
         object.__setattr__(
-            self, "positions", tuple(accumulate([0] + self.intervals[:-1]))
+            self, "positions", tuple(accumulate((0,) + self.intervals[:-1]))
         )
 
         accidental_no_sequence = create_symbol_sequence(self)
@@ -50,7 +56,7 @@ def create_upper_sequences(setting: PitchClassSetting) -> list[list[str]]:
     sequences = []
     for i in range(1, setting.accidental.limit + 1):
         sequence = create_symbol_sequence(
-            setting, suffix=setting.accidental.upper_symbol * i
+            setting, suffix=setting.accidental.symbol.sharp * i
         )
         for _ in range(i):
             sequence.insert(0, sequence.pop())
@@ -62,7 +68,7 @@ def create_lower_sequences(setting: PitchClassSetting) -> list[list[str]]:
     sequences = []
     for i in range(1, setting.accidental.limit + 1):
         sequence = create_symbol_sequence(
-            setting, suffix=setting.accidental.lower_symbol * i
+            setting, suffix=setting.accidental.symbol.flat * i
         )
         for _ in range(i):
             sequence.append(sequence.pop(0))

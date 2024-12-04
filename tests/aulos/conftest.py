@@ -1,63 +1,44 @@
 import pytest
-from dacite import from_dict
+from dacite import from_dict, Config as dacite_Config
 
 from src.aulos import Setting
 
 SETTING_DICT_FOR_HSYS12 = {
     "pitchclass": {
-        "semitone": 12,
-        "intervals": [2, 1, 2, 2, 1, 2, 2],
-        "symbols": ["A", "B", "C", "D", "E", "F", "G"],
-        "accidental": {"limit": 2, "upper_symbol": "#", "lower_symbol": "b"},
+        "intervals": (2, 1, 2, 2, 1, 2, 2),
+        "symbols": ("A", "B", "C", "D", "E", "F", "G"),
+        "accidental": {
+            "limit": 2,
+            "symbol": {"sharp": "#", "flat": "b", "nature": "n"},
+        },
     },
     "note": {
-        "min": 0,
-        "max": 128,
-        "presentations": [
-            {
-                "name": "scientific pitch notation",
-                "areas": "SPN",
-                "symbols": [
-                    "<N>-1",
-                    "<N>0",
-                    "<N>1",
-                    "<N>2",
-                    "<N>3",
-                    "<N>4",
-                    "<N>5",
-                    "<N>6",
-                    "<N>7",
-                    "<N>8",
-                    "<N>9",
-                ],
-                "reference": {"number": 69, "symbol": 6},
-            },
-            {
-                "name": "helmholtz pitch notation",
-                "areas": "HPN",
-                "symbols": [
-                    "<N>,,,",
-                    "<N>,,",
-                    "<N>,",
-                    "<N>",
-                    "<n>'",
-                    "<n>''",
-                    "<n>'''",
-                    "<n>''''",
-                    "<n>'''''",
-                    "<n>''''''",
-                    "<n>'''''''",
-                ],
-                "reference": {"number": 69, "symbol": 4},
-            },
-        ],
+        "notenumber": {"min": 0, "max": 128},
+        "presentation": {
+            "name": "scientific pitch notation",
+            "symbols": (
+                "<N>-1",
+                "<N>0",
+                "<N>1",
+                "<N>2",
+                "<N>3",
+                "<N>4",
+                "<N>5",
+                "<N>6",
+                "<N>7",
+                "<N>8",
+                "<N>9",
+            ),
+            "reference": {"number": 69, "symbol": "<N>4"},
+        },
+        "tuner": {"reference": {"hz": 440}},
     },
 }
 
 
 @pytest.fixture(params=[SETTING_DICT_FOR_HSYS12], scope="session")
 def setting(request) -> Setting:
-    return from_dict(Setting, request.param)
+    return from_dict(Setting, request.param, dacite_Config(check_types=False))
 
 
 @pytest.fixture(scope="module")

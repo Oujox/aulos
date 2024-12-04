@@ -25,8 +25,8 @@ class Scale(BaseScale, Object):
         self._key = key
 
     def __init_subclass__(cls, intervals: t.Iterable[int]) -> None:
-        cls._intervals = intervals
-        return super().__init_subclass__(semitone=sum(cls._intervals))
+        cls._intervals = tuple(intervals)
+        return super().__init_subclass__(intervals=cls.intervals)
 
     @property
     def key(self) -> Key:

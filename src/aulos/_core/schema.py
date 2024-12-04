@@ -60,10 +60,10 @@ class Schema(Coexistence, Base):
     def count_accidental(self, pitchname: str) -> t.Optional[int]:
         if self.is_pitchname(pitchname):
             count_acc_upper = pitchname.count(
-                self._setting.pitchclass.accidental.upper_symbol
+                self._setting.pitchclass.accidental.symbol.sharp
             )
             count_acc_lower = pitchname.count(
-                self._setting.pitchclass.accidental.lower_symbol
+                self._setting.pitchclass.accidental.symbol.flat
             )
             return count_acc_upper - count_acc_lower
         return None
@@ -100,8 +100,8 @@ class Schema(Coexistence, Base):
         if not self.is_pitchname(pitchname):
             raise ValueError(f"Invalid notename: '{pitchname}'.")
         return pitchname.replace(
-            self._setting.pitchclass.accidental.upper_symbol, ""
-        ).replace(self._setting.pitchclass.accidental.lower_symbol, "")
+            self._setting.pitchclass.accidental.symbol.sharp, ""
+        ).replace(self._setting.pitchclass.accidental.symbol.flat, "")
 
     def is_symbol(self, value: t.Any) -> t.TypeGuard[str]:
         return isinstance(value, str) and value in self._setting.pitchclass.symbols
