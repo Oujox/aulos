@@ -3,12 +3,13 @@ from __future__ import annotations
 import typing as t
 from functools import cached_property
 
-from .._core import Object
+from .._core import AulosObject
 from .._core.context import inject
+from .._core.utils import diff
 from ._base import BaseNote
 
 
-class Key(BaseNote, Object):
+class Key(BaseNote, AulosObject):
 
     @inject
     def __init__(self, name: str, **kwargs) -> None:
@@ -16,7 +17,7 @@ class Key(BaseNote, Object):
 
         if self.is_keyname(name):
             self._name = name
-            self._pitchclass = self.scheme.convert_pitchname_to_picthclass(name)
+            self._pitchclass = self.logic.convert_pitchname_to_picthclass(name)
 
         else:
             raise ValueError()
@@ -31,7 +32,18 @@ class Key(BaseNote, Object):
 
     @cached_property
     def accsidentals(self) -> tuple[int]:
-        return self.scheme.generate_accidentals(self._name)
+        positions = []
+        r_symbol = self.logic.convert_pitchname_to_symbol(self.pitchname)
+        r_pitchclass = self.logic.convert_pitchname_to_picthclass(self.pitchname)
+
+        idx = self.logic.symbols.index(r_symbol)
+        symbols = self.logic.symbols[idx:] + self.logic.symbols[:idx]
+
+        for pos, symbol in zip(self.logic.positions, symbols):
+            n_pos = self.logic.convert_pitchname_to_picthclass(symbol)
+            a_pos = (r_pitchclass + pos) % self.logic.semitone
+            positions.append(diff(a_pos, n_pos, self.logic.semitone))
+        return positions
 
     def __eq__(self, other: int | BaseNote) -> bool:
         return self._pitchclass == int(other)
@@ -49,4 +61,4 @@ class Key(BaseNote, Object):
         return "<Key: {}>".format(self._name)
 
     def is_keyname(self, value: t.Any) -> t.TypeGuard[str]:
-        return isinstance(value, str) and value in self.scheme.pitchnames
+        return isinstance(value, str) and value in self.logic.pitchnames

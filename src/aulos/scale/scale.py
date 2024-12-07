@@ -2,7 +2,7 @@ import typing as t
 from functools import cached_property
 from itertools import accumulate, compress
 
-from .._core import Object
+from .._core import AulosObject
 from .._core.context import inject
 from .._core.utils import classproperty, rotate
 from ..note import Key, PitchClass
@@ -10,7 +10,7 @@ from ._base import BaseScale
 from .processing.accidentals import accidentals
 
 
-class Scale(BaseScale, Object):
+class Scale(BaseScale, AulosObject):
 
     _intervals: t.ClassVar[tuple[int]]
 
@@ -25,8 +25,8 @@ class Scale(BaseScale, Object):
         self._key = key
 
     def __init_subclass__(cls, intervals: t.Iterable[int]) -> None:
-        cls._intervals = intervals
-        return super().__init_subclass__(semitone=sum(cls._intervals))
+        cls._intervals = tuple(intervals)
+        return super().__init_subclass__(intervals=cls.intervals)
 
     @property
     def key(self) -> Key:
@@ -49,7 +49,7 @@ class Scale(BaseScale, Object):
 
     @cached_property
     def accidentals(self) -> tuple[int]:
-        _accidentals = accidentals(self.scheme.intervals, self._intervals)
+        _accidentals = accidentals(self.logic.intervals, self._intervals)
         return tuple(compress(_accidentals, self.omits))
 
     @cached_property

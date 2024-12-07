@@ -3,7 +3,7 @@ from __future__ import annotations
 import typing as t
 from typing import TYPE_CHECKING
 
-from .._core import Object
+from .._core import AulosObject
 from .._core.context import inject
 from .._core.utils import index
 from ._base import BaseNote
@@ -13,7 +13,7 @@ if TYPE_CHECKING:
     from scale import Scale  # pragma: no cover
 
 
-class PitchClass(BaseNote, Object):
+class PitchClass(BaseNote, AulosObject):
 
     @inject
     def __init__(
@@ -22,7 +22,7 @@ class PitchClass(BaseNote, Object):
         super().__init__(**kwargs)
 
         if self.is_pitchclass(identify):
-            pitchnames = self.scheme.convert_pitchclass_to_pitchnames(identify)
+            pitchnames = self.logic.convert_pitchclass_to_pitchnames(identify)
             self._pitchclass: int = identify
             self._pitchnames: tuple[str] = pitchnames
             self._pitchname: t.Optional[str] = None
@@ -30,8 +30,8 @@ class PitchClass(BaseNote, Object):
             self.scale = scale
 
         elif self.is_pitchname(identify):
-            pitchclass = self.scheme.convert_pitchname_to_picthclass(identify)
-            pitchnames = self.scheme.convert_pitchclass_to_pitchnames(pitchclass)
+            pitchclass = self.logic.convert_pitchname_to_picthclass(identify)
+            pitchnames = self.logic.convert_pitchclass_to_pitchnames(pitchclass)
             self._pitchclass: int = pitchclass
             self._pitchnames: tuple[str] = pitchnames
             self._pitchname: t.Optional[str] = identify
@@ -67,11 +67,11 @@ class PitchClass(BaseNote, Object):
         from ..scale import Mode, Scale
 
         if isinstance(scale, (Scale, Mode)):
-            pitchclass = (self.pitchclass - scale.key.pitchclass) % self.semitone
+            pitchclass = (self.pitchclass - scale.key.pitchclass) % self.logic.semitone
             if (idx := index(scale.positions, pitchclass)) is None:
                 return
             acc, kacc = scale.accidentals[idx], scale.key.accsidentals[idx]
-            self._pitchname = self.scheme.convert_pitchclass_to_pitchname(
+            self._pitchname = self.logic.convert_pitchclass_to_pitchname(
                 self.pitchclass, acc + kacc
             )
             self._scale = scale
@@ -83,11 +83,11 @@ class PitchClass(BaseNote, Object):
         return not self.__eq__(other)
 
     def __add__(self, other: int | BaseNote) -> PitchClass:
-        pitchclass = (int(self) + int(other)) % self.semitone
+        pitchclass = (int(self) + int(other)) % self.logic.semitone
         return PitchClass(pitchclass, scale=self.scale, setting=self.setting)
 
     def __sub__(self, other: int | BaseNote) -> PitchClass:
-        pitchclass = (int(self) - int(other)) % self.semitone
+        pitchclass = (int(self) - int(other)) % self.logic.semitone
         return PitchClass(pitchclass, scale=self.scale, setting=self.setting)
 
     def __int__(self) -> int:
@@ -100,7 +100,7 @@ class PitchClass(BaseNote, Object):
         return "<NoteOctave: {}>".format(self.pitchname or str(self.pitchnames))
 
     def is_pitchname(self, pitchname: str) -> t.TypeGuard[str]:
-        return self.scheme.is_pitchname(pitchname)
+        return self.logic.is_pitchname(pitchname)
 
     def is_pitchclass(self, pitchclass: int) -> t.TypeGuard[int]:
-        return self.scheme.is_pitchclass(pitchclass)
+        return self.logic.is_pitchclass(pitchclass)

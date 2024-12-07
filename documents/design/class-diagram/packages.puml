@@ -34,6 +34,8 @@ package "aulos._core.utils.calculation" as aulos._core.utils.calculation {
 }
 package "aulos._core.utils.decorators" as aulos._core.utils.decorators {
 }
+package "aulos._core.utils.dict" as aulos._core.utils.dict {
+}
 package "aulos._errors" as aulos._errors {
 }
 package "aulos._version" as aulos._version {
@@ -82,12 +84,11 @@ aulos._core.object --> aulos._core.coexistence
 aulos._core.object --> aulos._core.schema
 aulos._core.object --> aulos._core.setting
 aulos._core.schema --> aulos._core.coexistence
-aulos._core.schema --> aulos._core.utils
-aulos._core.setting --> aulos._core.schema
 aulos._core.shared --> aulos._core.shared.intervals
 aulos._core.utils --> aulos._core.utils.array
 aulos._core.utils --> aulos._core.utils.calculation
 aulos._core.utils --> aulos._core.utils.decorators
+aulos._core.utils --> aulos._core.utils.dict
 aulos.note --> aulos.note.key
 aulos.note --> aulos.note.pitchclass
 aulos.note.key --> aulos.note._base

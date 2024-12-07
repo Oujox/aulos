@@ -6,17 +6,16 @@ from typing import TYPE_CHECKING
 
 from .bases.base import Base
 from .coexistence import Coexistence
-from .utils import diff
 
 if TYPE_CHECKING:
     from .setting import Setting  # pragma: no cover
 
 
-class Schema(Coexistence, Base):
+class Logic(Coexistence, Base):
 
     def __init__(self, setting: Setting) -> None:
+        super(Logic, self).__init__(intervals=setting.pitchclass.intervals)
         self._setting = setting
-        super().__init__(semitone=setting.pitchclass.semitone)
 
     def __eq__(self, other: t.Self) -> bool:
         return self._setting == other._setting
@@ -30,6 +29,14 @@ class Schema(Coexistence, Base):
     def __repr__(self) -> str:
         return "<Schema>"
 
+    """
+    PitchClass
+    """
+
+    @property
+    def semitone(self) -> int:
+        return self._setting.pitchclass.semitone
+
     @property
     def intervals(self) -> tuple[int]:
         return self._setting.pitchclass.intervals
@@ -37,6 +44,10 @@ class Schema(Coexistence, Base):
     @property
     def positions(self) -> tuple[int]:
         return self._setting.pitchclass.positions
+
+    @property
+    def symbols(self) -> tuple[str]:
+        return self._setting.pitchclass.symbols
 
     @cached_property
     def pitchnames(self) -> tuple[str]:
@@ -46,33 +57,13 @@ class Schema(Coexistence, Base):
     def pitchclasses(self) -> tuple[int]:
         return tuple(self._setting.pitchclass.class2name.keys())
 
-    def generate_accidentals(self, pitchname: str) -> tuple[int]:
-        if not self.is_pitchname(pitchname):
-            raise ValueError(f"Invalid notename: '{pitchname}'.")
-
-        positions = []
-        r_symbol = self.convert_pitchname_to_symbol(pitchname)
-        r_pitchclass = self.convert_pitchname_to_picthclass(pitchname)
-
-        idx = self._setting.pitchclass.symbols.index(r_symbol)
-        symbols = (
-            self._setting.pitchclass.symbols[idx:]
-            + self._setting.pitchclass.symbols[:idx]
-        )
-
-        for pos, symbol in zip(self._setting.pitchclass.positions, symbols):
-            n_pos = self.convert_pitchname_to_picthclass(symbol)
-            a_pos = (r_pitchclass + pos) % self.semitone
-            positions.append(diff(a_pos, n_pos, self.semitone))
-        return positions
-
     def count_accidental(self, pitchname: str) -> t.Optional[int]:
         if self.is_pitchname(pitchname):
             count_acc_upper = pitchname.count(
-                self._setting.pitchclass.accidental.upper_symbol
+                self._setting.pitchclass.accidental.symbol.sharp
             )
             count_acc_lower = pitchname.count(
-                self._setting.pitchclass.accidental.lower_symbol
+                self._setting.pitchclass.accidental.symbol.flat
             )
             return count_acc_upper - count_acc_lower
         return None
@@ -109,8 +100,8 @@ class Schema(Coexistence, Base):
         if not self.is_pitchname(pitchname):
             raise ValueError(f"Invalid notename: '{pitchname}'.")
         return pitchname.replace(
-            self._setting.pitchclass.accidental.upper_symbol, ""
-        ).replace(self._setting.pitchclass.accidental.lower_symbol, "")
+            self._setting.pitchclass.accidental.symbol.sharp, ""
+        ).replace(self._setting.pitchclass.accidental.symbol.flat, "")
 
     def is_symbol(self, value: t.Any) -> t.TypeGuard[str]:
         return isinstance(value, str) and value in self._setting.pitchclass.symbols

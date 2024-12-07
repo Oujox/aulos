@@ -12,7 +12,7 @@ def inject[**P, R](func: t.Callable[P, R]) -> t.Callable[P, R]:
         from ...utils import Context
 
         if "setting" not in kwargs.keys():
-            setting = Context.internal.get(None)
+            setting = Context.setting()
             return func(*args, setting=setting, **kwargs)
         return func(*args, **kwargs)
 
