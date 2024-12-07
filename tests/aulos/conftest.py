@@ -1,5 +1,4 @@
 import pytest
-from dacite import from_dict, Config as dacite_Config
 
 from src.aulos import Setting
 
@@ -38,7 +37,7 @@ SETTING_DICT_FOR_HSYS12 = {
 
 @pytest.fixture(params=[SETTING_DICT_FOR_HSYS12], scope="session")
 def setting(request) -> Setting:
-    return from_dict(Setting, request.param, dacite_Config(check_types=False))
+    return Setting.from_dict(request.param)
 
 
 @pytest.fixture(scope="module")

@@ -1,6 +1,5 @@
 import typing as t
-from dataclasses import is_dataclass, fields, dataclass
-from functools import update_wrapper
+from dataclasses import is_dataclass, fields
 
 
 def from_dict[T](cls: type[T], value: dict[str, t.Any]) -> T:
@@ -28,24 +27,3 @@ def from_dict[T](cls: type[T], value: dict[str, t.Any]) -> T:
                 init_dict[k] = v
 
     return cls(**init_dict)
-
-
-def initializer(cls):
-
-    class _:
-        def aiueo(self) -> int: ...
-
-    setattr(cls, from_dict.__class__.__name__, from_dict)
-    update_wrapper(from_dict, cls)
-    return cls
-
-
-class _:
-    def aiueo(self) -> int: ...
-
-
-@initializer
-class A: ...
-
-
-A()
