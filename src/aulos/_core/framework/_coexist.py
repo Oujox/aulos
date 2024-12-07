@@ -2,9 +2,9 @@ import typing as t
 from functools import wraps
 
 
-def inject[**P, R](func: t.Callable[P, R]) -> t.Callable[P, R]:
-    """設定ファイルを依存注入
-    * __init__, classmethod での使用を想定
+def coexist[**P, R](func: t.Callable[P, R]) -> t.Callable[P, R]:
+    """オブジェクトの共存性チェックを有効化
+    * インスタンスメソッドでの使用を想定
     """
 
     @wraps(func)

@@ -1,36 +1,4 @@
-import typing as t
-from pathlib import Path
-from contextlib import ContextDecorator
-from contextvars import ContextVar
-
-from .._core import AulosObject, Setting
+from .._core.framework import Context
 
 
-@t.final
-class Context(ContextDecorator, AulosObject):
-
-    internal: t.Final[ContextVar[Setting]] = ContextVar("internal")
-
-    def __init__(self, setting: Setting) -> None:
-        super().__init__(setting)
-        self._token = self.internal.set(setting)
-
-    def __enter__(self) -> t.Self:
-        return self
-
-    def __exit__(self, *tracebacks):
-        self.internal.reset(self._token)
-
-    @classmethod
-    def setting(self) -> t.Optional[Setting]:
-        return self.internal.get(None)
-
-    @classmethod
-    def from_toml(cls, path: Path) -> t.Self:
-        setting = Setting.from_toml(path)
-        return cls(setting)
-
-    @classmethod
-    def from_json(cls, path: Path) -> t.Self:
-        setting = Setting.from_json(path)
-        return cls(setting)
+class Aulos(Context): ...

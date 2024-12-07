@@ -6,19 +6,23 @@ package "aulos.__main__" as aulos.__main__ {
 }
 package "aulos._core" as aulos._core {
 }
-package "aulos._core.coexistence" as aulos._core.coexistence {
+package "aulos._core.framework" as aulos._core.framework {
 }
-package "aulos._core.context" as aulos._core.context {
+package "aulos._core.framework._coexist" as aulos._core.framework._coexist {
 }
-package "aulos._core.context._inject" as aulos._core.context._inject {
+package "aulos._core.framework._inject" as aulos._core.framework._inject {
+}
+package "aulos._core.framework.coexistence" as aulos._core.framework.coexistence {
+}
+package "aulos._core.framework.context" as aulos._core.framework.context {
 }
 package "aulos._core.interfaces" as aulos._core.interfaces {
 }
 package "aulos._core.interfaces.ring" as aulos._core.interfaces.ring {
 }
-package "aulos._core.object" as aulos._core.object {
+package "aulos._core.logic" as aulos._core.logic {
 }
-package "aulos._core.schema" as aulos._core.schema {
+package "aulos._core.object" as aulos._core.object {
 }
 package "aulos._core.setting" as aulos._core.setting {
 }
@@ -32,9 +36,9 @@ package "aulos._core.utils.array" as aulos._core.utils.array {
 }
 package "aulos._core.utils.calculation" as aulos._core.utils.calculation {
 }
-package "aulos._core.utils.decorators" as aulos._core.utils.decorators {
+package "aulos._core.utils.dataclass" as aulos._core.utils.dataclass {
 }
-package "aulos._core.utils.dict" as aulos._core.utils.dict {
+package "aulos._core.utils.decorators" as aulos._core.utils.decorators {
 }
 package "aulos._errors" as aulos._errors {
 }
@@ -75,20 +79,23 @@ package "aulos.utils.context" as aulos.utils.context {
 aulos --> aulos._core
 aulos --> aulos._version
 aulos --> aulos.note
-aulos --> aulos.utils
 aulos._core --> aulos._core.object
 aulos._core --> aulos._core.setting
-aulos._core.context --> aulos._core.context._inject
+aulos._core.framework --> aulos._core.framework._coexist
+aulos._core.framework --> aulos._core.framework._inject
+aulos._core.framework --> aulos._core.framework.coexistence
+aulos._core.framework --> aulos._core.framework.context
+aulos._core.framework._inject --> aulos._core.framework.context
 aulos._core.interfaces --> aulos._core.interfaces.ring
-aulos._core.object --> aulos._core.coexistence
-aulos._core.object --> aulos._core.schema
+aulos._core.object --> aulos._core.framework
+aulos._core.object --> aulos._core.logic
 aulos._core.object --> aulos._core.setting
-aulos._core.schema --> aulos._core.coexistence
+aulos._core.setting --> aulos._core.utils
 aulos._core.shared --> aulos._core.shared.intervals
 aulos._core.utils --> aulos._core.utils.array
 aulos._core.utils --> aulos._core.utils.calculation
+aulos._core.utils --> aulos._core.utils.dataclass
 aulos._core.utils --> aulos._core.utils.decorators
-aulos._core.utils --> aulos._core.utils.dict
 aulos.note --> aulos.note.key
 aulos.note --> aulos.note.pitchclass
 aulos.note.key --> aulos.note._base
@@ -102,5 +109,5 @@ aulos.scale.scale --> aulos.scale._base
 aulos.tuner --> aulos.tuner.tuner
 aulos.tuner.tuner --> aulos.tuner._base
 aulos.utils --> aulos.utils.context
-aulos._core.schema ..> aulos._core.setting
+aulos._core.logic ..> aulos._core.setting
 @enduml

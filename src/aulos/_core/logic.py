@@ -4,17 +4,13 @@ import typing as t
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from .bases.base import Base
-from .coexistence import Coexistence
-
 if TYPE_CHECKING:
     from .setting import Setting  # pragma: no cover
 
 
-class Logic(Coexistence, Base):
+class AulosLogic:
 
     def __init__(self, setting: Setting) -> None:
-        super(Logic, self).__init__(intervals=setting.pitchclass.intervals)
         self._setting = setting
 
     def __eq__(self, other: t.Self) -> bool:

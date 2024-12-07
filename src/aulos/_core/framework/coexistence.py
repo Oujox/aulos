@@ -72,7 +72,7 @@ class Coexistence:
         )
         return super(Coexistence, cls).__init_subclass__()
 
-    def canCoexist(self, other: t.Self) -> bool:
+    def can_coexist(self, other: t.Self) -> bool:
         return (self._t_coexistence or self._i_coexistence) == (
             other._t_coexistence or other._i_coexistence
         )

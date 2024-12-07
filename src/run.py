@@ -3,12 +3,12 @@ import pathlib
 
 from aulos import *
 from aulos.scale import *
+from aulos.utils import *
 
 path = pathlib.Path(os.path.dirname(__file__)) / "setting.toml"
+setting = Setting.from_toml(path)
 
-with Context.from_toml(path) as c:
+with Aulos(setting=setting):
     from pprint import pprint
 
-    for k in c.logic.pitchnames:
-        if len(k) <= 2:
-            pprint(Locrian(Key("Fb")).diatonics)
+    pprint(Locrian(Key("Fb")).diatonics)
