@@ -27,8 +27,10 @@ class Context(ContextDecorator, AulosObject):
 
     @classmethod
     def from_toml(cls, path: Path) -> t.Self:
-        return Setting.from_toml(path)
+        setting = Setting.from_toml(path)
+        return cls(setting)
 
     @classmethod
     def from_json(cls, path: Path) -> t.Self:
-        return Setting.from_json(path)
+        setting = Setting.from_json(path)
+        return cls(setting)
