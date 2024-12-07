@@ -1,7 +1,7 @@
 from .array import index, rotate, search
 from .calculation import diff
 from .decorators import classproperty
-from .dict import convert_lists_to_tuples
+from .dataclass import from_dict
 
 __all__ = [
     "search",
@@ -9,5 +9,5 @@ __all__ = [
     "rotate",
     "diff",
     "classproperty",
-    "convert_lists_to_tuples",
+    "from_dict",
 ]

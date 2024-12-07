@@ -11,7 +11,7 @@ class "BaseTuner" as aulos.tuner._base.BaseTuner {
   {abstract}hz(note_number: int) -> float
 }
 class "Coexistence" as aulos._core.coexistence.Coexistence {
-  semitone
+  canCoexist(other: t.Self) -> bool
 }
 class "Context" as aulos.utils.context.Context {
   internal : t.Final[ContextVar[Setting]]
@@ -86,13 +86,14 @@ class "Schema" as aulos._core.schema.Schema {
   pitchclasses
   pitchnames
   positions
+  semitone
+  symbols
   convert_pitchclass_to_pitchname(pitchclass: int, accidental: int) -> t.Optional[str]
   convert_pitchclass_to_pitchnames(pitchclass: int) -> tuple[t.Optional[str]]
   convert_pitchclass_to_symbol(pitchclass: int) -> t.Optional[str]
   convert_pitchname_to_picthclass(pitchname: str) -> int
   convert_pitchname_to_symbol(pitchname: str)
   count_accidental(pitchname: str) -> t.Optional[int]
-  generate_accidentals(pitchname: str) -> tuple[int]
   is_pitchclass(value: t.Any) -> t.TypeGuard[int]
   is_pitchname(value: t.Any) -> t.TypeGuard[str]
   is_symbol(value: t.Any) -> t.TypeGuard[str]
