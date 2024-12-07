@@ -9,6 +9,6 @@ path = pathlib.Path(os.path.dirname(__file__)) / "setting.toml"
 with Context.from_toml(path) as c:
     from pprint import pprint
 
-    for k in c.schema.pitchnames:
+    for k in c.logic.pitchnames:
         if len(k) <= 2:
             pprint(Locrian(Key("Fb")).diatonics)

@@ -54,7 +54,7 @@ class Mode(BaseScale, AulosObject):
 
     @cached_property
     def accidentals(self) -> tuple[int]:
-        _accidentals = accidentals(self.schema.intervals, self._intervals)
+        _accidentals = accidentals(self.logic.intervals, self._intervals)
         return tuple(compress(_accidentals, self.omits))
 
     @cached_property

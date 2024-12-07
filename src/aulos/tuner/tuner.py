@@ -48,5 +48,5 @@ class EqualTuner(BaseTuner, AulosObject):
 
     def hz(self, note_number: int) -> float:
         return self.root * 2 ** (
-            (note_number - self.setting.notenumber.origin) / self.schema.semitone
+            (note_number - self.setting.notenumber.origin) / self.logic.semitone
         )

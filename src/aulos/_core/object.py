@@ -2,7 +2,7 @@ import typing as t
 
 from .bases.base import Base
 from .coexistence import Coexistence
-from .schema import Schema
+from .logic import Logic
 from .setting import Setting
 
 
@@ -21,15 +21,15 @@ class AulosObject(Coexistence, Base):
             )
         super(AulosObject, self).__init__(intervals=setting.pitchclass.intervals)
         self._setting = setting
-        self._schema = Schema(setting)
+        self._logic = Logic(setting)
 
     @property
     def setting(self):
         return self._setting
 
     @property
-    def schema(self):
-        return self._schema
+    def logic(self):
+        return self._logic
 
     def __eq__(self, other: t.Self) -> bool:
         return super(object, self).__eq__(other)
@@ -39,10 +39,10 @@ class AulosObject(Coexistence, Base):
 
     def __str__(self) -> str:
         return "<Object: semitone={}, setting={}>".format(
-            self.schema.semitone, self._setting
+            self.logic.semitone, self._setting
         )
 
     def __repr__(self) -> str:
         return "<Object: semitone={}, setting={}>".format(
-            self.schema.semitone, self._setting
+            self.logic.semitone, self._setting
         )
