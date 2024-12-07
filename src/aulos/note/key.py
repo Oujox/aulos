@@ -4,7 +4,7 @@ import typing as t
 from functools import cached_property
 
 from .._core import AulosObject
-from .._core.context import inject
+from .._core.framework import inject
 from .._core.utils import diff
 from ._base import BaseNote
 

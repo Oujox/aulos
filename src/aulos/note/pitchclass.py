@@ -4,7 +4,7 @@ import typing as t
 from typing import TYPE_CHECKING
 
 from .._core import AulosObject
-from .._core.context import inject
+from .._core.framework import inject
 from .._core.utils import index
 from ._base import BaseNote
 

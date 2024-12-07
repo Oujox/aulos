@@ -1,12 +1,11 @@
 import typing as t
 
-from .bases.base import Base
-from .coexistence import Coexistence
-from .logic import Logic
+from .framework import Coexistence
+from .logic import AulosLogic
 from .setting import Setting
 
 
-class AulosObject(Coexistence, Base):
+class AulosObject(Coexistence):
 
     def __new__(cls, *args, **kwargs) -> t.Self:
         if cls is AulosObject:
@@ -21,7 +20,7 @@ class AulosObject(Coexistence, Base):
             )
         super(AulosObject, self).__init__(intervals=setting.pitchclass.intervals)
         self._setting = setting
-        self._logic = Logic(setting)
+        self._logic = AulosLogic(setting)
 
     @property
     def setting(self):

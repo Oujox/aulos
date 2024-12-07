@@ -3,13 +3,10 @@ from __future__ import annotations
 import typing as t
 from collections import deque
 
-from ..coexistence import Coexistence
 
-
-class Intervals(t.Sequence, Coexistence):
+class Intervals(t.Sequence):
 
     def __init__(self, iterable: t.Iterable[int]) -> None:
-        super().__init__(semitone=len(iterable))
         self._maxlen = len(iterable)
         self._intervals = deque(iterable, len(iterable))
 
