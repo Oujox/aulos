@@ -6,10 +6,10 @@ from .schema import Schema
 from .setting import Setting
 
 
-class Object(Coexistence, Base):
+class AulosObject(Coexistence, Base):
 
     def __new__(cls, *args, **kwargs) -> t.Self:
-        if cls is Object:
+        if cls is AulosObject:
             raise TypeError("Object cannot be instantiated directly.")
         return super().__new__(cls)
 
@@ -19,7 +19,7 @@ class Object(Coexistence, Base):
                 "Initialization error: 'setting' argument is missing. "
                 "Please provide a valid setting object."
             )
-        super(Object, self).__init__(intervals=setting.pitchclass.intervals)
+        super(AulosObject, self).__init__(intervals=setting.pitchclass.intervals)
         self._setting = setting
         self._schema = Schema(setting)
 

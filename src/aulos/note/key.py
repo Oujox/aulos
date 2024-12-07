@@ -3,13 +3,13 @@ from __future__ import annotations
 import typing as t
 from functools import cached_property
 
-from .._core import Object
+from .._core import AulosObject
 from .._core.context import inject
 from .._core.utils import diff
 from ._base import BaseNote
 
 
-class Key(BaseNote, Object):
+class Key(BaseNote, AulosObject):
 
     @inject
     def __init__(self, name: str, **kwargs) -> None:

@@ -6,8 +6,9 @@
 # utils
 # interfaces
 from . import context, interfaces, utils
+
 # implementation
-from .object import Object
+from .object import AulosObject
 from .setting import Setting
 
-__all__ = ["Object", "Setting", "interfaces", "context", "utils"]
+__all__ = ["AulosObject", "Setting", "interfaces", "context", "utils"]

@@ -5,12 +5,12 @@ from pathlib import Path
 from contextlib import ContextDecorator
 from contextvars import ContextVar
 
-from .._core import Object, Setting
+from .._core import AulosObject, Setting
 from .._core.utils import from_dict
 
 
 @t.final
-class Context(ContextDecorator, Object):
+class Context(ContextDecorator, AulosObject):
 
     internal: t.Final[ContextVar[Setting]] = ContextVar("internal")
 
