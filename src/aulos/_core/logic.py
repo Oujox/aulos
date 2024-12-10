@@ -31,7 +31,7 @@ class AulosLogic:
 
     @property
     def semitone(self) -> int:
-        return self._setting.pitchclass.semitone
+        return self._setting.pitchclass.derive.semitone
 
     @property
     def intervals(self) -> tuple[int]:
@@ -39,7 +39,7 @@ class AulosLogic:
 
     @property
     def positions(self) -> tuple[int]:
-        return self._setting.pitchclass.positions
+        return self._setting.pitchclass.derive.positions
 
     @property
     def symbols(self) -> tuple[str]:
@@ -47,11 +47,11 @@ class AulosLogic:
 
     @cached_property
     def pitchnames(self) -> tuple[str]:
-        return tuple(self._setting.pitchclass.name2class.keys())
+        return tuple(self._setting.pitchclass.derive.name2class.keys())
 
     @cached_property
     def pitchclasses(self) -> tuple[int]:
-        return tuple(self._setting.pitchclass.class2name.keys())
+        return tuple(self._setting.pitchclass.derive.class2name.keys())
 
     def count_accidental(self, pitchname: str) -> t.Optional[int]:
         if self.is_pitchname(pitchname):
@@ -85,12 +85,12 @@ class AulosLogic:
     ) -> tuple[t.Optional[str]]:
         if not self.is_pitchclass(pitchclass):
             raise ValueError(f"Invalid pitchclass: '{pitchclass}'.")
-        return self._setting.pitchclass.class2name[pitchclass]
+        return self._setting.pitchclass.derive.class2name[pitchclass]
 
     def convert_pitchname_to_picthclass(self, pitchname: str) -> int:
         if not self.is_pitchname(pitchname):
             raise ValueError(f"Invalid notename: '{pitchname}'.")
-        return self._setting.pitchclass.name2class[pitchname]
+        return self._setting.pitchclass.derive.name2class[pitchname]
 
     def convert_pitchname_to_symbol(self, pitchname: str):
         if not self.is_pitchname(pitchname):
