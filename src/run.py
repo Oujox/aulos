@@ -8,7 +8,8 @@ from aulos.utils import *
 path = pathlib.Path(os.path.dirname(__file__)) / "setting.toml"
 setting = Setting.from_toml(path)
 
-with Aulos(setting=setting):
+with Aulos(setting=setting) as a:
     from pprint import pprint
 
-    pprint(Locrian(Key("Fb")).diatonics)
+    print(a.internal.get().get("setting").note.derive.name2number)
+    pprint(Major(Key("C")).diatonics)

@@ -97,7 +97,7 @@ class PitchClass(BaseNote, AulosObject):
         return self.pitchname or ""
 
     def __repr__(self) -> str:
-        return "<NoteOctave: {}>".format(self.pitchname or str(self.pitchnames))
+        return "<PitchClass: {}>".format(self.pitchname or str(self.pitchnames))
 
     def is_pitchname(self, pitchname: str) -> t.TypeGuard[str]:
         return self.logic.is_pitchname(pitchname)

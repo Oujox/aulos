@@ -15,7 +15,7 @@ class PitchClassSettingDerive:
     semitone: int
     positions: tuple[int]
     name2class: dict[str, int]
-    class2name: dict[int, tuple[str]]
+    class2name: dict[int, tuple[str | None]]
 
     def __init__(self, setting: Setting):
         object.__setattr__(self, "semitone", sum(setting.pitchclass.intervals))
