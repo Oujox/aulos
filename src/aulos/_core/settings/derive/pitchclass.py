@@ -1,12 +1,11 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
 from dataclasses import dataclass
 from itertools import accumulate, chain
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from ...setting import Setting
-    from ..pitchclass import PitchClassSetting
+    from ...setting import Setting  # pragma: no cover
 
 
 @dataclass(frozen=True, init=False)
@@ -25,9 +24,9 @@ class PitchClassSettingDerive:
             tuple(accumulate((0,) + setting.pitchclass.intervals[:-1])),
         )
 
-        accidental_no_sequence = self._create_symbol_sequence(setting.pitchclass)
-        accidental_upper_sequences = self._create_upper_sequences(setting.pitchclass)
-        accidental_lower_sequences = self._create_lower_sequences(setting.pitchclass)
+        accidental_no_sequence = self._create_symbol_sequence(setting)
+        accidental_upper_sequences = self._create_upper_sequences(setting)
+        accidental_lower_sequences = self._create_lower_sequences(setting)
         accidental_lower_sequences.reverse()
         accidental_sequences = tuple(
             zip(
@@ -45,22 +44,22 @@ class PitchClassSettingDerive:
         object.__setattr__(self, "name2class", dict(chain.from_iterable(name2class)))
         object.__setattr__(self, "class2name", dict(class2name))
 
-    def _create_upper_sequences(self, setting: PitchClassSetting) -> list[list[str]]:
+    def _create_upper_sequences(self, setting: Setting) -> list[list[str]]:
         sequences = []
-        for i in range(1, setting.accidental.limit + 1):
+        for i in range(1, setting.pitchclass.accidental.limit + 1):
             sequence = self._create_symbol_sequence(
-                setting, suffix=setting.accidental.symbol.sharp * i
+                setting, suffix=setting.pitchclass.accidental.symbol.sharp * i
             )
             for _ in range(i):
                 sequence.insert(0, sequence.pop())
             sequences.append(sequence)
         return sequences
 
-    def _create_lower_sequences(self, setting: PitchClassSetting) -> list[list[str]]:
+    def _create_lower_sequences(self, setting: Setting) -> list[list[str]]:
         sequences = []
-        for i in range(1, setting.accidental.limit + 1):
+        for i in range(1, setting.pitchclass.accidental.limit + 1):
             sequence = self._create_symbol_sequence(
-                setting, suffix=setting.accidental.symbol.flat * i
+                setting, suffix=setting.pitchclass.accidental.symbol.flat * i
             )
             for _ in range(i):
                 sequence.append(sequence.pop(0))
@@ -68,13 +67,13 @@ class PitchClassSettingDerive:
         return sequences
 
     def _create_symbol_sequence(
-        self, setting: PitchClassSetting, *, prefix: str = "", suffix: str = ""
+        self, setting: Setting, *, prefix: str = "", suffix: str = ""
     ) -> list[str]:
         sequence = []
         for deg in range(self.semitone):
             if deg in self.positions:
                 index = self.positions.index(deg)
-                sequence.append(prefix + setting.symbols[index] + suffix)
+                sequence.append(prefix + setting.pitchclass.symbols[index] + suffix)
             else:
                 sequence.append(None)
         return sequence

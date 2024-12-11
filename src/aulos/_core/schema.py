@@ -8,7 +8,7 @@ if TYPE_CHECKING:
     from .setting import Setting  # pragma: no cover
 
 
-class AulosLogic:
+class Schema:
 
     def __init__(self, setting: Setting) -> None:
         self._setting = setting
@@ -76,7 +76,7 @@ class AulosLogic:
     ) -> t.Optional[str]:
         if not self.is_pitchclass(pitchclass):
             raise ValueError(f"Invalid pitchclass: '{pitchclass}'.")
-        return self.convert_pitchclass_to_pitchnames(pitchclass)[
+        return self._setting.pitchclass.derive.class2name[pitchclass][
             self._setting.pitchclass.accidental.limit + accidental
         ]
 
@@ -89,12 +89,12 @@ class AulosLogic:
 
     def convert_pitchname_to_picthclass(self, pitchname: str) -> int:
         if not self.is_pitchname(pitchname):
-            raise ValueError(f"Invalid notename: '{pitchname}'.")
+            raise ValueError(f"Invalid pitchname: '{pitchname}'.")
         return self._setting.pitchclass.derive.name2class[pitchname]
 
     def convert_pitchname_to_symbol(self, pitchname: str):
         if not self.is_pitchname(pitchname):
-            raise ValueError(f"Invalid notename: '{pitchname}'.")
+            raise ValueError(f"Invalid pitchname: '{pitchname}'.")
         return pitchname.replace(
             self._setting.pitchclass.accidental.symbol.sharp, ""
         ).replace(self._setting.pitchclass.accidental.symbol.flat, "")
@@ -106,4 +106,83 @@ class AulosLogic:
         return isinstance(value, str) and value in self.pitchnames
 
     def is_pitchclass(self, value: t.Any) -> t.TypeGuard[int]:
-        return isinstance(value, int) and 0 <= value < self.semitone
+        return isinstance(value, int) and value in self.pitchclasses
+
+    """
+    Note
+    """
+
+    @cached_property
+    def notenames(self) -> tuple[str]:
+        return tuple(self._setting.note.derive.name2number.keys())
+
+    @cached_property
+    def notenumbers(self) -> tuple[int]:
+        return tuple(self._setting.note.derive.number2name.keys())
+
+    def convert_notenumber_to_notename(
+        self, notenumber: int, accidental: int
+    ) -> t.Optional[str]:
+        if not self.is_notenumber(notenumber):
+            raise ValueError(f"Invalid notenumber: '{notenumber}'.")
+        return self._setting.note.derive.number2name[notenumber][
+            self._setting.pitchclass.accidental.limit + accidental
+        ]
+
+    def convert_notenumber_to_notenames(
+        self, notenumber: int
+    ) -> tuple[t.Optional[str]]:
+        if not self.is_notenumber(notenumber):
+            raise ValueError(f"Invalid notenumber: '{notenumber}'.")
+        return self._setting.note.derive.number2name[notenumber]
+
+    def convert_notename_to_notenumber(self, notename: str) -> int:
+        if not self.is_notename(notename):
+            raise ValueError(f"Invalid notename: '{notename}'.")
+        return self._setting.note.derive.name2number[notename]
+
+    def is_notename(self, value: t.Any) -> t.TypeGuard[str]:
+        return isinstance(value, str) and value in self.notenames
+
+    def is_notenumber(self, value: t.Any) -> t.TypeGuard[int]:
+        return isinstance(value, int) and value in self.notenumbers
+
+    """
+    Extension
+    """
+
+    def convert_notenumber_to_pitchclass(self, notenumber: int) -> int:
+        if not self.is_notenumber(notenumber):
+            raise ValueError(f"Invalid notenumber: '{notenumber}'.")
+        return notenumber % self.semitone
+
+    def convert_pitchclass_to_notenumber(self, pitchclass: int, octnumber: int) -> int:
+        if not self.is_pitchclass(pitchclass):
+            raise ValueError(f"Invalid pitchclass: '{pitchclass}'.")
+        return pitchclass + (self.semitone * octnumber)
+
+    def convert_notename_to_pitchname(self, notename: str) -> str:
+        if not self.is_notename(notename):
+            raise ValueError(f"Invalid notename: '{notename}'.")
+        notenumber = self.convert_notename_to_notenumber(notename)
+        for pitchname in self.convert_notenumber_to_notenames(notenumber):
+            if pitchname is not None and notename.find(pitchname) > 0:
+                return pitchname
+        raise ValueError("Not Reachable.")
+
+    def convert_pitchname_to_notename(self, pitchname: str, octnumber: int) -> str:
+        if not self.is_pitchname(pitchname):
+            raise ValueError(f"Invalid pitchname: '{pitchname}'.")
+        notesymbol = self._setting.note.presentation.symbols[octnumber]
+        return create_notename_from_notesymbol(pitchname, notesymbol)
+
+
+def create_notename_from_notesymbol(pitchname: str, symbol: str):
+    # <N>
+    if symbol.find("<N>") >= 0:
+        return symbol.replace("<N>", pitchname, 1)
+    # <n>
+    elif symbol.find("<n>") >= 0:
+        return symbol.replace("<n>", pitchname, 1)
+    # Not Reachable
+    raise ValueError()

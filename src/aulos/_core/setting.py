@@ -1,13 +1,13 @@
-import typing as t
 import json
 import tomllib
-from pathlib import Path
+import typing as t
 from dataclasses import dataclass
+from pathlib import Path
 
-from .settings.note import NoteSetting
-from .settings.pitchclass import PitchClassSetting
 from .settings.derive.note import NoteSettingDerive
 from .settings.derive.pitchclass import PitchClassSettingDerive
+from .settings.note import NoteSetting
+from .settings.pitchclass import PitchClassSetting
 from .utils import from_dict
 
 

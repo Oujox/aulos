@@ -100,6 +100,6 @@ def test_PitchClass_dunder_int(setting, data_pitchclass):
 
 def test_PitchClass_dunder_str(setting, data_pitchclass, data_pitchname):
     for pitchclass in data_pitchclass:
-        assert str(PitchClass(pitchclass, setting=setting)) == ""
+        assert str(PitchClass(pitchclass, setting=setting)) == str(pitchclass)
     for pitchname in data_pitchname:
         assert str(PitchClass(pitchname, setting=setting)) == pitchname

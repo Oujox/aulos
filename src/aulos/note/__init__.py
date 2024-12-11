@@ -4,6 +4,7 @@
 """
 
 from .key import Key
+from .note import Note
 from .pitchclass import PitchClass
 
-__all__ = ["PitchClass", "Key"]
+__all__ = ["PitchClass", "Key", "Note"]

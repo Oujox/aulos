@@ -1,15 +1,16 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
 from dataclasses import dataclass
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from ...setting import Setting
+    from ...setting import Setting  # pragma: no cover
 
 
 @dataclass(frozen=True, init=False)
 class NoteSettingDerive:
 
+    octave: int
     name2number: dict[str, int]
     number2name: dict[int, tuple[str | None]]
 
@@ -17,29 +18,9 @@ class NoteSettingDerive:
         min_notenumber = setting.note.notenumber.min
         max_notenumber = setting.note.notenumber.max
         ref_notenumber = setting.note.presentation.reference.number
-
-        p_min_notenumber = (
-            setting.pitchclass.derive.semitone
-            * setting.note.presentation.symbols.index(
-                setting.note.presentation.reference.symbol
-            )
+        octave = setting.note.presentation.symbols.index(
+            setting.note.presentation.reference.symbol
         )
-        p_max_notenumber = setting.pitchclass.derive.semitone * (
-            len(setting.note.presentation.symbols)
-            - setting.note.presentation.symbols.index(
-                setting.note.presentation.reference.symbol
-            )
-        )
-
-        # check notenumber range
-        # if not min_notenumber <= ref_notenumber <= max_notenumber:
-        #     raise ValueError()
-
-        # if not min_notenumber >= (ref_notenumber - p_min_notenumber):
-        #     raise ValueError()
-
-        # if not max_notenumber <= (ref_notenumber + p_max_notenumber):
-        #     raise ValueError()
 
         #
         temp_name2number = {
@@ -77,6 +58,7 @@ class NoteSettingDerive:
                 if number == allowed_notenumber:
                     name2number[name] = number + adjust_notenumber
 
+        object.__setattr__(self, "octave", octave)
         object.__setattr__(self, "name2number", name2number)
         object.__setattr__(self, "number2name", number2name)
 
