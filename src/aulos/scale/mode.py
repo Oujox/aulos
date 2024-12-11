@@ -3,7 +3,7 @@ from functools import cached_property
 from itertools import accumulate, compress
 
 from .._core import AulosObject
-from .._core.framework import inject
+from .._core.framework import coexist, inject
 from .._core.utils import classproperty, rotate
 from ..note import Key, PitchClass
 from ._base import BaseScale
@@ -67,9 +67,11 @@ class Mode(BaseScale, AulosObject):
             diatonics.append(note)
         return diatonics
 
+    @coexist
     def __eq__(self, other: t.Self) -> bool:
         return self._intervals == other._intervals and self.key == other.key
 
+    @coexist
     def __ne__(self, other: t.Self) -> bool:
         return not self.__eq__(other)
 

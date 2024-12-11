@@ -4,7 +4,7 @@ import typing as t
 from functools import cached_property
 
 from .._core import AulosObject
-from .._core.framework import inject
+from .._core.framework import coexist, inject
 from .._core.utils import diff
 from ._base import BaseNote
 
@@ -33,8 +33,8 @@ class Key(BaseNote, AulosObject):
     @cached_property
     def accsidentals(self) -> tuple[int]:
         positions = []
-        r_symbol = self.schema.convert_pitchname_to_symbol(self.pitchname)
-        r_pitchclass = self.schema.convert_pitchname_to_picthclass(self.pitchname)
+        r_symbol = self.schema.convert_pitchname_to_symbol(self._name)
+        r_pitchclass = self.schema.convert_pitchname_to_picthclass(self._name)
 
         idx = self.schema.symbols.index(r_symbol)
         symbols = self.schema.symbols[idx:] + self.schema.symbols[:idx]
@@ -45,9 +45,11 @@ class Key(BaseNote, AulosObject):
             positions.append(diff(a_pos, n_pos, self.schema.semitone))
         return positions
 
+    @coexist
     def __eq__(self, other: int | BaseNote) -> bool:
         return self._pitchclass == int(other)
 
+    @coexist
     def __ne__(self, other: int | BaseNote) -> bool:
         return not self.__eq__(other)
 
