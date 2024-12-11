@@ -1,4 +1,6 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
+
+from .derive.note import NoteSettingDerive
 
 
 @dataclass(frozen=True)
@@ -35,3 +37,5 @@ class NoteSetting:
     notenumber: NoteNumberSetting
     presentation: NotePresentationSetting
     tuner: NoteTunerSetting
+
+    derive: NoteSettingDerive = field(init=False)

@@ -82,7 +82,7 @@ def test_PitchClass_dunder_add(setting, data_pitchclass):
         for pitchclass2 in data_pitchclass:
             assert (PitchClass(pitchclass, setting=setting) + pitchclass2) == (
                 pitchclass + pitchclass2
-            ) % setting.pitchclass.semitone
+            ) % setting.pitchclass.derive.semitone
 
 
 def test_PitchClass_dunder_sub(setting, data_pitchclass):
@@ -90,7 +90,7 @@ def test_PitchClass_dunder_sub(setting, data_pitchclass):
         for pitchclass2 in data_pitchclass:
             assert (PitchClass(pitchclass, setting=setting) - pitchclass2) == (
                 pitchclass - pitchclass2
-            ) % setting.pitchclass.semitone
+            ) % setting.pitchclass.derive.semitone
 
 
 def test_PitchClass_dunder_int(setting, data_pitchclass):
@@ -100,6 +100,6 @@ def test_PitchClass_dunder_int(setting, data_pitchclass):
 
 def test_PitchClass_dunder_str(setting, data_pitchclass, data_pitchname):
     for pitchclass in data_pitchclass:
-        assert str(PitchClass(pitchclass, setting=setting)) == ""
+        assert str(PitchClass(pitchclass, setting=setting)) == str(pitchclass)
     for pitchname in data_pitchname:
         assert str(PitchClass(pitchname, setting=setting)) == pitchname

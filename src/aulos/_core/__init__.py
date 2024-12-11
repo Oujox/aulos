@@ -6,7 +6,6 @@
 # utils
 # interfaces
 from . import framework, interfaces, utils
-
 # implementation
 from .object import AulosObject
 from .setting import Setting

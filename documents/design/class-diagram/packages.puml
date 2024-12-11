@@ -20,9 +20,9 @@ package "aulos._core.interfaces" as aulos._core.interfaces {
 }
 package "aulos._core.interfaces.ring" as aulos._core.interfaces.ring {
 }
-package "aulos._core.logic" as aulos._core.logic {
-}
 package "aulos._core.object" as aulos._core.object {
+}
+package "aulos._core.schema" as aulos._core.schema {
 }
 package "aulos._core.setting" as aulos._core.setting {
 }
@@ -88,7 +88,7 @@ aulos._core.framework --> aulos._core.framework.context
 aulos._core.framework._inject --> aulos._core.framework.context
 aulos._core.interfaces --> aulos._core.interfaces.ring
 aulos._core.object --> aulos._core.framework
-aulos._core.object --> aulos._core.logic
+aulos._core.object --> aulos._core.schema
 aulos._core.object --> aulos._core.setting
 aulos._core.setting --> aulos._core.utils
 aulos._core.shared --> aulos._core.shared.intervals
@@ -97,6 +97,7 @@ aulos._core.utils --> aulos._core.utils.calculation
 aulos._core.utils --> aulos._core.utils.dataclass
 aulos._core.utils --> aulos._core.utils.decorators
 aulos.note --> aulos.note.key
+aulos.note --> aulos.note.note
 aulos.note --> aulos.note.pitchclass
 aulos.note.key --> aulos.note._base
 aulos.note.note --> aulos.note._base
@@ -109,5 +110,5 @@ aulos.scale.scale --> aulos.scale._base
 aulos.tuner --> aulos.tuner.tuner
 aulos.tuner.tuner --> aulos.tuner._base
 aulos.utils --> aulos.utils.context
-aulos._core.logic ..> aulos._core.setting
+aulos._core.schema ..> aulos._core.setting
 @enduml

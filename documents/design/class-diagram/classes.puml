@@ -2,30 +2,11 @@
 set namespaceSeparator none
 class "Aulos" as aulos.utils.context.Aulos {
 }
-class "AulosLogic" as aulos._core.logic.AulosLogic {
-  intervals
-  pitchclasses
-  pitchnames
-  positions
-  semitone
-  symbols
-  convert_pitchclass_to_pitchname(pitchclass: int, accidental: int) -> t.Optional[str]
-  convert_pitchclass_to_pitchnames(pitchclass: int) -> tuple[t.Optional[str]]
-  convert_pitchclass_to_symbol(pitchclass: int) -> t.Optional[str]
-  convert_pitchname_to_picthclass(pitchname: str) -> int
-  convert_pitchname_to_symbol(pitchname: str)
-  count_accidental(pitchname: str) -> t.Optional[int]
-  is_pitchclass(value: t.Any) -> t.TypeGuard[int]
-  is_pitchname(value: t.Any) -> t.TypeGuard[str]
-  is_symbol(value: t.Any) -> t.TypeGuard[str]
-}
 class "AulosObject" as aulos._core.object.AulosObject {
-  logic
+  schema
   setting
 }
 class "BaseNote" as aulos.note._base.BaseNote {
-  pitchclass
-  pitchname
 }
 class "BaseScale" as aulos.scale._base.BaseScale {
   diatonics
@@ -72,7 +53,11 @@ class "Mode" as aulos.scale.mode.Mode {
   positions
 }
 class "Note" as aulos.note.note.Note {
-  is_notename(value: t.Any) -> t.TypeGuard[str]
+  notename
+  notenames
+  notenumber
+  scale
+  is_notename(notename: t.Any) -> t.TypeGuard[str]
   is_notenumber(notenumber: t.Any) -> t.TypeGuard[int]
 }
 class "PitchClass" as aulos.note.pitchclass.PitchClass {
@@ -96,6 +81,34 @@ class "Scale" as aulos.scale.scale.Scale {
   key
   omits
   positions
+}
+class "Schema" as aulos._core.schema.Schema {
+  intervals
+  notenames
+  notenumbers
+  pitchclasses
+  pitchnames
+  positions
+  semitone
+  symbols
+  convert_notename_to_notenumber(notename: str) -> int
+  convert_notename_to_pitchname(notename: str) -> str
+  convert_notenumber_to_notename(notenumber: int, accidental: int) -> t.Optional[str]
+  convert_notenumber_to_notenames(notenumber: int) -> tuple[t.Optional[str]]
+  convert_notenumber_to_pitchclass(notenumber: int) -> int
+  convert_pitchclass_to_notenumber(pitchclass: int, octnumber: int) -> int
+  convert_pitchclass_to_pitchname(pitchclass: int, accidental: int) -> t.Optional[str]
+  convert_pitchclass_to_pitchnames(pitchclass: int) -> tuple[t.Optional[str]]
+  convert_pitchclass_to_symbol(pitchclass: int) -> t.Optional[str]
+  convert_pitchname_to_notename(pitchname: str, octnumber: int) -> str
+  convert_pitchname_to_picthclass(pitchname: str) -> int
+  convert_pitchname_to_symbol(pitchname: str)
+  count_accidental(pitchname: str) -> t.Optional[int]
+  is_notename(value: t.Any) -> t.TypeGuard[str]
+  is_notenumber(value: t.Any) -> t.TypeGuard[int]
+  is_pitchclass(value: t.Any) -> t.TypeGuard[int]
+  is_pitchname(value: t.Any) -> t.TypeGuard[str]
+  is_symbol(value: t.Any) -> t.TypeGuard[str]
 }
 class "Setting" as aulos._core.setting.Setting {
   note : NoteSetting
@@ -126,8 +139,8 @@ aulos.tuner.tuner.MeantoneTuner --|> aulos.tuner._base.BaseTuner
 aulos.tuner.tuner.PythagoreanTuner --|> aulos._core.object.AulosObject
 aulos.tuner.tuner.PythagoreanTuner --|> aulos.tuner._base.BaseTuner
 aulos.utils.context.Aulos --|> aulos._core.framework.context.Context
-aulos._core.logic.AulosLogic --* aulos._core.object.AulosObject : _logic
-aulos._core.setting.Setting --o aulos._core.logic.AulosLogic : _setting
+aulos._core.schema.Schema --* aulos._core.object.AulosObject : _schema
+aulos._core.setting.Setting --o aulos._core.schema.Schema : _setting
 aulos.note.key.Key --o aulos.scale.mode.Mode : _key
 aulos.note.key.Key --o aulos.scale.scale.Scale : _key
 @enduml

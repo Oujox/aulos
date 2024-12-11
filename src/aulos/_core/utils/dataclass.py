@@ -1,5 +1,5 @@
 import typing as t
-from dataclasses import is_dataclass, fields
+from dataclasses import fields, is_dataclass
 
 
 def from_dict[T](cls: type[T], value: dict[str, t.Any]) -> T:
