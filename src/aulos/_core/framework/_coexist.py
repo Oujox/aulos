@@ -1,8 +1,8 @@
 import typing as t
 from functools import wraps
 
-from .context import Context
 from .coexistence import Coexistence
+from .context import Context
 
 
 def coexist[**P, R](func: t.Callable[P, R]) -> t.Callable[P, R]:
