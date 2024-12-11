@@ -1,6 +1,9 @@
 import typing as t
 from functools import wraps
 
+from .context import Context
+from .coexistence import Coexistence
+
 
 def coexist[**P, R](func: t.Callable[P, R]) -> t.Callable[P, R]:
     """オブジェクトの共存性チェックを有効化
@@ -8,12 +11,18 @@ def coexist[**P, R](func: t.Callable[P, R]) -> t.Callable[P, R]:
     """
 
     @wraps(func)
-    def wrapper(*args: P.args, **kwargs: P.kwargs) -> R:
-        from ...utils import Context
-
-        if "setting" not in kwargs.keys():
-            setting = Context.setting()
-            return func(*args, setting=setting, **kwargs)
-        return func(*args, **kwargs)
+    def wrapper(instance: Coexistence, *args: P.args, **kwargs: P.kwargs) -> R:
+        if (coexist := Context.coexist.get(None)) is not None:
+            if coexist and isinstance(instance, Coexistence):
+                for arg in args:
+                    if isinstance(arg, Coexistence):
+                        if not instance.can_coexist(arg):
+                            print(instance._i_coexistence, arg._t_coexistence)
+                            raise Exception()
+                for _, kwarg in kwargs.items():
+                    if isinstance(kwarg, Coexistence):
+                        if not instance.can_coexist(kwarg):
+                            raise Exception()
+        return func(instance, *args, **kwargs)
 
     return wrapper

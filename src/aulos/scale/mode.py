@@ -31,7 +31,7 @@ class Mode(BaseScale, AulosObject):
         cls._scale = scale
         cls._shift = -shift
         cls._intervals = tuple(rotate(cls._scale.intervals, cls._shift))
-        return super().__init_subclass__(intervals=cls.intervals)
+        return super().__init_subclass__(intervals=cls._scale.intervals)
 
     @property
     def key(self) -> Key:

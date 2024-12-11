@@ -4,7 +4,7 @@ import typing as t
 from typing import TYPE_CHECKING
 
 from .._core import AulosObject
-from .._core.framework import inject
+from .._core.framework import inject, coexist
 from .._core.utils import index
 from ._base import BaseNote
 
@@ -62,6 +62,7 @@ class Note(BaseNote, AulosObject):
             self._notename = name
 
     @scale.setter
+    @coexist
     def scale(self, scale: Scale):
         from ..scale import Mode, Scale
 
@@ -76,15 +77,19 @@ class Note(BaseNote, AulosObject):
             )
             self._scale = scale
 
+    @coexist
     def __eq__(self, other: int | BaseNote) -> bool:
         return int(self) == int(other)
 
+    @coexist
     def __ne__(self, other: int | BaseNote) -> bool:
         return not self.__eq__(other)
 
+    @coexist
     def __add__(self, other: int | BaseNote) -> Note:
         return Note(int(self) + int(other), scale=self.scale, setting=self.setting)
 
+    @coexist
     def __sub__(self, other: int | BaseNote) -> Note:
         return Note(int(self) - int(other), scale=self.scale, setting=self.setting)
 

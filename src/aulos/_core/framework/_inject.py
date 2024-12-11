@@ -1,5 +1,6 @@
 import typing as t
 from functools import wraps
+from .context import Context
 
 
 def inject[**P, R](func: t.Callable[P, R]) -> t.Callable[P, R]:
@@ -9,11 +10,14 @@ def inject[**P, R](func: t.Callable[P, R]) -> t.Callable[P, R]:
 
     @wraps(func)
     def wrapper(*args: P.args, **kwargs: P.kwargs) -> R:
-        from .context import Context
+        injected = {}
+        if (setting := Context.setting.get(None)) is not None:
+            injected["setting"] = setting
 
-        if (injected := Context.internal.get(None)) is not None:
-            injected.update(kwargs)
-            return func(*args, **injected)
-        return func(*args, **kwargs)
+        if (data := Context.data.get(None)) is not None:
+            injected.update(data)
+
+        injected.update(kwargs)
+        return func(*args, **injected)
 
     return wrapper
