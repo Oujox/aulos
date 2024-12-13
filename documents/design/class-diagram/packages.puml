@@ -16,10 +16,6 @@ package "aulos._core.framework.coexistence" as aulos._core.framework.coexistence
 }
 package "aulos._core.framework.context" as aulos._core.framework.context {
 }
-package "aulos._core.interfaces" as aulos._core.interfaces {
-}
-package "aulos._core.interfaces.ring" as aulos._core.interfaces.ring {
-}
 package "aulos._core.object" as aulos._core.object {
 }
 package "aulos._core.schema" as aulos._core.schema {
@@ -85,8 +81,9 @@ aulos._core.framework --> aulos._core.framework._coexist
 aulos._core.framework --> aulos._core.framework._inject
 aulos._core.framework --> aulos._core.framework.coexistence
 aulos._core.framework --> aulos._core.framework.context
+aulos._core.framework._coexist --> aulos._core.framework.coexistence
+aulos._core.framework._coexist --> aulos._core.framework.context
 aulos._core.framework._inject --> aulos._core.framework.context
-aulos._core.interfaces --> aulos._core.interfaces.ring
 aulos._core.object --> aulos._core.framework
 aulos._core.object --> aulos._core.schema
 aulos._core.object --> aulos._core.setting

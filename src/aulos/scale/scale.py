@@ -3,8 +3,7 @@ from functools import cached_property
 from itertools import accumulate, compress
 
 from .._core import AulosObject
-from .._core.framework import inject
-from .._core.utils import classproperty, rotate
+from .._core.utils import classproperty
 from ..note import Key, PitchClass
 from ._base import BaseScale
 from .processing.accidentals import accidentals
@@ -13,20 +12,19 @@ from .processing.accidentals import accidentals
 class Scale(BaseScale, AulosObject):
 
     _intervals: t.ClassVar[tuple[int]]
+    _key: Key
 
     def __new__(cls, *args, **kwargs) -> t.Self:
         if cls is Scale:
             raise TypeError("Scale cannot be instantiated directly.")
         return super().__new__(cls)
 
-    @inject
     def __init__(self, key: Key, **kwargs) -> None:
         super().__init__(**kwargs)
         self._key = key
 
     def __init_subclass__(cls, intervals: t.Iterable[int]) -> None:
         cls._intervals = tuple(intervals)
-        return super().__init_subclass__(intervals=cls.intervals)
 
     @property
     def key(self) -> Key:

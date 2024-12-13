@@ -18,7 +18,9 @@ class "Coexistence" as aulos._core.framework.coexistence.Coexistence {
   can_coexist(other: t.Self) -> bool
 }
 class "Context" as aulos._core.framework.context.Context {
-  internal : t.Final[ContextVar[dict[str, t.Any]]]
+  coexist : t.ClassVar[ContextVar[bool]]
+  data : t.ClassVar[ContextVar[dict[str, t.Any]]]
+  setting : t.ClassVar[ContextVar[Setting]]
 }
 class "EqualTuner" as aulos.tuner.tuner.EqualTuner {
   root : float
@@ -72,8 +74,6 @@ class "PythagoreanTuner" as aulos.tuner.tuner.PythagoreanTuner {
   root : float
   hz(note_number: int) -> float
 }
-class "Ring" as aulos._core.interfaces.ring.Ring {
-}
 class "Scale" as aulos.scale.scale.Scale {
   accidentals
   diatonics
@@ -113,6 +113,7 @@ class "Schema" as aulos._core.schema.Schema {
 class "Setting" as aulos._core.setting.Setting {
   note : NoteSetting
   pitchclass : PitchClassSetting
+  default() -> t.Self
   from_dict(value: dict[str, t.Any]) -> t.Self
   from_json(path: Path) -> t.Self
   from_toml(path: Path) -> t.Self

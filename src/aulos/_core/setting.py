@@ -1,4 +1,5 @@
 import json
+import os
 import tomllib
 import typing as t
 from dataclasses import dataclass
@@ -19,6 +20,11 @@ class Setting:
     def __post_init__(self):
         object.__setattr__(self.pitchclass, "derive", PitchClassSettingDerive(self))
         object.__setattr__(self.note, "derive", NoteSettingDerive(self))
+
+    @classmethod
+    def default(cls) -> t.Self:
+        path = Path(os.path.dirname(__file__)) / "default.toml"
+        return cls.from_toml(path)
 
     @classmethod
     def from_dict(cls, value: dict[str, t.Any]) -> t.Self:

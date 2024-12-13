@@ -1,8 +1,9 @@
-import typing as t
-from abc import ABCMeta, abstractmethod
+from abc import abstractmethod
 
 
-class BaseNote(metaclass=ABCMeta):
+class BaseNote:
+
+    __slots__ = ()
 
     @abstractmethod
     def __int__(self) -> int: ...

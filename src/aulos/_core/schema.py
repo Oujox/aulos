@@ -4,6 +4,8 @@ import typing as t
 from functools import cached_property
 from typing import TYPE_CHECKING
 
+from .utils import diff
+
 if TYPE_CHECKING:
     from .setting import Setting  # pragma: no cover
 
@@ -150,6 +152,22 @@ class Schema:
     """
     Extension
     """
+
+    def generate_key_accidentals(self, pitchname: str):
+        if not self.is_pitchname(pitchname):
+            raise ValueError(f"Invalid pitchname: '{pitchname}'.")
+        positions = []
+        r_symbol = self.convert_pitchname_to_symbol(pitchname)
+        r_pitchclass = self.convert_pitchname_to_picthclass(pitchname)
+
+        idx = self.symbols.index(r_symbol)
+        symbols = self.symbols[idx:] + self.symbols[:idx]
+
+        for pos, symbol in zip(self.positions, symbols):
+            n_pos = self.convert_pitchname_to_picthclass(symbol)
+            a_pos = (r_pitchclass + pos) % self.semitone
+            positions.append(diff(a_pos, n_pos, self.semitone))
+        return positions
 
     def convert_notenumber_to_pitchclass(self, notenumber: int) -> int:
         if not self.is_notenumber(notenumber):

@@ -4,7 +4,6 @@ import typing as t
 from typing import TYPE_CHECKING
 
 from .._core import AulosObject
-from .._core.framework import inject
 from .._core.utils import index
 from ._base import BaseNote
 
@@ -13,29 +12,33 @@ if TYPE_CHECKING:
     from scale import Scale  # pragma: no cover
 
 
-class PitchClass(BaseNote, AulosObject):
+class PitchClass(AulosObject):
 
-    @inject
+    _pitchclass: int
+    _pitchnames: tuple[str | None]
+    _pitchname: str | None
+    _scale: Scale | None
+
     def __init__(
-        self, identify: int | str, *, scale: t.Optional[Scale] = None, **kwargs
+        self, identify: int | str, *, scale: Scale | None = None, **kwargs
     ) -> None:
         super().__init__(**kwargs)
 
         if self.is_pitchclass(identify):
             pitchnames = self.schema.convert_pitchclass_to_pitchnames(identify)
-            self._pitchclass: int = identify
-            self._pitchnames: tuple[str] = pitchnames
-            self._pitchname: t.Optional[str] = None
-            self._scale: t.Optional[Scale] = None
+            self._pitchclass = identify
+            self._pitchnames = pitchnames
+            self._pitchname = None
+            self._scale = None
             self.scale = scale
 
         elif self.is_pitchname(identify):
             pitchclass = self.schema.convert_pitchname_to_picthclass(identify)
             pitchnames = self.schema.convert_pitchclass_to_pitchnames(pitchclass)
-            self._pitchclass: int = pitchclass
-            self._pitchnames: tuple[str] = pitchnames
-            self._pitchname: t.Optional[str] = identify
-            self._scale: t.Optional[Scale] = None
+            self._pitchclass = pitchclass
+            self._pitchnames = pitchnames
+            self._pitchname = identify
+            self._scale = None
             self.scale = scale
 
         else:
@@ -46,7 +49,7 @@ class PitchClass(BaseNote, AulosObject):
         return self._pitchclass
 
     @property
-    def pitchname(self) -> t.Optional[str]:
+    def pitchname(self) -> str | None:
         return self._pitchname
 
     @property
@@ -54,7 +57,7 @@ class PitchClass(BaseNote, AulosObject):
         return [n for n in self._pitchnames if n is not None]
 
     @property
-    def scale(self) -> t.Optional[Scale]:
+    def scale(self) -> Scale | None:
         return self._scale
 
     @pitchname.setter
