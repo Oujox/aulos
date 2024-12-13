@@ -1,24 +1,20 @@
-from dataclasses import dataclass, field
-
-from .derive.pitchclass import PitchClassSettingDerive
+from dataclasses import dataclass
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, slots=True)
 class AccidentalSymbolSetting:
     sharp: str
     flat: str
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, slots=True)
 class AccidentalSetting:
     limit: int
     symbol: AccidentalSymbolSetting
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, slots=True)
 class PitchClassSetting:
     intervals: tuple[int]
     symbols: tuple[str]
     accidental: AccidentalSetting
-
-    derive: PitchClassSettingDerive = field(init=False)

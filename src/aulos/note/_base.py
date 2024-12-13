@@ -2,7 +2,6 @@ from abc import abstractmethod
 
 
 class BaseNote:
-
     __slots__ = ()
 
     @abstractmethod

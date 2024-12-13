@@ -2,11 +2,9 @@ import typing as t
 
 from .._core import AulosObject
 from ._base import BaseTuner
-from .processing.frequency_ratio import (
-    fivelimit_tuning_table,
-    meantone_tuning_table,
-    pythagorean_tuning_table,
-)
+from .processing.frequency_ratio import (fivelimit_tuning_table,
+                                         meantone_tuning_table,
+                                         pythagorean_tuning_table)
 
 
 class JustIntonationTuner(BaseTuner, AulosObject):

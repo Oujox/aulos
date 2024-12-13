@@ -8,13 +8,13 @@ package "aulos._core" as aulos._core {
 }
 package "aulos._core.framework" as aulos._core.framework {
 }
-package "aulos._core.framework._coexist" as aulos._core.framework._coexist {
-}
-package "aulos._core.framework._inject" as aulos._core.framework._inject {
-}
-package "aulos._core.framework.coexistence" as aulos._core.framework.coexistence {
-}
 package "aulos._core.framework.context" as aulos._core.framework.context {
+}
+package "aulos._core.framework.inject" as aulos._core.framework.inject {
+}
+package "aulos._core.framework.instancecache" as aulos._core.framework.instancecache {
+}
+package "aulos._core.framework.optimize" as aulos._core.framework.optimize {
 }
 package "aulos._core.object" as aulos._core.object {
 }
@@ -77,16 +77,17 @@ aulos --> aulos._version
 aulos --> aulos.note
 aulos._core --> aulos._core.object
 aulos._core --> aulos._core.setting
-aulos._core.framework --> aulos._core.framework._coexist
-aulos._core.framework --> aulos._core.framework._inject
-aulos._core.framework --> aulos._core.framework.coexistence
 aulos._core.framework --> aulos._core.framework.context
-aulos._core.framework._coexist --> aulos._core.framework.coexistence
-aulos._core.framework._coexist --> aulos._core.framework.context
-aulos._core.framework._inject --> aulos._core.framework.context
+aulos._core.framework --> aulos._core.framework.inject
+aulos._core.framework --> aulos._core.framework.instancecache
+aulos._core.framework --> aulos._core.framework.optimize
+aulos._core.framework.inject --> aulos._core.framework.context
 aulos._core.object --> aulos._core.framework
 aulos._core.object --> aulos._core.schema
 aulos._core.object --> aulos._core.setting
+aulos._core.schema --> aulos._core.framework
+aulos._core.schema --> aulos._core.setting
+aulos._core.schema --> aulos._core.utils
 aulos._core.setting --> aulos._core.utils
 aulos._core.shared --> aulos._core.shared.intervals
 aulos._core.utils --> aulos._core.utils.array
@@ -107,5 +108,4 @@ aulos.scale.scale --> aulos.scale._base
 aulos.tuner --> aulos.tuner.tuner
 aulos.tuner.tuner --> aulos.tuner._base
 aulos.utils --> aulos.utils.context
-aulos._core.schema ..> aulos._core.setting
 @enduml
