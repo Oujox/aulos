@@ -1,18 +1,17 @@
 import typing as t
-from functools import cached_property
 from itertools import accumulate, compress
 
 from .._core import AulosObject
 from .._core.utils import classproperty
 from ..note import Key, PitchClass
 from ._base import BaseScale
-from .processing.accidentals import accidentals
 
 
 class Scale(BaseScale, AulosObject):
 
     _intervals: t.ClassVar[tuple[int]]
     _key: Key
+    _accidentals: tuple[int]
 
     def __new__(cls, *args, **kwargs) -> t.Self:
         if cls is Scale:
@@ -22,6 +21,7 @@ class Scale(BaseScale, AulosObject):
     def __init__(self, key: Key, **kwargs) -> None:
         super().__init__(**kwargs)
         self._key = key
+        self._accidentals = self.schema.generate_scale_accidentals(self._intervals)
 
     def __init_subclass__(cls, intervals: t.Iterable[int]) -> None:
         cls._intervals = tuple(intervals)
@@ -45,12 +45,11 @@ class Scale(BaseScale, AulosObject):
         _intervals = (1,) + cls._intervals[:-1]
         return tuple([bool(i) for i in _intervals])
 
-    @cached_property
+    @property
     def accidentals(self) -> tuple[int]:
-        _accidentals = accidentals(self.schema.intervals, self._intervals)
-        return tuple(compress(_accidentals, self.omits))
+        return tuple(compress(self._accidentals, self.omits))
 
-    @cached_property
+    @property
     def diatonics(self) -> list[PitchClass]:
         diatonics = []
         root = PitchClass(self._key.pitchname, scale=self, setting=self.setting)
@@ -61,7 +60,7 @@ class Scale(BaseScale, AulosObject):
         return diatonics
 
     def __eq__(self, other: t.Self) -> bool:
-        return self._intervals == other._intervals and self.key == other.key
+        return self._intervals == other._intervals and self._key == other._key
 
     def __ne__(self, other: t.Self) -> bool:
         return not self.__eq__(other)

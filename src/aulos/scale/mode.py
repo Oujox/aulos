@@ -13,9 +13,9 @@ from .scale import Scale
 class Mode(BaseScale, AulosObject):
 
     _intervals: t.ClassVar[tuple[int]]
-    _shift: t.ClassVar[int]
     _scale: t.ClassVar[Scale]
     _key: Key
+    _accidentals: tuple[int]
 
     def __new__(cls, *args, **kwargs) -> t.Self:
         if cls is Mode:
@@ -25,11 +25,11 @@ class Mode(BaseScale, AulosObject):
     def __init__(self, key: Key, **kwargs) -> None:
         super().__init__(**kwargs)
         self._key = key
+        self._accidentals = self.schema.generate_scale_accidentals(self._intervals)
 
-    def __init_subclass__(cls, scale: Scale, shift: int) -> None:
+    def __init_subclass__(cls, scale: Scale, intervals: tuple[int]) -> None:
         cls._scale = scale
-        cls._shift = -shift
-        cls._intervals = tuple(rotate(cls._scale.intervals, cls._shift))
+        cls._intervals = tuple(intervals)
 
     @property
     def key(self) -> Key:
@@ -50,12 +50,11 @@ class Mode(BaseScale, AulosObject):
         _intervals = (1,) + cls._intervals[:-1]
         return tuple([bool(i) for i in _intervals])
 
-    @cached_property
+    @property
     def accidentals(self) -> tuple[int]:
-        _accidentals = accidentals(self.schema.intervals, self._intervals)
-        return tuple(compress(_accidentals, self.omits))
+        return tuple(compress(self._accidentals, self.omits))
 
-    @cached_property
+    @property
     def diatonics(self) -> list[PitchClass]:
         diatonics = []
         root = PitchClass(self._key.pitchname, scale=self, setting=self.setting)

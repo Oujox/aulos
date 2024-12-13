@@ -1,6 +1,7 @@
 import typing as t
 from dataclasses import dataclass
 from functools import cached_property, lru_cache
+from itertools import starmap
 
 from .framework import InstanceCacheMeta
 from .schemas.note import NoteSchema
@@ -159,7 +160,7 @@ class Schema(metaclass=InstanceCacheMeta):
     Extension
     """
 
-    def generate_key_accidentals(self, pitchname: str):
+    def generate_key_accidentals(self, pitchname: str) -> tuple[int]:
         if not self.is_pitchname(pitchname):
             raise ValueError(f"Invalid pitchname: '{pitchname}'.")
         positions = []
@@ -173,7 +174,17 @@ class Schema(metaclass=InstanceCacheMeta):
             n_pos = self.convert_pitchname_to_picthclass(symbol)
             a_pos = (r_pitchclass + pos) % self.semitone
             positions.append(diff(a_pos, n_pos, self.semitone))
-        return positions
+        return tuple(positions)
+
+    def generate_scale_accidentals(self, intervals: tuple[int]) -> tuple[int]:
+        diff = list(starmap(lambda x, y: y - x, zip(self.intervals, intervals)))
+        accidentals = []
+        for i in range(len(self.intervals)):
+            cur, next = i % len(self.intervals), (i + 1) % len(self.intervals)
+            accidentals.append(diff[cur])
+            diff[next] = diff[next] + diff[cur]
+            diff[cur] = 0
+        return tuple(accidentals[-1:] + accidentals[:-1])
 
     def convert_notenumber_to_pitchclass(self, notenumber: int) -> int:
         if not self.is_notenumber(notenumber):
