@@ -11,7 +11,7 @@ if TYPE_CHECKING:
     from scale import Scale
 
 
-class Note(AulosObject):
+class Note(BaseNote, AulosObject):
 
     _notenumber: int
     _notenames: tuple[str | None]

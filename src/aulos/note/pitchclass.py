@@ -12,7 +12,7 @@ if TYPE_CHECKING:
     from scale import Scale  # pragma: no cover
 
 
-class PitchClass(AulosObject):
+class PitchClass(BaseNote, AulosObject):
 
     _pitchclass: int
     _pitchnames: tuple[str | None]
