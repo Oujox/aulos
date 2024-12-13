@@ -4,7 +4,6 @@ import typing as t
 from typing import TYPE_CHECKING
 
 from .._core import AulosObject
-from .._core.framework import coexist, inject
 from .._core.utils import index
 from ._base import BaseNote
 
@@ -12,29 +11,33 @@ if TYPE_CHECKING:
     from scale import Scale
 
 
-class Note(BaseNote, AulosObject):
+class Note(AulosObject):
 
-    @inject
+    _notenumber: int
+    _notenames: tuple[str | None]
+    _notename: str | None
+    _scale: Scale | None
+
     def __init__(
-        self, identify: int | str, *, scale: t.Optional[Scale] = None, **kwargs
+        self, identify: int | str, *, scale: Scale | None = None, **kwargs
     ) -> None:
         super().__init__(**kwargs)
 
         if self.schema.is_notenumber(identify):
             notenames = self.schema.convert_notenumber_to_notenames(identify)
-            self._notenumber: int = identify
-            self._notenames: tuple[str] = notenames
-            self._notename: t.Optional[str] = None
-            self._scale: t.Optional[Scale] = None
+            self._notenumber = identify
+            self._notenames = notenames
+            self._notename = None
+            self._scale = None
             self.scale = scale
 
         elif self.schema.is_notename(identify):
             notenumber = self.schema.convert_notename_to_notenumber(identify)
             notenames = self.schema.convert_notenumber_to_notenames(notenumber)
-            self._notenumber: int = notenumber
-            self._notenames: tuple[str] = notenames
-            self._notename: t.Optional[str] = identify
-            self._scale: t.Optional[Scale] = None
+            self._notenumber = notenumber
+            self._notenames = notenames
+            self._notename = identify
+            self._scale = None
             self.scale = scale
 
         else:
@@ -45,7 +48,7 @@ class Note(BaseNote, AulosObject):
         return self._notenumber
 
     @property
-    def notename(self) -> t.Optional[str]:
+    def notename(self) -> str | None:
         return self._notename
 
     @property
@@ -53,7 +56,7 @@ class Note(BaseNote, AulosObject):
         return [n for n in self._notenames if n is not None]
 
     @property
-    def scale(self) -> t.Optional[Scale]:
+    def scale(self) -> Scale | None:
         return self._scale
 
     @notename.setter
@@ -62,7 +65,6 @@ class Note(BaseNote, AulosObject):
             self._notename = name
 
     @scale.setter
-    @coexist
     def scale(self, scale: Scale):
         from ..scale import Mode, Scale
 
@@ -77,19 +79,15 @@ class Note(BaseNote, AulosObject):
             )
             self._scale = scale
 
-    @coexist
     def __eq__(self, other: int | BaseNote) -> bool:
         return int(self) == int(other)
 
-    @coexist
     def __ne__(self, other: int | BaseNote) -> bool:
         return not self.__eq__(other)
 
-    @coexist
     def __add__(self, other: int | BaseNote) -> Note:
         return Note(int(self) + int(other), scale=self.scale, setting=self.setting)
 
-    @coexist
     def __sub__(self, other: int | BaseNote) -> Note:
         return Note(int(self) - int(other), scale=self.scale, setting=self.setting)
 

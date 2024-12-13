@@ -1,23 +1,24 @@
 from __future__ import annotations
 
 import typing as t
-from functools import cached_property
 
 from .._core import AulosObject
-from .._core.framework import coexist, inject
-from .._core.utils import diff
 from ._base import BaseNote
 
 
 class Key(BaseNote, AulosObject):
 
-    @inject
+    _name: str
+    _pitchclass: int
+    _accidentals: tuple[int]
+
     def __init__(self, name: str, **kwargs) -> None:
         super().__init__(**kwargs)
 
         if self.is_keyname(name):
             self._name = name
             self._pitchclass = self.schema.convert_pitchname_to_picthclass(name)
+            self._accidentals = self.schema.generate_key_accidentals(name)
 
         else:
             raise ValueError()
@@ -30,26 +31,13 @@ class Key(BaseNote, AulosObject):
     def pitchclass(self) -> int:
         return self._pitchclass
 
-    @cached_property
+    @property
     def accsidentals(self) -> tuple[int]:
-        positions = []
-        r_symbol = self.schema.convert_pitchname_to_symbol(self._name)
-        r_pitchclass = self.schema.convert_pitchname_to_picthclass(self._name)
+        return self._accidentals
 
-        idx = self.schema.symbols.index(r_symbol)
-        symbols = self.schema.symbols[idx:] + self.schema.symbols[:idx]
-
-        for pos, symbol in zip(self.schema.positions, symbols):
-            n_pos = self.schema.convert_pitchname_to_picthclass(symbol)
-            a_pos = (r_pitchclass + pos) % self.schema.semitone
-            positions.append(diff(a_pos, n_pos, self.schema.semitone))
-        return positions
-
-    @coexist
     def __eq__(self, other: int | BaseNote) -> bool:
         return self._pitchclass == int(other)
 
-    @coexist
     def __ne__(self, other: int | BaseNote) -> bool:
         return not self.__eq__(other)
 

@@ -1,11 +1,18 @@
 import typing as t
+from abc import ABCMeta
 
-from .framework import Coexistence
+from .framework import InjectedMeta, OptimizedMeta
 from .schema import Schema
 from .setting import Setting
 
 
-class AulosObject(Coexistence):
+AulosObjectMeta = type("AulosObjectMeta", (InjectedMeta, OptimizedMeta, ABCMeta), {})
+
+
+class AulosObject(metaclass=AulosObjectMeta):
+
+    _setting: Setting
+    _schema: Schema
 
     def __new__(cls, *args, **kwargs) -> t.Self:
         if cls is AulosObject:
@@ -18,7 +25,7 @@ class AulosObject(Coexistence):
                 "Initialization error: 'setting' argument is missing. "
                 "Please provide a valid setting object."
             )
-        super(AulosObject, self).__init__(intervals=setting.pitchclass.intervals)
+        super(AulosObject, self).__init__()
         self._setting = setting
         self._schema = Schema(setting)
 
