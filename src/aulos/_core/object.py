@@ -5,7 +5,6 @@ from .framework import InjectedMeta, OptimizedMeta
 from .schema import Schema
 from .setting import Setting
 
-
 AulosObjectMeta = type("AulosObjectMeta", (InjectedMeta, OptimizedMeta, ABCMeta), {})
 
 

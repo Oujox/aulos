@@ -1,20 +1,17 @@
-from __future__ import annotations
-
 from dataclasses import dataclass
-from typing import TYPE_CHECKING
 
-if TYPE_CHECKING:
-    from ...setting import Setting  # pragma: no cover
+from ..setting import Setting
+from .pitchclass import PitchClassSchema
 
 
 @dataclass(frozen=True, init=False)
-class NoteSettingDerive:
+class NoteSchema:
 
     octave: int
     name2number: dict[str, int]
     number2name: dict[int, tuple[str | None]]
 
-    def __init__(self, setting: Setting):
+    def __init__(self, setting: Setting, schema: PitchClassSchema):
         min_notenumber = setting.note.notenumber.min
         max_notenumber = setting.note.notenumber.max
         ref_notenumber = setting.note.presentation.reference.number
@@ -27,16 +24,16 @@ class NoteSettingDerive:
             self._convert_pitchname_to_notename(
                 pitchname, symbol
             ): self._convert_pitchclass_to_notenumber(
-                pitchclass, pitch, setting.pitchclass.derive.semitone
+                pitchclass, pitch, schema.semitone
             )
-            for pitchname, pitchclass in setting.pitchclass.derive.name2class.items()
+            for pitchname, pitchclass in schema.name2class.items()
             for pitch, symbol in enumerate(setting.note.presentation.symbols)
         }
         temp_number2name = {
             self._convert_pitchclass_to_notenumber(
-                pitchclass, pitch, setting.pitchclass.derive.semitone
+                pitchclass, pitch, schema.semitone
             ): self._convert_pitchnames_to_notenames(pitchnames, symbol)
-            for pitchclass, pitchnames in setting.pitchclass.derive.class2name.items()
+            for pitchclass, pitchnames in schema.class2name.items()
             for pitch, symbol in enumerate(setting.note.presentation.symbols)
         }
 

@@ -1,41 +1,37 @@
-from dataclasses import dataclass, field
-
-from .derive.note import NoteSettingDerive
+from dataclasses import dataclass
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, slots=True)
 class NotePresentationReferenceSetting:
     number: int
     symbol: str
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, slots=True)
 class NoteTunerReferenceSetting:
     hz: float
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, slots=True)
 class NoteNumberSetting:
     min: int
     max: int
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, slots=True)
 class NotePresentationSetting:
     name: str
     symbols: tuple[str]
     reference: NotePresentationReferenceSetting
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, slots=True)
 class NoteTunerSetting:
     reference: NoteTunerReferenceSetting
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, slots=True)
 class NoteSetting:
     notenumber: NoteNumberSetting
     presentation: NotePresentationSetting
     tuner: NoteTunerSetting
-
-    derive: NoteSettingDerive = field(init=False)

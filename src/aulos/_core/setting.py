@@ -5,21 +5,15 @@ import typing as t
 from dataclasses import dataclass
 from pathlib import Path
 
-from .settings.derive.note import NoteSettingDerive
-from .settings.derive.pitchclass import PitchClassSettingDerive
 from .settings.note import NoteSetting
 from .settings.pitchclass import PitchClassSetting
 from .utils import from_dict
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, slots=True)
 class Setting:
     pitchclass: PitchClassSetting
     note: NoteSetting
-
-    def __post_init__(self):
-        object.__setattr__(self.pitchclass, "derive", PitchClassSettingDerive(self))
-        object.__setattr__(self.note, "derive", NoteSettingDerive(self))
 
     @classmethod
     def default(cls) -> t.Self:

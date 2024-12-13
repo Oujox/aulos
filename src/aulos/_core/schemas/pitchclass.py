@@ -1,15 +1,11 @@
-from __future__ import annotations
-
 from dataclasses import dataclass
 from itertools import accumulate, chain
-from typing import TYPE_CHECKING
 
-if TYPE_CHECKING:
-    from ...setting import Setting  # pragma: no cover
+from ..setting import Setting
 
 
 @dataclass(frozen=True, init=False)
-class PitchClassSettingDerive:
+class PitchClassSchema:
 
     semitone: int
     positions: tuple[int]
