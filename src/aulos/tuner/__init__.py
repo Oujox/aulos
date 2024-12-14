@@ -3,7 +3,14 @@
 * 一般に使用される音律を提供
 """
 
-from .tuner import (EqualTuner, JustIntonationTuner, MeantoneTuner,
-                    PythagoreanTuner)
+from .implements.tuner import (Equal12Tuner, JustIntonationTuner,
+                               MeantoneTuner, PythagoreanTuner)
+from .tuner import Tuner
 
-__all__ = ["JustIntonationTuner", "MeantoneTuner", "PythagoreanTuner", "EqualTuner"]
+__all__ = [
+    "Tuner",
+    "JustIntonationTuner",
+    "MeantoneTuner",
+    "PythagoreanTuner",
+    "Equal12Tuner",
+]

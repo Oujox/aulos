@@ -8,7 +8,7 @@ from .._core.utils import index
 from ._base import BaseNote
 
 if TYPE_CHECKING:
-    from scale import Scale
+    from ..scale import Scale
 
 
 class Note(BaseNote, AulosObject):

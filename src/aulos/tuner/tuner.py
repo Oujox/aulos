@@ -2,45 +2,38 @@ import typing as t
 
 from .._core import AulosObject
 from ._base import BaseTuner
-from .processing.frequency_ratio import (fivelimit_tuning_table,
-                                         meantone_tuning_table,
-                                         pythagorean_tuning_table)
 
 
-class JustIntonationTuner(BaseTuner, AulosObject):
+class Tuner(BaseTuner, AulosObject):
 
-    def __init__(self, root: float) -> None:
-        self.root = root
+    _ratios: t.ClassVar[tuple[int]]
+
+    def __new__(cls, *args, **kwargs) -> t.Self:
+        if cls is Tuner:
+            raise TypeError("Tuner cannot be instantiated directly.")
+        return super().__new__(cls)
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
+    def __init_subclass__(cls, ratios: tuple[int], **kwargs):
+        cls._ratios = ratios
+        return super().__init_subclass__(**kwargs)
 
     def hz(self, notenumber: int) -> float:
-        relative_number = notenumber - self.origin_notenumber
-        return self.root * (notenumber - self.origin_notenumber)
+        rel = notenumber - self.schema.root_notenumber
+        octnumber = rel // self.schema.semitone
+        pitchclass = rel % self.schema.semitone
+        return self.schema.root * (2**octnumber) * self._ratios[pitchclass]
 
+    def __eq__(self, other: t.Self) -> bool:
+        return self._ratios == other._ratios
 
-class MeantoneTuner(BaseTuner, AulosObject):
+    def __ne__(self, other: t.Self) -> bool:
+        return not self.__eq__(other)
 
-    def __init__(self, root: float) -> None:
-        self.root = root
+    def __str__(self) -> str:
+        return "<Tuner: {}>".format(self.__class__.__name__)
 
-    def hz(self, note_number: int) -> float:
-        return self.root * (note_number - 69)
-
-
-class PythagoreanTuner(BaseTuner, AulosObject):
-
-    def __init__(self, root: float) -> None:
-        self.root = root
-
-    def hz(self, note_number: int) -> float:
-        return self.root * (note_number - 69)
-
-
-class EqualTuner(BaseTuner, AulosObject):
-
-    def __init__(self, root: float) -> None:
-        self.root = root
-
-    def hz(self, note_number: int) -> float:
-        return self.root * 2 ** (
-            (note_number - self.setting.notenumber.origin) / self.schema.semitone
-        )
+    def __repr__(self) -> str:
+        return "<Tuner: {}>".format(self.__class__.__name__)

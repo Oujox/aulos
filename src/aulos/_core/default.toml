@@ -19,3 +19,4 @@ reference.symbol = "<N>4"
 
 [note.tuner]
 reference.hz = 440
+reference.number = 69

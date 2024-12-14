@@ -121,6 +121,10 @@ class Schema(metaclass=InstanceCacheMeta):
     Note
     """
 
+    @property
+    def ref_notenumber(self) -> int:
+        return self._setting.note.presentation.reference.number
+
     @cached_property
     def notenames(self) -> tuple[str]:
         return tuple(self._note.name2number.keys())
@@ -155,6 +159,18 @@ class Schema(metaclass=InstanceCacheMeta):
 
     def is_notenumber(self, value: t.Any) -> t.TypeGuard[int]:
         return isinstance(value, int) and value in self.notenumbers
+
+    """
+    Tuner
+    """
+
+    @property
+    def root(self) -> float:
+        return self._setting.note.tuner.reference.hz
+
+    @property
+    def root_notenumber(self) -> int:
+        return self._setting.note.tuner.reference.number
 
     """
     Extension

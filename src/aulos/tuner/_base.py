@@ -2,6 +2,7 @@ from abc import abstractmethod
 
 
 class BaseTuner:
+    __slots__ = ()
 
     @abstractmethod
-    def hz(self, note_number: int) -> float: ...
+    def hz(self, notenumber: int) -> float: ...
