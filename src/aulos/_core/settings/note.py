@@ -10,6 +10,7 @@ class NotePresentationReferenceSetting:
 @dataclass(frozen=True, slots=True)
 class NoteTunerReferenceSetting:
     hz: float
+    number: int
 
 
 @dataclass(frozen=True, slots=True)

@@ -27,7 +27,8 @@ class Mode(BaseScale, AulosObject):
         self._key = key
         self._accidentals = self.schema.generate_scale_accidentals(self._intervals)
 
-    def __init_subclass__(cls, scale: Scale, intervals: tuple[int]) -> None:
+    def __init_subclass__(cls, scale: Scale, intervals: tuple[int], **kwargs) -> None:
+        super().__init_subclass__(**kwargs)
         cls._scale = scale
         cls._intervals = tuple(intervals)
 

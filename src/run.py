@@ -1,6 +1,7 @@
 from aulos import *
 from aulos.scale import *
 from aulos.utils import *
+from aulos.tuner import *
 
 with Aulos():
     from pprint import pprint

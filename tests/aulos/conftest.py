@@ -4,18 +4,18 @@ from src.aulos import Setting
 
 SETTING_DICT_FOR_HSYS12 = {
     "pitchclass": {
-        "intervals": (2, 2, 1, 2, 2, 2, 1),
-        "symbols": ("C", "D", "E", "F", "G", "A", "B"),
+        "intervals": [2, 2, 1, 2, 2, 2, 1],
+        "symbols": ["C", "D", "E", "F", "G", "A", "B"],
         "accidental": {
             "limit": 2,
             "symbol": {"sharp": "#", "flat": "b", "nature": "n"},
         },
     },
     "note": {
-        "notenumber": {"min": 0, "max": 128},
+        "notenumber": {"min": 0, "max": 127},
         "presentation": {
             "name": "scientific pitch notation",
-            "symbols": (
+            "symbols": [
                 "<N>-1",
                 "<N>0",
                 "<N>1",
@@ -27,10 +27,10 @@ SETTING_DICT_FOR_HSYS12 = {
                 "<N>7",
                 "<N>8",
                 "<N>9",
-            ),
+            ],
             "reference": {"number": 60, "symbol": "<N>4"},
         },
-        "tuner": {"reference": {"hz": 440}},
+        "tuner": {"reference": {"hz": 440, "number": 69}},
     },
 }
 

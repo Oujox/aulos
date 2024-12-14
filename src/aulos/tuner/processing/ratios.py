@@ -1,4 +1,4 @@
-from functools import partial
+import typing as t
 
 
 def compress_ratio(ratio: float) -> float:
@@ -16,10 +16,6 @@ def standard_tuning_table(p5th_ratio: float) -> tuple[float]:
     return tuple(ratios)
 
 
-pythagorean_tuning_table = partial(standard_tuning_table, 1.5)
-meantone_tuning_table = partial(standard_tuning_table, (5**0.25))
-
-
 def fivelimit_tuning_table() -> tuple[float]:
     # https://en.wikipedia.org/wiki/Just_intonation#Five-limit_tuning
     (
@@ -32,3 +28,8 @@ def fivelimit_tuning_table() -> tuple[float]:
     ).sort()
 
     return tuple(ratios)
+
+
+PYTHAGOREAN_TUNING_RATIOS: t.Final[tuple[float]] = standard_tuning_table(1.5)
+MEANTONE_TUNING_RATIOS: t.Final[tuple[float]] = standard_tuning_table(5**0.25)
+FIVELIMIT_TUNING_RATIOS: t.Final[tuple[float]] = fivelimit_tuning_table()
