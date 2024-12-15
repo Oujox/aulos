@@ -6,6 +6,6 @@ from aulos.tuner import *
 with Aulos():
     from pprint import pprint
 
-    pprint(Major(Key("C")))
+    pprint(Tuner.mro())
     pprint(Dorian(Key("C")).diatonics)
     pprint(PitchClass(2, scale=Locrian(Key("C"))))
