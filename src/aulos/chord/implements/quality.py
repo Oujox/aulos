@@ -7,12 +7,6 @@ def validate(components: tuple[QualityComponent]) -> bool:
     def validate_empty(components: tuple[QualityComponent]):
         return not len(components) == 0
 
-    def validate_uniques(reversed: tuple[QualityComponent]):
-        uniques = set((c.group, c.index) for c in reversed)
-        if not len(uniques) == len(reversed):
-            return False
-        return True
-
     def validate_enable(reversed: tuple[QualityComponent]):
         enable: tuple[int] = ()
         for c in reversed:
@@ -32,7 +26,6 @@ def validate(components: tuple[QualityComponent]) -> bool:
     return all(
         [
             validate_empty(reversed_components),
-            validate_uniques(reversed_components),
             validate_enable(reversed_components),
         ]
     )
