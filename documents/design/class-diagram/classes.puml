@@ -6,6 +6,8 @@ class "AulosObject" as aulos._core.object.AulosObject {
   schema
   setting
 }
+class "BaseChord" as aulos.chord._base.BaseChord {
+}
 class "BaseNote" as aulos.note._base.BaseNote {
 }
 class "BaseScale" as aulos.scale._base.BaseScale {
@@ -13,6 +15,17 @@ class "BaseScale" as aulos.scale._base.BaseScale {
 }
 class "BaseTuner" as aulos.tuner._base.BaseTuner {
   {abstract}hz(notenumber: int) -> float
+}
+class "Chord" as aulos.chord.chord.Chord {
+  on
+  quality
+  root
+  is_chord(chord: t.Any) -> t.TypeGuard[str]
+}
+class "ChordElement" as aulos._core.schema.ChordElement {
+  on : str | None
+  quality : Quality | None
+  root : str | None
 }
 class "Context" as aulos._core.framework.context.Context {
   data : t.ClassVar[ContextVar[dict[str, t.Any]]]
@@ -59,6 +72,23 @@ class "PitchClass" as aulos.note.pitchclass.PitchClass {
   is_pitchclass(pitchclass: int) -> t.TypeGuard[int]
   is_pitchname(pitchname: str) -> t.TypeGuard[str]
 }
+class "Quality" as aulos.chord.quality.Quality {
+  components : tuple[QualityComponent]
+  intervals
+  name
+  reversed
+}
+class "QualityComponent" as aulos.chord.quality.QualityComponent {
+  alterations : dict[int, int]
+  brackets : bool
+  diminution : tuple[int]
+  enable : tuple[int]
+  extensions : tuple[int]
+  group : int
+  index : int
+  intervals : tuple[int]
+  name : str
+}
 class "Scale" as aulos.scale.scale.Scale {
   accidentals
   diatonics
@@ -68,7 +98,9 @@ class "Scale" as aulos.scale.scale.Scale {
   positions
 }
 class "Schema" as aulos._core.schema.Schema {
+  interval2qualities
   intervals
+  name2quality
   notenames
   notenumbers
   pitchclasses
@@ -91,7 +123,7 @@ class "Schema" as aulos._core.schema.Schema {
   convert_pitchname_to_notename(pitchname: str, octnumber: int) -> str
   convert_pitchname_to_picthclass(pitchname: str) -> int
   convert_pitchname_to_symbol(pitchname: str)
-  count_accidental(pitchname: str) -> t.Optional[int]
+  find_pitchname(value: str) -> str | None
   generate_key_accidentals(pitchname: str) -> tuple[int]
   generate_scale_accidentals(intervals: tuple[int]) -> tuple[int]
   is_notename(value: t.Any) -> t.TypeGuard[str]
@@ -99,6 +131,7 @@ class "Schema" as aulos._core.schema.Schema {
   is_pitchclass(value: t.Any) -> t.TypeGuard[int]
   is_pitchname(value: t.Any) -> t.TypeGuard[str]
   is_symbol(value: t.Any) -> t.TypeGuard[str]
+  parse_chord(name: str) -> ChordElement
 }
 class "Setting" as aulos._core.setting.Setting {
   note : NoteSetting
@@ -113,6 +146,8 @@ class "Tuner" as aulos.tuner.tuner.Tuner {
 }
 class "classproperty" as aulos._core.utils.decorators.classproperty {
 }
+aulos.chord.chord.Chord --|> aulos._core.object.AulosObject
+aulos.chord.chord.Chord --|> aulos.chord._base.BaseChord
 aulos.note.key.Key --|> aulos._core.object.AulosObject
 aulos.note.key.Key --|> aulos.note._base.BaseNote
 aulos.note.note.Note --|> aulos._core.object.AulosObject
@@ -128,6 +163,7 @@ aulos.tuner.tuner.Tuner --|> aulos.tuner._base.BaseTuner
 aulos.utils.context.Aulos --|> aulos._core.framework.context.Context
 aulos._core.setting.Setting --* aulos._core.object.AulosObject : _setting
 aulos._core.setting.Setting --* aulos._core.schema.Schema : _setting
+aulos.chord.quality.Quality --* aulos.chord.chord.Chord : _quality
 aulos.note.key.Key --* aulos.scale.mode.Mode : _key
 aulos.note.key.Key --* aulos.scale.scale.Scale : _key
 @enduml

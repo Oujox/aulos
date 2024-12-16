@@ -1,4 +1,5 @@
 import typing as t
+
 from ..quality import QualityComponent
 
 
@@ -9,13 +10,26 @@ def validate(components: tuple[QualityComponent]) -> bool:
 
     def validate_enable(reversed: tuple[QualityComponent]):
         enable: tuple[int] = ()
-        for c in reversed:
-            if all(z[0] == z[1] for z in zip(enable, c.enable)):
-                if len(enable) < len(c.enable):
-                    enable = c.enable
+        for rc in reversed:
+            if all(z[0] == z[1] for z in zip(enable, rc.enable)):
+                if len(enable) < len(rc.enable):
+                    enable = rc.enable
             else:
                 return False
         return True
+
+    def validate_alternations(reversed: tuple[QualityComponent]):
+        # allowed quality
+        if any(True for rc in reversed if rc.name == "dim"):
+            return True
+
+        intervals = []
+        alternations = {}
+        for rc in reversed:
+            rc_intervals = [x + y for x, y in zip(rc.intervals, rc.diminution)]
+            intervals = rc_intervals + intervals[len(rc_intervals) :]
+            alternations.update(rc.alterations)
+        return all(False for alt in alternations.keys() if alt not in intervals)
 
     if not all(isinstance(c, QualityComponent) for c in components):
         return False
@@ -27,40 +41,266 @@ def validate(components: tuple[QualityComponent]) -> bool:
         [
             validate_empty(reversed_components),
             validate_enable(reversed_components),
+            validate_alternations(reversed_components),
         ]
     )
 
 
 DEFAULT_QUALITY_VALIDATOR: t.Callable[[tuple[QualityComponent]], bool] = validate
 DEFAULT_QUALITY_COMPONENTS: t.Final[tuple[QualityComponent]] = (
-    QualityComponent("", 1, 0, (0, 4, 7)),
-    QualityComponent("m", 1, 0, (0, 3, 7)),
-    QualityComponent("dim", 1, 0, (0, 3, 6), alterations={10: 9}),
-    QualityComponent("aug", 1, 0, (0, 4, 8)),
-    QualityComponent("sus2", 1, 0, (0, 2, 7)),
-    QualityComponent("sus4", 1, 0, (0, 5, 7)),
-    QualityComponent("6", 2, 0, (0, 4, 7, 9)),
-    QualityComponent("7", 2, 0, (0, 4, 7, 10)),
-    QualityComponent("M7", 2, 0, (0, 4, 7, 11)),
-    QualityComponent("b5", 3, 0, (0, 4, 7), alterations={7: 6}, brackets=True),
-    QualityComponent("#5", 3, 0, (0, 4, 7), alterations={7: 8}, brackets=True),
-    QualityComponent("omit5", 3, 0, (0, 4, 7), enable=(1, 1, 0), brackets=True),
-    QualityComponent("omit3", 3, 0, (0, 4, 7), enable=(1, 0, 1), brackets=True),
-    QualityComponent("omit1", 3, 0, (0, 4, 7), enable=(0, 1, 1), brackets=True),
-    QualityComponent("add2", 4, 0, (0, 4, 7), extensions=(2,)),
-    QualityComponent("add6", 4, 0, (0, 4, 7), extensions=(9,)),
-    QualityComponent("add9", 4, 0, (0, 4, 7), extensions=(14,), enable=(1, 1, 1, 0, 1)),
     QualityComponent(
-        "add11", 4, 0, (0, 4, 7), extensions=(17,), enable=(1, 1, 1, 0, 0, 1)
+        "",
+        1,
+        0,
+        (0, 4, 7),
+        (0, 0, 0),
     ),
     QualityComponent(
-        "add13", 4, 0, (0, 4, 7), extensions=(21,), enable=(1, 1, 1, 0, 0, 0, 1)
+        "m",
+        1,
+        0,
+        (0, 4, 7),
+        (0, -1, 0),
     ),
-    QualityComponent("9", 5, 0, (0, 4, 7, 11, 14), brackets=True),
-    QualityComponent("b9", 5, 0, (0, 4, 7, 11, 13), brackets=True),
-    QualityComponent("#9", 5, 0, (0, 4, 7, 11, 15), brackets=True),
-    QualityComponent("11", 5, 1, (0, 4, 7, 11, 14, 17), brackets=True),
-    QualityComponent("#11", 5, 1, (0, 4, 7, 11, 14, 18), brackets=True),
-    QualityComponent("13", 5, 2, (0, 4, 7, 14, 11, 17, 21), brackets=True),
-    QualityComponent("b13", 5, 2, (0, 4, 7, 11, 14, 17, 20), brackets=True),
+    QualityComponent(
+        "dim",
+        1,
+        0,
+        (0, 4, 7),
+        (0, -1, 0),
+        alterations={7: -1, 10: -1},
+    ),
+    QualityComponent(
+        "aug",
+        1,
+        0,
+        (0, 4, 7),
+        (0, 0, 0),
+        alterations={7: 1},
+    ),
+    QualityComponent(
+        "sus2",
+        1,
+        0,
+        (0, 4, 7),
+        (0, 0, 0),
+        alterations={4: -2},
+    ),
+    QualityComponent(
+        "sus4",
+        1,
+        0,
+        (0, 4, 7),
+        (0, 0, 0),
+        alterations={4: 1},
+    ),
+    QualityComponent(
+        "6",
+        2,
+        0,
+        (0, 4, 7, 9),
+        (0, 0, 0, 0),
+    ),
+    QualityComponent(
+        "7",
+        2,
+        0,
+        (0, 4, 7, 11),
+        (0, 0, 0, -1),
+    ),
+    QualityComponent(
+        "M7",
+        2,
+        0,
+        (0, 4, 7, 11),
+        (0, 0, 0, 0),
+    ),
+    QualityComponent(
+        "9",
+        3,
+        0,
+        (0, 4, 7, 11, 14),
+        (0, 0, 0, 0, 0),
+    ),
+    QualityComponent(
+        "b9",
+        3,
+        0,
+        (0, 4, 7, 11, 14),
+        (0, 0, 0, 0, -1),
+    ),
+    QualityComponent(
+        "#9",
+        3,
+        0,
+        (0, 4, 7, 11, 14),
+        (0, 0, 0, 0, 1),
+    ),
+    QualityComponent(
+        "11",
+        3,
+        0,
+        (0, 4, 7, 11, 14, 17),
+        (0, 0, 0, 0, 0, 0),
+    ),
+    QualityComponent(
+        "#11",
+        3,
+        0,
+        (0, 4, 7, 11, 14, 17),
+        (0, 0, 0, 0, 0, 1),
+    ),
+    QualityComponent(
+        "13",
+        3,
+        0,
+        (0, 4, 7, 11, 14, 17, 21),
+        (0, 0, 0, 0, 0, 0, 0),
+    ),
+    QualityComponent(
+        "b13",
+        3,
+        0,
+        (0, 4, 7, 11, 14, 17, 21),
+        (0, 0, 0, 0, 0, 0, -1),
+    ),
+    QualityComponent(
+        "add2",
+        4,
+        0,
+        (0, 4, 7),
+        (0, 0, 0),
+        extensions=(2,),
+    ),
+    QualityComponent(
+        "add6",
+        4,
+        0,
+        (0, 4, 7),
+        (0, 0, 0),
+        extensions=(9,),
+    ),
+    QualityComponent(
+        "add9",
+        4,
+        0,
+        (0, 4, 7),
+        (0, 0, 0),
+        extensions=(14,),
+        enable=(1, 1, 1, 0, 1),
+    ),
+    QualityComponent(
+        "add11",
+        4,
+        0,
+        (0, 4, 7),
+        (0, 0, 0),
+        extensions=(17,),
+        enable=(1, 1, 1, 0, 0, 1),
+    ),
+    QualityComponent(
+        "add13",
+        4,
+        0,
+        (0, 4, 7),
+        (0, 0, 0),
+        extensions=(21,),
+        enable=(1, 1, 1, 0, 0, 0, 1),
+    ),
+    QualityComponent(
+        "b5",
+        5,
+        0,
+        (0, 4, 7),
+        (0, 0, 0),
+        alterations={7: -1},
+        brackets=True,
+    ),
+    QualityComponent(
+        "#5",
+        5,
+        0,
+        (0, 4, 7),
+        (0, 0, 0),
+        alterations={7: 1},
+        brackets=True,
+    ),
+    QualityComponent(
+        "b9",
+        5,
+        1,
+        (0, 4, 7),
+        (0, 0, 0),
+        alterations={14: -1},
+        brackets=True,
+    ),
+    QualityComponent(
+        "#9",
+        5,
+        1,
+        (0, 4, 7),
+        (0, 0, 0),
+        alterations={14: 1},
+        brackets=True,
+    ),
+    QualityComponent(
+        "b11",
+        5,
+        2,
+        (0, 4, 7),
+        (0, 0, 0),
+        alterations={17: -1},
+        brackets=True,
+    ),
+    QualityComponent(
+        "#11",
+        5,
+        2,
+        (0, 4, 7),
+        (0, 0, 0),
+        alterations={17: 1},
+        brackets=True,
+    ),
+    QualityComponent(
+        "b13",
+        5,
+        3,
+        (0, 4, 7),
+        (0, 0, 0),
+        alterations={21: -1},
+        brackets=True,
+    ),
+    QualityComponent(
+        "#13",
+        5,
+        3,
+        (0, 4, 7),
+        (0, 0, 0),
+        alterations={21: 1},
+        brackets=True,
+    ),
+    QualityComponent(
+        "omit5",
+        6,
+        0,
+        (0, 4),
+        (0, 0, 0),
+        enable=(1, 1, 0),
+    ),
+    QualityComponent(
+        "omit3",
+        6,
+        0,
+        (0, 7),
+        (0, 0, 0),
+        enable=(1, 0, 1),
+    ),
+    QualityComponent(
+        "omit1",
+        6,
+        0,
+        (4, 7),
+        (0, 0, 0),
+        enable=(0, 1, 1),
+    ),
 )

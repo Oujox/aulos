@@ -1,4 +1,3 @@
-import typing as t
 from dataclasses import dataclass, field
 
 
@@ -8,6 +7,7 @@ class QualityComponent:
     group: int
     index: int
     intervals: tuple[int]
+    diminution: tuple[int]
     enable: tuple[int] = field(default_factory=tuple)
     extensions: tuple[int] = field(default_factory=tuple)
     alterations: dict[int, int] = field(default_factory=dict)
@@ -50,7 +50,8 @@ class Quality:
         alterations: dict[int, int] = {}
 
         for rc in self.reversed:
-            intervals = list(rc.intervals) + intervals[len(rc.intervals) :]
+            rc_intervals = [x + y for x, y in zip(rc.intervals, rc.diminution)]
+            intervals = rc_intervals + intervals[len(rc_intervals) :]
             extensions.update(rc.extensions)
             alterations.update(rc.alterations)
         intervals.extend(extensions)
@@ -58,7 +59,7 @@ class Quality:
         for k, v in alterations.items():
             if k in intervals:
                 intervals.remove(k)
-                intervals.append(v)
+                intervals.append(k + v)
 
         intervals.sort()
         return intervals

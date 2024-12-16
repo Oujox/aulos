@@ -3,4 +3,6 @@
 * 一般に使用される和音を提供
 """
 
-__all__ = []
+from .chord import Chord
+
+__all__ = ["Chord"]

@@ -1,7 +1,8 @@
 import typing as t
-from itertools import product
 from collections import defaultdict
-from .quality import QualityComponent, Quality
+from itertools import product
+
+from ..quality import Quality, QualityComponent
 
 
 class QualityGenerator:
