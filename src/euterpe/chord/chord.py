@@ -1,11 +1,11 @@
 import typing as t
 
-from .._core import AulosObject
+from .._core import EuterpeObject
 from ._base import BaseChord
 from .quality import Quality
 
 
-class Chord(BaseChord, AulosObject):
+class Chord(BaseChord, EuterpeObject):
 
     _root: str
     _quality: Quality

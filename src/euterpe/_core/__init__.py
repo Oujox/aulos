@@ -5,8 +5,9 @@
 
 # utils, framework
 from . import framework, utils
+
 # implementation
-from .object import AulosObject
+from .object import EuterpeObject
 from .setting import Setting
 
-__all__ = ["AulosObject", "Setting", "framework", "utils"]
+__all__ = ["EuterpeObject", "Setting", "framework", "utils"]

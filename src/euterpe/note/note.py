@@ -3,7 +3,7 @@ from __future__ import annotations
 import typing as t
 from typing import TYPE_CHECKING
 
-from .._core import AulosObject
+from .._core import EuterpeObject
 from .._core.utils import index
 from ._base import BaseNote
 
@@ -11,7 +11,7 @@ if TYPE_CHECKING:
     from ..scale import Scale
 
 
-class Note(BaseNote, AulosObject):
+class Note(BaseNote, EuterpeObject):
 
     _notenumber: int
     _notenames: tuple[str | None]

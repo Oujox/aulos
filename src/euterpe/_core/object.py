@@ -5,16 +5,18 @@ from .framework import InjectedMeta, OptimizedMeta
 from .schema import Schema
 from .setting import Setting
 
-AulosObjectMeta = type("AulosObjectMeta", (InjectedMeta, OptimizedMeta, ABCMeta), {})
+EuterpeObjectMeta = type(
+    "EuterpeObjectMeta", (InjectedMeta, OptimizedMeta, ABCMeta), {}
+)
 
 
-class AulosObject(metaclass=AulosObjectMeta):
+class EuterpeObject(metaclass=EuterpeObjectMeta):
 
     _setting: Setting
     _schema: Schema
 
     def __new__(cls, *args, **kwargs) -> t.Self:
-        if cls is AulosObject:
+        if cls is EuterpeObject:
             raise TypeError("Object cannot be instantiated directly.")
         return super().__new__(cls)
 
@@ -24,7 +26,7 @@ class AulosObject(metaclass=AulosObjectMeta):
                 "Initialization error: 'setting' argument is missing. "
                 "Please provide a valid setting object."
             )
-        super(AulosObject, self).__init__()
+        super(EuterpeObject, self).__init__()
         self._setting = setting
         self._schema = Schema(setting)
 

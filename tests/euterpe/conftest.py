@@ -1,6 +1,6 @@
 import pytest
 
-from src.aulos import Setting
+from src.euterpe import Setting
 
 SETTING_DICT_FOR_HSYS12 = {
     "pitchclass": {

@@ -2,7 +2,7 @@ import typing as t
 from functools import cached_property
 from itertools import accumulate, compress
 
-from .._core import AulosObject
+from .._core import EuterpeObject
 from .._core.utils import classproperty, rotate
 from ..note import Key, PitchClass
 from ._base import BaseScale
@@ -10,7 +10,7 @@ from .processing.accidentals import accidentals
 from .scale import Scale
 
 
-class Mode(BaseScale, AulosObject):
+class Mode(BaseScale, EuterpeObject):
 
     _intervals: t.ClassVar[tuple[int]]
     _scale: t.ClassVar[Scale]

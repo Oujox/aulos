@@ -3,7 +3,7 @@ from __future__ import annotations
 import typing as t
 from typing import TYPE_CHECKING
 
-from .._core import AulosObject
+from .._core import EuterpeObject
 from .._core.utils import index
 from ._base import BaseNote
 
@@ -12,7 +12,7 @@ if TYPE_CHECKING:
     from scale import Scale  # pragma: no cover
 
 
-class PitchClass(BaseNote, AulosObject):
+class PitchClass(BaseNote, EuterpeObject):
 
     _pitchclass: int
     _pitchnames: tuple[str | None]

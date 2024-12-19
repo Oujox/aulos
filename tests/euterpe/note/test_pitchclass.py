@@ -1,7 +1,7 @@
 import pytest
 
-from src.aulos.note import PitchClass
-from src.aulos.scale import Locrian, Major, Minor
+from src.euterpe.note import PitchClass
+from src.euterpe.scale import Locrian, Major, Minor
 
 
 def test_PitchClass_init_from_pitchname(setting, data_pitchname):
