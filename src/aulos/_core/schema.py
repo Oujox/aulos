@@ -1,13 +1,25 @@
+from __future__ import annotations
+
 import typing as t
 from dataclasses import dataclass
-from functools import cached_property, lru_cache
+from functools import cached_property
 from itertools import starmap
+from typing import TYPE_CHECKING
 
 from .framework import InstanceCacheMeta
 from .schemas.note import NoteSchema
 from .schemas.pitchclass import PitchClassSchema
 from .setting import Setting
 from .utils import diff
+
+if TYPE_CHECKING:
+    from ..chord.quality import Quality
+
+
+class ChordElement(t.TypedDict):
+    root: str | None
+    on: str | None
+    quality: Quality | None
 
 
 @dataclass(frozen=True, init=False)
@@ -62,16 +74,13 @@ class Schema(metaclass=InstanceCacheMeta):
     def pitchclasses(self) -> tuple[int]:
         return tuple(self._pitchclass.class2name.keys())
 
-    def count_accidental(self, pitchname: str) -> t.Optional[int]:
-        if self.is_pitchname(pitchname):
-            count_acc_upper = pitchname.count(
-                self._setting.pitchclass.accidental.symbol.sharp
-            )
-            count_acc_lower = pitchname.count(
-                self._setting.pitchclass.accidental.symbol.flat
-            )
-            return count_acc_upper - count_acc_lower
-        return None
+    def find_pitchname(self, value: str) -> str | None:
+        finded = sorted(
+            [pitchname for pitchname in self.pitchnames if value.find(pitchname) == 0],
+            key=len,
+            reverse=True,
+        )
+        return (finded + [None])[0]
 
     def convert_pitchclass_to_symbol(self, pitchclass: int) -> t.Optional[str]:
         if not self.is_pitchclass(pitchclass):
@@ -171,6 +180,48 @@ class Schema(metaclass=InstanceCacheMeta):
     @property
     def root_notenumber(self) -> int:
         return self._setting.note.tuner.reference.number
+
+    """
+    Chord
+    """
+
+    @cached_property
+    def name2quality(self) -> dict[str, Quality]:
+        from ..chord.implements.quality import (DEFAULT_QUALITY_COMPONENTS,
+                                                DEFAULT_QUALITY_VALIDATOR)
+        from ..chord.processing.generator import QualityGenerator
+
+        return {
+            q.name: q
+            for q in QualityGenerator(
+                DEFAULT_QUALITY_COMPONENTS, DEFAULT_QUALITY_VALIDATOR
+            )
+        }
+
+    @cached_property
+    def interval2qualities(self) -> dict[str, Quality]:
+        from ..chord.implements.quality import (DEFAULT_QUALITY_COMPONENTS,
+                                                DEFAULT_QUALITY_VALIDATOR)
+        from ..chord.processing.generator import QualityGenerator
+
+        return {
+            q: q.intervals
+            for q in QualityGenerator(
+                DEFAULT_QUALITY_COMPONENTS, DEFAULT_QUALITY_VALIDATOR
+            )
+        }
+
+    def parse_chord(self, name: str) -> ChordElement:
+        root = self.find_pitchname(name)
+        rest = name.replace(root, "", 1)
+        if rest.find("/") >= 0:
+            quality, on = rest.split("/", 1)
+            quality = self.name2quality.get(quality, None)
+            on = self.find_pitchname(on)
+        else:
+            quality = self.name2quality.get(rest, None)
+            on = None
+        return {"root": root, "on": on, "quality": quality}
 
     """
     Extension

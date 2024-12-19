@@ -44,6 +44,12 @@ package "aulos._warnings" as aulos._warnings {
 }
 package "aulos.chord" as aulos.chord {
 }
+package "aulos.chord._base" as aulos.chord._base {
+}
+package "aulos.chord.chord" as aulos.chord.chord {
+}
+package "aulos.chord.quality" as aulos.chord.quality {
+}
 package "aulos.note" as aulos.note {
 }
 package "aulos.note._base" as aulos.note._base {
@@ -74,6 +80,7 @@ package "aulos.utils.context" as aulos.utils.context {
 }
 aulos --> aulos._core
 aulos --> aulos._version
+aulos --> aulos.chord
 aulos --> aulos.note
 aulos._core --> aulos._core.object
 aulos._core --> aulos._core.setting
@@ -94,6 +101,9 @@ aulos._core.utils --> aulos._core.utils.array
 aulos._core.utils --> aulos._core.utils.calculation
 aulos._core.utils --> aulos._core.utils.dataclass
 aulos._core.utils --> aulos._core.utils.decorators
+aulos.chord --> aulos.chord.chord
+aulos.chord.chord --> aulos.chord._base
+aulos.chord.chord --> aulos.chord.quality
 aulos.note --> aulos.note.key
 aulos.note --> aulos.note.note
 aulos.note --> aulos.note.pitchclass
