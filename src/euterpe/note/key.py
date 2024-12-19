@@ -1,10 +1,10 @@
 import typing as t
 
-from .._core import AulosObject
+from .._core import EuterpeObject
 from ._base import BaseNote
 
 
-class Key(BaseNote, AulosObject):
+class Key(BaseNote, EuterpeObject):
 
     _name: str
     _pitchclass: int

@@ -16,7 +16,7 @@
     {
       "label": "Output ClassDiagram",
       "type": "shell",
-      "command": "pyreverse ./src/aulos -o png -d ./documents/design/class-diagram ; pyreverse ./src/aulos -o puml -d ./documents/design/class-diagram",
+      "command": "pyreverse ./src/euterpe -o png -d ./documents/design/class-diagram ; pyreverse ./src/euterpe -o puml -d ./documents/design/class-diagram",
       "problemMatcher": []
     },
     {
@@ -32,7 +32,7 @@
     {
       "label": "test with coverage",
       "type": "shell",
-      "command": "python -m pytest --benchmark-skip --cov=./src/aulos --cov-report=html:./documents/coverage/html",
+      "command": "python -m pytest --benchmark-skip --cov=./src/euterpe --cov-report=html:./documents/coverage/html",
       "group": {
         "kind": "test"
       },
@@ -50,19 +50,19 @@
     {
       "label": "format",
       "type": "shell",
-      "command": "black ./src/aulos ./tests/aulos ; isort ./src/aulos ./tests/aulos",
+      "command": "black ./src/euterpe ./tests/euterpe ; isort ./src/euterpe ./tests/euterpe",
       "problemMatcher": []
     },
     {
       "label": "lint",
       "type": "shell",
-      "command": "pylint ./src/aulos ./tests/aulos",
+      "command": "pylint ./src/euterpe ./tests/euterpe",
       "problemMatcher": []
     },
     {
       "label": "type-check",
       "type": "shell",
-      "command": "mypy ./src/aulos",
+      "command": "mypy ./src/euterpe",
       "problemMatcher": []
     }
   ]

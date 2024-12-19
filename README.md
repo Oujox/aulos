@@ -1,13 +1,13 @@
-# aulos
+# euterpe
 
 A Python library for exploring and utilizing music theory concepts in an intuitive and programmatic way.
 
-[![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://github.com/Oujox/aulos/blob/main/LICENSE)
-[![codecov](https://codecov.io/gh/Oujox/aulos/graph/badge.svg?token=UP6ZQP7HMK)](https://codecov.io/gh/Oujox/aulos)
+[![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://github.com/Oujox/euterpe/blob/main/LICENSE)
+[![codecov](https://codecov.io/gh/Oujox/euterpe/graph/badge.svg?token=UP6ZQP7HMK)](https://codecov.io/gh/Oujox/euterpe)
 
 > **workflows**
 >
-> [![🐍 Python Tests Workflow](https://github.com/Oujox/aulos/actions/workflows/test-python.yml/badge.svg)](https://github.com/Oujox/aulos/actions/workflows/test-python.yml)
+> [![🐍 Python Tests Workflow](https://github.com/Oujox/euterpe/actions/workflows/test-python.yml/badge.svg)](https://github.com/Oujox/euterpe/actions/workflows/test-python.yml)
 
 ## overview
 
@@ -16,7 +16,7 @@ A Python library for exploring and utilizing music theory concepts in an intuiti
 ## usage
 
 ```python
-from aulos import Note
+from euterpe import Note
 
 a1 = Note("A4")
 
@@ -25,7 +25,7 @@ print(a1)
 ```
 
 ```python
-from aulos import scale, Key
+from euterpe import scale, Key
 
 c = Key("C")
 
@@ -40,7 +40,7 @@ print(locrian.diatonics)
 ```
 
 ```python
-from aulos import Chord
+from euterpe import Chord
 
 cm7b5 = Chord("Cm7b5")
 
@@ -48,11 +48,11 @@ print(cm7b5)
 ```
 
 ```python
-from aulos import Progress
+from euterpe import Progress
 
 cm7b5 = Progress(["F", "E7", "Am", "G"])
 ```
 
 ## Lisence
 
-This project is distributed under the MIT License. For more information, refer to the [LICENSE](https://github.com/Oujox/aulos/blob/main/LICENSE) file.
+This project is distributed under the MIT License. For more information, refer to the [LICENSE](https://github.com/Oujox/euterpe/blob/main/LICENSE) file.

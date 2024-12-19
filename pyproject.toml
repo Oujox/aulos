@@ -3,7 +3,7 @@ requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "aulos"
+name = "euterpe"
 description = "lib for music theory"
 readme = "README.md"
 license = { file = "LICENSE" }

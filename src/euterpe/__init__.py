@@ -1,4 +1,4 @@
-""" aulos (library for music theory)
+""" euterpe (library for music theory)
 """
 
 from . import scale, tuner, utils

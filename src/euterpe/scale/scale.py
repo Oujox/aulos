@@ -1,13 +1,13 @@
 import typing as t
 from itertools import accumulate, compress
 
-from .._core import AulosObject
+from .._core import EuterpeObject
 from .._core.utils import classproperty
 from ..note import Key, PitchClass
 from ._base import BaseScale
 
 
-class Scale(BaseScale, AulosObject):
+class Scale(BaseScale, EuterpeObject):
 
     _intervals: t.ClassVar[tuple[int]]
     _key: Key

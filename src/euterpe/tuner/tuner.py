@@ -1,10 +1,10 @@
 import typing as t
 
-from .._core import AulosObject
+from .._core import EuterpeObject
 from ._base import BaseTuner
 
 
-class Tuner(BaseTuner, AulosObject):
+class Tuner(BaseTuner, EuterpeObject):
 
     _ratios: t.ClassVar[tuple[int]]
 

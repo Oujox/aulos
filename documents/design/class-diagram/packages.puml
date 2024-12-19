@@ -1,121 +1,121 @@
 @startuml packages
 set namespaceSeparator none
-package "aulos" as aulos {
+package "euterpe" as euterpe {
 }
-package "aulos.__main__" as aulos.__main__ {
+package "euterpe.__main__" as euterpe.__main__ {
 }
-package "aulos._core" as aulos._core {
+package "euterpe._core" as euterpe._core {
 }
-package "aulos._core.framework" as aulos._core.framework {
+package "euterpe._core.framework" as euterpe._core.framework {
 }
-package "aulos._core.framework.context" as aulos._core.framework.context {
+package "euterpe._core.framework.context" as euterpe._core.framework.context {
 }
-package "aulos._core.framework.inject" as aulos._core.framework.inject {
+package "euterpe._core.framework.inject" as euterpe._core.framework.inject {
 }
-package "aulos._core.framework.instancecache" as aulos._core.framework.instancecache {
+package "euterpe._core.framework.instancecache" as euterpe._core.framework.instancecache {
 }
-package "aulos._core.framework.optimize" as aulos._core.framework.optimize {
+package "euterpe._core.framework.optimize" as euterpe._core.framework.optimize {
 }
-package "aulos._core.object" as aulos._core.object {
+package "euterpe._core.object" as euterpe._core.object {
 }
-package "aulos._core.schema" as aulos._core.schema {
+package "euterpe._core.schema" as euterpe._core.schema {
 }
-package "aulos._core.setting" as aulos._core.setting {
+package "euterpe._core.setting" as euterpe._core.setting {
 }
-package "aulos._core.shared" as aulos._core.shared {
+package "euterpe._core.shared" as euterpe._core.shared {
 }
-package "aulos._core.shared.intervals" as aulos._core.shared.intervals {
+package "euterpe._core.shared.intervals" as euterpe._core.shared.intervals {
 }
-package "aulos._core.utils" as aulos._core.utils {
+package "euterpe._core.utils" as euterpe._core.utils {
 }
-package "aulos._core.utils.array" as aulos._core.utils.array {
+package "euterpe._core.utils.array" as euterpe._core.utils.array {
 }
-package "aulos._core.utils.calculation" as aulos._core.utils.calculation {
+package "euterpe._core.utils.calculation" as euterpe._core.utils.calculation {
 }
-package "aulos._core.utils.dataclass" as aulos._core.utils.dataclass {
+package "euterpe._core.utils.dataclass" as euterpe._core.utils.dataclass {
 }
-package "aulos._core.utils.decorators" as aulos._core.utils.decorators {
+package "euterpe._core.utils.decorators" as euterpe._core.utils.decorators {
 }
-package "aulos._errors" as aulos._errors {
+package "euterpe._errors" as euterpe._errors {
 }
-package "aulos._version" as aulos._version {
+package "euterpe._version" as euterpe._version {
 }
-package "aulos._warnings" as aulos._warnings {
+package "euterpe._warnings" as euterpe._warnings {
 }
-package "aulos.chord" as aulos.chord {
+package "euterpe.chord" as euterpe.chord {
 }
-package "aulos.chord._base" as aulos.chord._base {
+package "euterpe.chord._base" as euterpe.chord._base {
 }
-package "aulos.chord.chord" as aulos.chord.chord {
+package "euterpe.chord.chord" as euterpe.chord.chord {
 }
-package "aulos.chord.quality" as aulos.chord.quality {
+package "euterpe.chord.quality" as euterpe.chord.quality {
 }
-package "aulos.note" as aulos.note {
+package "euterpe.note" as euterpe.note {
 }
-package "aulos.note._base" as aulos.note._base {
+package "euterpe.note._base" as euterpe.note._base {
 }
-package "aulos.note.key" as aulos.note.key {
+package "euterpe.note.key" as euterpe.note.key {
 }
-package "aulos.note.note" as aulos.note.note {
+package "euterpe.note.note" as euterpe.note.note {
 }
-package "aulos.note.pitchclass" as aulos.note.pitchclass {
+package "euterpe.note.pitchclass" as euterpe.note.pitchclass {
 }
-package "aulos.scale" as aulos.scale {
+package "euterpe.scale" as euterpe.scale {
 }
-package "aulos.scale._base" as aulos.scale._base {
+package "euterpe.scale._base" as euterpe.scale._base {
 }
-package "aulos.scale.mode" as aulos.scale.mode {
+package "euterpe.scale.mode" as euterpe.scale.mode {
 }
-package "aulos.scale.scale" as aulos.scale.scale {
+package "euterpe.scale.scale" as euterpe.scale.scale {
 }
-package "aulos.tuner" as aulos.tuner {
+package "euterpe.tuner" as euterpe.tuner {
 }
-package "aulos.tuner._base" as aulos.tuner._base {
+package "euterpe.tuner._base" as euterpe.tuner._base {
 }
-package "aulos.tuner.tuner" as aulos.tuner.tuner {
+package "euterpe.tuner.tuner" as euterpe.tuner.tuner {
 }
-package "aulos.utils" as aulos.utils {
+package "euterpe.utils" as euterpe.utils {
 }
-package "aulos.utils.context" as aulos.utils.context {
+package "euterpe.utils.context" as euterpe.utils.context {
 }
-aulos --> aulos._core
-aulos --> aulos._version
-aulos --> aulos.chord
-aulos --> aulos.note
-aulos._core --> aulos._core.object
-aulos._core --> aulos._core.setting
-aulos._core.framework --> aulos._core.framework.context
-aulos._core.framework --> aulos._core.framework.inject
-aulos._core.framework --> aulos._core.framework.instancecache
-aulos._core.framework --> aulos._core.framework.optimize
-aulos._core.framework.inject --> aulos._core.framework.context
-aulos._core.object --> aulos._core.framework
-aulos._core.object --> aulos._core.schema
-aulos._core.object --> aulos._core.setting
-aulos._core.schema --> aulos._core.framework
-aulos._core.schema --> aulos._core.setting
-aulos._core.schema --> aulos._core.utils
-aulos._core.setting --> aulos._core.utils
-aulos._core.shared --> aulos._core.shared.intervals
-aulos._core.utils --> aulos._core.utils.array
-aulos._core.utils --> aulos._core.utils.calculation
-aulos._core.utils --> aulos._core.utils.dataclass
-aulos._core.utils --> aulos._core.utils.decorators
-aulos.chord --> aulos.chord.chord
-aulos.chord.chord --> aulos.chord._base
-aulos.chord.chord --> aulos.chord.quality
-aulos.note --> aulos.note.key
-aulos.note --> aulos.note.note
-aulos.note --> aulos.note.pitchclass
-aulos.note.key --> aulos.note._base
-aulos.note.note --> aulos.note._base
-aulos.note.pitchclass --> aulos.note._base
-aulos.scale --> aulos.scale.mode
-aulos.scale --> aulos.scale.scale
-aulos.scale.mode --> aulos.scale._base
-aulos.scale.mode --> aulos.scale.scale
-aulos.scale.scale --> aulos.scale._base
-aulos.tuner --> aulos.tuner.tuner
-aulos.tuner.tuner --> aulos.tuner._base
-aulos.utils --> aulos.utils.context
+euterpe --> euterpe._core
+euterpe --> euterpe._version
+euterpe --> euterpe.chord
+euterpe --> euterpe.note
+euterpe._core --> euterpe._core.object
+euterpe._core --> euterpe._core.setting
+euterpe._core.framework --> euterpe._core.framework.context
+euterpe._core.framework --> euterpe._core.framework.inject
+euterpe._core.framework --> euterpe._core.framework.instancecache
+euterpe._core.framework --> euterpe._core.framework.optimize
+euterpe._core.framework.inject --> euterpe._core.framework.context
+euterpe._core.object --> euterpe._core.framework
+euterpe._core.object --> euterpe._core.schema
+euterpe._core.object --> euterpe._core.setting
+euterpe._core.schema --> euterpe._core.framework
+euterpe._core.schema --> euterpe._core.setting
+euterpe._core.schema --> euterpe._core.utils
+euterpe._core.setting --> euterpe._core.utils
+euterpe._core.shared --> euterpe._core.shared.intervals
+euterpe._core.utils --> euterpe._core.utils.array
+euterpe._core.utils --> euterpe._core.utils.calculation
+euterpe._core.utils --> euterpe._core.utils.dataclass
+euterpe._core.utils --> euterpe._core.utils.decorators
+euterpe.chord --> euterpe.chord.chord
+euterpe.chord.chord --> euterpe.chord._base
+euterpe.chord.chord --> euterpe.chord.quality
+euterpe.note --> euterpe.note.key
+euterpe.note --> euterpe.note.note
+euterpe.note --> euterpe.note.pitchclass
+euterpe.note.key --> euterpe.note._base
+euterpe.note.note --> euterpe.note._base
+euterpe.note.pitchclass --> euterpe.note._base
+euterpe.scale --> euterpe.scale.mode
+euterpe.scale --> euterpe.scale.scale
+euterpe.scale.mode --> euterpe.scale._base
+euterpe.scale.mode --> euterpe.scale.scale
+euterpe.scale.scale --> euterpe.scale._base
+euterpe.tuner --> euterpe.tuner.tuner
+euterpe.tuner.tuner --> euterpe.tuner._base
+euterpe.utils --> euterpe.utils.context
 @enduml

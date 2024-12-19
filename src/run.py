@@ -1,9 +1,9 @@
-from aulos import *
-from aulos.scale import *
-from aulos.utils import *
-from aulos.tuner import *
+from euterpe import *
+from euterpe.scale import *
+from euterpe.utils import *
+from euterpe.tuner import *
 
-with Aulos():
+with Euterpe():
     from pprint import pprint
 
     ab5 = Chord("Am7(b5)/E")
