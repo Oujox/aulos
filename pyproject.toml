@@ -5,7 +5,6 @@ build-backend = "maturin"
 [project.optional-dependencies]
 testing = [
     "pytest",
-    "pytest-cov",
     "pytest-benchmark",
     "maturin",
 ]
