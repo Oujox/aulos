@@ -12,3 +12,13 @@ fn aulos(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(sum_as_string, m)?)?;
     Ok(())
 }
+
+#[cfg(test)]
+mod tests {
+    use super::sum_as_string;
+    #[test]
+    fn test_sample() {
+        let a = sum_as_string(2, 2).unwrap();
+        assert_eq!(a, String::from("4"));
+    }
+}
