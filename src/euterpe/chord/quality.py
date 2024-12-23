@@ -39,7 +39,7 @@ class Quality:
             name += c.name
             pre = c
 
-        if pre.brackets:
+        if pre is not None and pre.brackets:
             name += ")"
         return name
 
@@ -62,7 +62,7 @@ class Quality:
                 intervals.append(k + v)
 
         intervals.sort()
-        return intervals
+        return tuple(intervals)
 
     @property
     def reversed(self):

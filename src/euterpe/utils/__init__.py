@@ -1,3 +1,3 @@
-from .context import Euterpe
+from .euterpe import Euterpe
 
 __all__ = ["Euterpe"]

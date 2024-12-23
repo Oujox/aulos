@@ -12,10 +12,10 @@ class Context(ContextDecorator):
 
     def __init__(
         self,
-        setting: t.Optional[Setting] = None,
+        setting: Setting,
         **data,
     ) -> None:
-        self.__setting = self.setting.set(setting or Setting.default())
+        self.__setting = self.setting.set(setting)
         self.__data = self.data.set(data)
 
     def __enter__(self) -> t.Self:

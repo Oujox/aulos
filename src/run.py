@@ -3,7 +3,10 @@ from euterpe.scale import *
 from euterpe.utils import *
 from euterpe.tuner import *
 
-with Euterpe():
+euterpe = Euterpe("my")
+
+@euterpe.WorkSpace()
+def track1():
     from pprint import pprint
 
     ab5 = Chord("Am7(b5)/E")
@@ -12,3 +15,5 @@ with Euterpe():
     pprint(Tuner.mro())
     pprint(Dorian(Key("C")).diatonics)
     pprint(PitchClass(2, scale=Locrian(Key("C"))))
+
+track1()
