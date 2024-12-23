@@ -67,9 +67,9 @@ class PitchClass(BaseNote, EuterpeObject):
 
     @scale.setter
     def scale(self, scale: Scale):
-        from ..scale import Mode, Scale
+        from ..scale import Scale
 
-        if isinstance(scale, (Scale, Mode)):
+        if isinstance(scale, Scale):
             pitchclass = (self.pitchclass - scale.key.pitchclass) % self.schema.semitone
             if (idx := index(scale.positions, pitchclass)) is None:
                 return
@@ -102,8 +102,8 @@ class PitchClass(BaseNote, EuterpeObject):
     def __repr__(self) -> str:
         return "<PitchClass: {}>".format(self.pitchname or str(self.pitchnames))
 
-    def is_pitchname(self, pitchname: str) -> t.TypeGuard[str]:
+    def is_pitchname(self, pitchname: t.Any) -> t.TypeGuard[str]:
         return self.schema.is_pitchname(pitchname)
 
-    def is_pitchclass(self, pitchclass: int) -> t.TypeGuard[int]:
+    def is_pitchclass(self, pitchclass: t.Any) -> t.TypeGuard[int]:
         return self.schema.is_pitchclass(pitchclass)

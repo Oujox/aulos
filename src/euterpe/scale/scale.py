@@ -2,14 +2,14 @@ import typing as t
 from itertools import accumulate, compress
 
 from .._core import EuterpeObject
-from .._core.utils import classproperty
+from .._core.utils import classproperty, rotated
 from ..note import Key, PitchClass
 from ._base import BaseScale
 
 
 class Scale(BaseScale, EuterpeObject):
 
-    _intervals: t.ClassVar[tuple[int]]
+    _intervals: t.ClassVar[tuple[int, ...]]
     _key: Key
     _accidentals: tuple[int]
 
@@ -23,31 +23,31 @@ class Scale(BaseScale, EuterpeObject):
         self._key = key
         self._accidentals = self.schema.generate_scale_accidentals(self._intervals)
 
-    def __init_subclass__(cls, intervals: t.Iterable[int], **kwargs) -> None:
+    def __init_subclass__(cls, intervals: t.Iterable[int], shift: int = 0, **kwargs) -> None:
         super().__init_subclass__(**kwargs)
-        cls._intervals = tuple(intervals)
+        cls._intervals = rotated(intervals, shift)
 
     @property
     def key(self) -> Key:
         return self._key
 
     @classproperty
-    def intervals(cls) -> tuple[int]:
+    def intervals(cls) -> tuple[int, ...]:
         return tuple(compress(cls._intervals, cls.omits))
 
     @classproperty
-    def positions(cls) -> tuple[int]:
+    def positions(cls) -> tuple[int, ...]:
         _intervals = (0,) + cls._intervals[:-1]
         _positions = tuple(accumulate(_intervals))
         return tuple(compress(_positions, cls.omits))
 
     @classproperty
-    def omits(cls) -> tuple[bool]:
+    def omits(cls) -> tuple[bool, ...]:
         _intervals = (1,) + cls._intervals[:-1]
         return tuple([bool(i) for i in _intervals])
 
     @property
-    def accidentals(self) -> tuple[int]:
+    def accidentals(self) -> tuple[int, ...]:
         return tuple(compress(self._accidentals, self.omits))
 
     @property

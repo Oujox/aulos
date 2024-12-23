@@ -66,9 +66,9 @@ class Note(BaseNote, EuterpeObject):
 
     @scale.setter
     def scale(self, scale: Scale):
-        from ..scale import Mode, Scale
+        from ..scale import Scale
 
-        if isinstance(scale, (Scale, Mode)):
+        if isinstance(scale, Scale):
             pitchclass = self.schema.convert_notenumber_to_pitchclass(self._notenumber)
             pitchclass = (pitchclass - scale.key.pitchclass) % self.schema.semitone
             if (idx := index(scale.positions, pitchclass)) is None:

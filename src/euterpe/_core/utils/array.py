@@ -1,4 +1,5 @@
 import typing as t
+from collections import deque
 
 
 def search[T](list: list[T], target: T) -> t.Optional[T]:
@@ -13,13 +14,7 @@ def index[T](list: list[T], target: T) -> t.Optional[int]:
     return list.index(target)
 
 
-def rotate[T](iterable: t.Iterable[T], shift: int = 0) -> list[T]:
-    """リスト内要素を回転。"""
-    iterable = list(iterable)
-    if 0 < shift:
-        for _ in range(shift):
-            iterable.insert(0, iterable.pop())
-    else:
-        for _ in range(-shift):
-            iterable.append(iterable.pop(0))
-    return iterable
+def rotated[T](iterable: t.Iterable[T], shift: int = 0) -> tuple[T, ...]:
+    rotated = deque(iterable)
+    rotated.rotate(shift)
+    return tuple(rotated)
