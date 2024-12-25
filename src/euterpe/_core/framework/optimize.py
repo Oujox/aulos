@@ -4,7 +4,7 @@ from typing import ClassVar
 
 class OptimizedMeta(type):
     def __new__(cls, name: str, bases: tuple[type], dct: dict[str, t.Any], **kwargs):
-        annotations: dict = dct.get("__annotations__", {})
+        annotations: dict[str, type] = dct.get("__annotations__", {})
         slots = tuple(
             name
             for name, typ in annotations.items()

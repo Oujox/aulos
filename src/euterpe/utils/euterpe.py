@@ -2,12 +2,8 @@ import typing as t
 from functools import wraps
 
 from .track import Track
-from .._core.framework import Context
+from .context import EuterpeContext
 from .._core import Setting
-
-
-class EuterpeTrackReturn(t.TypedDict, total=False):
-    track: list[int]
 
 
 class Euterpe:
@@ -21,15 +17,27 @@ class Euterpe:
             @wraps(func)
             def wrapper(*args: P.args, **kwargs: P.kwargs) -> None:
                 return func(*args, **kwargs)
-            return Context(setting=self.setting)(wrapper)
+            return EuterpeContext(setting=self.setting)(wrapper)
         return inner
 
     def Track(self):
+        """
+        A decorator that converts the return value into track data for audio representation.
+        
+        Example
+        -------
+        
+        >>> @workspace.Track() 
+        ... def track1():
+        ...     return []
+
+
+        """
         def inner(func: t.Callable[t.Concatenate[Track, ...], Track]) -> t.Callable[t.Concatenate[Track, ...], Track]:
             @wraps(func)
             def wrapper(track: Track, **kwargs: ...) -> Track:
                 return func(track, **kwargs)
-            return Context(setting=self.setting)(wrapper)
+            return EuterpeContext(setting=self.setting)(wrapper)
         return inner
     
     def Reverb(self):
@@ -37,7 +45,7 @@ class Euterpe:
             @wraps(func)
             def wrapper(track: Track, **kwargs: ...) -> Track:
                 return func(track, **kwargs)
-            return Context(setting=self.setting)(wrapper)
+            return EuterpeContext(setting=self.setting)(wrapper)
         return inner
 
     def Distortion(self):
@@ -45,7 +53,7 @@ class Euterpe:
             @wraps(func)
             def wrapper(track: Track, **kwargs: ...) -> Track:
                 return func(track, **kwargs)
-            return Context(setting=self.setting)(wrapper)
+            return EuterpeContext(setting=self.setting)(wrapper)
         return inner
     
     def Deray(self):
@@ -53,7 +61,7 @@ class Euterpe:
             @wraps(func)
             def wrapper(track: Track, **kwargs: ...) -> Track:
                 return func(track, **kwargs)
-            return Context(setting=self.setting)(wrapper)
+            return EuterpeContext(setting=self.setting)(wrapper)
         return inner
     
     def Chorus(self):
@@ -61,7 +69,7 @@ class Euterpe:
             @wraps(func)
             def wrapper(track: Track, **kwargs: ...) -> Track:
                 return func(track, **kwargs)
-            return Context(setting=self.setting)(wrapper)
+            return EuterpeContext(setting=self.setting)(wrapper)
         return inner
     
     def Flanger(self):
@@ -69,7 +77,7 @@ class Euterpe:
             @wraps(func)
             def wrapper(track: Track, **kwargs: ...) -> Track:
                 return func(track, **kwargs)
-            return Context(setting=self.setting)(wrapper)
+            return EuterpeContext(setting=self.setting)(wrapper)
         return inner
     
     def Equalizer(self):
@@ -77,7 +85,7 @@ class Euterpe:
             @wraps(func)
             def wrapper(track: Track, **kwargs: ...) -> Track:
                 return func(track, **kwargs)
-            return Context(setting=self.setting)(wrapper)
+            return EuterpeContext(setting=self.setting)(wrapper)
         return inner
     
     def Compressor(self):
@@ -85,7 +93,7 @@ class Euterpe:
             @wraps(func)
             def wrapper(track: Track, **kwargs: ...) -> Track:
                 return func(track, **kwargs)
-            return Context(setting=self.setting)(wrapper)
+            return EuterpeContext(setting=self.setting)(wrapper)
         return inner
     
     def Tremolo(self):
@@ -93,7 +101,7 @@ class Euterpe:
             @wraps(func)
             def wrapper(track: Track, **kwargs: ...) -> Track:
                 return func(track, **kwargs)
-            return Context(setting=self.setting)(wrapper)
+            return EuterpeContext(setting=self.setting)(wrapper)
         return inner
     
     def PitchShift(self):
@@ -101,7 +109,7 @@ class Euterpe:
             @wraps(func)
             def wrapper(track: Track, **kwargs: ...) -> Track:
                 return func(track, **kwargs)
-            return Context(setting=self.setting)(wrapper)
+            return EuterpeContext(setting=self.setting)(wrapper)
         return inner
     
     def Looper(self):
@@ -109,6 +117,6 @@ class Euterpe:
             @wraps(func)
             def wrapper(track: Track, **kwargs: ...) -> Track:
                 return func(track, **kwargs)
-            return Context(setting=self.setting)(wrapper)
+            return EuterpeContext(setting=self.setting)(wrapper)
         return inner
  

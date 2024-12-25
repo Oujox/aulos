@@ -76,7 +76,9 @@ package "euterpe.tuner.tuner" as euterpe.tuner.tuner {
 }
 package "euterpe.utils" as euterpe.utils {
 }
-package "euterpe.utils.context" as euterpe.utils.context {
+package "euterpe.utils.euterpe" as euterpe.utils.euterpe {
+}
+package "euterpe.utils.track" as euterpe.utils.track {
 }
 euterpe --> euterpe._core
 euterpe --> euterpe._version
@@ -112,10 +114,9 @@ euterpe.note.note --> euterpe.note._base
 euterpe.note.pitchclass --> euterpe.note._base
 euterpe.scale --> euterpe.scale.mode
 euterpe.scale --> euterpe.scale.scale
-euterpe.scale.mode --> euterpe.scale._base
-euterpe.scale.mode --> euterpe.scale.scale
 euterpe.scale.scale --> euterpe.scale._base
 euterpe.tuner --> euterpe.tuner.tuner
 euterpe.tuner.tuner --> euterpe.tuner._base
-euterpe.utils --> euterpe.utils.context
+euterpe.utils --> euterpe
+euterpe.utils.euterpe --> euterpe.utils.track
 @enduml

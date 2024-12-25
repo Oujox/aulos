@@ -25,11 +25,28 @@ class "Context" as euterpe._core.framework.context.Context {
   data : t.ClassVar[ContextVar[dict[str, t.Any]]]
   setting : t.ClassVar[ContextVar[Setting]]
 }
-class "Euterpe" as euterpe.utils.context.Euterpe {
+class "Euterpe" as euterpe.utils.euterpe.Euterpe {
+  name : str
+  setting
+  Chorus()
+  Compressor()
+  Deray()
+  Distortion()
+  Equalizer()
+  Flanger()
+  Looper()
+  PitchShift()
+  Reverb()
+  Track()
+  Tremolo()
+  WorkSpace()
 }
 class "EuterpeObject" as euterpe._core.object.EuterpeObject {
   schema
   setting
+}
+class "EuterpeTrackReturn" as euterpe.utils.euterpe.EuterpeTrackReturn {
+  track : list[int]
 }
 class "InjectedMeta" as euterpe._core.framework.inject.InjectedMeta {
   inject(func: t.Callable[P, R]) -> t.Callable[P, R]
@@ -47,12 +64,6 @@ class "Key" as euterpe.note.key.Key {
   is_keyname(value: t.Any) -> t.TypeGuard[str]
 }
 class "Mode" as euterpe.scale.mode.Mode {
-  accidentals
-  diatonics
-  intervals
-  key
-  omits
-  positions
 }
 class "Note" as euterpe.note.note.Note {
   notename
@@ -69,8 +80,8 @@ class "PitchClass" as euterpe.note.pitchclass.PitchClass {
   pitchname
   pitchnames
   scale
-  is_pitchclass(pitchclass: int) -> t.TypeGuard[int]
-  is_pitchname(pitchname: str) -> t.TypeGuard[str]
+  is_pitchclass(pitchclass: t.Any) -> t.TypeGuard[int]
+  is_pitchname(pitchname: t.Any) -> t.TypeGuard[str]
 }
 class "Quality" as euterpe.chord.quality.Quality {
   components : tuple[QualityComponent]
@@ -141,6 +152,8 @@ class "Setting" as euterpe._core.setting.Setting {
   from_json(path: Path) -> t.Self
   from_toml(path: Path) -> t.Self
 }
+class "Track" as euterpe.utils.track.Track {
+}
 class "Tuner" as euterpe.tuner.tuner.Tuner {
   hz(notenumber: int) -> float
 }
@@ -154,16 +167,13 @@ euterpe.note.note.Note --|> euterpe._core.object.EuterpeObject
 euterpe.note.note.Note --|> euterpe.note._base.BaseNote
 euterpe.note.pitchclass.PitchClass --|> euterpe._core.object.EuterpeObject
 euterpe.note.pitchclass.PitchClass --|> euterpe.note._base.BaseNote
-euterpe.scale.mode.Mode --|> euterpe._core.object.EuterpeObject
-euterpe.scale.mode.Mode --|> euterpe.scale._base.BaseScale
 euterpe.scale.scale.Scale --|> euterpe._core.object.EuterpeObject
 euterpe.scale.scale.Scale --|> euterpe.scale._base.BaseScale
 euterpe.tuner.tuner.Tuner --|> euterpe._core.object.EuterpeObject
 euterpe.tuner.tuner.Tuner --|> euterpe.tuner._base.BaseTuner
-euterpe.utils.context.Euterpe --|> euterpe._core.framework.context.Context
 euterpe._core.setting.Setting --* euterpe._core.object.EuterpeObject : _setting
 euterpe._core.setting.Setting --* euterpe._core.schema.Schema : _setting
+euterpe._core.setting.Setting --* euterpe.utils.euterpe.Euterpe : setting
 euterpe.chord.quality.Quality --* euterpe.chord.chord.Chord : _quality
-euterpe.note.key.Key --* euterpe.scale.mode.Mode : _key
 euterpe.note.key.Key --* euterpe.scale.scale.Scale : _key
 @enduml
