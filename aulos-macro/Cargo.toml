@@ -1,0 +1,13 @@
+[package]
+name = "aulos-macro"
+version.workspace = true
+edition.workspace = true
+
+[lib]
+proc-macro = true
+
+[dependencies]
+aulos-macro-internal = { path = "../aulos-macro-internal" }
+proc-macro2 = { workspace = true, features = ["proc-macro"] }
+quote = { workspace = true, features = ["proc-macro"] }
+syn = { workspace = true, features = ["proc-macro"] }

@@ -1,0 +1,7 @@
+[package]
+name = "aulos"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+aulos-macro = { path = "../aulos-macro" }
