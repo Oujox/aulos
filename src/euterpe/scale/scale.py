@@ -62,10 +62,12 @@ class Scale(BaseScale, EuterpeObject):
             diatonics.append(note)
         return diatonics
 
-    def __eq__(self, other: t.Self) -> bool:
+    def __eq__(self, other: t.Any) -> bool:
+        if not isinstance(other, Scale):
+            return NotImplemented
         return self._intervals == other._intervals and self._key == other._key
 
-    def __ne__(self, other: t.Self) -> bool:
+    def __ne__(self, other: t.Any) -> bool:
         return not self.__eq__(other)
 
     def __str__(self) -> str:

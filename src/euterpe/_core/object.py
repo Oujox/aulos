@@ -37,19 +37,3 @@ class EuterpeObject(metaclass=EuterpeObjectMeta):
     @property
     def schema(self):
         return self._schema
-
-    def __eq__(self, other: t.Self) -> bool:
-        return super(object, self).__eq__(other)
-
-    def __ne__(self, other: t.Self) -> bool:
-        return super(object, self).__ne__(other)
-
-    def __str__(self) -> str:
-        return "<Object: semitone={}, setting={}>".format(
-            self.schema.semitone, self._setting
-        )
-
-    def __repr__(self) -> str:
-        return "<Object: semitone={}, setting={}>".format(
-            self.schema.semitone, self._setting
-        )

@@ -4,7 +4,6 @@ from .dataclass import from_dict
 from .decorators import classproperty
 
 __all__ = [
-    "search",
     "index",
     "rotated",
     "diff",

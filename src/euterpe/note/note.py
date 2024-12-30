@@ -79,10 +79,12 @@ class Note(BaseNote, EuterpeObject):
             )
             self._scale = scale
 
-    def __eq__(self, other: int | BaseNote) -> bool:
+    def __eq__(self, other: t.Any) -> bool:
+        if not isinstance(other, (int, BaseNote)):
+            return NotImplemented
         return int(self) == int(other)
 
-    def __ne__(self, other: int | BaseNote) -> bool:
+    def __ne__(self, other: t.Any) -> bool:
         return not self.__eq__(other)
 
     def __add__(self, other: int | BaseNote) -> Note:
