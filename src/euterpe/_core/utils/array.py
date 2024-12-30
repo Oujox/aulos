@@ -8,7 +8,7 @@ def index[T](list: list[T], target: T) -> t.Optional[int]:
     return list.index(target)
 
 
-def rotated[T](iterable: t.Iterable[T], shift: int = 0) -> tuple[T, ...]:
-    rotated = deque(iterable)
+def rotated[T](sequence: t.Sequence[T], shift: int = 0) -> tuple[T, ...]:
+    rotated = deque(sequence)
     rotated.rotate(shift)
     return tuple(rotated)

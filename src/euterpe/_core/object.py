@@ -17,7 +17,7 @@ class EuterpeObject(metaclass=EuterpeObjectMeta):
 
     def __new__(cls, *args, **kwargs) -> t.Self:
         if cls is EuterpeObject:
-            raise TypeError("Object cannot be instantiated directly.")
+            raise TypeError("EuterpeObject cannot be instantiated directly.")
         return super().__new__(cls)
 
     def __init__(self, setting: t.Optional[Setting] = None) -> None:
@@ -37,3 +37,17 @@ class EuterpeObject(metaclass=EuterpeObjectMeta):
     @property
     def schema(self):
         return self._schema
+    
+    def __eq__(self, other: t.Any) -> bool:
+        if not isinstance(other, EuterpeObject):
+            return NotImplemented
+        return self._setting == other._setting
+
+    def __ne__(self, other: t.Any) -> bool:
+        return not self.__eq__(other)
+
+    def __str__(self) -> str:
+        return "<EuterpeObject: setting={}>".format(self._setting)
+
+    def __repr__(self) -> str:
+        return "<EuterpeObject: setting={}>".format(self._setting)

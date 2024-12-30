@@ -2,7 +2,7 @@ import json
 import os
 import tomllib
 import typing as t
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 
 from .settings.note import NoteSetting

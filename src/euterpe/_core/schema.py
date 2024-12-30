@@ -10,7 +10,7 @@ from .framework import InstanceCacheMeta
 from .schemas.note import NoteSchema
 from .schemas.pitchclass import PitchClassSchema
 from .setting import Setting
-from .utils import diff
+from .utils import wrapped_diff
 
 if TYPE_CHECKING:
     from ..chord.quality import Quality
@@ -34,17 +34,19 @@ class Schema(metaclass=InstanceCacheMeta):
         object.__setattr__(self, "_pitchclass", PitchClassSchema(setting))
         object.__setattr__(self, "_note", NoteSchema(setting, self._pitchclass))
 
-    def __eq__(self, other: t.Self) -> bool:
+    def __eq__(self, other: t.Any) -> bool:
+        if not isinstance(other, Schema):
+            return NotImplemented
         return self._setting == other._setting
 
-    def __ne__(self, other: t.Self) -> bool:
+    def __ne__(self, other: t.Any) -> bool:
         return not self.__eq__(other)
 
     def __str__(self) -> str:
-        return "<Schema>"
+        return "<Schema: setting={}>".format(self._setting)
 
     def __repr__(self) -> str:
-        return "<Schema>"
+        return "<Schema: setting={}>".format(self._setting)
 
     """
     PitchClass
@@ -55,23 +57,23 @@ class Schema(metaclass=InstanceCacheMeta):
         return self._pitchclass.semitone
 
     @property
-    def intervals(self) -> tuple[int]:
+    def intervals(self) -> tuple[int, ...]:
         return self._setting.pitchclass.intervals
 
     @property
-    def positions(self) -> tuple[int]:
+    def positions(self) -> tuple[int, ...]:
         return self._pitchclass.positions
 
     @property
-    def symbols(self) -> tuple[str]:
+    def symbols(self) -> tuple[str, ...]:
         return self._setting.pitchclass.symbols
 
     @cached_property
-    def pitchnames(self) -> tuple[str]:
+    def pitchnames(self) -> tuple[str, ...]:
         return tuple(self._pitchclass.name2class.keys())
 
     @cached_property
-    def pitchclasses(self) -> tuple[int]:
+    def pitchclasses(self) -> tuple[int, ...]:
         return tuple(self._pitchclass.class2name.keys())
 
     def find_pitchname(self, value: str) -> str | None:
@@ -82,7 +84,7 @@ class Schema(metaclass=InstanceCacheMeta):
         )
         return (finded + [None])[0]
 
-    def convert_pitchclass_to_symbol(self, pitchclass: int) -> t.Optional[str]:
+    def convert_pitchclass_to_symbol(self, pitchclass: int) -> str | None:
         if not self.is_pitchclass(pitchclass):
             raise ValueError(f"Invalid pitchclass: '{pitchclass}'.")
         return self.convert_pitchclass_to_pitchnames(pitchclass)[
@@ -91,7 +93,7 @@ class Schema(metaclass=InstanceCacheMeta):
 
     def convert_pitchclass_to_pitchname(
         self, pitchclass: int, accidental: int
-    ) -> t.Optional[str]:
+    ) -> str | None:
         if not self.is_pitchclass(pitchclass):
             raise ValueError(f"Invalid pitchclass: '{pitchclass}'.")
         return self._pitchclass.class2name[pitchclass][
@@ -100,7 +102,7 @@ class Schema(metaclass=InstanceCacheMeta):
 
     def convert_pitchclass_to_pitchnames(
         self, pitchclass: int
-    ) -> tuple[t.Optional[str]]:
+    ) -> tuple[str | None, ...]:
         if not self.is_pitchclass(pitchclass):
             raise ValueError(f"Invalid pitchclass: '{pitchclass}'.")
         return self._pitchclass.class2name[pitchclass]
@@ -135,16 +137,16 @@ class Schema(metaclass=InstanceCacheMeta):
         return self._setting.note.presentation.reference.number
 
     @cached_property
-    def notenames(self) -> tuple[str]:
+    def notenames(self) -> tuple[str, ...]:
         return tuple(self._note.name2number.keys())
 
     @cached_property
-    def notenumbers(self) -> tuple[int]:
+    def notenumbers(self) -> tuple[int, ...]:
         return tuple(self._note.number2name.keys())
 
     def convert_notenumber_to_notename(
         self, notenumber: int, accidental: int
-    ) -> t.Optional[str]:
+    ) -> str | None:
         if not self.is_notenumber(notenumber):
             raise ValueError(f"Invalid notenumber: '{notenumber}'.")
         return self._note.number2name[notenumber][
@@ -153,7 +155,7 @@ class Schema(metaclass=InstanceCacheMeta):
 
     def convert_notenumber_to_notenames(
         self, notenumber: int
-    ) -> tuple[t.Optional[str]]:
+    ) -> tuple[str | None, ...]:
         if not self.is_notenumber(notenumber):
             raise ValueError(f"Invalid notenumber: '{notenumber}'.")
         return self._note.number2name[notenumber]
@@ -205,7 +207,7 @@ class Schema(metaclass=InstanceCacheMeta):
         from ..chord.processing.generator import QualityGenerator
 
         return {
-            q: q.intervals
+            q.name: q
             for q in QualityGenerator(
                 DEFAULT_QUALITY_COMPONENTS, DEFAULT_QUALITY_VALIDATOR
             )
@@ -227,7 +229,7 @@ class Schema(metaclass=InstanceCacheMeta):
     Extension
     """
 
-    def generate_key_accidentals(self, pitchname: str) -> tuple[int]:
+    def generate_key_accidentals(self, pitchname: str) -> tuple[int, ...]:
         if not self.is_pitchname(pitchname):
             raise ValueError(f"Invalid pitchname: '{pitchname}'.")
         positions = []
@@ -240,10 +242,10 @@ class Schema(metaclass=InstanceCacheMeta):
         for pos, symbol in zip(self.positions, symbols):
             n_pos = self.convert_pitchname_to_picthclass(symbol)
             a_pos = (r_pitchclass + pos) % self.semitone
-            positions.append(diff(a_pos, n_pos, self.semitone))
+            positions.append(wrapped_diff(a_pos, n_pos, self.semitone))
         return tuple(positions)
 
-    def generate_scale_accidentals(self, intervals: tuple[int]) -> tuple[int]:
+    def generate_scale_accidentals(self, intervals: tuple[int, ...]) -> tuple[int, ...]:
         diff = list(starmap(lambda x, y: y - x, zip(self.intervals, intervals)))
         accidentals = []
         for i in range(len(self.intervals)):
