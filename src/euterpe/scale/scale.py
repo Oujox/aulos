@@ -23,7 +23,9 @@ class Scale(BaseScale, EuterpeObject):
         self._key = key
         self._accidentals = self.schema.generate_scale_accidentals(self._intervals)
 
-    def __init_subclass__(cls, intervals: t.Iterable[int], shift: int = 0, **kwargs) -> None:
+    def __init_subclass__(
+        cls, intervals: t.Iterable[int], shift: int = 0, **kwargs
+    ) -> None:
         super().__init_subclass__(**kwargs)
         cls._intervals = rotated(intervals, shift)
 
