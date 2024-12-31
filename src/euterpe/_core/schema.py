@@ -16,12 +16,6 @@ if TYPE_CHECKING:
     from ..chord.quality import Quality
 
 
-class ChordElement(t.TypedDict):
-    root: str | None
-    on: str | None
-    quality: Quality | None
-
-
 @dataclass(frozen=True, init=False)
 class Schema(metaclass=InstanceCacheMeta):
 
@@ -84,13 +78,6 @@ class Schema(metaclass=InstanceCacheMeta):
         )
         return (finded + [None])[0]
 
-    def convert_pitchclass_to_symbol(self, pitchclass: int) -> str | None:
-        if not self.is_pitchclass(pitchclass):
-            raise ValueError(f"Invalid pitchclass: '{pitchclass}'.")
-        return self.convert_pitchclass_to_pitchnames(pitchclass)[
-            self._setting.pitchclass.accidental.limit
-        ]
-
     def convert_pitchclass_to_pitchname(
         self, pitchclass: int, accidental: int
     ) -> str | None:
@@ -112,6 +99,13 @@ class Schema(metaclass=InstanceCacheMeta):
             raise ValueError(f"Invalid pitchname: '{pitchname}'.")
         return self._pitchclass.name2class[pitchname]
 
+    def convert_pitchclass_to_symbol(self, pitchclass: int) -> str | None:
+        if not self.is_pitchclass(pitchclass):
+            raise ValueError(f"Invalid pitchclass: '{pitchclass}'.")
+        return self.convert_pitchclass_to_pitchnames(pitchclass)[
+            self._setting.pitchclass.accidental.limit
+        ]
+
     def convert_pitchname_to_symbol(self, pitchname: str):
         if not self.is_pitchname(pitchname):
             raise ValueError(f"Invalid pitchname: '{pitchname}'.")
@@ -131,10 +125,6 @@ class Schema(metaclass=InstanceCacheMeta):
     """
     Note
     """
-
-    @property
-    def ref_notenumber(self) -> int:
-        return self._setting.note.presentation.reference.number
 
     @cached_property
     def notenames(self) -> tuple[str, ...]:
@@ -176,7 +166,7 @@ class Schema(metaclass=InstanceCacheMeta):
     """
 
     @property
-    def root(self) -> float:
+    def root_hz(self) -> float:
         return self._setting.note.tuner.reference.hz
 
     @property
@@ -212,18 +202,6 @@ class Schema(metaclass=InstanceCacheMeta):
                 DEFAULT_QUALITY_COMPONENTS, DEFAULT_QUALITY_VALIDATOR
             )
         }
-
-    def parse_chord(self, name: str) -> ChordElement:
-        root = self.find_pitchname(name)
-        rest = name.replace(root, "", 1)
-        if rest.find("/") >= 0:
-            quality, on = rest.split("/", 1)
-            quality = self.name2quality.get(quality, None)
-            on = self.find_pitchname(on)
-        else:
-            quality = self.name2quality.get(rest, None)
-            on = None
-        return {"root": root, "on": on, "quality": quality}
 
     """
     Extension

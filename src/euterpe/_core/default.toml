@@ -12,7 +12,6 @@ min = 0
 max = 127
 
 [note.presentation]
-name = "scientific pitch notation"
 symbols = ["<N>-1","<N>0","<N>1","<N>2","<N>3","<N>4","<N>5","<N>6","<N>7","<N>8","<N>9"]
 reference.number = 60
 reference.symbol = "<N>4"

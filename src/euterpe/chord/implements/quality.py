@@ -3,13 +3,13 @@ import typing as t
 from ..quality import QualityComponent
 
 
-def validate(components: tuple[QualityComponent]) -> bool:
+def validate(components: tuple[QualityComponent, ...]) -> bool:
 
-    def validate_empty(components: tuple[QualityComponent]):
+    def validate_empty(components: tuple[QualityComponent, ...]):
         return not len(components) == 0
 
-    def validate_enable(reversed: tuple[QualityComponent]):
-        enable: tuple[int] = ()
+    def validate_enable(reversed: tuple[QualityComponent, ...]):
+        enable: tuple[int, ...] = tuple()
         for rc in reversed:
             if all(z[0] == z[1] for z in zip(enable, rc.enable)):
                 if len(enable) < len(rc.enable):
@@ -18,7 +18,7 @@ def validate(components: tuple[QualityComponent]) -> bool:
                 return False
         return True
 
-    def validate_alternations(reversed: tuple[QualityComponent]):
+    def validate_alternations(reversed: tuple[QualityComponent, ...]):
         # allowed quality
         if any(True for rc in reversed if rc.name == "dim"):
             return True
@@ -46,8 +46,8 @@ def validate(components: tuple[QualityComponent]) -> bool:
     )
 
 
-DEFAULT_QUALITY_VALIDATOR: t.Callable[[tuple[QualityComponent]], bool] = validate
-DEFAULT_QUALITY_COMPONENTS: t.Final[tuple[QualityComponent]] = (
+DEFAULT_QUALITY_VALIDATOR: t.Callable[[tuple[QualityComponent, ...]], bool] = validate
+DEFAULT_QUALITY_COMPONENTS: t.Final[tuple[QualityComponent, ...]] = (
     QualityComponent(
         "",
         1,

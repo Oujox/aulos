@@ -6,10 +6,10 @@ class QualityComponent:
     name: str
     group: int
     index: int
-    intervals: tuple[int]
-    diminution: tuple[int]
-    enable: tuple[int] = field(default_factory=tuple)
-    extensions: tuple[int] = field(default_factory=tuple)
+    intervals: tuple[int, ...]
+    diminution: tuple[int, ...]
+    enable: tuple[int, ...] = field(default_factory=tuple)
+    extensions: tuple[int, ...] = field(default_factory=tuple)
     alterations: dict[int, int] = field(default_factory=dict)
     brackets: bool = field(default=False)
 
@@ -21,7 +21,7 @@ class QualityComponent:
 
 @dataclass(frozen=True, slots=True)
 class Quality:
-    components: tuple[QualityComponent]
+    components: tuple[QualityComponent, ...]
 
     @property
     def name(self) -> str:
@@ -44,7 +44,7 @@ class Quality:
         return name
 
     @property
-    def intervals(self) -> tuple[int]:
+    def intervals(self) -> tuple[int, ...]:
         intervals: list[int] = []
         extensions: set[int] = set()
         alterations: dict[int, int] = {}
@@ -65,7 +65,7 @@ class Quality:
         return tuple(intervals)
 
     @property
-    def reversed(self):
+    def reversed(self) -> tuple[QualityComponent, ...]:
         return tuple(
             sorted(self.components, key=lambda c: (c.group, c.index), reverse=True)
         )

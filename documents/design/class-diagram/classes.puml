@@ -16,11 +16,6 @@ class "Chord" as euterpe.chord.chord.Chord {
   root
   is_chord(chord: t.Any) -> t.TypeGuard[str]
 }
-class "ChordElement" as euterpe._core.schema.ChordElement {
-  on : str | None
-  quality : Quality | None
-  root : str | None
-}
 class "Context" as euterpe._core.framework.context.Context {
   data : t.ClassVar[ContextVar[dict[str, t.Any]]]
   setting : t.ClassVar[ContextVar[Setting]]
@@ -86,7 +81,7 @@ class "PitchClass" as euterpe.note.pitchclass.PitchClass {
   is_pitchname(pitchname: t.Any) -> t.TypeGuard[str]
 }
 class "Quality" as euterpe.chord.quality.Quality {
-  components : tuple[QualityComponent]
+  components : tuple[QualityComponent, ...]
   intervals
   name
   reversed
@@ -94,12 +89,12 @@ class "Quality" as euterpe.chord.quality.Quality {
 class "QualityComponent" as euterpe.chord.quality.QualityComponent {
   alterations : dict[int, int]
   brackets : bool
-  diminution : tuple[int]
-  enable : tuple[int]
-  extensions : tuple[int]
+  diminution : tuple[int, ...]
+  enable : tuple[int, ...]
+  extensions : tuple[int, ...]
   group : int
   index : int
-  intervals : tuple[int]
+  intervals : tuple[int, ...]
   name : str
 }
 class "Scale" as euterpe.scale.scale.Scale {
@@ -118,8 +113,7 @@ class "Schema" as euterpe._core.schema.Schema {
   pitchclasses
   pitchnames
   positions
-  ref_notenumber
-  root
+  root_hz
   root_notenumber
   semitone
   symbols
@@ -143,7 +137,6 @@ class "Schema" as euterpe._core.schema.Schema {
   is_pitchclass(value: t.Any) -> t.TypeGuard[int]
   is_pitchname(value: t.Any) -> t.TypeGuard[str]
   is_symbol(value: t.Any) -> t.TypeGuard[str]
-  parse_chord(name: str) -> ChordElement
 }
 class "Setting" as euterpe._core.setting.Setting {
   note : NoteSetting
@@ -157,6 +150,11 @@ class "Track" as euterpe.utils.track.Track {
 }
 class "Tuner" as euterpe.tuner.tuner.Tuner {
   hz(notenumber: int) -> float
+}
+class "_IChord" as euterpe.chord.chord._IChord {
+  on : str | None
+  quality
+  root : str
 }
 class "classproperty" as euterpe._core.utils.decorators.classproperty {
   T : NoneType
@@ -181,6 +179,6 @@ euterpe.utils.context.EuterpeContext --|> euterpe._core.framework.context.Contex
 euterpe._core.setting.Setting --* euterpe._core.object.EuterpeObject : _setting
 euterpe._core.setting.Setting --* euterpe._core.schema.Schema : _setting
 euterpe._core.setting.Setting --* euterpe.utils.euterpe.Euterpe : setting
-euterpe.chord.quality.Quality --* euterpe.chord.chord.Chord : _quality
+euterpe.chord.quality.Quality --* euterpe.chord.chord._IChord : quality
 euterpe.note.key.Key --* euterpe.scale.scale.Scale : _key
 @enduml

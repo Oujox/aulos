@@ -6,12 +6,12 @@ from ..quality import Quality, QualityComponent
 
 
 class QualityGenerator:
-    components: tuple[QualityComponent]
+    components: tuple[QualityComponent, ...]
 
     def __init__(
         self,
-        components: tuple[QualityComponent],
-        validator: t.Callable[[tuple[QualityComponent]], bool],
+        components: tuple[QualityComponent, ...],
+        validator: t.Callable[[tuple[QualityComponent, ...]], bool],
     ):
         self.components = components
         self.validator = validator
@@ -29,8 +29,8 @@ class QualityGenerator:
 
     @classmethod
     def partition_by_group(
-        cls, components: tuple[QualityComponent]
-    ) -> tuple[tuple[QualityComponent]]:
+        cls, components: tuple[QualityComponent, ...]
+    ) -> tuple[tuple[QualityComponent, ...], ...]:
         groups = defaultdict(list)
         for c in components:
             groups[c.group].append(c)
@@ -38,8 +38,8 @@ class QualityGenerator:
 
     @classmethod
     def partition_by_index(
-        cls, components: tuple[QualityComponent]
-    ) -> tuple[tuple[QualityComponent]]:
+        cls, components: tuple[QualityComponent, ...]
+    ) -> tuple[tuple[QualityComponent, ...], ...]:
         groups = defaultdict(list)
         for c in components:
             groups[c.index].append(c)

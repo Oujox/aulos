@@ -20,7 +20,7 @@ class EuterpeObject(metaclass=EuterpeObjectMeta):
             raise TypeError("EuterpeObject cannot be instantiated directly.")
         return super().__new__(cls)
 
-    def __init__(self, setting: t.Optional[Setting] = None) -> None:
+    def __init__(self, setting: Setting | None = None) -> None:
         if not isinstance(setting, Setting):
             raise ValueError(
                 "Initialization error: 'setting' argument is missing. "

@@ -1,8 +1,35 @@
+from __future__ import annotations
+
 import typing as t
 
 from .._core import EuterpeObject
 from ._base import BaseChord
 from .quality import Quality
+
+
+class _IChord(t.TypedDict):
+    root: str
+    quality: Quality
+    on: str | None
+
+
+def parse(name: str, instance: Chord) -> _IChord | None:
+    if (root := instance.schema.find_pitchname(name)) is None:
+        return None
+
+    rest = name.replace(root, "", 1)
+    if rest.find("/") >= 0:
+        quality, on = rest.split("/", 1)
+        quality = instance.schema.name2quality.get(quality, None)
+        on = instance.schema.find_pitchname(on)
+    else:
+        quality = instance.schema.name2quality.get(rest, None)
+        on = None
+
+    if quality is None:
+        return None
+
+    return {"root": root, "on": on, "quality": quality}
 
 
 class Chord(BaseChord, EuterpeObject):
@@ -14,15 +41,10 @@ class Chord(BaseChord, EuterpeObject):
     def __init__(self, identify: str, **kwargs):
         super().__init__(**kwargs)
 
-        parsed = self.schema.parse_chord(identify)
-        root = parsed["root"]
-        on = parsed["on"]
-        quality = parsed["quality"]
-
-        if all([root, quality]):
-            self._root = root
-            self._quality = quality
-            self._on = on
+        if (parsed := parse(identify, self)) is not None:
+            self._root = parsed["root"]
+            self._quality = parsed["quality"]
+            self._on = parsed["on"]
 
         else:
             raise ValueError()
