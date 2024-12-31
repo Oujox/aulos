@@ -8,13 +8,13 @@ from .._core.utils import index
 from ._base import BaseNote
 
 if TYPE_CHECKING:
-    from ..scale import Scale
+    from ..scale import Scale  # pragma: no cover
 
 
 class Note(BaseNote, EuterpeObject):
 
     _notenumber: int
-    _notenames: tuple[str | None]
+    _notenames: tuple[str | None, ...]
     _notename: str | None
     _scale: Scale | None
 
@@ -65,7 +65,7 @@ class Note(BaseNote, EuterpeObject):
             self._notename = name
 
     @scale.setter
-    def scale(self, scale: Scale):
+    def scale(self, scale: Scale | None):
         from ..scale import Scale
 
         if isinstance(scale, Scale):

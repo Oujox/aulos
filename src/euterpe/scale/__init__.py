@@ -3,6 +3,7 @@
 * 一般に使用される音階・旋法を提供
 """
 
+from .diatonic import DiatonicScale, NondiatonicScale
 # harmonicminor mode
 # melodicminor mode
 # major mode
@@ -13,19 +14,20 @@ from .implements.mode import (Aeorian, Aeorian_f5, AlteredSuperLocrian, Dorian,
                               Mixolydian_f9, Phrygian, SuperLocrian)
 # scale
 from .implements.scale import (Bluenote, CombDiminish, Diminish, HarmonicMinor,
-                               HarmonicMinorP5thBelow, Major, MelodicMinor,
-                               Minor, MinorPentatonic, Pentatonic, Wholetone)
+                               Major, MelodicMinor, Minor, MinorPentatonic,
+                               Pentatonic, Wholetone)
 from .mode import Mode
 from .scale import Scale
 
 __all__ = [
     "Scale",
+    "DiatonicScale",
+    "NondiatonicScale",
     "Mode",
     "Major",
     "Minor",
     "MelodicMinor",
     "HarmonicMinor",
-    "HarmonicMinorP5thBelow",
     "Pentatonic",
     "MinorPentatonic",
     "Bluenote",

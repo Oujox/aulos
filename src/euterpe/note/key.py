@@ -8,7 +8,7 @@ class Key(BaseNote, EuterpeObject):
 
     _name: str
     _pitchclass: int
-    _accidentals: tuple[int]
+    _accidentals: tuple[int, ...]
 
     def __init__(self, name: str, **kwargs) -> None:
         super().__init__(**kwargs)
@@ -30,7 +30,7 @@ class Key(BaseNote, EuterpeObject):
         return self._pitchclass
 
     @property
-    def accsidentals(self) -> tuple[int]:
+    def accsidentals(self) -> tuple[int, ...]:
         return self._accidentals
 
     def __eq__(self, other: t.Any) -> bool:

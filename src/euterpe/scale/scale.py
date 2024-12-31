@@ -1,8 +1,8 @@
 import typing as t
-from itertools import accumulate, compress
+from itertools import accumulate
 
 from .._core import EuterpeObject
-from .._core.utils import classproperty, rotated
+from .._core.utils import classproperty
 from ..note import Key, PitchClass
 from ._base import BaseScale
 
@@ -11,7 +11,6 @@ class Scale(BaseScale, EuterpeObject):
 
     _intervals: t.ClassVar[tuple[int, ...]]
     _key: Key
-    _accidentals: tuple[int, ...]
 
     def __new__(cls, *args, **kwargs) -> t.Self:
         if cls is Scale:
@@ -21,13 +20,10 @@ class Scale(BaseScale, EuterpeObject):
     def __init__(self, key: Key, **kwargs) -> None:
         super().__init__(**kwargs)
         self._key = key
-        self._accidentals = self.schema.generate_scale_accidentals(self._intervals)
 
-    def __init_subclass__(
-        cls, intervals: t.Sequence[int], shift: int = 0, **kwargs
-    ) -> None:
+    def __init_subclass__(cls, /, intervals: t.Sequence[int], **kwargs) -> None:
         super().__init_subclass__(**kwargs)
-        cls._intervals = rotated(intervals, shift)
+        cls._intervals = tuple(intervals)
 
     @property
     def key(self) -> Key:
@@ -35,22 +31,16 @@ class Scale(BaseScale, EuterpeObject):
 
     @classproperty
     def intervals(cls) -> tuple[int, ...]:
-        return tuple(compress(cls._intervals, cls.omits))
+        return cls._intervals
 
     @classproperty
     def positions(cls) -> tuple[int, ...]:
-        _intervals = (0,) + cls._intervals[:-1]
-        _positions = tuple(accumulate(_intervals))
-        return tuple(compress(_positions, cls.omits))
-
-    @classproperty
-    def omits(cls) -> tuple[bool, ...]:
-        _intervals = (1,) + cls._intervals[:-1]
-        return tuple([bool(i) for i in _intervals])
+        return tuple(accumulate((0,) + cls._intervals[:-1]))
 
     @property
     def accidentals(self) -> tuple[int, ...]:
-        return tuple(compress(self._accidentals, self.omits))
+        _accidentals = self.schema.generate_scale_accidentals(self._intervals)
+        return tuple(_accidentals)
 
     @property
     def diatonics(self) -> list[PitchClass]:

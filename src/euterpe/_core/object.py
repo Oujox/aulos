@@ -37,7 +37,7 @@ class EuterpeObject(metaclass=EuterpeObjectMeta):
     @property
     def schema(self):
         return self._schema
-    
+
     def __eq__(self, other: t.Any) -> bool:
         if not isinstance(other, EuterpeObject):
             return NotImplemented

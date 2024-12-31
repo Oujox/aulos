@@ -14,6 +14,10 @@ def track1():
 
     pprint(Tuner.mro())
     pprint(Dorian(Key("C")).diatonics)
-    pprint(Pentatonic(Key("A")).diatonics)
+    pprint(Dorian(Key("F#")).diatonics)
+    pprint(Dorian(Key("Gb")).diatonics)
+    # pprint(Note("C#4").schema._pitchclass.class2name)
+
+    pprint(Pentatonic(Key("C")).diatonics)
 
 track1()

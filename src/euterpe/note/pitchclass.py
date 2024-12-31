@@ -15,7 +15,7 @@ if TYPE_CHECKING:
 class PitchClass(BaseNote, EuterpeObject):
 
     _pitchclass: int
-    _pitchnames: tuple[str | None]
+    _pitchnames: tuple[str | None, ...]
     _pitchname: str | None
     _scale: Scale | None
 
@@ -66,7 +66,7 @@ class PitchClass(BaseNote, EuterpeObject):
             self._pitchname = name
 
     @scale.setter
-    def scale(self, scale: Scale):
+    def scale(self, scale: Scale | None):
         from ..scale import Scale
 
         if isinstance(scale, Scale):
