@@ -42,7 +42,11 @@ class NondiatonicScale(Scale, intervals=()):
         super().__init__(key, **kwargs)
 
     def __init_subclass__(
-        cls, /, extensions: t.Sequence[t.Sequence[int]], base: type[DiatonicScale], **kwargs
+        cls,
+        /,
+        extensions: t.Sequence[t.Sequence[int]],
+        base: type[DiatonicScale],
+        **kwargs,
     ) -> None:
         super().__init_subclass__(intervals=base.intervals, **kwargs)
         cls._base = base

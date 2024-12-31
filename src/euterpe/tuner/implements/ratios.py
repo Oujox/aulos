@@ -9,14 +9,14 @@ def compress_ratio(ratio: float) -> float:
     return ratio
 
 
-def standard_tuning_table(p5th_ratio: float) -> tuple[float]:
+def standard_tuning_table(p5th_ratio: float) -> tuple[float, ...]:
     # https://en.wikipedia.org/wiki/Just_intonation#Five-limit_tuning
     (ratios := [compress_ratio(p5th_ratio**i) for i in range(12)]).sort()
 
     return tuple(ratios)
 
 
-def fivelimit_tuning_table() -> tuple[float]:
+def fivelimit_tuning_table() -> tuple[float, ...]:
     # https://en.wikipedia.org/wiki/Just_intonation#Five-limit_tuning
     (
         ratios := [
@@ -30,6 +30,6 @@ def fivelimit_tuning_table() -> tuple[float]:
     return tuple(ratios)
 
 
-PYTHAGOREAN_TUNING_RATIOS: t.Final[tuple[float]] = standard_tuning_table(1.5)
-MEANTONE_TUNING_RATIOS: t.Final[tuple[float]] = standard_tuning_table(5**0.25)
-FIVELIMIT_TUNING_RATIOS: t.Final[tuple[float]] = fivelimit_tuning_table()
+PYTHAGOREAN_TUNING_RATIOS: t.Final[tuple[float, ...]] = standard_tuning_table(1.5)
+MEANTONE_TUNING_RATIOS: t.Final[tuple[float, ...]] = standard_tuning_table(5**0.25)
+FIVELIMIT_TUNING_RATIOS: t.Final[tuple[float, ...]] = fivelimit_tuning_table()
