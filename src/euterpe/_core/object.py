@@ -17,10 +17,10 @@ class EuterpeObject(metaclass=EuterpeObjectMeta):
 
     def __new__(cls, *args, **kwargs) -> t.Self:
         if cls is EuterpeObject:
-            raise TypeError("Object cannot be instantiated directly.")
+            raise TypeError("EuterpeObject cannot be instantiated directly.")
         return super().__new__(cls)
 
-    def __init__(self, setting: t.Optional[Setting] = None) -> None:
+    def __init__(self, setting: Setting | None = None) -> None:
         if not isinstance(setting, Setting):
             raise ValueError(
                 "Initialization error: 'setting' argument is missing. "
@@ -38,18 +38,16 @@ class EuterpeObject(metaclass=EuterpeObjectMeta):
     def schema(self):
         return self._schema
 
-    def __eq__(self, other: t.Self) -> bool:
-        return super(object, self).__eq__(other)
+    def __eq__(self, other: t.Any) -> bool:
+        if not isinstance(other, EuterpeObject):
+            return NotImplemented
+        return self._setting == other._setting
 
-    def __ne__(self, other: t.Self) -> bool:
-        return super(object, self).__ne__(other)
+    def __ne__(self, other: t.Any) -> bool:
+        return not self.__eq__(other)
 
     def __str__(self) -> str:
-        return "<Object: semitone={}, setting={}>".format(
-            self.schema.semitone, self._setting
-        )
+        return "<EuterpeObject: setting={}>".format(self._setting)
 
     def __repr__(self) -> str:
-        return "<Object: semitone={}, setting={}>".format(
-            self.schema.semitone, self._setting
-        )
+        return "<EuterpeObject: setting={}>".format(self._setting)

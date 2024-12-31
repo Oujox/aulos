@@ -8,13 +8,13 @@ from .._core.utils import index
 from ._base import BaseNote
 
 if TYPE_CHECKING:
-    from ..scale import Scale
+    from ..scale import Scale  # pragma: no cover
 
 
 class Note(BaseNote, EuterpeObject):
 
     _notenumber: int
-    _notenames: tuple[str | None]
+    _notenames: tuple[str | None, ...]
     _notename: str | None
     _scale: Scale | None
 
@@ -65,24 +65,35 @@ class Note(BaseNote, EuterpeObject):
             self._notename = name
 
     @scale.setter
-    def scale(self, scale: Scale):
-        from ..scale import Mode, Scale
+    def scale(self, scale: Scale | None):
+        from ..scale import Scale
 
-        if isinstance(scale, (Scale, Mode)):
+        if isinstance(scale, Scale):
+            self._scale = scale
             pitchclass = self.schema.convert_notenumber_to_pitchclass(self._notenumber)
             pitchclass = (pitchclass - scale.key.pitchclass) % self.schema.semitone
-            if (idx := index(scale.positions, pitchclass)) is None:
-                return
-            acc, kacc = scale.accidentals[idx], scale.key.accsidentals[idx]
-            self._notename = self.schema.convert_notenumber_to_notename(
-                self._notenumber, acc + kacc
-            )
-            self._scale = scale
 
-    def __eq__(self, other: int | BaseNote) -> bool:
+            if (idx := index(scale._positions, pitchclass)) is not None:
+                acc, kacc = scale._accidentals[idx], scale.key.accsidentals[idx]
+                self._notename = self.schema.convert_notenumber_to_notename(
+                    self._notenumber, acc + kacc
+                )
+
+            elif (idx := index(scale.positions, pitchclass)) is not None:
+                dacc = scale.accidentals[idx]
+                pitchclass = (pitchclass - dacc) % self.schema.semitone
+                if (idx := index(scale._positions, pitchclass)) is not None:
+                    acc, kacc = scale._accidentals[idx], scale.key.accsidentals[idx]
+                    self._notename = self.schema.convert_pitchclass_to_pitchname(
+                        self._notenumber, acc + kacc + dacc
+                    )
+
+    def __eq__(self, other: t.Any) -> bool:
+        if not isinstance(other, (int, BaseNote)):
+            return NotImplemented
         return int(self) == int(other)
 
-    def __ne__(self, other: int | BaseNote) -> bool:
+    def __ne__(self, other: t.Any) -> bool:
         return not self.__eq__(other)
 
     def __add__(self, other: int | BaseNote) -> Note:

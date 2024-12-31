@@ -1,7 +1,7 @@
 [pitchclass]
 intervals = [2,2,1,2,2,2,1]
 symbols   = ["C","D","E","F","G","A","B"]
-accidental.limit = 2
+accidental.limit = 3
 accidental.symbol.sharp = "#"
 accidental.symbol.flat = "b"
 accidental.symbol.nature = "n"
@@ -9,13 +9,13 @@ accidental.symbol.nature = "n"
 [note]
 [note.notenumber]
 min = 0
-max = 127
+max = 128
 
 [note.presentation]
-name = "scientific pitch notation"
 symbols = ["<N>-1","<N>0","<N>1","<N>2","<N>3","<N>4","<N>5","<N>6","<N>7","<N>8","<N>9"]
 reference.number = 60
 reference.symbol = "<N>4"
 
 [note.tuner]
 reference.hz = 440
+reference.number = 69

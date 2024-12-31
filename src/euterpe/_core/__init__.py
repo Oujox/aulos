@@ -5,7 +5,6 @@
 
 # utils, framework
 from . import framework, utils
-
 # implementation
 from .object import EuterpeObject
 from .setting import Setting

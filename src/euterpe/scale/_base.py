@@ -1,4 +1,5 @@
 from abc import abstractmethod
+from typing import Sequence
 
 from ..note._base import BaseNote
 
@@ -8,4 +9,4 @@ class BaseScale:
 
     @property
     @abstractmethod
-    def diatonics(self) -> list[BaseNote]: ...
+    def components(self) -> Sequence[BaseNote]: ...

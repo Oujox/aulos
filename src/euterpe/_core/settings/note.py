@@ -21,7 +21,6 @@ class NoteNumberSetting:
 
 @dataclass(frozen=True, slots=True)
 class NotePresentationSetting:
-    name: str
     symbols: tuple[str]
     reference: NotePresentationReferenceSetting
 

@@ -4,132 +4,151 @@ from ..mode import Mode
 
 class Ionian(
     Mode,
-    scale=Major,
-    intervals=(2, 2, 1, 2, 2, 2, 1),
+    Major,
+    intervals=Major.intervals,
+    shift=0,
 ): ...
 
 
 class Dorian(
     Mode,
-    scale=Major,
-    intervals=(2, 1, 2, 2, 2, 1, 2),
+    Major,
+    intervals=Major.intervals,
+    shift=1,
 ): ...
 
 
 class Phrygian(
     Mode,
-    scale=Major,
-    intervals=(1, 2, 2, 2, 1, 2, 2),
+    Major,
+    intervals=Major.intervals,
+    shift=2,
 ): ...
 
 
 class Lydian(
     Mode,
-    scale=Major,
-    intervals=(2, 2, 2, 1, 2, 2, 1),
+    Major,
+    intervals=Major.intervals,
+    shift=3,
 ): ...
 
 
 class Mixolydian(
     Mode,
-    scale=Major,
-    intervals=(2, 2, 1, 2, 2, 1, 2),
+    Major,
+    intervals=Major.intervals,
+    shift=4,
 ): ...
 
 
 class Aeorian(
     Mode,
-    scale=Major,
-    intervals=(2, 1, 2, 2, 1, 2, 2),
+    Major,
+    intervals=Major.intervals,
+    shift=5,
 ): ...
 
 
 class Locrian(
     Mode,
-    scale=Major,
-    intervals=(1, 2, 2, 1, 2, 2, 2),
+    Major,
+    intervals=Major.intervals,
+    shift=6,
 ): ...
 
 
 class Dorian_f2(
     Mode,
-    scale=MelodicMinor,
-    intervals=(1, 2, 2, 2, 2, 1, 2),
+    MelodicMinor,
+    intervals=MelodicMinor.intervals,
+    shift=1,
 ): ...
 
 
 class Lydian_s5(
     Mode,
-    scale=MelodicMinor,
-    intervals=(2, 2, 2, 2, 1, 2, 1),
+    MelodicMinor,
+    intervals=MelodicMinor.intervals,
+    shift=2,
 ): ...
 
 
 class Lydian_f7(
     Mode,
-    scale=MelodicMinor,
-    intervals=(2, 2, 2, 1, 2, 1, 2),
+    MelodicMinor,
+    intervals=MelodicMinor.intervals,
+    shift=3,
 ): ...
 
 
 class Mixolydian_f6(
     Mode,
-    scale=MelodicMinor,
-    intervals=(2, 2, 1, 2, 1, 2, 2),
+    MelodicMinor,
+    intervals=MelodicMinor.intervals,
+    shift=4,
 ): ...
 
 
 class Aeorian_f5(
     Mode,
-    scale=MelodicMinor,
-    intervals=(2, 1, 2, 1, 2, 2, 2),
+    MelodicMinor,
+    intervals=MelodicMinor.intervals,
+    shift=5,
 ): ...
 
 
 class SuperLocrian(
     Mode,
-    scale=MelodicMinor,
-    intervals=(1, 2, 1, 2, 2, 2, 2),
+    MelodicMinor,
+    intervals=MelodicMinor.intervals,
+    shift=6,
 ): ...
 
 
 class Locrian_n6(
     Mode,
-    scale=HarmonicMinor,
-    intervals=(1, 2, 2, 1, 3, 1, 2),
+    HarmonicMinor,
+    intervals=HarmonicMinor.intervals,
+    shift=1,
 ): ...
 
 
 class Ionian_s5(
     Mode,
-    scale=HarmonicMinor,
-    intervals=(2, 2, 1, 3, 1, 2, 1),
+    HarmonicMinor,
+    intervals=HarmonicMinor.intervals,
+    shift=2,
 ): ...
 
 
 class Dorian_s4(
     Mode,
-    scale=HarmonicMinor,
-    intervals=(2, 1, 3, 1, 2, 1, 2),
+    HarmonicMinor,
+    intervals=HarmonicMinor.intervals,
+    shift=3,
 ): ...
 
 
 class Mixolydian_f9(
     Mode,
-    scale=HarmonicMinor,
-    intervals=(1, 3, 1, 2, 1, 2, 2),
+    HarmonicMinor,
+    intervals=HarmonicMinor.intervals,
+    shift=4,
 ): ...  # PhrygianDominant
 
 
 class Lydian_s2(
     Mode,
-    scale=HarmonicMinor,
-    intervals=(3, 1, 2, 1, 2, 2, 1),
+    HarmonicMinor,
+    intervals=HarmonicMinor.intervals,
+    shift=5,
 ): ...
 
 
 class AlteredSuperLocrian(
     Mode,
-    scale=HarmonicMinor,
-    intervals=(1, 2, 1, 2, 2, 1, 3),
+    HarmonicMinor,
+    intervals=HarmonicMinor.intervals,
+    shift=6,
 ): ...

@@ -14,7 +14,6 @@ SETTING_DICT_FOR_HSYS12 = {
     "note": {
         "notenumber": {"min": 0, "max": 127},
         "presentation": {
-            "name": "scientific pitch notation",
             "symbols": [
                 "<N>-1",
                 "<N>0",

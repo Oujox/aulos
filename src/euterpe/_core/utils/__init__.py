@@ -1,13 +1,12 @@
-from .array import index, rotate, search
-from .calculation import diff
+from .array import index, rotated
+from .calculation import wrapped_diff
 from .dataclass import from_dict
 from .decorators import classproperty
 
 __all__ = [
-    "search",
     "index",
-    "rotate",
-    "diff",
+    "rotated",
+    "wrapped_diff",
     "classproperty",
     "from_dict",
 ]

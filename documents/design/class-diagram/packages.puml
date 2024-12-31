@@ -22,10 +22,6 @@ package "euterpe._core.schema" as euterpe._core.schema {
 }
 package "euterpe._core.setting" as euterpe._core.setting {
 }
-package "euterpe._core.shared" as euterpe._core.shared {
-}
-package "euterpe._core.shared.intervals" as euterpe._core.shared.intervals {
-}
 package "euterpe._core.utils" as euterpe._core.utils {
 }
 package "euterpe._core.utils.array" as euterpe._core.utils.array {
@@ -64,6 +60,8 @@ package "euterpe.scale" as euterpe.scale {
 }
 package "euterpe.scale._base" as euterpe.scale._base {
 }
+package "euterpe.scale.diatonic" as euterpe.scale.diatonic {
+}
 package "euterpe.scale.mode" as euterpe.scale.mode {
 }
 package "euterpe.scale.scale" as euterpe.scale.scale {
@@ -77,6 +75,10 @@ package "euterpe.tuner.tuner" as euterpe.tuner.tuner {
 package "euterpe.utils" as euterpe.utils {
 }
 package "euterpe.utils.context" as euterpe.utils.context {
+}
+package "euterpe.utils.euterpe" as euterpe.utils.euterpe {
+}
+package "euterpe.utils.track" as euterpe.utils.track {
 }
 euterpe --> euterpe._core
 euterpe --> euterpe._version
@@ -96,7 +98,6 @@ euterpe._core.schema --> euterpe._core.framework
 euterpe._core.schema --> euterpe._core.setting
 euterpe._core.schema --> euterpe._core.utils
 euterpe._core.setting --> euterpe._core.utils
-euterpe._core.shared --> euterpe._core.shared.intervals
 euterpe._core.utils --> euterpe._core.utils.array
 euterpe._core.utils --> euterpe._core.utils.calculation
 euterpe._core.utils --> euterpe._core.utils.dataclass
@@ -110,12 +111,14 @@ euterpe.note --> euterpe.note.pitchclass
 euterpe.note.key --> euterpe.note._base
 euterpe.note.note --> euterpe.note._base
 euterpe.note.pitchclass --> euterpe.note._base
+euterpe.scale --> euterpe.scale.diatonic
 euterpe.scale --> euterpe.scale.mode
 euterpe.scale --> euterpe.scale.scale
-euterpe.scale.mode --> euterpe.scale._base
-euterpe.scale.mode --> euterpe.scale.scale
+euterpe.scale.diatonic --> euterpe.scale.scale
 euterpe.scale.scale --> euterpe.scale._base
 euterpe.tuner --> euterpe.tuner.tuner
 euterpe.tuner.tuner --> euterpe.tuner._base
-euterpe.utils --> euterpe.utils.context
+euterpe.utils --> euterpe
+euterpe.utils.euterpe --> euterpe.utils.context
+euterpe.utils.euterpe --> euterpe.utils.track
 @enduml

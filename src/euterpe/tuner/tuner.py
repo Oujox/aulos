@@ -24,12 +24,14 @@ class Tuner(BaseTuner, EuterpeObject):
         rel = notenumber - self.schema.root_notenumber
         octnumber = rel // self.schema.semitone
         pitchclass = rel % self.schema.semitone
-        return self.schema.root * (2**octnumber) * self._ratios[pitchclass]
+        return self.schema.root_hz * (2**octnumber) * self._ratios[pitchclass]
 
-    def __eq__(self, other: t.Self) -> bool:
+    def __eq__(self, other: t.Any) -> bool:
+        if not isinstance(other, Tuner):
+            return NotImplemented
         return self._ratios == other._ratios
 
-    def __ne__(self, other: t.Self) -> bool:
+    def __ne__(self, other: t.Any) -> bool:
         return not self.__eq__(other)
 
     def __str__(self) -> str:

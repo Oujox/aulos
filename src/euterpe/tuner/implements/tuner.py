@@ -1,8 +1,6 @@
-from ..processing.ratios import (FIVELIMIT_TUNING_RATIOS,
-                                 MEANTONE_TUNING_RATIOS,
-                                 PYTHAGOREAN_TUNING_RATIOS,
-                                 standard_tuning_table)
 from ..tuner import Tuner
+from .ratios import (FIVELIMIT_TUNING_RATIOS, MEANTONE_TUNING_RATIOS,
+                     PYTHAGOREAN_TUNING_RATIOS, standard_tuning_table)
 
 
 class JustIntonationTuner(

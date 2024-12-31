@@ -1,25 +1,19 @@
 import typing as t
+from collections import deque
 
 
-def search[T](list: list[T], target: T) -> t.Optional[T]:
-    """リスト内で同一のオブジェクトを検索。"""
-    return next((item for item in list if item == target), None)
-
-
-def index[T](list: list[T], target: T) -> t.Optional[int]:
-    """リスト内で同一のオブジェクトの位置を検索。"""
-    if target not in list:
+def index[T](sequence: t.Sequence[T], target: T) -> int | None:
+    if target not in sequence:
         return None
-    return list.index(target)
+    return sequence.index(target)
 
 
-def rotate[T](iterable: t.Iterable[T], shift: int = 0) -> list[T]:
-    """リスト内要素を回転。"""
-    iterable = list(iterable)
-    if 0 < shift:
-        for _ in range(shift):
-            iterable.insert(0, iterable.pop())
-    else:
-        for _ in range(-shift):
-            iterable.append(iterable.pop(0))
-    return iterable
+def rotated[T](sequence: t.Sequence[T], shift: int = 0) -> tuple[T, ...]:
+    rotated = deque(sequence)
+    rotated.rotate(shift)
+    return tuple(rotated)
+
+
+def inplace[T](sequence: t.MutableSequence[T], f: t.Callable[[T], T]):
+    for i in range(len(sequence)):
+        sequence[i] = f(sequence[i])

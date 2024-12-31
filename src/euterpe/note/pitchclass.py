@@ -15,7 +15,7 @@ if TYPE_CHECKING:
 class PitchClass(BaseNote, EuterpeObject):
 
     _pitchclass: int
-    _pitchnames: tuple[str | None]
+    _pitchnames: tuple[str | None, ...]
     _pitchname: str | None
     _scale: Scale | None
 
@@ -66,23 +66,34 @@ class PitchClass(BaseNote, EuterpeObject):
             self._pitchname = name
 
     @scale.setter
-    def scale(self, scale: Scale):
-        from ..scale import Mode, Scale
+    def scale(self, scale: Scale | None):
+        from ..scale import Scale
 
-        if isinstance(scale, (Scale, Mode)):
-            pitchclass = (self.pitchclass - scale.key.pitchclass) % self.schema.semitone
-            if (idx := index(scale.positions, pitchclass)) is None:
-                return
-            acc, kacc = scale.accidentals[idx], scale.key.accsidentals[idx]
-            self._pitchname = self.schema.convert_pitchclass_to_pitchname(
-                self._pitchclass, acc + kacc
-            )
+        if isinstance(scale, Scale):
             self._scale = scale
+            pitchclass = (self.pitchclass - scale.key.pitchclass) % self.schema.semitone
 
-    def __eq__(self, other: int | BaseNote) -> bool:
+            if (idx := index(scale._positions, pitchclass)) is not None:
+                acc, kacc = scale._accidentals[idx], scale.key.accsidentals[idx]
+                self._pitchname = self.schema.convert_pitchclass_to_pitchname(
+                    self._pitchclass, acc + kacc
+                )
+
+            elif (idx := index(scale.positions, pitchclass)) is not None:
+                dacc = scale.accidentals[idx]
+                pitchclass = (pitchclass - dacc) % self.schema.semitone
+                if (idx := index(scale._positions, pitchclass)) is not None:
+                    acc, kacc = scale._accidentals[idx], scale.key.accsidentals[idx]
+                    self._pitchname = self.schema.convert_pitchclass_to_pitchname(
+                        self._pitchclass, acc + kacc + dacc
+                    )
+
+    def __eq__(self, other: t.Any) -> bool:
+        if not isinstance(other, (int, BaseNote)):
+            return NotImplemented
         return int(self) == int(other)
 
-    def __ne__(self, other: int | BaseNote) -> bool:
+    def __ne__(self, other: t.Any) -> bool:
         return not self.__eq__(other)
 
     def __add__(self, other: int | BaseNote) -> PitchClass:
@@ -102,8 +113,8 @@ class PitchClass(BaseNote, EuterpeObject):
     def __repr__(self) -> str:
         return "<PitchClass: {}>".format(self.pitchname or str(self.pitchnames))
 
-    def is_pitchname(self, pitchname: str) -> t.TypeGuard[str]:
+    def is_pitchname(self, pitchname: t.Any) -> t.TypeGuard[str]:
         return self.schema.is_pitchname(pitchname)
 
-    def is_pitchclass(self, pitchclass: int) -> t.TypeGuard[int]:
+    def is_pitchclass(self, pitchclass: t.Any) -> t.TypeGuard[int]:
         return self.schema.is_pitchclass(pitchclass)
