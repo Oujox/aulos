@@ -10,7 +10,9 @@ from ._base import BaseScale
 class Scale(BaseScale, EuterpeObject):
 
     _intervals: t.ClassVar[tuple[int, ...]]
+    _positions: t.ClassVar[tuple[int, ...]]
     _key: Key
+    _accidentals: tuple[int, ...]
 
     def __new__(cls, *args, **kwargs) -> t.Self:
         if cls is Scale:
@@ -20,10 +22,12 @@ class Scale(BaseScale, EuterpeObject):
     def __init__(self, key: Key, **kwargs) -> None:
         super().__init__(**kwargs)
         self._key = key
+        self._accidentals = self.schema.generate_scale_accidentals(self._intervals)
 
     def __init_subclass__(cls, /, intervals: t.Sequence[int], **kwargs) -> None:
         super().__init_subclass__(**kwargs)
         cls._intervals = tuple(intervals)
+        cls._positions = tuple(accumulate((0,) + cls._intervals[:-1]))
 
     @property
     def key(self) -> Key:
@@ -35,22 +39,21 @@ class Scale(BaseScale, EuterpeObject):
 
     @classproperty
     def positions(cls) -> tuple[int, ...]:
-        return tuple(accumulate((0,) + cls._intervals[:-1]))
+        return cls._positions
 
     @property
     def accidentals(self) -> tuple[int, ...]:
-        _accidentals = self.schema.generate_scale_accidentals(self._intervals)
-        return tuple(_accidentals)
+        return self._accidentals
 
     @property
-    def diatonics(self) -> list[PitchClass]:
-        diatonics = []
+    def components(self) -> list[PitchClass]:
+        components = []
         root = PitchClass(self._key.pitchname, scale=self, setting=self.setting)
         for pos in self.positions:
             pitchclass = (root + pos).pitchclass
             note = PitchClass(pitchclass, scale=self, setting=self.setting)
-            diatonics.append(note)
-        return diatonics
+            components.append(note)
+        return components
 
     def __eq__(self, other: t.Any) -> bool:
         if not isinstance(other, Scale):

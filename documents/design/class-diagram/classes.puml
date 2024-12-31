@@ -5,7 +5,7 @@ class "BaseChord" as euterpe.chord._base.BaseChord {
 class "BaseNote" as euterpe.note._base.BaseNote {
 }
 class "BaseScale" as euterpe.scale._base.BaseScale {
-  diatonics
+  components
 }
 class "BaseTuner" as euterpe.tuner._base.BaseTuner {
   {abstract}hz(notenumber: int) -> float
@@ -64,6 +64,8 @@ class "Mode" as euterpe.scale.mode.Mode {
 }
 class "NondiatonicScale" as euterpe.scale.diatonic.NondiatonicScale {
   accidentals
+  intervals() -> tuple[int, ...]
+  positions() -> tuple[int, ...]
 }
 class "Note" as euterpe.note.note.Note {
   notename
@@ -102,7 +104,7 @@ class "QualityComponent" as euterpe.chord.quality.QualityComponent {
 }
 class "Scale" as euterpe.scale.scale.Scale {
   accidentals
-  diatonics
+  components
   key
   intervals() -> tuple[int, ...]
   positions() -> tuple[int, ...]

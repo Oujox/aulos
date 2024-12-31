@@ -1,7 +1,7 @@
 import typing as t
 from itertools import pairwise
 
-from .._core.utils import rotated
+from .._core.utils import classproperty, rotated
 from ..note import Key
 from .scale import Scale
 
@@ -44,23 +44,32 @@ class NondiatonicScale(Scale, intervals=()):
     def __init_subclass__(
         cls, /, extensions: t.Sequence[t.Sequence[int]], base: type[Scale], **kwargs
     ) -> None:
+        super().__init_subclass__(intervals=base.intervals, **kwargs)
         cls._base = base
         cls._extensions = tuple(tuple(inner) for inner in extensions)
-        _positions = tuple(
-            d + nd for d, nds in zip(base.positions, cls._extensions) for nd in nds
+
+    @classproperty
+    def intervals(cls) -> tuple[int, ...]:
+        intervals = tuple(
+            b - a for a, b in pairwise(cls.positions + (sum(super().intervals),))
         )
-        _intervals = tuple(
-            b - a for a, b in pairwise(_positions + (sum(base.intervals),))
+        return intervals
+
+    @classproperty
+    def positions(cls) -> tuple[int, ...]:
+        positions = tuple(
+            d + nd for d, nds in zip(super().positions, cls._extensions) for nd in nds
         )
-        super().__init_subclass__(intervals=_intervals, **kwargs)
+        return positions
 
     @property
     def accidentals(self) -> tuple[int, ...]:
-        _accidentals = self.schema.generate_scale_accidentals(self._base.intervals)
-        _accidentals = tuple(
-            d + nd for d, nds in zip(_accidentals, self._extensions) for nd in nds
+        accidentals = tuple(
+            d + nd
+            for d, nds in zip(super().accidentals, self._extensions)
+            for nd in nds
         )
-        return _accidentals
+        return accidentals
 
     def __eq__(self, other: t.Any) -> bool:
         if not isinstance(other, NondiatonicScale):

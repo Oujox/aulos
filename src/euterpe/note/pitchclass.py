@@ -71,12 +71,14 @@ class PitchClass(BaseNote, EuterpeObject):
 
         if isinstance(scale, Scale):
             pitchclass = (self.pitchclass - scale.key.pitchclass) % self.schema.semitone
-            if (idx := index(scale.positions, pitchclass)) is None:
+            if (idx := index(scale._positions, pitchclass)) is None:
                 return
-            acc, kacc = scale.accidentals[idx], scale.key.accsidentals[idx]
+            acc, kacc = scale._accidentals[idx], scale.key.accsidentals[idx]
             self._pitchname = self.schema.convert_pitchclass_to_pitchname(
                 self._pitchclass, acc + kacc
             )
+            if self._pitchname is None:
+                print(self._pitchclass, acc, kacc)
             self._scale = scale
 
     def __eq__(self, other: t.Any) -> bool:

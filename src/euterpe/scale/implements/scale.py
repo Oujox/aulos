@@ -39,8 +39,8 @@ class Pentatonic(
 
 class MinorPentatonic(
     NondiatonicScale,
-    extensions=[[0], [0], [0], [], [0], [0], []],
-    base=Major,
+    extensions=[[0], [], [0], [0], [0], [], [0]],
+    base=Minor,
 ):
     """MinorPentatonic Scale"""
 
