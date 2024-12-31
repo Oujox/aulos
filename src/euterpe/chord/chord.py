@@ -4,6 +4,7 @@ import typing as t
 
 from .._core import EuterpeObject
 from ._base import BaseChord
+from ..note import PitchClass
 from .quality import Quality
 
 
@@ -34,23 +35,25 @@ def parse(name: str, instance: Chord) -> _IChord | None:
 
 class Chord(BaseChord, EuterpeObject):
 
-    _root: str
+    _root: PitchClass
     _quality: Quality
-    _on: str | None
+    _on: PitchClass | None
 
     def __init__(self, identify: str, **kwargs):
         super().__init__(**kwargs)
 
         if (parsed := parse(identify, self)) is not None:
-            self._root = parsed["root"]
+            root = PitchClass(parsed["root"], setting=self.setting)
+            on = PitchClass(parsed["on"], setting=self.setting) if parsed["on"] is not None else None
+            self._root = root
             self._quality = parsed["quality"]
-            self._on = parsed["on"]
+            self._on = on
 
         else:
             raise ValueError()
 
     @property
-    def root(self) -> str:
+    def root(self) -> PitchClass:
         return self._root
 
     @property
@@ -58,9 +61,22 @@ class Chord(BaseChord, EuterpeObject):
         return self._quality
 
     @property
-    def on(self) -> str | None:
+    def on(self) -> PitchClass | None:
         return self._on
-
-    def is_chord(self, chord: t.Any) -> t.TypeGuard[str]:
-        matched = self.schema.find_pitchname(chord)
-        return isinstance(chord, str) and matched is not None
+    
+    @property
+    def positions(self) -> tuple[int, ...]:
+        return self._quality.intervals
+    
+    @property
+    def components(self) -> tuple[PitchClass, ...]:
+        return ()
+    
+    def invert(self, inversion: int) -> Chord:
+        ...
+    
+    def transpose(self, interval: int) -> Chord:
+        ...
+    
+    def is_inverted(self) -> bool:
+        ...
