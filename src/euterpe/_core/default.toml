@@ -1,7 +1,7 @@
 [pitchclass]
 intervals = [2,2,1,2,2,2,1]
 symbols   = ["C","D","E","F","G","A","B"]
-accidental.limit = 2
+accidental.limit = 3
 accidental.symbol.sharp = "#"
 accidental.symbol.flat = "b"
 accidental.symbol.nature = "n"

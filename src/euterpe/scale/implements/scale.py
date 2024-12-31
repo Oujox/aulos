@@ -47,15 +47,15 @@ class MinorPentatonic(
 
 class Bluenote(
     NondiatonicScale,
-    extensions=[],
-    base=HarmonicMinor,
+    extensions=[[0], [0], [-1, 0], [0], [-1, 0], [0], [-1, 0]],
+    base=Major,
 ):
     """Bluenote Scale"""
 
 
 class Diminish(
     NondiatonicScale,
-    extensions=[],
+    extensions=[[0], [0], [-1], [0, 1], [1], [0], [0]],
     base=Major,
 ):
     """Diminish Scale"""
@@ -63,7 +63,7 @@ class Diminish(
 
 class CombDiminish(
     NondiatonicScale,
-    extensions=[],
+    extensions=[[0], [-1], [-1, 0], [1], [0], [0], [-1]],
     base=Major,
 ):
     """CombDiminish Scale"""
@@ -71,7 +71,7 @@ class CombDiminish(
 
 class Wholetone(
     NondiatonicScale,
-    extensions=[],
+    extensions=[[0], [0], [0], [1], [1], [1], []],
     base=Major,
 ):
     """Wholetone Scale"""
