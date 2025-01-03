@@ -73,20 +73,10 @@ class Note(BaseNote, EuterpeObject):
             pitchclass = self.schema.convert_notenumber_to_pitchclass(self._notenumber)
             pitchclass = (pitchclass - scale.key.pitchclass) % self.schema.semitone
 
-            if (idx := index(scale._positions, pitchclass)) is not None:
-                acc, kacc = scale._accidentals[idx], scale.key.accsidentals[idx]
+            if (idx := index(scale.positions, pitchclass)) is not None:
                 self._notename = self.schema.convert_notenumber_to_notename(
-                    self._notenumber, acc + kacc
+                    self._notenumber, scale.signatures[idx]
                 )
-
-            elif (idx := index(scale.positions, pitchclass)) is not None:
-                dacc = scale.accidentals[idx]
-                pitchclass = (pitchclass - dacc) % self.schema.semitone
-                if (idx := index(scale._positions, pitchclass)) is not None:
-                    acc, kacc = scale._accidentals[idx], scale.key.accsidentals[idx]
-                    self._notename = self.schema.convert_pitchclass_to_pitchname(
-                        self._notenumber, acc + kacc + dacc
-                    )
 
     def __eq__(self, other: t.Any) -> bool:
         if not isinstance(other, (int, BaseNote)):

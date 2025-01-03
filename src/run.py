@@ -6,31 +6,31 @@ from euterpe.tuner import *
 euterpe = Euterpe("my")
 
 @euterpe.WorkSpace()
-def track1():
+def workspace():
     from pprint import pprint
 
-    ab5 = Chord("Abm7(b5)/E")
-    print(ab5.root, ab5.quality.name, ab5.on)
+    # ab5 = Chord("Abm7(b5)/E")
+    # print(ab5.root, ab5.quality.name, ab5.on)
 
-    pprint(Tuner.mro())
-    pprint(Note("C#4").notenames)
-    pprint(Dorian(Key("F#")).components)
-    pprint(Dorian(Key("Gb")).components)
+    # pprint(Dorian_s4.mro())
+    # pprint(Note("C#4").notenames)
+    # pprint(Dorian(Key("F#")).signatures)
+    pprint(Locrian(Key("C")).components)
     
 
-    pprint(Pentatonic.intervals)
-    pprint(Pentatonic.positions)
-    pprint(Pentatonic(Key("Gb")).accidentals)
-    pprint(Pentatonic(Key("Gb")).components)
-    pprint(MinorPentatonic.intervals)
-    pprint(MinorPentatonic.positions)
-    pprint(Ionian(Key("F#")).accidentals)
-    pprint(Pentatonic(Key("F#")).components)
+    # pprint(Pentatonic.intervals)
+    # pprint(Pentatonic.positions)
+    # pprint(Pentatonic(Key("Gb")).signatures)
+    # pprint(Pentatonic(Key("Gb")).components)
+    # pprint(MinorPentatonic.intervals)
+    # pprint(MinorPentatonic.positions)
+    pprint(Ionian(Key("F#")).signatures)
+    pprint(Locrian_n6(Key("F#")).components)
     pprint(MinorPentatonic(Key("F#")).components)
 
     # for key in Note("C#4").schema.pitchnames:
     #     if len(key) < 3:
     #         print(key)
-    #         pprint(Wholetone(Key(key)).components)
+    #         pprint(Pentatonic(Key(key)).components)
 
-track1()
+workspace()

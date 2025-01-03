@@ -1,6 +1,14 @@
-"""Scale
+""" Scale
 ---
-* 一般に使用される音階・旋法を提供
+This module provides a collection of music theory tools for working with scales and modes.
+It includes diatonic and nondiatonic scales, as well as several modes derived from both the 
+major, harmonic minor, and melodic minor scales. These scales and modes are useful for 
+composition, music analysis, and algorithmic music generation.
+
+Modules:
+    - DiatonicScale, NondiatonicScale: Base classes for diatonic and nondiatonic scales.
+    - Modes
+    - Scales
 """
 
 from .diatonic import DiatonicScale, NondiatonicScale
@@ -16,14 +24,12 @@ from .implements.mode import (Aeorian, Aeorian_f5, AlteredSuperLocrian, Dorian,
 from .implements.scale import (Bluenote, CombDiminish, Diminish, HarmonicMinor,
                                Major, MelodicMinor, Minor, MinorPentatonic,
                                Pentatonic, Wholetone)
-from .mode import Mode
 from .scale import Scale
 
 __all__ = [
     "Scale",
     "DiatonicScale",
     "NondiatonicScale",
-    "Mode",
     "Major",
     "Minor",
     "MelodicMinor",

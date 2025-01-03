@@ -8,7 +8,7 @@ class Key(BaseNote, EuterpeObject):
 
     _name: str
     _pitchclass: int
-    _accidentals: tuple[int, ...]
+    _signatures: tuple[int, ...]
 
     def __init__(self, name: str, **kwargs) -> None:
         super().__init__(**kwargs)
@@ -16,7 +16,7 @@ class Key(BaseNote, EuterpeObject):
         if self.is_keyname(name):
             self._name = name
             self._pitchclass = self.schema.convert_pitchname_to_picthclass(name)
-            self._accidentals = self.schema.generate_key_accidentals(name)
+            self._signatures = self.schema.generate_key_signatures(name)
 
         else:
             raise ValueError()
@@ -30,8 +30,11 @@ class Key(BaseNote, EuterpeObject):
         return self._pitchclass
 
     @property
-    def accsidentals(self) -> tuple[int, ...]:
-        return self._accidentals
+    def signature(self) -> tuple[int, ...]:
+        return self._signatures
+
+    def is_keyname(self, value: t.Any) -> t.TypeGuard[str]:
+        return isinstance(value, str) and value in self.schema.pitchnames
 
     def __eq__(self, other: t.Any) -> bool:
         if not isinstance(other, (int, BaseNote)):
@@ -45,10 +48,7 @@ class Key(BaseNote, EuterpeObject):
         return self._pitchclass
 
     def __str__(self) -> str:
-        return self._name
+        return f"<Key: {self._name}>"
 
     def __repr__(self) -> str:
-        return "<Key: {}>".format(self._name)
-
-    def is_keyname(self, value: t.Any) -> t.TypeGuard[str]:
-        return isinstance(value, str) and value in self.schema.pitchnames
+        return f"Key(name={self._name!r}, setting={self._setting!r})"

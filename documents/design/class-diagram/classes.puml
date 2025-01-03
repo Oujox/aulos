@@ -4,17 +4,18 @@ class "BaseChord" as euterpe.chord._base.BaseChord {
 }
 class "BaseNote" as euterpe.note._base.BaseNote {
 }
-class "BaseScale" as euterpe.scale._base.BaseScale {
-  components
-}
 class "BaseTuner" as euterpe.tuner._base.BaseTuner {
   {abstract}hz(notenumber: int) -> float
 }
 class "Chord" as euterpe.chord.chord.Chord {
+  components
   on
+  positions
   quality
   root
-  is_chord(chord: t.Any) -> t.TypeGuard[str]
+  invert(inversion: int) -> Chord
+  is_inverted() -> bool
+  transpose(interval: int) -> Chord
 }
 class "Context" as euterpe._core.framework.context.Context {
   data : t.ClassVar[ContextVar[dict[str, t.Any]]]
@@ -49,16 +50,17 @@ class "InjectedMeta" as euterpe._core.framework.inject.InjectedMeta {
 }
 class "InstanceCacheMeta" as euterpe._core.framework.instancecache.InstanceCacheMeta {
 }
+class "Intervals" as euterpe._core.utils.interval.Intervals {
+  rotate(shift: int)
+}
 class "Key" as euterpe.note.key.Key {
-  accsidentals
   pitchclass
   pitchname
+  signature
   is_keyname(value: t.Any) -> t.TypeGuard[str]
 }
-class "Mode" as euterpe.scale.mode.Mode {
-}
 class "NondiatonicScale" as euterpe.scale.diatonic.NondiatonicScale {
-  accidentals
+  signatures
   intervals() -> tuple[int, ...]
   positions() -> tuple[int, ...]
 }
@@ -80,6 +82,9 @@ class "PitchClass" as euterpe.note.pitchclass.PitchClass {
   is_pitchclass(pitchclass: t.Any) -> t.TypeGuard[int]
   is_pitchname(pitchname: t.Any) -> t.TypeGuard[str]
 }
+class "Positions" as euterpe._core.utils.interval.Positions {
+  rotate(shift: int)
+}
 class "Quality" as euterpe.chord.quality.Quality {
   components : tuple[QualityComponent, ...]
   intervals
@@ -98,11 +103,12 @@ class "QualityComponent" as euterpe.chord.quality.QualityComponent {
   name : str
 }
 class "Scale" as euterpe.scale.scale.Scale {
-  accidentals
   components
   key
+  signatures
   intervals() -> tuple[int, ...]
   positions() -> tuple[int, ...]
+  transpose(semitone: int)
 }
 class "Schema" as euterpe._core.schema.Schema {
   interval2qualities
@@ -130,8 +136,8 @@ class "Schema" as euterpe._core.schema.Schema {
   convert_pitchname_to_picthclass(pitchname: str) -> int
   convert_pitchname_to_symbol(pitchname: str)
   find_pitchname(value: str) -> str | None
-  generate_key_accidentals(pitchname: str) -> tuple[int, ...]
-  generate_scale_accidentals(intervals: tuple[int, ...]) -> tuple[int, ...]
+  generate_key_signatures(pitchname: str) -> tuple[int, ...]
+  generate_scale_signatures(intervals: tuple[int, ...]) -> tuple[int, ...]
   is_notename(value: t.Any) -> t.TypeGuard[str]
   is_notenumber(value: t.Any) -> t.TypeGuard[int]
   is_pitchclass(value: t.Any) -> t.TypeGuard[int]
@@ -172,7 +178,6 @@ euterpe.note.pitchclass.PitchClass --|> euterpe.note._base.BaseNote
 euterpe.scale.diatonic.DiatonicScale --|> euterpe.scale.scale.Scale
 euterpe.scale.diatonic.NondiatonicScale --|> euterpe.scale.scale.Scale
 euterpe.scale.scale.Scale --|> euterpe._core.object.EuterpeObject
-euterpe.scale.scale.Scale --|> euterpe.scale._base.BaseScale
 euterpe.tuner.tuner.Tuner --|> euterpe._core.object.EuterpeObject
 euterpe.tuner.tuner.Tuner --|> euterpe.tuner._base.BaseTuner
 euterpe.utils.context.EuterpeContext --|> euterpe._core.framework.context.Context
@@ -181,4 +186,5 @@ euterpe._core.setting.Setting --* euterpe._core.schema.Schema : _setting
 euterpe._core.setting.Setting --* euterpe.utils.euterpe.Euterpe : setting
 euterpe.chord.quality.Quality --* euterpe.chord.chord._IChord : quality
 euterpe.note.key.Key --* euterpe.scale.scale.Scale : _key
+euterpe.note.pitchclass.PitchClass --* euterpe.chord.chord.Chord : _root
 @enduml

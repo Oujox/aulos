@@ -3,8 +3,8 @@ from __future__ import annotations
 import typing as t
 
 from .._core import EuterpeObject
-from ._base import BaseChord
 from ..note import PitchClass
+from ._base import BaseChord
 from .quality import Quality
 
 
@@ -44,7 +44,11 @@ class Chord(BaseChord, EuterpeObject):
 
         if (parsed := parse(identify, self)) is not None:
             root = PitchClass(parsed["root"], setting=self.setting)
-            on = PitchClass(parsed["on"], setting=self.setting) if parsed["on"] is not None else None
+            on = (
+                PitchClass(parsed["on"], setting=self.setting)
+                if parsed["on"] is not None
+                else None
+            )
             self._root = root
             self._quality = parsed["quality"]
             self._on = on
@@ -63,20 +67,17 @@ class Chord(BaseChord, EuterpeObject):
     @property
     def on(self) -> PitchClass | None:
         return self._on
-    
+
     @property
     def positions(self) -> tuple[int, ...]:
         return self._quality.intervals
-    
+
     @property
     def components(self) -> tuple[PitchClass, ...]:
         return ()
-    
-    def invert(self, inversion: int) -> Chord:
-        ...
-    
-    def transpose(self, interval: int) -> Chord:
-        ...
-    
-    def is_inverted(self) -> bool:
-        ...
+
+    def invert(self, inversion: int) -> Chord: ...
+
+    def transpose(self, interval: int) -> Chord: ...
+
+    def is_inverted(self) -> bool: ...
