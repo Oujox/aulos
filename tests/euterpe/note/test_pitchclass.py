@@ -98,8 +98,21 @@ def test_PitchClass_dunder_int(setting, data_pitchclass):
         assert int(PitchClass(pitchclass, setting=setting)) == pitchclass
 
 
-def test_PitchClass_dunder_str(setting, data_pitchclass, data_pitchname):
+def test_PitchClass_dunder_str(
+    setting, data_pitchclass, data_pitchname, data_map_pitchclass_to_pitchnames
+):
     for pitchclass in data_pitchclass:
-        assert str(PitchClass(pitchclass, setting=setting)) == str(pitchclass)
+        pitchnames = [
+            name
+            for name in data_map_pitchclass_to_pitchnames[pitchclass]
+            if name is not None
+        ]
+        assert (
+            str(PitchClass(pitchclass, setting=setting))
+            == f"<PitchClass: {pitchnames}, scale: None>"
+        )
     for pitchname in data_pitchname:
-        assert str(PitchClass(pitchname, setting=setting)) == pitchname
+        assert (
+            str(PitchClass(pitchname, setting=setting))
+            == f"<PitchClass: {pitchname}, scale: None>"
+        )

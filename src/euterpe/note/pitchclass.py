@@ -5,14 +5,14 @@ from typing import TYPE_CHECKING
 
 from .._core import EuterpeObject
 from .._core.utils import index
-from ._base import BaseNote
+from ._base import BasePitchClass
 
 # type annotaion
 if TYPE_CHECKING:
     from scale import Scale  # pragma: no cover
 
 
-class PitchClass(BaseNote, EuterpeObject):
+class PitchClass(BasePitchClass, EuterpeObject):
 
     _pitchclass: int
     _pitchnames: tuple[str | None, ...]
@@ -78,19 +78,25 @@ class PitchClass(BaseNote, EuterpeObject):
                     self._pitchclass, scale.signatures[idx]
                 )
 
+    def is_pitchname(self, pitchname: t.Any) -> t.TypeGuard[str]:
+        return self.schema.is_pitchname(pitchname)
+
+    def is_pitchclass(self, pitchclass: t.Any) -> t.TypeGuard[int]:
+        return self.schema.is_pitchclass(pitchclass)
+
     def __eq__(self, other: t.Any) -> bool:
-        if not isinstance(other, (int, BaseNote)):
+        if not isinstance(other, (int, BasePitchClass)):
             return NotImplemented
         return int(self) == int(other)
 
     def __ne__(self, other: t.Any) -> bool:
         return not self.__eq__(other)
 
-    def __add__(self, other: int | BaseNote) -> PitchClass:
+    def __add__(self, other: int | BasePitchClass) -> PitchClass:
         pitchclass = (int(self) + int(other)) % self.schema.semitone
         return PitchClass(pitchclass, scale=self.scale, setting=self.setting)
 
-    def __sub__(self, other: int | BaseNote) -> PitchClass:
+    def __sub__(self, other: int | BasePitchClass) -> PitchClass:
         pitchclass = (int(self) - int(other)) % self.schema.semitone
         return PitchClass(pitchclass, scale=self.scale, setting=self.setting)
 
@@ -98,13 +104,7 @@ class PitchClass(BaseNote, EuterpeObject):
         return self._pitchclass
 
     def __str__(self) -> str:
-        return self._pitchname or str(self._pitchclass)
+        return f"<PitchClass: {self.pitchname or self.pitchnames}, scale: {self.scale}>"
 
     def __repr__(self) -> str:
-        return "<PitchClass: {}>".format(self.pitchname or str(self.pitchnames))
-
-    def is_pitchname(self, pitchname: t.Any) -> t.TypeGuard[str]:
-        return self.schema.is_pitchname(pitchname)
-
-    def is_pitchclass(self, pitchclass: t.Any) -> t.TypeGuard[int]:
-        return self.schema.is_pitchclass(pitchclass)
+        return f"<PitchClass: {self.pitchname or self.pitchnames}, scale: {self.scale}>"

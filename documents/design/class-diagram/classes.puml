@@ -2,7 +2,10 @@
 set namespaceSeparator none
 class "BaseChord" as euterpe.chord._base.BaseChord {
 }
-class "BaseNote" as euterpe.note._base.BaseNote {
+class "BasePitchClass" as euterpe.note._base.BasePitchClass {
+  pitchclass
+  pitchname
+  pitchnames
 }
 class "Chord" as euterpe.chord.chord.Chord {
   components
@@ -51,8 +54,10 @@ class "Intervals" as euterpe._core.utils.interval.Intervals {
   rotate(shift: int)
 }
 class "Key" as euterpe.note.key.Key {
+  name
   pitchclass
   pitchname
+  pitchnames
   signature
   is_keyname(value: t.Any) -> t.TypeGuard[str]
 }
@@ -62,10 +67,15 @@ class "NondiatonicScale" as euterpe.scale.diatonic.NondiatonicScale {
   positions() -> tuple[int, ...]
 }
 class "Note" as euterpe.note.note.Note {
+  hz
   notename
   notenames
   notenumber
+  pitchclass
+  pitchname
+  pitchnames
   scale
+  tuner
   is_notename(notename: t.Any) -> t.TypeGuard[str]
   is_notenumber(notenumber: t.Any) -> t.TypeGuard[int]
 }
@@ -167,11 +177,11 @@ class "classproperty" as euterpe._core.utils.decorators.classproperty {
 euterpe.chord.chord.Chord --|> euterpe._core.object.EuterpeObject
 euterpe.chord.chord.Chord --|> euterpe.chord._base.BaseChord
 euterpe.note.key.Key --|> euterpe._core.object.EuterpeObject
-euterpe.note.key.Key --|> euterpe.note._base.BaseNote
+euterpe.note.key.Key --|> euterpe.note._base.BasePitchClass
 euterpe.note.note.Note --|> euterpe._core.object.EuterpeObject
-euterpe.note.note.Note --|> euterpe.note._base.BaseNote
+euterpe.note.note.Note --|> euterpe.note._base.BasePitchClass
 euterpe.note.pitchclass.PitchClass --|> euterpe._core.object.EuterpeObject
-euterpe.note.pitchclass.PitchClass --|> euterpe.note._base.BaseNote
+euterpe.note.pitchclass.PitchClass --|> euterpe.note._base.BasePitchClass
 euterpe.scale.diatonic.DiatonicScale --|> euterpe.scale.scale.Scale
 euterpe.scale.diatonic.NondiatonicScale --|> euterpe.scale.scale.Scale
 euterpe.scale.scale.Scale --|> euterpe._core.object.EuterpeObject

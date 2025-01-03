@@ -1,12 +1,12 @@
 import typing as t
 
 from .._core import EuterpeObject
-from ._base import BaseNote
+from ._base import BasePitchClass
 
 
-class Key(BaseNote, EuterpeObject):
+class Key(BasePitchClass, EuterpeObject):
 
-    _name: str
+    _pitchname: str
     _pitchclass: int
     _signatures: tuple[int, ...]
 
@@ -14,7 +14,7 @@ class Key(BaseNote, EuterpeObject):
         super().__init__(**kwargs)
 
         if self.is_keyname(name):
-            self._name = name
+            self._pitchname = name
             self._pitchclass = self.schema.convert_pitchname_to_picthclass(name)
             self._signatures = self.schema.generate_key_signatures(name)
 
@@ -22,12 +22,24 @@ class Key(BaseNote, EuterpeObject):
             raise ValueError()
 
     @property
-    def pitchname(self) -> str:
-        return self._name
+    def name(self) -> str:
+        return self._pitchname
 
     @property
     def pitchclass(self) -> int:
         return self._pitchclass
+
+    @property
+    def pitchname(self) -> str:
+        return self._pitchname
+
+    @property
+    def pitchnames(self) -> list[str]:
+        return [
+            n
+            for n in self.schema.convert_pitchclass_to_pitchnames(self._pitchclass)
+            if n is not None
+        ]
 
     @property
     def signature(self) -> tuple[int, ...]:
@@ -37,7 +49,7 @@ class Key(BaseNote, EuterpeObject):
         return isinstance(value, str) and value in self.schema.pitchnames
 
     def __eq__(self, other: t.Any) -> bool:
-        if not isinstance(other, (int, BaseNote)):
+        if not isinstance(other, (int, BasePitchClass)):
             return NotImplemented
         return int(self) == int(other)
 
@@ -48,7 +60,7 @@ class Key(BaseNote, EuterpeObject):
         return self._pitchclass
 
     def __str__(self) -> str:
-        return f"<Key: {self._name}>"
+        return f"<Key: {self._pitchname}>"
 
     def __repr__(self) -> str:
-        return f"Key(name={self._name!r}, setting={self._setting!r})"
+        return f"Key(name={self._pitchname!r}, setting={self._setting!r})"
