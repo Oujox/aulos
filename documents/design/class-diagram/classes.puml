@@ -1,7 +1,5 @@
 @startuml classes
 set namespaceSeparator none
-class "BaseChord" as euterpe.chord._base.BaseChord {
-}
 class "BasePitchClass" as euterpe.note._base.BasePitchClass {
   pitchclass
   pitchname
@@ -175,7 +173,6 @@ class "classproperty" as euterpe._core.utils.decorators.classproperty {
   getter(method: t.Callable[..., T])
 }
 euterpe.chord.chord.Chord --|> euterpe._core.object.EuterpeObject
-euterpe.chord.chord.Chord --|> euterpe.chord._base.BaseChord
 euterpe.note.key.Key --|> euterpe._core.object.EuterpeObject
 euterpe.note.key.Key --|> euterpe.note._base.BasePitchClass
 euterpe.note.note.Note --|> euterpe._core.object.EuterpeObject

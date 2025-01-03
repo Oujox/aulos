@@ -42,8 +42,6 @@ package "euterpe._warnings" as euterpe._warnings {
 }
 package "euterpe.chord" as euterpe.chord {
 }
-package "euterpe.chord._base" as euterpe.chord._base {
-}
 package "euterpe.chord.chord" as euterpe.chord.chord {
 }
 package "euterpe.chord.quality" as euterpe.chord.quality {
@@ -99,7 +97,6 @@ euterpe._core.utils --> euterpe._core.utils.calculation
 euterpe._core.utils --> euterpe._core.utils.dataclass
 euterpe._core.utils --> euterpe._core.utils.decorators
 euterpe.chord --> euterpe.chord.chord
-euterpe.chord.chord --> euterpe.chord._base
 euterpe.chord.chord --> euterpe.chord.quality
 euterpe.note --> euterpe.note.key
 euterpe.note --> euterpe.note.note

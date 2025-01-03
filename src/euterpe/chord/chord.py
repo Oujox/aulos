@@ -4,7 +4,6 @@ import typing as t
 
 from .._core import EuterpeObject
 from ..note import PitchClass
-from ._base import BaseChord
 from .quality import Quality
 
 
@@ -33,7 +32,7 @@ def parse(name: str, instance: Chord) -> _IChord | None:
     return {"root": root, "on": on, "quality": quality}
 
 
-class Chord(BaseChord, EuterpeObject):
+class Chord(EuterpeObject):
 
     _root: PitchClass
     _quality: Quality

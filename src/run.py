@@ -13,7 +13,9 @@ def workspace():
     # print(ab5.root, ab5.quality.name, ab5.on)
 
     # pprint(Dorian_s4.mro())
-    print(Note(69).hz)
+    print(Note(70, tuner=JustIntonationTuner()).hz)
+    print(Note(70, tuner=Equal12Tuner()).hz)
+    print(Note(70, tuner=MeantoneTuner()).hz)
     # pprint(Dorian(Key("F#")).signatures)
     # pprint(Locrian(Key("C")).components)
     
