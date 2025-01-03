@@ -66,8 +66,6 @@ package "euterpe.scale.scale" as euterpe.scale.scale {
 }
 package "euterpe.tuner" as euterpe.tuner {
 }
-package "euterpe.tuner._base" as euterpe.tuner._base {
-}
 package "euterpe.tuner.tuner" as euterpe.tuner.tuner {
 }
 package "euterpe.utils" as euterpe.utils {
@@ -113,7 +111,6 @@ euterpe.scale --> euterpe.scale.diatonic
 euterpe.scale --> euterpe.scale.scale
 euterpe.scale.diatonic --> euterpe.scale.scale
 euterpe.tuner --> euterpe.tuner.tuner
-euterpe.tuner.tuner --> euterpe.tuner._base
 euterpe.utils --> euterpe
 euterpe.utils.euterpe --> euterpe.utils.context
 euterpe.utils.euterpe --> euterpe.utils.track

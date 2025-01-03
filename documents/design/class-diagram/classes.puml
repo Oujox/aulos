@@ -4,9 +4,6 @@ class "BaseChord" as euterpe.chord._base.BaseChord {
 }
 class "BaseNote" as euterpe.note._base.BaseNote {
 }
-class "BaseTuner" as euterpe.tuner._base.BaseTuner {
-  {abstract}hz(notenumber: int) -> float
-}
 class "Chord" as euterpe.chord.chord.Chord {
   components
   on
@@ -179,7 +176,6 @@ euterpe.scale.diatonic.DiatonicScale --|> euterpe.scale.scale.Scale
 euterpe.scale.diatonic.NondiatonicScale --|> euterpe.scale.scale.Scale
 euterpe.scale.scale.Scale --|> euterpe._core.object.EuterpeObject
 euterpe.tuner.tuner.Tuner --|> euterpe._core.object.EuterpeObject
-euterpe.tuner.tuner.Tuner --|> euterpe.tuner._base.BaseTuner
 euterpe.utils.context.EuterpeContext --|> euterpe._core.framework.context.Context
 euterpe._core.setting.Setting --* euterpe._core.object.EuterpeObject : _setting
 euterpe._core.setting.Setting --* euterpe._core.schema.Schema : _setting
