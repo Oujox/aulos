@@ -1,29 +1,37 @@
 # euterpe
 
-A Python library for exploring and utilizing music theory concepts in an intuitive and programmatic way.
+Python library for speech processing and analysis from a music theory perspective.
 
 [![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://github.com/Oujox/euterpe/blob/main/LICENSE)
 [![codecov](https://codecov.io/gh/Oujox/euterpe/graph/badge.svg?token=UP6ZQP7HMK)](https://codecov.io/gh/Oujox/euterpe)
 
-> **workflows**
->
-> [![🐍 Python Tests Workflow](https://github.com/Oujox/euterpe/actions/workflows/test-python.yml/badge.svg)](https://github.com/Oujox/euterpe/actions/workflows/test-python.yml)
+[![🐍 Python Tests Workflow](https://github.com/Oujox/euterpe/actions/workflows/test-python.yml/badge.svg)](https://github.com/Oujox/euterpe/actions/workflows/test-python.yml)
 
-## overview
+## Features ✨
 
-## install
+- Comprehensive tools for audio processing and analysis based on music theory principles.
+- A structured framework for organizing and working with music theory objects.
+- Flexible and extensible design, allowing seamless customization and expansion.
 
-## usage
+## Installation 🛠️
 
+## Usage 📖
+
+1. a
 ```python
-from euterpe import Note
+import wave
+from euterpe import Euterpe
 
-a1 = Note("A4")
+euterpe = Euterpe("my")
 
-print(a1)
->> <Note: 'A4'>
+@euterpe.Track()
+def track():
+    return wave.open(path, "rb")
+
+track().play()
 ```
 
+2. 
 ```python
 from euterpe import scale, Key
 
@@ -53,6 +61,10 @@ from euterpe import Progress
 cm7b5 = Progress(["F", "E7", "Am", "G"])
 ```
 
-## Lisence
+## Documentation 📚
+
+## License 📜
 
 This project is distributed under the MIT License. For more information, refer to the [LICENSE](https://github.com/Oujox/euterpe/blob/main/LICENSE) file.
+
+## Contact 📬
