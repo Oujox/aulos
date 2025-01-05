@@ -19,6 +19,8 @@ class "Context" as euterpe._core.framework.context.Context {
   data : t.ClassVar[ContextVar[dict[str, t.Any]]]
   setting : t.ClassVar[ContextVar[Setting]]
 }
+class "DerivedCacheMeta" as euterpe._core.framework.derivedcache.DerivedCacheMeta {
+}
 class "DiatonicScale" as euterpe.scale.diatonic.DiatonicScale {
 }
 class "Euterpe" as euterpe.utils.euterpe.Euterpe {
@@ -91,21 +93,9 @@ class "Positions" as euterpe._core.utils.interval.Positions {
   rotate(shift: int)
 }
 class "Quality" as euterpe.chord.quality.Quality {
-  components : tuple[QualityComponent, ...]
-  intervals
-  name
-  reversed
-}
-class "QualityComponent" as euterpe.chord.quality.QualityComponent {
-  alterations : dict[int, int]
-  brackets : bool
-  diminution : tuple[int, ...]
-  enable : tuple[int, ...]
-  extensions : tuple[int, ...]
-  group : int
-  index : int
-  intervals : tuple[int, ...]
-  name : str
+  areas() -> tuple[str, ...]
+  name() -> str
+  positions() -> tuple[int, ...]
 }
 class "Scale" as euterpe.scale.scale.Scale {
   components
@@ -116,9 +106,7 @@ class "Scale" as euterpe.scale.scale.Scale {
   transpose(semitone: int)
 }
 class "Schema" as euterpe._core.schema.Schema {
-  interval2qualities
   intervals
-  name2quality
   notenames
   notenumbers
   pitchclasses
@@ -164,7 +152,7 @@ class "Tuner" as euterpe.tuner.tuner.Tuner {
 }
 class "_IChord" as euterpe.chord.chord._IChord {
   on : str | None
-  quality
+  quality : type[Quality]
   root : str
 }
 class "classproperty" as euterpe._core.utils.decorators.classproperty {
@@ -187,7 +175,7 @@ euterpe.utils.context.EuterpeContext --|> euterpe._core.framework.context.Contex
 euterpe._core.setting.Setting --* euterpe._core.object.EuterpeObject : _setting
 euterpe._core.setting.Setting --* euterpe._core.schema.Schema : _setting
 euterpe._core.setting.Setting --* euterpe.utils.euterpe.Euterpe : setting
-euterpe.chord.quality.Quality --* euterpe.chord.chord._IChord : quality
+euterpe.chord.quality.Quality --* euterpe.chord.chord.Chord : _quality
 euterpe.note.key.Key --* euterpe.scale.scale.Scale : _key
 euterpe.note.pitchclass.PitchClass --* euterpe.chord.chord.Chord : _root
 @enduml

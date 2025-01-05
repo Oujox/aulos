@@ -10,6 +10,8 @@ package "euterpe._core.framework" as euterpe._core.framework {
 }
 package "euterpe._core.framework.context" as euterpe._core.framework.context {
 }
+package "euterpe._core.framework.derivedcache" as euterpe._core.framework.derivedcache {
+}
 package "euterpe._core.framework.inject" as euterpe._core.framework.inject {
 }
 package "euterpe._core.framework.instancecache" as euterpe._core.framework.instancecache {
@@ -81,6 +83,7 @@ euterpe --> euterpe.note
 euterpe._core --> euterpe._core.object
 euterpe._core --> euterpe._core.setting
 euterpe._core.framework --> euterpe._core.framework.context
+euterpe._core.framework --> euterpe._core.framework.derivedcache
 euterpe._core.framework --> euterpe._core.framework.inject
 euterpe._core.framework --> euterpe._core.framework.instancecache
 euterpe._core.framework --> euterpe._core.framework.optimize

@@ -4,16 +4,12 @@ import typing as t
 from dataclasses import dataclass
 from functools import cached_property
 from itertools import starmap
-from typing import TYPE_CHECKING
 
 from .framework import InstanceCacheMeta
 from .schemas.note import NoteSchema
 from .schemas.pitchclass import PitchClassSchema
 from .setting import Setting
 from .utils import wrapped_diff
-
-if TYPE_CHECKING:
-    from ..chord.quality import Quality
 
 
 @dataclass(frozen=True, init=False)
@@ -172,36 +168,6 @@ class Schema(metaclass=InstanceCacheMeta):
     @property
     def root_notenumber(self) -> int:
         return self._setting.note.tuner.reference.number
-
-    """
-    Chord
-    """
-
-    @cached_property
-    def name2quality(self) -> dict[str, Quality]:
-        from ..chord.implements.quality import (DEFAULT_QUALITY_COMPONENTS,
-                                                DEFAULT_QUALITY_VALIDATOR)
-        from ..chord.processing.generator import QualityGenerator
-
-        return {
-            q.name: q
-            for q in QualityGenerator(
-                DEFAULT_QUALITY_COMPONENTS, DEFAULT_QUALITY_VALIDATOR
-            )
-        }
-
-    @cached_property
-    def interval2qualities(self) -> dict[str, Quality]:
-        from ..chord.implements.quality import (DEFAULT_QUALITY_COMPONENTS,
-                                                DEFAULT_QUALITY_VALIDATOR)
-        from ..chord.processing.generator import QualityGenerator
-
-        return {
-            q.name: q
-            for q in QualityGenerator(
-                DEFAULT_QUALITY_COMPONENTS, DEFAULT_QUALITY_VALIDATOR
-            )
-        }
 
     """
     Extension
