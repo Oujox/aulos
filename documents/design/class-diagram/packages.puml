@@ -10,6 +10,8 @@ package "euterpe._core.framework" as euterpe._core.framework {
 }
 package "euterpe._core.framework.context" as euterpe._core.framework.context {
 }
+package "euterpe._core.framework.derivedcache" as euterpe._core.framework.derivedcache {
+}
 package "euterpe._core.framework.inject" as euterpe._core.framework.inject {
 }
 package "euterpe._core.framework.instancecache" as euterpe._core.framework.instancecache {
@@ -32,6 +34,8 @@ package "euterpe._core.utils.dataclass" as euterpe._core.utils.dataclass {
 }
 package "euterpe._core.utils.decorators" as euterpe._core.utils.decorators {
 }
+package "euterpe._core.utils.interval" as euterpe._core.utils.interval {
+}
 package "euterpe._errors" as euterpe._errors {
 }
 package "euterpe._version" as euterpe._version {
@@ -39,8 +43,6 @@ package "euterpe._version" as euterpe._version {
 package "euterpe._warnings" as euterpe._warnings {
 }
 package "euterpe.chord" as euterpe.chord {
-}
-package "euterpe.chord._base" as euterpe.chord._base {
 }
 package "euterpe.chord.chord" as euterpe.chord.chord {
 }
@@ -58,17 +60,11 @@ package "euterpe.note.pitchclass" as euterpe.note.pitchclass {
 }
 package "euterpe.scale" as euterpe.scale {
 }
-package "euterpe.scale._base" as euterpe.scale._base {
-}
 package "euterpe.scale.diatonic" as euterpe.scale.diatonic {
-}
-package "euterpe.scale.mode" as euterpe.scale.mode {
 }
 package "euterpe.scale.scale" as euterpe.scale.scale {
 }
 package "euterpe.tuner" as euterpe.tuner {
-}
-package "euterpe.tuner._base" as euterpe.tuner._base {
 }
 package "euterpe.tuner.tuner" as euterpe.tuner.tuner {
 }
@@ -87,6 +83,7 @@ euterpe --> euterpe.note
 euterpe._core --> euterpe._core.object
 euterpe._core --> euterpe._core.setting
 euterpe._core.framework --> euterpe._core.framework.context
+euterpe._core.framework --> euterpe._core.framework.derivedcache
 euterpe._core.framework --> euterpe._core.framework.inject
 euterpe._core.framework --> euterpe._core.framework.instancecache
 euterpe._core.framework --> euterpe._core.framework.optimize
@@ -103,7 +100,6 @@ euterpe._core.utils --> euterpe._core.utils.calculation
 euterpe._core.utils --> euterpe._core.utils.dataclass
 euterpe._core.utils --> euterpe._core.utils.decorators
 euterpe.chord --> euterpe.chord.chord
-euterpe.chord.chord --> euterpe.chord._base
 euterpe.chord.chord --> euterpe.chord.quality
 euterpe.note --> euterpe.note.key
 euterpe.note --> euterpe.note.note
@@ -112,12 +108,9 @@ euterpe.note.key --> euterpe.note._base
 euterpe.note.note --> euterpe.note._base
 euterpe.note.pitchclass --> euterpe.note._base
 euterpe.scale --> euterpe.scale.diatonic
-euterpe.scale --> euterpe.scale.mode
 euterpe.scale --> euterpe.scale.scale
 euterpe.scale.diatonic --> euterpe.scale.scale
-euterpe.scale.scale --> euterpe.scale._base
 euterpe.tuner --> euterpe.tuner.tuner
-euterpe.tuner.tuner --> euterpe.tuner._base
 euterpe.utils --> euterpe
 euterpe.utils.euterpe --> euterpe.utils.context
 euterpe.utils.euterpe --> euterpe.utils.track

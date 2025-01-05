@@ -4,16 +4,12 @@ import typing as t
 from dataclasses import dataclass
 from functools import cached_property
 from itertools import starmap
-from typing import TYPE_CHECKING
 
 from .framework import InstanceCacheMeta
 from .schemas.note import NoteSchema
 from .schemas.pitchclass import PitchClassSchema
 from .setting import Setting
 from .utils import wrapped_diff
-
-if TYPE_CHECKING:
-    from ..chord.quality import Quality
 
 
 @dataclass(frozen=True, init=False)
@@ -174,40 +170,10 @@ class Schema(metaclass=InstanceCacheMeta):
         return self._setting.note.tuner.reference.number
 
     """
-    Chord
-    """
-
-    @cached_property
-    def name2quality(self) -> dict[str, Quality]:
-        from ..chord.implements.quality import (DEFAULT_QUALITY_COMPONENTS,
-                                                DEFAULT_QUALITY_VALIDATOR)
-        from ..chord.processing.generator import QualityGenerator
-
-        return {
-            q.name: q
-            for q in QualityGenerator(
-                DEFAULT_QUALITY_COMPONENTS, DEFAULT_QUALITY_VALIDATOR
-            )
-        }
-
-    @cached_property
-    def interval2qualities(self) -> dict[str, Quality]:
-        from ..chord.implements.quality import (DEFAULT_QUALITY_COMPONENTS,
-                                                DEFAULT_QUALITY_VALIDATOR)
-        from ..chord.processing.generator import QualityGenerator
-
-        return {
-            q.name: q
-            for q in QualityGenerator(
-                DEFAULT_QUALITY_COMPONENTS, DEFAULT_QUALITY_VALIDATOR
-            )
-        }
-
-    """
     Extension
     """
 
-    def generate_key_accidentals(self, pitchname: str) -> tuple[int, ...]:
+    def generate_key_signatures(self, pitchname: str) -> tuple[int, ...]:
         if not self.is_pitchname(pitchname):
             raise ValueError(f"Invalid pitchname: '{pitchname}'.")
         positions = []
@@ -223,15 +189,15 @@ class Schema(metaclass=InstanceCacheMeta):
             positions.append(wrapped_diff(a_pos, n_pos, self.semitone))
         return tuple(positions)
 
-    def generate_scale_accidentals(self, intervals: tuple[int, ...]) -> tuple[int, ...]:
+    def generate_scale_signatures(self, intervals: tuple[int, ...]) -> tuple[int, ...]:
         diff = list(starmap(lambda x, y: y - x, zip(self.intervals, intervals)))
-        accidentals = []
+        signature = []
         for i in range(len(self.intervals)):
             cur, next = i % len(self.intervals), (i + 1) % len(self.intervals)
-            accidentals.append(diff[cur])
+            signature.append(diff[cur])
             diff[next] = diff[next] + diff[cur]
             diff[cur] = 0
-        return tuple(accidentals[-1:] + accidentals[:-1])
+        return tuple(signature[-1:] + signature[:-1])
 
     def convert_notenumber_to_pitchclass(self, notenumber: int) -> int:
         if not self.is_notenumber(notenumber):

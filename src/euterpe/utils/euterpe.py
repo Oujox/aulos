@@ -2,6 +2,8 @@ import typing as t
 from functools import wraps
 
 from .._core import Setting
+from ..scale import Scale
+from ..tuner import Tuner
 from .context import EuterpeContext
 from .track import Track
 
@@ -12,13 +14,13 @@ class Euterpe:
         self.name = name
         self.setting = setting or Setting.default()
 
-    def WorkSpace(self):
+    def WorkSpace(self, **kwargs):
         def inner[**P](func: t.Callable[P, None]) -> t.Callable[P, None]:
             @wraps(func)
-            def wrapper(*args: P.args, **kwargs: P.kwargs) -> None:
-                return func(*args, **kwargs)
+            def wrapper(*args_: P.args, **kwargs_: P.kwargs) -> None:
+                return func(*args_, **kwargs_)
 
-            return EuterpeContext(setting=self.setting)(wrapper)
+            return EuterpeContext(setting=self.setting, **kwargs)(wrapper)
 
         return inner
 

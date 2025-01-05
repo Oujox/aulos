@@ -1,12 +1,15 @@
 import typing as t
-from itertools import pairwise
+from itertools import accumulate, pairwise
 
 from .._core.utils import classproperty, rotated
 from ..note import Key
 from .scale import Scale
 
 
-class DiatonicScale(Scale, intervals=()):
+class DiatonicScale(Scale, intervals=None):
+    """
+    Represents a musical diatonic scale.
+    """
 
     def __new__(cls, *args, **kwargs) -> t.Self:
         if cls is DiatonicScale:
@@ -17,18 +20,15 @@ class DiatonicScale(Scale, intervals=()):
         super().__init__(key, **kwargs)
 
     def __init_subclass__(
-        cls, /, intervals: t.Sequence[int], shift: int = 0, **kwargs
+        cls, *, intervals: t.Sequence[int], shift: int = 0, **kwargs
     ) -> None:
-        super().__init_subclass__(intervals=rotated(intervals, shift), **kwargs)
-
-    def __str__(self) -> str:
-        return "<DiatonicScale: {}>".format(self.__class__.__name__)
-
-    def __repr__(self) -> str:
-        return "<DiatonicScale: {}>".format(self.__class__.__name__)
+        super().__init_subclass__(intervals=rotated(intervals, -shift), **kwargs)
 
 
-class NondiatonicScale(Scale, intervals=()):
+class NondiatonicScale(Scale, intervals=None):
+    """
+    Represents a musical non diatonic scale.
+    """
 
     _extensions: t.ClassVar[tuple[tuple[int, ...], ...]]
     _base: t.ClassVar[type[Scale]]
@@ -43,7 +43,7 @@ class NondiatonicScale(Scale, intervals=()):
 
     def __init_subclass__(
         cls,
-        /,
+        *,
         extensions: t.Sequence[t.Sequence[int]],
         base: type[DiatonicScale],
         **kwargs,
@@ -62,29 +62,17 @@ class NondiatonicScale(Scale, intervals=()):
     @classproperty
     def positions(cls) -> tuple[int, ...]:
         positions = tuple(
-            d + nd for d, nds in zip(super().positions, cls._extensions) for nd in nds
+            pos + ext
+            for pos, exts in zip(super().positions, cls._extensions)
+            for ext in exts
         )
         return positions
 
     @property
-    def accidentals(self) -> tuple[int, ...]:
-        accidentals = tuple(
-            d + nd
-            for d, nds in zip(super().accidentals, self._extensions)
-            for nd in nds
+    def signatures(self) -> tuple[int, ...]:
+        signatures = tuple(
+            sig + ext
+            for sig, exts in zip(super().signatures, self._extensions)
+            for ext in exts
         )
-        return accidentals
-
-    def __eq__(self, other: t.Any) -> bool:
-        if not isinstance(other, NondiatonicScale):
-            return NotImplemented
-        return self._intervals == other._intervals and self._key == other._key
-
-    def __ne__(self, other: t.Any) -> bool:
-        return not self.__eq__(other)
-
-    def __str__(self) -> str:
-        return "<NondiatonicScale: {}>".format(self.__class__.__name__)
-
-    def __repr__(self) -> str:
-        return "<NondiatonicScale: {}>".format(self.__class__.__name__)
+        return signatures
