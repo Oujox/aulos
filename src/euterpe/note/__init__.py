@@ -1,10 +1,15 @@
 """Note
 ---
-* 一般に使用される音名・階名を提供
 """
 
-from .key import Key
-from .note import Note
-from .pitchclass import PitchClass
+from . import schemas
+from .key import _Key
+from .note import _Note
+from .pitchclass import _PitchClass
 
-__all__ = ["PitchClass", "Key", "Note"]
+__all__ = [
+    "_PitchClass",
+    "_Key",
+    "_Note",
+    "schemas",
+]

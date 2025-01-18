@@ -5,32 +5,34 @@ from typing import TYPE_CHECKING
 
 from .._core import EuterpeObject
 from .._core.utils import index
-from ._base import BasePitchClass
+from .pitchclass import _PitchClass
+from .pitchclass import _PitchClassLike
+from .schemas import NoteSchema
 
 if TYPE_CHECKING:
-    from ..scale import Scale  # pragma: no cover
-    from ..tuner import Tuner  # pragma: no cover
+    from ..scale import _Scale  # pragma: no cover
+    from ..tuner import _Tuner  # pragma: no cover
 
 
-class Note(BasePitchClass, EuterpeObject):
+class _Note(EuterpeObject[NoteSchema]):
 
     _notenumber: int
     _notenames: tuple[str | None, ...]
     _notename: str | None
-    _tuner: Tuner | None
-    _scale: Scale | None
+    _tuner: _Tuner | None
+    _scale: _Scale | None
 
     def __init__(
         self,
         identify: int | str,
         *,
-        scale: Scale | None = None,
-        tuner: Tuner | None = None,
+        scale: _Scale | None = None,
+        tuner: _Tuner | None = None,
         **kwargs,
     ) -> None:
         super().__init__(**kwargs)
 
-        if self.schema.is_notenumber(identify):
+        if self.is_notenumber(identify):
             notenames = self.schema.convert_notenumber_to_notenames(identify)
             self._notenumber = identify
             self._notenames = notenames
@@ -39,7 +41,7 @@ class Note(BasePitchClass, EuterpeObject):
             self._tuner = tuner
             self.scale = scale
 
-        elif self.schema.is_notename(identify):
+        elif self.is_notename(identify):
             notenumber = self.schema.convert_notename_to_notenumber(identify)
             notenames = self.schema.convert_notenumber_to_notenames(notenumber)
             self._notenumber = notenumber
@@ -51,6 +53,26 @@ class Note(BasePitchClass, EuterpeObject):
 
         else:
             raise ValueError()
+    
+    def __init_subclass__(
+            cls,
+            *,
+            symbols_notenumber: t.Sequence[int],
+            symbols_octave: t.Sequence[str],
+            reference_notenumber: int,
+            reference_octave: int,
+            base: type[_PitchClass],
+            **kwargs
+        ) -> None:
+        schema = NoteSchema(
+            tuple(symbols_notenumber),
+            tuple(symbols_octave),
+            reference_notenumber,
+            reference_octave,
+            base.schema
+        )
+        super().__init_subclass__(schema=schema, **kwargs)
+        
 
     @property
     def notenumber(self) -> int:
@@ -78,7 +100,7 @@ class Note(BasePitchClass, EuterpeObject):
     def pitchnames(self) -> list[str]:
         return [
             n
-            for n in self.schema.convert_pitchclass_to_pitchnames(self.pitchclass)
+            for n in self.schema.pitchclass.convert_pitchclass_to_pitchnames(self.pitchclass)
             if n is not None
         ]
 
@@ -88,28 +110,28 @@ class Note(BasePitchClass, EuterpeObject):
             self._notename = name
 
     @property
-    def tuner(self) -> Tuner | None:
+    def tuner(self) -> _Tuner | None:
         return self._tuner
 
     @property
-    def scale(self) -> Scale | None:
+    def scale(self) -> _Scale | None:
         return self._scale
 
     @tuner.setter
-    def tuner(self, tuner: Tuner):
-        from ..tuner import Tuner
+    def tuner(self, tuner: _Tuner):
+        from ..tuner import _Tuner
 
-        if isinstance(tuner, Tuner):
+        if isinstance(tuner, _Tuner):
             self._tuner = tuner
 
     @scale.setter
-    def scale(self, scale: Scale | None):
-        from ..scale import Scale
+    def scale(self, scale: _Scale | None):
+        from ..scale import _Scale
 
-        if isinstance(scale, Scale):
+        if isinstance(scale, _Scale):
             self._scale = scale
             pitchclass = self.schema.convert_notenumber_to_pitchclass(self._notenumber)
-            pitchclass = (pitchclass - scale.key.pitchclass) % self.schema.semitone
+            pitchclass = (pitchclass - scale.key.pitchclass) % self.schema.pitchclass.cardinality
 
             if (idx := index(scale.positions, pitchclass)) is not None:
                 self._notename = self.schema.convert_notenumber_to_notename(
@@ -122,25 +144,27 @@ class Note(BasePitchClass, EuterpeObject):
             return None
         return self._tuner.hz(self._notenumber)
 
-    def is_notename(self, notename: t.Any) -> t.TypeGuard[str]:
-        return self.schema.is_notename(notename)
+    @classmethod
+    def is_notename(cls, notename: t.Any) -> t.TypeGuard[str]:
+        return cls.schema.is_notename(notename)
 
-    def is_notenumber(self, notenumber: t.Any) -> t.TypeGuard[int]:
-        return self.schema.is_notenumber(notenumber)
+    @classmethod
+    def is_notenumber(cls, notenumber: t.Any) -> t.TypeGuard[int]:
+        return cls.schema.is_notenumber(notenumber)
 
     def __eq__(self, other: t.Any) -> bool:
-        if not isinstance(other, (int, BasePitchClass)):
+        if not isinstance(other, (int, _PitchClassLike)):
             return NotImplemented
         return int(self) == int(other)
 
     def __ne__(self, other: t.Any) -> bool:
         return not self.__eq__(other)
 
-    def __add__(self, other: int | BasePitchClass) -> Note:
-        return Note(int(self) + int(other), scale=self.scale, setting=self.setting)
+    def __add__(self, other: int | _PitchClassLike) -> t.Self:
+        return self.__class__(int(self) + int(other), scale=self.scale, setting=self.setting)
 
-    def __sub__(self, other: int | BasePitchClass) -> Note:
-        return Note(int(self) - int(other), scale=self.scale, setting=self.setting)
+    def __sub__(self, other: int | _PitchClassLike) -> t.Self:
+        return self.__class__(int(self) - int(other), scale=self.scale, setting=self.setting)
 
     def __int__(self):
         return self._notenumber

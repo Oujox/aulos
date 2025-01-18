@@ -1,7 +1,6 @@
-from euterpe import *
-from euterpe.scale import *
 from euterpe.utils import *
-from euterpe.tuner import *
+from euterpe.TET_12 import *
+
 
 euterpe = Euterpe("my")
 
@@ -13,9 +12,9 @@ def workspace():
     # print(ab5.root, ab5.quality.name, ab5.on)
 
     # pprint(Dorian_s4.mro())
-    print(Note(70, tuner=JustIntonationTuner()).hz)
-    print(Note(70, tuner=Equal12Tuner()).hz)
-    print(Note(70, tuner=MeantoneTuner()).hz)
+    print(Note(70, tuner=JustIntonationTuner(440)).hz)
+    print(Note(70, tuner=Equal12Tuner(440)).hz)
+    print(Note(70, tuner=MeantoneTuner(440)).hz)
     # pprint(Dorian(Key("F#")).signatures)
     # pprint(Locrian(Key("C")).components)
     
@@ -28,7 +27,9 @@ def workspace():
     # pprint(MinorPentatonic.positions)
     # pprint(Ionian(Key("F#")).signatures)
     # pprint(Locrian_n6(Key("F#")).components)
-    pprint(MinorPentatonic(Key("F#")).components)
+    print(Key.schema.pitchclass.count_accidental("F#"))
+    print(MinorPentatonic.PitchClass)
+    pprint(Aeorian(Key("C")).components)
 
     # for key in Note("C#4").schema.pitchnames:
     #     if len(key) < 3:

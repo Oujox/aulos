@@ -1,19 +1,21 @@
 import typing as t
 from abc import ABCMeta
 
-from .framework import InjectedMeta, OptimizedMeta
+from .framework import InjectedMeta
+from .framework import OptimizedMeta
 from .schema import Schema
 from .setting import Setting
+from .utils import classproperty
 
 EuterpeObjectMeta = type(
     "EuterpeObjectMeta", (InjectedMeta, OptimizedMeta, ABCMeta), {}
 )
 
 
-class EuterpeObject(metaclass=EuterpeObjectMeta):
+class EuterpeObject[T: Schema](metaclass=EuterpeObjectMeta):
 
-    _setting: Setting
-    _schema: Schema
+    _schema: T
+    _setting: Setting | None
 
     def __new__(cls, *args, **kwargs) -> t.Self:
         if cls is EuterpeObject:
@@ -21,27 +23,30 @@ class EuterpeObject(metaclass=EuterpeObjectMeta):
         return super().__new__(cls)
 
     def __init__(self, setting: Setting | None = None) -> None:
-        if not isinstance(setting, Setting):
-            raise ValueError(
-                "Initialization error: 'setting' argument is missing. "
-                "Please provide a valid setting object."
-            )
         super(EuterpeObject, self).__init__()
         self._setting = setting
-        self._schema = Schema(setting)
+    
+    def __init_subclass__(cls, *, schema: T | None = None) -> None:
+        if schema is None:
+            return
+        super(EuterpeObject, cls).__init_subclass__()
+        cls._schema = schema
+
+    @classproperty
+    def schema(cls) -> T:
+        return cls._schema
 
     @property
-    def setting(self):
+    def setting(self) -> Setting | None:
         return self._setting
-
-    @property
-    def schema(self):
-        return self._schema
 
     def __eq__(self, other: t.Any) -> bool:
         if not isinstance(other, EuterpeObject):
             return NotImplemented
-        return self._setting == other._setting
+        return (
+            self._schema == self._schema and
+            self._setting == other._setting
+        )
 
     def __ne__(self, other: t.Any) -> bool:
         return not self.__eq__(other)

@@ -2,18 +2,14 @@ import json
 import os
 import tomllib
 import typing as t
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
 
-from .settings.note import NoteSetting
-from .settings.pitchclass import PitchClassSetting
 from .utils import from_dict
 
 
 @dataclass(frozen=True, slots=True)
 class Setting:
-    pitchclass: PitchClassSetting
-    note: NoteSetting
 
     @classmethod
     def default(cls) -> t.Self:

@@ -1,54 +1,63 @@
 import typing as t
-from itertools import accumulate, pairwise
+from itertools import pairwise
 
 from .._core.utils import classproperty, rotated
-from ..note import Key
-from .scale import Scale
+from ..note import _Key
+from ..note import _PitchClass
+from .scale import _Scale
 
 
-class DiatonicScale(Scale, intervals=None):
-    """
-    Represents a musical diatonic scale.
-    """
+class _DiatonicScale[T: _PitchClass](_Scale[T]):
 
     def __new__(cls, *args, **kwargs) -> t.Self:
-        if cls is DiatonicScale:
+        if cls is _DiatonicScale:
             raise TypeError("DiatonicScale cannot be instantiated directly.")
         return super().__new__(cls)
 
-    def __init__(self, key: Key, **kwargs) -> None:
+    def __init__(self, key: _Key, **kwargs) -> None:
         super().__init__(key, **kwargs)
 
     def __init_subclass__(
-        cls, *, intervals: t.Sequence[int], shift: int = 0, **kwargs
+        cls,
+        *,
+        intervals: t.Sequence[int],
+        shift: int = 0,
+        pitchclass: type[T],
+        **kwargs,
     ) -> None:
-        super().__init_subclass__(intervals=rotated(intervals, -shift), **kwargs)
+        super().__init_subclass__(
+            intervals=rotated(intervals, -shift),
+            pitchclass=pitchclass,
+            **kwargs,
+        )
 
 
-class NondiatonicScale(Scale, intervals=None):
-    """
-    Represents a musical non diatonic scale.
-    """
+class _NondiatonicScale[T: _PitchClass](_Scale[T]):
 
     _extensions: t.ClassVar[tuple[tuple[int, ...], ...]]
-    _base: t.ClassVar[type[Scale]]
+    _base: t.ClassVar[type[_Scale]]
 
     def __new__(cls, *args, **kwargs) -> t.Self:
-        if cls is NondiatonicScale:
+        if cls is _NondiatonicScale:
             raise TypeError("NondiatonicScale cannot be instantiated directly.")
         return super().__new__(cls)
 
-    def __init__(self, key: Key, **kwargs) -> None:
+    def __init__(self, key: _Key, **kwargs) -> None:
         super().__init__(key, **kwargs)
 
     def __init_subclass__(
         cls,
         *,
         extensions: t.Sequence[t.Sequence[int]],
-        base: type[DiatonicScale],
+        base: type[_DiatonicScale],
+        pitchclass: type[T],
         **kwargs,
     ) -> None:
-        super().__init_subclass__(intervals=base.intervals, **kwargs)
+        super().__init_subclass__(
+            intervals=base.intervals,
+            pitchclass=pitchclass,
+            **kwargs,
+        )
         cls._base = base
         cls._extensions = tuple(tuple(inner) for inner in extensions)
 

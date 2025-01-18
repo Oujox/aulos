@@ -1,6 +1,5 @@
 """Core
 ---
-* settingに必要な仕組みの提供
 """
 
 # utils, framework
@@ -8,5 +7,12 @@ from . import framework, utils
 # implementation
 from .object import EuterpeObject
 from .setting import Setting
+from .schema import Schema
 
-__all__ = ["EuterpeObject", "Setting", "framework", "utils"]
+__all__ = [
+    "EuterpeObject",
+    "Setting",
+    "Schema",
+    "framework",
+    "utils",
+]
