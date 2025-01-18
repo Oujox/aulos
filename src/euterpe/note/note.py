@@ -5,8 +5,7 @@ from typing import TYPE_CHECKING
 
 from .._core import EuterpeObject
 from .._core.utils import index
-from .pitchclass import _PitchClass
-from .pitchclass import _PitchClassLike
+from .pitchclass import _PitchClass, _PitchClassLike
 from .schemas import NoteSchema
 
 if TYPE_CHECKING:
@@ -53,26 +52,25 @@ class _Note(EuterpeObject[NoteSchema]):
 
         else:
             raise ValueError()
-    
+
     def __init_subclass__(
-            cls,
-            *,
-            symbols_notenumber: t.Sequence[int],
-            symbols_octave: t.Sequence[str],
-            reference_notenumber: int,
-            reference_octave: int,
-            base: type[_PitchClass],
-            **kwargs
-        ) -> None:
+        cls,
+        *,
+        symbols_notenumber: t.Sequence[int],
+        symbols_octave: t.Sequence[str],
+        reference_notenumber: int,
+        reference_octave: int,
+        base: type[_PitchClass],
+        **kwargs,
+    ) -> None:
         schema = NoteSchema(
             tuple(symbols_notenumber),
             tuple(symbols_octave),
             reference_notenumber,
             reference_octave,
-            base.schema
+            base.schema,
         )
         super().__init_subclass__(schema=schema, **kwargs)
-        
 
     @property
     def notenumber(self) -> int:
@@ -100,7 +98,9 @@ class _Note(EuterpeObject[NoteSchema]):
     def pitchnames(self) -> list[str]:
         return [
             n
-            for n in self.schema.pitchclass.convert_pitchclass_to_pitchnames(self.pitchclass)
+            for n in self.schema.pitchclass.convert_pitchclass_to_pitchnames(
+                self.pitchclass
+            )
             if n is not None
         ]
 
@@ -131,7 +131,9 @@ class _Note(EuterpeObject[NoteSchema]):
         if isinstance(scale, _Scale):
             self._scale = scale
             pitchclass = self.schema.convert_notenumber_to_pitchclass(self._notenumber)
-            pitchclass = (pitchclass - scale.key.pitchclass) % self.schema.pitchclass.cardinality
+            pitchclass = (
+                pitchclass - scale.key.pitchclass
+            ) % self.schema.pitchclass.cardinality
 
             if (idx := index(scale.positions, pitchclass)) is not None:
                 self._notename = self.schema.convert_notenumber_to_notename(
@@ -161,10 +163,14 @@ class _Note(EuterpeObject[NoteSchema]):
         return not self.__eq__(other)
 
     def __add__(self, other: int | _PitchClassLike) -> t.Self:
-        return self.__class__(int(self) + int(other), scale=self.scale, setting=self.setting)
+        return self.__class__(
+            int(self) + int(other), scale=self.scale, setting=self.setting
+        )
 
     def __sub__(self, other: int | _PitchClassLike) -> t.Self:
-        return self.__class__(int(self) - int(other), scale=self.scale, setting=self.setting)
+        return self.__class__(
+            int(self) - int(other), scale=self.scale, setting=self.setting
+        )
 
     def __int__(self):
         return self._notenumber

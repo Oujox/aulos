@@ -22,7 +22,7 @@ class KeySchema(Schema):
             raise Exception()
         if not self.accidental < self.pitchclass.accidental:
             raise Exception()
-    
+
     @cached_property
     def keynames(self) -> tuple[str, ...]:
         keynames = [
@@ -39,19 +39,20 @@ class KeySchema(Schema):
         r_pitchclass = self.pitchclass.convert_pitchname_to_picthclass(keyname)
 
         idx = self.pitchclass.symbols_pitchclass.index(r_symbol)
-        symbols = self.pitchclass.symbols_pitchclass[idx:] + self.pitchclass.symbols_pitchclass[:idx]
+        symbols = (
+            self.pitchclass.symbols_pitchclass[idx:]
+            + self.pitchclass.symbols_pitchclass[:idx]
+        )
 
         for pos, symbol in zip(self.pitchclass.positions, symbols):
             n_pos = self.pitchclass.convert_pitchname_to_picthclass(symbol)
             a_pos = (r_pitchclass + pos) % self.pitchclass.cardinality
             positions.append(wrapped_diff(a_pos, n_pos, self.pitchclass.cardinality))
         return tuple(positions)
-    
+
     def is_keyname(self, value: t.Any) -> t.TypeGuard[str]:
         return isinstance(value, str) and value in self.keynames
 
     def ensure_valid_keyname(self, keyname: str) -> None:
         if not self.is_keyname(keyname):
             raise ValueError()
-
-    

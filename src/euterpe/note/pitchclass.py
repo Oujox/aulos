@@ -57,15 +57,15 @@ class _PitchClass(EuterpeObject[PitchClassSchema]):
 
         else:
             raise ValueError()
-    
+
     def __init_subclass__(
-            cls,
-            *,
-            intervals: t.Sequence[int],
-            symbols_pitchclass: t.Sequence[str],
-            symbols_accidental: t.Sequence[str],
-            **kwargs
-        ) -> None:
+        cls,
+        *,
+        intervals: t.Sequence[int],
+        symbols_pitchclass: t.Sequence[str],
+        symbols_accidental: t.Sequence[str],
+        **kwargs,
+    ) -> None:
         schema = PitchClassSchema(
             tuple(intervals),
             tuple(symbols_pitchclass),
@@ -100,7 +100,9 @@ class _PitchClass(EuterpeObject[PitchClassSchema]):
 
         if isinstance(scale, _Scale):
             self._scale = scale
-            pitchclass = (self.pitchclass - scale.key.pitchclass) % self.schema.cardinality
+            pitchclass = (
+                self.pitchclass - scale.key.pitchclass
+            ) % self.schema.cardinality
 
             if (idx := index(scale.positions, pitchclass)) is not None:
                 self._pitchname = self.schema.convert_pitchclass_to_pitchname(

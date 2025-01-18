@@ -2,8 +2,7 @@ import typing as t
 from itertools import pairwise
 
 from .._core.utils import classproperty, rotated
-from ..note import _Key
-from ..note import _PitchClass
+from ..note import _Key, _PitchClass
 from .scale import _Scale
 
 

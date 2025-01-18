@@ -6,8 +6,8 @@
 from . import framework, utils
 # implementation
 from .object import EuterpeObject
-from .setting import Setting
 from .schema import Schema
+from .setting import Setting
 
 __all__ = [
     "EuterpeObject",

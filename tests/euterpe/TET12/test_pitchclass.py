@@ -1,4 +1,5 @@
 import pytest
+
 from src.euterpe.TET12 import PitchClass
 
 
@@ -59,12 +60,8 @@ def test_PitchClass_dunder_eqne(data_map_pitchname_to_pitchclass):
     for pitchname, pitchclass in data_map_pitchname_to_pitchclass.items():
         assert not PitchClass(pitchname) != pitchclass
         assert not PitchClass(pitchclass) != pitchclass
-        assert not PitchClass(pitchname) != PitchClass(
-            pitchclass
-        )
-        assert not PitchClass(pitchclass) != PitchClass(
-            pitchname
-        )
+        assert not PitchClass(pitchname) != PitchClass(pitchclass)
+        assert not PitchClass(pitchclass) != PitchClass(pitchname)
 
 
 def test_PitchClass_dunder_add(data_pitchclass):
@@ -97,12 +94,6 @@ def test_PitchClass_dunder_str(
             for name in data_map_pitchclass_to_pitchnames[pitchclass]
             if name is not None
         ]
-        assert (
-            str(PitchClass(pitchclass))
-            == f"<PitchClass: {pitchnames}, scale: None>"
-        )
+        assert str(PitchClass(pitchclass)) == f"<PitchClass: {pitchnames}, scale: None>"
     for pitchname in data_pitchname:
-        assert (
-            str(PitchClass(pitchname))
-            == f"<PitchClass: {pitchname}, scale: None>"
-        )
+        assert str(PitchClass(pitchname)) == f"<PitchClass: {pitchname}, scale: None>"

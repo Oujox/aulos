@@ -1,9 +1,8 @@
 import typing as t
-from .. import _Tuner
 
+from .. import _Tuner
 from .note import Note
-from .utils import standard_tuning_table
-from .utils import fivelimit_tuning_table
+from .utils import fivelimit_tuning_table, standard_tuning_table
 
 EQUAL12_TUNING_RATIOS: t.Final[tuple[float, ...]] = standard_tuning_table(2 ** (1 / 12))
 PYTHAGOREAN_TUNING_RATIOS: t.Final[tuple[float, ...]] = standard_tuning_table(1.5)
@@ -76,4 +75,3 @@ class Equal12Tuner(
       are equal in frequency ratio.
     * This system allows instruments to play in all keys with equal tuning accuracy.
     """
-

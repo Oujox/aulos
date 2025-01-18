@@ -5,6 +5,7 @@ It includes diatonic and nondiatonic scales, as well as several modes derived fr
 major, harmonic minor, and melodic minor scales. These scales and modes are useful for 
 composition, music analysis, and algorithmic music generation.
 """
+
 from . import schemas
 from .diatonic import _DiatonicScale, _NondiatonicScale
 from .scale import _Scale

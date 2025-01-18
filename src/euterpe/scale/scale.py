@@ -3,9 +3,7 @@ from itertools import accumulate, starmap
 
 from .._core import EuterpeObject
 from .._core.utils import classproperty
-from ..note import _Key
-from ..note import _PitchClass
-
+from ..note import _Key, _PitchClass
 from .schemas import ScaleSchema
 
 
@@ -36,13 +34,13 @@ class _Scale[T: _PitchClass](EuterpeObject[ScaleSchema]):
         )
 
     def __init_subclass__(
-            cls,
-            *,
-            intervals: t.Sequence[int] | None = None,
-            pitchclass: type[T] | None = None,
-            **kwargs,
-        ) -> None:
-        if intervals is None or pitchclass is None: 
+        cls,
+        *,
+        intervals: t.Sequence[int] | None = None,
+        pitchclass: type[T] | None = None,
+        **kwargs,
+    ) -> None:
+        if intervals is None or pitchclass is None:
             return
         schema = ScaleSchema(pitchclass.schema)
         super().__init_subclass__(schema=schema, **kwargs)

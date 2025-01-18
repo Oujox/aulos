@@ -1,8 +1,7 @@
 import typing as t
 
 from .._core import EuterpeObject
-from .pitchclass import _PitchClass
-from .pitchclass import _PitchClassLike
+from .pitchclass import _PitchClass, _PitchClassLike
 from .schemas import KeySchema
 
 
@@ -17,19 +16,17 @@ class _Key(EuterpeObject[KeySchema]):
 
         if self.is_keyname(name):
             self._pitchname = name
-            self._pitchclass = self.schema.pitchclass.convert_pitchname_to_picthclass(name)
+            self._pitchclass = self.schema.pitchclass.convert_pitchname_to_picthclass(
+                name
+            )
             self._signatures = self.schema.generate_key_signatures(name)
 
         else:
             raise ValueError()
-    
+
     def __init_subclass__(
-            cls,
-            *,
-            accidental: int,
-            base: type[_PitchClass],
-            **kwargs
-        ) -> None:
+        cls, *, accidental: int, base: type[_PitchClass], **kwargs
+    ) -> None:
         schema = KeySchema(
             accidental,
             base.schema,
@@ -52,7 +49,9 @@ class _Key(EuterpeObject[KeySchema]):
     def pitchnames(self) -> list[str]:
         return [
             n
-            for n in self.schema.pitchclass.convert_pitchclass_to_pitchnames(self._pitchclass)
+            for n in self.schema.pitchclass.convert_pitchclass_to_pitchnames(
+                self._pitchclass
+            )
             if n is not None
         ]
 

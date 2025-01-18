@@ -2,6 +2,16 @@
 set namespaceSeparator none
 package "euterpe" as euterpe {
 }
+package "euterpe.TET12" as euterpe.TET12 {
+}
+package "euterpe.TET12.note" as euterpe.TET12.note {
+}
+package "euterpe.TET12.scale" as euterpe.TET12.scale {
+}
+package "euterpe.TET12.tuner" as euterpe.TET12.tuner {
+}
+package "euterpe.TET12.utils" as euterpe.TET12.utils {
+}
 package "euterpe.__main__" as euterpe.__main__ {
 }
 package "euterpe._core" as euterpe._core {
@@ -50,13 +60,19 @@ package "euterpe.chord.quality" as euterpe.chord.quality {
 }
 package "euterpe.note" as euterpe.note {
 }
-package "euterpe.note._base" as euterpe.note._base {
-}
 package "euterpe.note.key" as euterpe.note.key {
 }
 package "euterpe.note.note" as euterpe.note.note {
 }
 package "euterpe.note.pitchclass" as euterpe.note.pitchclass {
+}
+package "euterpe.note.schemas" as euterpe.note.schemas {
+}
+package "euterpe.note.schemas.key" as euterpe.note.schemas.key {
+}
+package "euterpe.note.schemas.note" as euterpe.note.schemas.note {
+}
+package "euterpe.note.schemas.pitchclass" as euterpe.note.schemas.pitchclass {
 }
 package "euterpe.scale" as euterpe.scale {
 }
@@ -64,7 +80,15 @@ package "euterpe.scale.diatonic" as euterpe.scale.diatonic {
 }
 package "euterpe.scale.scale" as euterpe.scale.scale {
 }
+package "euterpe.scale.schemas" as euterpe.scale.schemas {
+}
+package "euterpe.scale.schemas.scale" as euterpe.scale.schemas.scale {
+}
 package "euterpe.tuner" as euterpe.tuner {
+}
+package "euterpe.tuner.schemas" as euterpe.tuner.schemas {
+}
+package "euterpe.tuner.schemas.tuner" as euterpe.tuner.schemas.tuner {
 }
 package "euterpe.tuner.tuner" as euterpe.tuner.tuner {
 }
@@ -78,9 +102,17 @@ package "euterpe.utils.track" as euterpe.utils.track {
 }
 euterpe --> euterpe._core
 euterpe --> euterpe._version
-euterpe --> euterpe.chord
 euterpe --> euterpe.note
+euterpe --> euterpe.scale
+euterpe --> euterpe.tuner
+euterpe.TET12 --> euterpe.TET12.tuner
+euterpe.TET12 --> euterpe.note
+euterpe.TET12 --> euterpe.scale
+euterpe.TET12.scale --> euterpe.TET12.note
+euterpe.TET12.tuner --> euterpe.TET12.note
+euterpe.TET12.tuner --> euterpe.TET12.utils
 euterpe._core --> euterpe._core.object
+euterpe._core --> euterpe._core.schema
 euterpe._core --> euterpe._core.setting
 euterpe._core.framework --> euterpe._core.framework.context
 euterpe._core.framework --> euterpe._core.framework.derivedcache
@@ -91,9 +123,7 @@ euterpe._core.framework.inject --> euterpe._core.framework.context
 euterpe._core.object --> euterpe._core.framework
 euterpe._core.object --> euterpe._core.schema
 euterpe._core.object --> euterpe._core.setting
-euterpe._core.schema --> euterpe._core.framework
-euterpe._core.schema --> euterpe._core.setting
-euterpe._core.schema --> euterpe._core.utils
+euterpe._core.object --> euterpe._core.utils
 euterpe._core.setting --> euterpe._core.utils
 euterpe._core.utils --> euterpe._core.utils.array
 euterpe._core.utils --> euterpe._core.utils.calculation
@@ -104,13 +134,24 @@ euterpe.chord.chord --> euterpe.chord.quality
 euterpe.note --> euterpe.note.key
 euterpe.note --> euterpe.note.note
 euterpe.note --> euterpe.note.pitchclass
-euterpe.note.key --> euterpe.note._base
-euterpe.note.note --> euterpe.note._base
-euterpe.note.pitchclass --> euterpe.note._base
+euterpe.note.key --> euterpe.note.pitchclass
+euterpe.note.key --> euterpe.note.schemas
+euterpe.note.note --> euterpe.note.pitchclass
+euterpe.note.note --> euterpe.note.schemas
+euterpe.note.pitchclass --> euterpe.note.schemas
+euterpe.note.schemas --> euterpe.note.key
+euterpe.note.schemas --> euterpe.note.note
+euterpe.note.schemas --> euterpe.note.pitchclass
+euterpe.note.schemas.key --> euterpe.note.schemas.pitchclass
+euterpe.note.schemas.note --> euterpe.note.schemas.pitchclass
 euterpe.scale --> euterpe.scale.diatonic
 euterpe.scale --> euterpe.scale.scale
 euterpe.scale.diatonic --> euterpe.scale.scale
+euterpe.scale.scale --> euterpe.scale.schemas
+euterpe.scale.schemas --> euterpe.scale.scale
 euterpe.tuner --> euterpe.tuner.tuner
+euterpe.tuner.schemas --> euterpe.tuner.tuner
+euterpe.tuner.tuner --> euterpe.tuner.schemas
 euterpe.utils --> euterpe
 euterpe.utils.euterpe --> euterpe.utils.context
 euterpe.utils.euterpe --> euterpe.utils.track

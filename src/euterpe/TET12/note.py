@@ -1,6 +1,4 @@
-from .. import _Key
-from .. import _Note
-from .. import _PitchClass
+from .. import _Key, _Note, _PitchClass
 
 
 class PitchClass(
@@ -11,15 +9,29 @@ class PitchClass(
 ):
     """ """
 
+
 class Note(
     _Note,
     symbols_notenumber=range(128),
-    symbols_octave=("<N>-1","<N>0","<N>1","<N>2","<N>3","<N>4","<N>5","<N>6","<N>7","<N>8","<N>9"),
+    symbols_octave=(
+        "<N>-1",
+        "<N>0",
+        "<N>1",
+        "<N>2",
+        "<N>3",
+        "<N>4",
+        "<N>5",
+        "<N>6",
+        "<N>7",
+        "<N>8",
+        "<N>9",
+    ),
     reference_notenumber=60,
     reference_octave=5,
     base=PitchClass,
 ):
     """ """
+
 
 class Key(
     _Key,

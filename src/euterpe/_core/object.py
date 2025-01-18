@@ -1,8 +1,7 @@
 import typing as t
 from abc import ABCMeta
 
-from .framework import InjectedMeta
-from .framework import OptimizedMeta
+from .framework import InjectedMeta, OptimizedMeta
 from .schema import Schema
 from .setting import Setting
 from .utils import classproperty
@@ -25,7 +24,7 @@ class EuterpeObject[T: Schema](metaclass=EuterpeObjectMeta):
     def __init__(self, setting: Setting | None = None) -> None:
         super(EuterpeObject, self).__init__()
         self._setting = setting
-    
+
     def __init_subclass__(cls, *, schema: T | None = None) -> None:
         if schema is None:
             return
@@ -43,10 +42,7 @@ class EuterpeObject[T: Schema](metaclass=EuterpeObjectMeta):
     def __eq__(self, other: t.Any) -> bool:
         if not isinstance(other, EuterpeObject):
             return NotImplemented
-        return (
-            self._schema == self._schema and
-            self._setting == other._setting
-        )
+        return self._schema == self._schema and self._setting == other._setting
 
     def __ne__(self, other: t.Any) -> bool:
         return not self.__eq__(other)

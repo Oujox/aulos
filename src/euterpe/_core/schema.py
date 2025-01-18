@@ -1,5 +1,5 @@
-from dataclasses import dataclass
 from abc import ABCMeta
+from dataclasses import dataclass
 
 
 @dataclass(frozen=True)

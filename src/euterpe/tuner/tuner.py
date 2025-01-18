@@ -19,7 +19,14 @@ class _Tuner(EuterpeObject[TunerSchema]):
         super().__init__(**kwargs)
         self._root = root
 
-    def __init_subclass__(cls, *, ratios: tuple[int], reference_notenumber: int, note: type[_Note], **kwargs):
+    def __init_subclass__(
+        cls,
+        *,
+        ratios: tuple[int],
+        reference_notenumber: int,
+        note: type[_Note],
+        **kwargs,
+    ):
         schema = TunerSchema(
             reference_notenumber,
             note.schema,
@@ -27,7 +34,7 @@ class _Tuner(EuterpeObject[TunerSchema]):
         )
         super().__init_subclass__(schema=schema, **kwargs)
         cls._ratios = ratios
-    
+
     @property
     def root(self) -> float:
         return self._root

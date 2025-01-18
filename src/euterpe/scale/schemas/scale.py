@@ -9,9 +9,11 @@ from ...note.schemas import PitchClassSchema
 class ScaleSchema(Schema):
 
     pitchclass: PitchClassSchema
-    
+
     def generate_scale_signatures(self, intervals: tuple[int, ...]) -> tuple[int, ...]:
-        diff = list(starmap(lambda x, y: y - x, zip(self.pitchclass.intervals, intervals)))
+        diff = list(
+            starmap(lambda x, y: y - x, zip(self.pitchclass.intervals, intervals))
+        )
         signature = []
         for i in range(len(self.pitchclass.intervals)):
             cur = i % len(self.pitchclass.intervals)

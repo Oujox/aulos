@@ -18,7 +18,7 @@ class PitchClassSchema(Schema):
     positions: tuple[int, ...] = field(init=False)
     name2class: dict[str, int] = field(init=False)
     class2name: dict[int, tuple[str | None, ...]] = field(init=False)
-    
+
     def __post_init__(self) -> None:
         self.validate()
         self.initialize()
@@ -29,21 +29,21 @@ class PitchClassSchema(Schema):
             raise Exception()
         if not all(0 <= v for v in self.intervals):
             raise Exception()
-        
+
         # [check] symbols_pitchclass
         if not len(self.symbols_pitchclass) > 0:
             raise Exception()
-        
+
         # [check] symbols_accidental
         if not len(self.symbols_accidental) > 0:
             raise Exception()
         if not (len(self.symbols_accidental) % 2) == 0:
             raise Exception()
-        
+
         # [cross-field check]
         if not len(self.intervals) == len(self.symbols_pitchclass):
             raise Exception()
-    
+
     def initialize(self) -> None:
         cardinality = sum(self.intervals)
         positions = tuple(accumulate((0,) + self.intervals[:-1]))
@@ -61,7 +61,7 @@ class PitchClassSchema(Schema):
                     sequence.insert(0, sequence.pop())
                 sequences.append(sequence)
             return sequences
-        
+
         def create_lower_sequences():
             sequences: list[list[str]] = []
             for i, acc in enumerate(lower_accidentals, start=1):
@@ -120,7 +120,7 @@ class PitchClassSchema(Schema):
             reverse=True,
         )
         return (finded + [None])[0]
-    
+
     def count_accidental(self, pitchname: str) -> int:
         self.ensure_valid_pitchname(pitchname)
         pitchclass = self.convert_pitchname_to_picthclass(pitchname)
@@ -132,9 +132,7 @@ class PitchClassSchema(Schema):
     ) -> str | None:
         self.ensure_valid_pitchclass(pitchclass)
         self.ensure_valid_accidental(accidental)
-        return self.class2name[pitchclass][
-            self.accidental + accidental
-        ]
+        return self.class2name[pitchclass][self.accidental + accidental]
 
     def convert_pitchclass_to_pitchnames(
         self, pitchclass: int
@@ -148,9 +146,7 @@ class PitchClassSchema(Schema):
 
     def convert_pitchclass_to_symbol(self, pitchclass: int) -> str | None:
         self.ensure_valid_pitchclass(pitchclass)
-        return self.convert_pitchclass_to_pitchnames(pitchclass)[
-            self.accidental
-        ]
+        return self.convert_pitchclass_to_pitchnames(pitchclass)[self.accidental]
 
     def convert_pitchname_to_symbol(self, pitchname: str) -> str:
         self.ensure_valid_pitchname(pitchname)

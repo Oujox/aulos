@@ -1,6 +1,4 @@
-from .. import _DiatonicScale
-from .. import _NondiatonicScale
-
+from .. import _DiatonicScale, _NondiatonicScale
 from .note import PitchClass
 
 
