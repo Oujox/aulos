@@ -1,5 +1,5 @@
 import typing as t
-from euterpe import _Tuner
+from .. import _Tuner
 
 from .note import Note
 from .utils import standard_tuning_table

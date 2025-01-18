@@ -14,7 +14,7 @@ from .scale import _NondiatonicScale
 from .tuner import _Tuner
 
 # implements
-from . import TET_12
+from . import TET12
 
 
 __all__ = [
@@ -26,5 +26,5 @@ __all__ = [
     "_NondiatonicScale",
     "_Tuner",
     "Setting",
-    "TET_12",
+    "TET12",
 ]

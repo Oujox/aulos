@@ -1,6 +1,6 @@
-from euterpe import _Key
-from euterpe import _Note
-from euterpe import _PitchClass
+from .. import _Key
+from .. import _Note
+from .. import _PitchClass
 
 
 class PitchClass(
