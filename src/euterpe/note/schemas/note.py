@@ -1,6 +1,7 @@
 import typing as t
 from dataclasses import dataclass, field
 from functools import cached_property
+from itertools import chain
 
 from ..._core import Schema
 from .pitchclass import PitchClassSchema
@@ -15,7 +16,6 @@ class NoteSchema(Schema):
     reference_octave: int
     pitchclass: PitchClassSchema
 
-    adjust_notenumber: int = field(init=False)
     name2number: dict[str, int] = field(init=False)
     number2name: dict[int, tuple[str | None]] = field(init=False)
 
@@ -47,22 +47,45 @@ class NoteSchema(Schema):
             raise Exception()
 
     def initialize(self) -> None:
+        accidental = len(self.pitchclass.symbols_accidental) // 2
+        upper_accidentals = self.pitchclass.symbols_accidental[accidental:]
+        lower_accidentals = self.pitchclass.symbols_accidental[:accidental]
+        lower_accidentals = reversed(lower_accidentals)
 
-        def convert_pitchclass_to_notenumber(pitchclass: int, octave: int) -> int:
-            return pitchclass + (octave * self.pitchclass.cardinality)
+        def create_upper_sequences():
+            sequences: list[list[str]] = []
+            for i, acc in enumerate(upper_accidentals, start=1):
+                sequence = create_symbol_sequence(suffix=acc)
+                for _ in range(i):
+                    sequence.insert(0, sequence.pop())
+                sequences.append(sequence)
+            return sequences
 
-        def convert_pitchnames_to_notenames(
-            pitchnames: tuple[str | None, ...], symbol_octave: str
-        ) -> tuple[str | None, ...]:
-            return tuple(
-                (
-                    convert_pitchname_to_notename(pitchname, symbol_octave)
-                    if pitchname is not None
-                    else None
-                )
-                for pitchname in pitchnames
-            )
+        def create_lower_sequences():
+            sequences: list[list[str]] = []
+            for i, acc in enumerate(lower_accidentals, start=1):
+                sequence = create_symbol_sequence(suffix=acc)
+                for _ in range(i):
+                    sequence.append(sequence.pop(0))
+                sequences.append(sequence)
+            return sequences
 
+        def create_symbol_sequence(*, prefix: str = "", suffix: str = "") -> list[str]:
+            sequence = []
+            for symbol_octave in self.symbols_octave:
+                for deg in range(self.pitchclass.cardinality):
+                    if deg in self.pitchclass.positions:
+                        index = self.pitchclass.positions.index(deg)
+                        pitchname = prefix + self.pitchclass.symbols_pitchclass[index] + suffix
+                        notename = convert_pitchname_to_notename(
+                            pitchname,
+                            symbol_octave,
+                        )
+                        sequence.append(notename)
+                    else:
+                        sequence.append(None)
+            return sequence
+        
         def convert_pitchname_to_notename(pitchname: str, symbol_octave: str) -> str:
             # <N>
             if symbol_octave.find("<N>") >= 0:
@@ -72,21 +95,18 @@ class NoteSchema(Schema):
                 return symbol_octave.replace("<n>", pitchname, 1)
             else:
                 return symbol_octave + pitchname
-
-        temp_name2number = {
-            convert_pitchname_to_notename(
-                pitchname, symbol
-            ): convert_pitchclass_to_notenumber(pitchclass, octave)
-            for pitchname, pitchclass in self.pitchclass.name2class.items()
-            for octave, symbol in enumerate(self.symbols_octave)
-        }
-        temp_number2name = {
-            convert_pitchclass_to_notenumber(
-                pitchclass, octave
-            ): convert_pitchnames_to_notenames(pitchnames, symbol)
-            for pitchclass, pitchnames in self.pitchclass.class2name.items()
-            for octave, symbol in enumerate(self.symbols_octave)
-        }
+        
+        no_accidental_sequence = create_symbol_sequence()
+        accidental_upper_sequences = create_upper_sequences()
+        accidental_lower_sequences = create_lower_sequences()
+        accidental_lower_sequences = reversed(accidental_lower_sequences)
+        accidental_sequences = tuple(
+            zip(
+                *accidental_lower_sequences,
+                no_accidental_sequence,
+                *accidental_upper_sequences,
+            )
+        )
 
         # adjust notenumber
         ref_pitchname = self.pitchclass.symbols_pitchclass[0]
@@ -94,20 +114,20 @@ class NoteSchema(Schema):
             ref_pitchname, self.symbols_octave[self.reference_octave]
         )
         adjust_notenumber = (
-            self.reference_notenumber - temp_name2number[ref_octave_notename]
+            self.reference_notenumber - no_accidental_sequence.index(ref_octave_notename)
         )
 
-        name2number = {}
-        number2name = {}
-        for allowed_notenumber in self.symbols_notenumber:
-            if allowed_notenumber not in temp_number2name:
-                continue
-            notenames = temp_number2name[allowed_notenumber]
-            number2name[allowed_notenumber + adjust_notenumber] = notenames
-            for notename in notenames:
-                name2number[notename] = allowed_notenumber + adjust_notenumber
+        name2number = dict(chain.from_iterable([
+            [(name, index + adjust_notenumber) for name in names if name is not None]
+            for index, names in enumerate(accidental_sequences)
+            if index + adjust_notenumber in self.symbols_notenumber
+        ]))
+        number2name = dict([
+            (index + adjust_notenumber, name)
+            for index, name in enumerate(accidental_sequences)
+            if index + adjust_notenumber in self.symbols_notenumber
+        ])
 
-        object.__setattr__(self, "adjust_notenumber", adjust_notenumber)
         object.__setattr__(self, "name2number", name2number)
         object.__setattr__(self, "number2name", number2name)
 

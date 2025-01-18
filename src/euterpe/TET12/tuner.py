@@ -1,6 +1,6 @@
 import typing as t
 
-from .. import _Tuner
+from ..tuner import _Tuner
 from .note import Note
 from .utils import fivelimit_tuning_table, standard_tuning_table
 

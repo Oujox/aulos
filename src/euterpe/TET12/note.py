@@ -1,4 +1,4 @@
-from .. import _Key, _Note, _PitchClass
+from ..note import _Key, _Note, _PitchClass
 
 
 class PitchClass(
