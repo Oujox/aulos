@@ -12,6 +12,7 @@ def test_Note_init_from_notenumber(data_notenumbers):
     for pitchclass in data_notenumbers:
         assert isinstance(Note(pitchclass), Note)
 
+
 @pytest.mark.parametrize(
     "invalid_value",
     ["", " ", "Cb-1", "G#9", -1, 128, None, [], {}],
@@ -19,6 +20,7 @@ def test_Note_init_from_notenumber(data_notenumbers):
 def test_Note_init_from_invalid_value(invalid_value):
     with pytest.raises(ValueError):
         _ = Note(invalid_value)
+
 
 def test_Note_property_get_notenumber(data_notenumbers):
     for notenumber in data_notenumbers:
@@ -66,9 +68,7 @@ def test_Note_dunder_add(data_notenumbers):
     for notenumber1 in data_notenumbers:
         for notenumber2 in data_notenumbers:
             if (notenumber1 + notenumber2) in data_notenumbers:
-                assert (Note(notenumber1) + notenumber2) == (
-                    notenumber1 + notenumber2
-                )
+                assert (Note(notenumber1) + notenumber2) == (notenumber1 + notenumber2)
             else:
                 with pytest.raises(ValueError):
                     _ = Note(notenumber1) + notenumber2
@@ -78,9 +78,7 @@ def test_Note_dunder_sub(data_notenumbers):
     for notenumber1 in data_notenumbers:
         for notenumber2 in data_notenumbers:
             if (notenumber1 - notenumber2) in data_notenumbers:
-                assert (Note(notenumber1) - notenumber2) == (
-                    notenumber1 - notenumber2
-                )
+                assert (Note(notenumber1) - notenumber2) == (notenumber1 - notenumber2)
             else:
                 with pytest.raises(ValueError):
                     _ = Note(notenumber1) - notenumber2

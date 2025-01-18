@@ -76,7 +76,9 @@ class NoteSchema(Schema):
                 for deg in range(self.pitchclass.cardinality):
                     if deg in self.pitchclass.positions:
                         index = self.pitchclass.positions.index(deg)
-                        pitchname = prefix + self.pitchclass.symbols_pitchclass[index] + suffix
+                        pitchname = (
+                            prefix + self.pitchclass.symbols_pitchclass[index] + suffix
+                        )
                         notename = convert_pitchname_to_notename(
                             pitchname,
                             symbol_octave,
@@ -85,7 +87,7 @@ class NoteSchema(Schema):
                     else:
                         sequence.append(None)
             return sequence
-        
+
         def convert_pitchname_to_notename(pitchname: str, symbol_octave: str) -> str:
             # <N>
             if symbol_octave.find("<N>") >= 0:
@@ -95,7 +97,7 @@ class NoteSchema(Schema):
                 return symbol_octave.replace("<n>", pitchname, 1)
             else:
                 return symbol_octave + pitchname
-        
+
         no_accidental_sequence = create_symbol_sequence()
         accidental_upper_sequences = create_upper_sequences()
         accidental_lower_sequences = create_lower_sequences()
@@ -113,20 +115,30 @@ class NoteSchema(Schema):
         ref_octave_notename = convert_pitchname_to_notename(
             ref_pitchname, self.symbols_octave[self.reference_octave]
         )
-        adjust_notenumber = (
-            self.reference_notenumber - no_accidental_sequence.index(ref_octave_notename)
+        adjust_notenumber = self.reference_notenumber - no_accidental_sequence.index(
+            ref_octave_notename
         )
 
-        name2number = dict(chain.from_iterable([
-            [(name, index + adjust_notenumber) for name in names if name is not None]
-            for index, names in enumerate(accidental_sequences)
-            if index + adjust_notenumber in self.symbols_notenumber
-        ]))
-        number2name = dict([
-            (index + adjust_notenumber, name)
-            for index, name in enumerate(accidental_sequences)
-            if index + adjust_notenumber in self.symbols_notenumber
-        ])
+        name2number = dict(
+            chain.from_iterable(
+                [
+                    [
+                        (name, index + adjust_notenumber)
+                        for name in names
+                        if name is not None
+                    ]
+                    for index, names in enumerate(accidental_sequences)
+                    if index + adjust_notenumber in self.symbols_notenumber
+                ]
+            )
+        )
+        number2name = dict(
+            [
+                (index + adjust_notenumber, name)
+                for index, name in enumerate(accidental_sequences)
+                if index + adjust_notenumber in self.symbols_notenumber
+            ]
+        )
 
         object.__setattr__(self, "name2number", name2number)
         object.__setattr__(self, "number2name", number2name)

@@ -108,8 +108,11 @@ euterpe --> euterpe.tuner
 euterpe.TET12 --> euterpe.TET12.tuner
 euterpe.TET12 --> euterpe.note
 euterpe.TET12 --> euterpe.scale
+euterpe.TET12.note --> euterpe.TET12.note
 euterpe.TET12.scale --> euterpe.TET12.note
+euterpe.TET12.scale --> euterpe.TET12.scale
 euterpe.TET12.tuner --> euterpe.TET12.note
+euterpe.TET12.tuner --> euterpe.TET12.tuner
 euterpe.TET12.tuner --> euterpe.TET12.utils
 euterpe._core --> euterpe._core.object
 euterpe._core --> euterpe._core.schema

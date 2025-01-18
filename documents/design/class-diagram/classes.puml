@@ -117,7 +117,6 @@ class "Mixolydian_f9" as euterpe.TET12.scale.Mixolydian_f9 {
 class "Note" as euterpe.TET12.note.Note {
 }
 class "NoteSchema" as euterpe.note.schemas.note.NoteSchema {
-  adjust_notenumber : int
   name2number : dict[str, int]
   notenames
   notenumbers
