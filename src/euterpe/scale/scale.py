@@ -3,22 +3,24 @@ from itertools import accumulate, starmap
 
 from .._core import EuterpeObject
 from .._core.utils import classproperty
-from ..note import Key, PitchClass
+from ..note import _Key, _PitchClass
+from .schemas import ScaleSchema
 
 
-class Scale(EuterpeObject):
+class _Scale[T: _PitchClass](EuterpeObject[ScaleSchema]):
 
+    PitchClass: type[T]
     _intervals: t.ClassVar[tuple[int, ...]]
     _positions: t.ClassVar[tuple[int, ...]]
-    _key: Key
+    _key: _Key
     _signatures: tuple[int, ...]
 
     def __new__(cls, *args, **kwargs) -> t.Self:
-        if cls is Scale:
+        if cls is _Scale:
             raise TypeError("Scale cannot be instantiated directly.")
         return super().__new__(cls)
 
-    def __init__(self, key: Key, **kwargs) -> None:
+    def __init__(self, key: _Key, **kwargs) -> None:
         super().__init__(**kwargs)
         self._key = key
         self._signatures = tuple(
@@ -31,13 +33,23 @@ class Scale(EuterpeObject):
             )
         )
 
-    def __init_subclass__(cls, *, intervals: t.Sequence[int] | None, **kwargs) -> None:
-        super().__init_subclass__(**kwargs)
-        cls._intervals = tuple(intervals or ())
+    def __init_subclass__(
+        cls,
+        *,
+        intervals: t.Sequence[int] | None = None,
+        pitchclass: type[T] | None = None,
+        **kwargs,
+    ) -> None:
+        if intervals is None or pitchclass is None:
+            return
+        schema = ScaleSchema(pitchclass.schema)
+        super().__init_subclass__(schema=schema, **kwargs)
+        cls.PitchClass = pitchclass
+        cls._intervals = tuple(intervals)
         cls._positions = tuple(accumulate((0,) + cls._intervals[:-1]))
 
     @property
-    def key(self) -> Key:
+    def key(self) -> _Key:
         return self._key
 
     @classproperty
@@ -53,19 +65,17 @@ class Scale(EuterpeObject):
         return self._signatures
 
     @property
-    def components(self) -> tuple[PitchClass, ...]:
+    def components(self) -> tuple[T, ...]:
         components = []
-        root = PitchClass(self._key.pitchname, scale=self, setting=self.setting)
+        root = self.PitchClass(self._key.pitchname, scale=self, setting=self.setting)
         for pos in self.positions:
             pitchclass = (root + pos).pitchclass
-            note = PitchClass(pitchclass, scale=self, setting=self.setting)
+            note = self.PitchClass(pitchclass, scale=self, setting=self.setting)
             components.append(note)
         return tuple(components)
 
-    def transpose(self, semitone: int): ...
-
     def __eq__(self, other: t.Any) -> bool:
-        if not isinstance(other, Scale):
+        if not isinstance(other, _Scale):
             return NotImplemented
         return self._intervals == other._intervals and self._key == other._key
 
@@ -76,6 +86,4 @@ class Scale(EuterpeObject):
         return f"<{self.__class__.__name__}: {self._key}>"
 
     def __repr__(self) -> str:
-        return (
-            f"{self.__class__.__name__}(key={self._key!r}, setting={self._setting!r})"
-        )
+        return f"<{self.__class__.__name__}: {self._key}>"

@@ -1,21 +1,24 @@
 """ euterpe (library for music theory)
 """
 
-from . import scale, tuner, utils
+# implements
+from . import TET12
 from ._core import Setting
 from ._errors import *
 from ._version import *
 from ._warnings import *
-from .chord import Chord
-from .note import Key, Note, PitchClass
+from .note import _Key, _Note, _PitchClass
+from .scale import _DiatonicScale, _NondiatonicScale, _Scale
+from .tuner import _Tuner
 
 __all__ = [
-    "Chord",
-    "PitchClass",
-    "Key",
-    "Note",
+    "_PitchClass",
+    "_Key",
+    "_Note",
+    "_Scale",
+    "_DiatonicScale",
+    "_NondiatonicScale",
+    "_Tuner",
     "Setting",
-    "scale",
-    "tuner",
-    "utils",
+    "TET12",
 ]

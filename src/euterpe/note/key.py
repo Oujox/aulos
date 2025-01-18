@@ -1,10 +1,11 @@
 import typing as t
 
 from .._core import EuterpeObject
-from ._base import BasePitchClass
+from .pitchclass import _PitchClass, _PitchClassLike
+from .schemas import KeySchema
 
 
-class Key(BasePitchClass, EuterpeObject):
+class _Key(EuterpeObject[KeySchema]):
 
     _pitchname: str
     _pitchclass: int
@@ -15,11 +16,22 @@ class Key(BasePitchClass, EuterpeObject):
 
         if self.is_keyname(name):
             self._pitchname = name
-            self._pitchclass = self.schema.convert_pitchname_to_picthclass(name)
+            self._pitchclass = self.schema.pitchclass.convert_pitchname_to_picthclass(
+                name
+            )
             self._signatures = self.schema.generate_key_signatures(name)
 
         else:
             raise ValueError()
+
+    def __init_subclass__(
+        cls, *, accidental: int, base: type[_PitchClass], **kwargs
+    ) -> None:
+        schema = KeySchema(
+            accidental,
+            base.schema,
+        )
+        super().__init_subclass__(schema=schema, **kwargs)
 
     @property
     def name(self) -> str:
@@ -37,7 +49,9 @@ class Key(BasePitchClass, EuterpeObject):
     def pitchnames(self) -> list[str]:
         return [
             n
-            for n in self.schema.convert_pitchclass_to_pitchnames(self._pitchclass)
+            for n in self.schema.pitchclass.convert_pitchclass_to_pitchnames(
+                self._pitchclass
+            )
             if n is not None
         ]
 
@@ -45,11 +59,12 @@ class Key(BasePitchClass, EuterpeObject):
     def signature(self) -> tuple[int, ...]:
         return self._signatures
 
-    def is_keyname(self, value: t.Any) -> t.TypeGuard[str]:
-        return isinstance(value, str) and value in self.schema.pitchnames
+    @classmethod
+    def is_keyname(cls, value: t.Any) -> t.TypeGuard[str]:
+        return cls.schema.is_keyname(value)
 
     def __eq__(self, other: t.Any) -> bool:
-        if not isinstance(other, (int, BasePitchClass)):
+        if not isinstance(other, (int, _PitchClassLike)):
             return NotImplemented
         return int(self) == int(other)
 
@@ -60,7 +75,7 @@ class Key(BasePitchClass, EuterpeObject):
         return self._pitchclass
 
     def __str__(self) -> str:
-        return f"<Key: {self._pitchname}>"
+        return f"<Key: {self.pitchname}>"
 
     def __repr__(self) -> str:
-        return f"Key(name={self._pitchname!r}, setting={self._setting!r})"
+        return f"<Key: {self.pitchname}>"

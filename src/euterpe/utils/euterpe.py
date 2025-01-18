@@ -2,8 +2,8 @@ import typing as t
 from functools import wraps
 
 from .._core import Setting
-from ..scale import Scale
-from ..tuner import Tuner
+from ..scale import _Scale
+from ..tuner import _Tuner
 from .context import EuterpeContext
 from .track import Track
 

@@ -1,9 +1,12 @@
 @startuml classes
 set namespaceSeparator none
-class "BasePitchClass" as euterpe.note._base.BasePitchClass {
-  pitchclass
-  pitchname
-  pitchnames
+class "Aeorian" as euterpe.TET12.scale.Aeorian {
+}
+class "Aeorian_f5" as euterpe.TET12.scale.Aeorian_f5 {
+}
+class "AlteredSuperLocrian" as euterpe.TET12.scale.AlteredSuperLocrian {
+}
+class "Bluenote" as euterpe.TET12.scale.Bluenote {
 }
 class "Chord" as euterpe.chord.chord.Chord {
   components
@@ -15,13 +18,23 @@ class "Chord" as euterpe.chord.chord.Chord {
   is_inverted() -> bool
   transpose(interval: int) -> Chord
 }
+class "CombDiminish" as euterpe.TET12.scale.CombDiminish {
+}
 class "Context" as euterpe._core.framework.context.Context {
   data : t.ClassVar[ContextVar[dict[str, t.Any]]]
   setting : t.ClassVar[ContextVar[Setting]]
 }
 class "DerivedCacheMeta" as euterpe._core.framework.derivedcache.DerivedCacheMeta {
 }
-class "DiatonicScale" as euterpe.scale.diatonic.DiatonicScale {
+class "Diminish" as euterpe.TET12.scale.Diminish {
+}
+class "Dorian" as euterpe.TET12.scale.Dorian {
+}
+class "Dorian_f2" as euterpe.TET12.scale.Dorian_f2 {
+}
+class "Dorian_s4" as euterpe.TET12.scale.Dorian_s4 {
+}
+class "Equal12Tuner" as euterpe.TET12.tuner.Equal12Tuner {
 }
 class "Euterpe" as euterpe.utils.euterpe.Euterpe {
   name : str
@@ -42,8 +55,11 @@ class "Euterpe" as euterpe.utils.euterpe.Euterpe {
 class "EuterpeContext" as euterpe.utils.context.EuterpeContext {
 }
 class "EuterpeObject" as euterpe._core.object.EuterpeObject {
-  schema
+  T : NoneType
   setting
+  schema() -> T
+}
+class "HarmonicMinor" as euterpe.TET12.scale.HarmonicMinor {
 }
 class "InjectedMeta" as euterpe._core.framework.inject.InjectedMeta {
   inject(func: t.Callable[P, R]) -> t.Callable[P, R]
@@ -53,7 +69,158 @@ class "InstanceCacheMeta" as euterpe._core.framework.instancecache.InstanceCache
 class "Intervals" as euterpe._core.utils.interval.Intervals {
   rotate(shift: int)
 }
-class "Key" as euterpe.note.key.Key {
+class "Ionian" as euterpe.TET12.scale.Ionian {
+}
+class "Ionian_s5" as euterpe.TET12.scale.Ionian_s5 {
+}
+class "JustIntonationTuner" as euterpe.TET12.tuner.JustIntonationTuner {
+}
+class "Key" as euterpe.TET12.note.Key {
+}
+class "KeySchema" as euterpe.note.schemas.key.KeySchema {
+  accidental : int
+  keynames
+  pitchclass
+  ensure_valid_keyname(keyname: str) -> None
+  generate_key_signatures(keyname: str) -> tuple[int, ...]
+  is_keyname(value: t.Any) -> t.TypeGuard[str]
+  validate() -> None
+}
+class "Locrian" as euterpe.TET12.scale.Locrian {
+}
+class "Locrian_n6" as euterpe.TET12.scale.Locrian_n6 {
+}
+class "Lydian" as euterpe.TET12.scale.Lydian {
+}
+class "Lydian_f7" as euterpe.TET12.scale.Lydian_f7 {
+}
+class "Lydian_s2" as euterpe.TET12.scale.Lydian_s2 {
+}
+class "Lydian_s5" as euterpe.TET12.scale.Lydian_s5 {
+}
+class "Major" as euterpe.TET12.scale.Major {
+}
+class "MeantoneTuner" as euterpe.TET12.tuner.MeantoneTuner {
+}
+class "MelodicMinor" as euterpe.TET12.scale.MelodicMinor {
+}
+class "Minor" as euterpe.TET12.scale.Minor {
+}
+class "MinorPentatonic" as euterpe.TET12.scale.MinorPentatonic {
+}
+class "Mixolydian" as euterpe.TET12.scale.Mixolydian {
+}
+class "Mixolydian_f6" as euterpe.TET12.scale.Mixolydian_f6 {
+}
+class "Mixolydian_f9" as euterpe.TET12.scale.Mixolydian_f9 {
+}
+class "Note" as euterpe.TET12.note.Note {
+}
+class "NoteSchema" as euterpe.note.schemas.note.NoteSchema {
+  name2number : dict[str, int]
+  notenames
+  notenumbers
+  number2name : dict[int, tuple[str | None]]
+  pitchclass
+  reference_notenumber : int
+  reference_octave : int
+  symbols_notenumber : tuple[int, ...]
+  symbols_octave : tuple[str, ...]
+  convert_notename_to_notenumber(notename: str) -> int
+  convert_notename_to_pitchname(notename: str) -> str
+  convert_notenumber_to_notename(notenumber: int, accidental: int) -> str | None
+  convert_notenumber_to_notenames(notenumber: int) -> tuple[str | None, ...]
+  convert_notenumber_to_pitchclass(notenumber: int) -> int
+  convert_pitchclass_to_notenumber(pitchclass: int, octave: int) -> int
+  convert_pitchname_to_notename(pitchname: str, octave: int) -> str
+  count_accidental(notename: str) -> int
+  ensure_valid_notename(notename: str) -> None
+  ensure_valid_notenumber(notenumber: int) -> None
+  initialize() -> None
+  is_notename(value: t.Any) -> t.TypeGuard[str]
+  is_notenumber(value: t.Any) -> t.TypeGuard[int]
+  validate() -> None
+}
+class "OptimizedMeta" as euterpe._core.framework.optimize.OptimizedMeta {
+}
+class "Pentatonic" as euterpe.TET12.scale.Pentatonic {
+}
+class "Phrygian" as euterpe.TET12.scale.Phrygian {
+}
+class "PitchClass" as euterpe.TET12.note.PitchClass {
+}
+class "PitchClassSchema" as euterpe.note.schemas.pitchclass.PitchClassSchema {
+  accidental : int
+  cardinality : int
+  class2name : dict[int, tuple[str | None, ...]]
+  intervals : tuple[int, ...]
+  name2class : dict[str, int]
+  pitchclasses
+  pitchnames
+  positions : tuple[int, ...]
+  symbols_accidental : tuple[str, ...]
+  symbols_pitchclass : tuple[str, ...]
+  convert_pitchclass_to_pitchname(pitchclass: int, accidental: int) -> str | None
+  convert_pitchclass_to_pitchnames(pitchclass: int) -> tuple[str | None, ...]
+  convert_pitchclass_to_symbol(pitchclass: int) -> str | None
+  convert_pitchname_to_picthclass(pitchname: str) -> int
+  convert_pitchname_to_symbol(pitchname: str) -> str
+  count_accidental(pitchname: str) -> int
+  ensure_valid_accidental(accidental: int) -> None
+  ensure_valid_pitchclass(pitchclass: int) -> None
+  ensure_valid_pitchname(pitchname: str) -> None
+  find_pitchname(value: str) -> str | None
+  initialize() -> None
+  is_pitchclass(value: t.Any) -> t.TypeGuard[int]
+  is_pitchname(value: t.Any) -> t.TypeGuard[str]
+  is_symbol(value: t.Any) -> t.TypeGuard[str]
+  validate() -> None
+}
+class "Positions" as euterpe._core.utils.interval.Positions {
+  rotate(shift: int)
+}
+class "PythagoreanTuner" as euterpe.TET12.tuner.PythagoreanTuner {
+}
+class "Quality" as euterpe.chord.quality.Quality {
+  areas() -> tuple[str, ...]
+  name() -> str
+  positions() -> tuple[int, ...]
+}
+class "ScaleSchema" as euterpe.scale.schemas.scale.ScaleSchema {
+  pitchclass
+  generate_scale_signatures(intervals: tuple[int, ...]) -> tuple[int, ...]
+}
+class "Schema" as euterpe._core.schema.Schema {
+  initialize() -> None
+  validate() -> None
+}
+class "Setting" as euterpe._core.setting.Setting {
+  default() -> t.Self
+  from_dict(value: dict[str, t.Any]) -> t.Self
+  from_json(path: Path) -> t.Self
+  from_toml(path: Path) -> t.Self
+}
+class "SuperLocrian" as euterpe.TET12.scale.SuperLocrian {
+}
+class "Track" as euterpe.utils.track.Track {
+}
+class "TunerSchema" as euterpe.tuner.schemas.tuner.TunerSchema {
+  note
+  pitchclass
+  reference_notenumber : int
+  validate() -> None
+}
+class "Wholetone" as euterpe.TET12.scale.Wholetone {
+}
+class "_DiatonicScale" as euterpe.scale.diatonic._DiatonicScale {
+  T : NoneType
+}
+class "_IChord" as euterpe.chord.chord._IChord {
+  on : str | None
+  quality : type[Quality]
+  root : str
+}
+class "_Key" as euterpe.note.key._Key {
   name
   pitchclass
   pitchname
@@ -61,12 +228,13 @@ class "Key" as euterpe.note.key.Key {
   signature
   is_keyname(value: t.Any) -> t.TypeGuard[str]
 }
-class "NondiatonicScale" as euterpe.scale.diatonic.NondiatonicScale {
+class "_NondiatonicScale" as euterpe.scale.diatonic._NondiatonicScale {
+  T : NoneType
   signatures
   intervals() -> tuple[int, ...]
   positions() -> tuple[int, ...]
 }
-class "Note" as euterpe.note.note.Note {
+class "_Note" as euterpe.note.note._Note {
   hz
   notename
   notenames
@@ -79,9 +247,7 @@ class "Note" as euterpe.note.note.Note {
   is_notename(notename: t.Any) -> t.TypeGuard[str]
   is_notenumber(notenumber: t.Any) -> t.TypeGuard[int]
 }
-class "OptimizedMeta" as euterpe._core.framework.optimize.OptimizedMeta {
-}
-class "PitchClass" as euterpe.note.pitchclass.PitchClass {
+class "_PitchClass" as euterpe.note.pitchclass._PitchClass {
   pitchclass
   pitchname
   pitchnames
@@ -89,93 +255,86 @@ class "PitchClass" as euterpe.note.pitchclass.PitchClass {
   is_pitchclass(pitchclass: t.Any) -> t.TypeGuard[int]
   is_pitchname(pitchname: t.Any) -> t.TypeGuard[str]
 }
-class "Positions" as euterpe._core.utils.interval.Positions {
-  rotate(shift: int)
+class "_PitchClassLike" as euterpe.note.pitchclass._PitchClassLike {
+  pitchclass
+  pitchname
+  pitchnames
 }
-class "Quality" as euterpe.chord.quality.Quality {
-  areas() -> tuple[str, ...]
-  name() -> str
-  positions() -> tuple[int, ...]
-}
-class "Scale" as euterpe.scale.scale.Scale {
+class "_Scale" as euterpe.scale.scale._Scale {
+  PitchClass : type[T]
+  T : NoneType
   components
   key
   signatures
   intervals() -> tuple[int, ...]
   positions() -> tuple[int, ...]
-  transpose(semitone: int)
 }
-class "Schema" as euterpe._core.schema.Schema {
-  intervals
-  notenames
-  notenumbers
-  pitchclasses
-  pitchnames
-  positions
-  root_hz
-  root_notenumber
-  semitone
-  symbols
-  convert_notename_to_notenumber(notename: str) -> int
-  convert_notename_to_pitchname(notename: str) -> str
-  convert_notenumber_to_notename(notenumber: int, accidental: int) -> str | None
-  convert_notenumber_to_notenames(notenumber: int) -> tuple[str | None, ...]
-  convert_notenumber_to_pitchclass(notenumber: int) -> int
-  convert_pitchclass_to_notenumber(pitchclass: int, octnumber: int) -> int
-  convert_pitchclass_to_pitchname(pitchclass: int, accidental: int) -> str | None
-  convert_pitchclass_to_pitchnames(pitchclass: int) -> tuple[str | None, ...]
-  convert_pitchclass_to_symbol(pitchclass: int) -> str | None
-  convert_pitchname_to_notename(pitchname: str, octnumber: int) -> str
-  convert_pitchname_to_picthclass(pitchname: str) -> int
-  convert_pitchname_to_symbol(pitchname: str)
-  find_pitchname(value: str) -> str | None
-  generate_key_signatures(pitchname: str) -> tuple[int, ...]
-  generate_scale_signatures(intervals: tuple[int, ...]) -> tuple[int, ...]
-  is_notename(value: t.Any) -> t.TypeGuard[str]
-  is_notenumber(value: t.Any) -> t.TypeGuard[int]
-  is_pitchclass(value: t.Any) -> t.TypeGuard[int]
-  is_pitchname(value: t.Any) -> t.TypeGuard[str]
-  is_symbol(value: t.Any) -> t.TypeGuard[str]
-}
-class "Setting" as euterpe._core.setting.Setting {
-  note : NoteSetting
-  pitchclass : PitchClassSetting
-  default() -> t.Self
-  from_dict(value: dict[str, t.Any]) -> t.Self
-  from_json(path: Path) -> t.Self
-  from_toml(path: Path) -> t.Self
-}
-class "Track" as euterpe.utils.track.Track {
-}
-class "Tuner" as euterpe.tuner.tuner.Tuner {
+class "_Tuner" as euterpe.tuner.tuner._Tuner {
+  root
   hz(notenumber: int) -> float
-}
-class "_IChord" as euterpe.chord.chord._IChord {
-  on : str | None
-  quality : type[Quality]
-  root : str
 }
 class "classproperty" as euterpe._core.utils.decorators.classproperty {
   T : NoneType
   fget : t.Callable[..., T] | None
   getter(method: t.Callable[..., T])
 }
+euterpe.TET12.note.Key --|> euterpe.note.key._Key
+euterpe.TET12.note.Note --|> euterpe.note.note._Note
+euterpe.TET12.note.PitchClass --|> euterpe.note.pitchclass._PitchClass
+euterpe.TET12.scale.Aeorian --|> euterpe.TET12.scale.Major
+euterpe.TET12.scale.Aeorian_f5 --|> euterpe.TET12.scale.MelodicMinor
+euterpe.TET12.scale.AlteredSuperLocrian --|> euterpe.TET12.scale.HarmonicMinor
+euterpe.TET12.scale.Bluenote --|> euterpe.scale.diatonic._NondiatonicScale
+euterpe.TET12.scale.CombDiminish --|> euterpe.scale.diatonic._NondiatonicScale
+euterpe.TET12.scale.Diminish --|> euterpe.scale.diatonic._NondiatonicScale
+euterpe.TET12.scale.Dorian --|> euterpe.TET12.scale.Major
+euterpe.TET12.scale.Dorian_f2 --|> euterpe.TET12.scale.MelodicMinor
+euterpe.TET12.scale.Dorian_s4 --|> euterpe.TET12.scale.HarmonicMinor
+euterpe.TET12.scale.HarmonicMinor --|> euterpe.scale.diatonic._DiatonicScale
+euterpe.TET12.scale.Ionian --|> euterpe.TET12.scale.Major
+euterpe.TET12.scale.Ionian_s5 --|> euterpe.TET12.scale.HarmonicMinor
+euterpe.TET12.scale.Locrian --|> euterpe.TET12.scale.Major
+euterpe.TET12.scale.Locrian_n6 --|> euterpe.TET12.scale.HarmonicMinor
+euterpe.TET12.scale.Lydian --|> euterpe.TET12.scale.Major
+euterpe.TET12.scale.Lydian_f7 --|> euterpe.TET12.scale.MelodicMinor
+euterpe.TET12.scale.Lydian_s2 --|> euterpe.TET12.scale.HarmonicMinor
+euterpe.TET12.scale.Lydian_s5 --|> euterpe.TET12.scale.MelodicMinor
+euterpe.TET12.scale.Major --|> euterpe.scale.diatonic._DiatonicScale
+euterpe.TET12.scale.MelodicMinor --|> euterpe.scale.diatonic._DiatonicScale
+euterpe.TET12.scale.Minor --|> euterpe.scale.diatonic._DiatonicScale
+euterpe.TET12.scale.MinorPentatonic --|> euterpe.scale.diatonic._NondiatonicScale
+euterpe.TET12.scale.Mixolydian --|> euterpe.TET12.scale.Major
+euterpe.TET12.scale.Mixolydian_f6 --|> euterpe.TET12.scale.MelodicMinor
+euterpe.TET12.scale.Mixolydian_f9 --|> euterpe.TET12.scale.HarmonicMinor
+euterpe.TET12.scale.Pentatonic --|> euterpe.scale.diatonic._NondiatonicScale
+euterpe.TET12.scale.Phrygian --|> euterpe.TET12.scale.Major
+euterpe.TET12.scale.SuperLocrian --|> euterpe.TET12.scale.MelodicMinor
+euterpe.TET12.scale.Wholetone --|> euterpe.scale.diatonic._NondiatonicScale
+euterpe.TET12.tuner.Equal12Tuner --|> euterpe.tuner.tuner._Tuner
+euterpe.TET12.tuner.JustIntonationTuner --|> euterpe.tuner.tuner._Tuner
+euterpe.TET12.tuner.MeantoneTuner --|> euterpe.tuner.tuner._Tuner
+euterpe.TET12.tuner.PythagoreanTuner --|> euterpe.tuner.tuner._Tuner
 euterpe.chord.chord.Chord --|> euterpe._core.object.EuterpeObject
-euterpe.note.key.Key --|> euterpe._core.object.EuterpeObject
-euterpe.note.key.Key --|> euterpe.note._base.BasePitchClass
-euterpe.note.note.Note --|> euterpe._core.object.EuterpeObject
-euterpe.note.note.Note --|> euterpe.note._base.BasePitchClass
-euterpe.note.pitchclass.PitchClass --|> euterpe._core.object.EuterpeObject
-euterpe.note.pitchclass.PitchClass --|> euterpe.note._base.BasePitchClass
-euterpe.scale.diatonic.DiatonicScale --|> euterpe.scale.scale.Scale
-euterpe.scale.diatonic.NondiatonicScale --|> euterpe.scale.scale.Scale
-euterpe.scale.scale.Scale --|> euterpe._core.object.EuterpeObject
-euterpe.tuner.tuner.Tuner --|> euterpe._core.object.EuterpeObject
+euterpe.note.key._Key --|> euterpe._core.object.EuterpeObject
+euterpe.note.note._Note --|> euterpe._core.object.EuterpeObject
+euterpe.note.pitchclass._PitchClass --|> euterpe._core.object.EuterpeObject
+euterpe.note.schemas.key.KeySchema --|> euterpe._core.schema.Schema
+euterpe.note.schemas.note.NoteSchema --|> euterpe._core.schema.Schema
+euterpe.note.schemas.pitchclass.PitchClassSchema --|> euterpe._core.schema.Schema
+euterpe.scale.diatonic._DiatonicScale --|> euterpe.scale.scale._Scale
+euterpe.scale.diatonic._NondiatonicScale --|> euterpe.scale.scale._Scale
+euterpe.scale.scale._Scale --|> euterpe._core.object.EuterpeObject
+euterpe.scale.schemas.scale.ScaleSchema --|> euterpe._core.schema.Schema
+euterpe.tuner.schemas.tuner.TunerSchema --|> euterpe._core.schema.Schema
+euterpe.tuner.tuner._Tuner --|> euterpe._core.object.EuterpeObject
 euterpe.utils.context.EuterpeContext --|> euterpe._core.framework.context.Context
-euterpe._core.setting.Setting --* euterpe._core.object.EuterpeObject : _setting
-euterpe._core.setting.Setting --* euterpe._core.schema.Schema : _setting
 euterpe._core.setting.Setting --* euterpe.utils.euterpe.Euterpe : setting
 euterpe.chord.quality.Quality --* euterpe.chord.chord.Chord : _quality
-euterpe.note.key.Key --* euterpe.scale.scale.Scale : _key
-euterpe.note.pitchclass.PitchClass --* euterpe.chord.chord.Chord : _root
+euterpe.note.key._Key --* euterpe.scale.scale._Scale : _key
+euterpe.note.pitchclass._PitchClass --* euterpe.chord.chord.Chord : _root
+euterpe.note.schemas.note.NoteSchema --* euterpe.tuner.schemas.tuner.TunerSchema : note
+euterpe.note.schemas.pitchclass.PitchClassSchema --* euterpe.note.schemas.key.KeySchema : pitchclass
+euterpe.note.schemas.pitchclass.PitchClassSchema --* euterpe.note.schemas.note.NoteSchema : pitchclass
+euterpe.note.schemas.pitchclass.PitchClassSchema --* euterpe.scale.schemas.scale.ScaleSchema : pitchclass
+euterpe.note.schemas.pitchclass.PitchClassSchema --* euterpe.tuner.schemas.tuner.TunerSchema : pitchclass
 @enduml
