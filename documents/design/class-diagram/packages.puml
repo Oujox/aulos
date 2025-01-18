@@ -44,13 +44,7 @@ package "euterpe._core.utils.dataclass" as euterpe._core.utils.dataclass {
 }
 package "euterpe._core.utils.decorators" as euterpe._core.utils.decorators {
 }
-package "euterpe._core.utils.interval" as euterpe._core.utils.interval {
-}
-package "euterpe._errors" as euterpe._errors {
-}
 package "euterpe._version" as euterpe._version {
-}
-package "euterpe._warnings" as euterpe._warnings {
 }
 package "euterpe.chord" as euterpe.chord {
 }
@@ -82,15 +76,21 @@ package "euterpe.scale.scale" as euterpe.scale.scale {
 }
 package "euterpe.scale.schemas" as euterpe.scale.schemas {
 }
-package "euterpe.scale.schemas.scale" as euterpe.scale.schemas.scale {
-}
 package "euterpe.tuner" as euterpe.tuner {
 }
 package "euterpe.tuner.schemas" as euterpe.tuner.schemas {
 }
-package "euterpe.tuner.schemas.tuner" as euterpe.tuner.schemas.tuner {
-}
 package "euterpe.tuner.tuner" as euterpe.tuner.tuner {
+}
+package "euterpe.ui" as euterpe.ui {
+}
+package "euterpe.ui.components" as euterpe.ui.components {
+}
+package "euterpe.ui.components.keyboard" as euterpe.ui.components.keyboard {
+}
+package "euterpe.ui.components.scaleviewer" as euterpe.ui.components.scaleviewer {
+}
+package "euterpe.ui.main" as euterpe.ui.main {
 }
 package "euterpe.utils" as euterpe.utils {
 }
@@ -114,6 +114,7 @@ euterpe.TET12.scale --> euterpe.TET12.scale
 euterpe.TET12.tuner --> euterpe.TET12.note
 euterpe.TET12.tuner --> euterpe.TET12.tuner
 euterpe.TET12.tuner --> euterpe.TET12.utils
+euterpe.__main__ --> euterpe.ui
 euterpe._core --> euterpe._core.object
 euterpe._core --> euterpe._core.schema
 euterpe._core --> euterpe._core.setting
@@ -155,6 +156,10 @@ euterpe.scale.schemas --> euterpe.scale.scale
 euterpe.tuner --> euterpe.tuner.tuner
 euterpe.tuner.schemas --> euterpe.tuner.tuner
 euterpe.tuner.tuner --> euterpe.tuner.schemas
+euterpe.ui --> euterpe.ui.main
+euterpe.ui.components --> euterpe.ui.components.keyboard
+euterpe.ui.components --> euterpe.ui.components.scaleviewer
+euterpe.ui.main --> euterpe.ui.components
 euterpe.utils --> euterpe
 euterpe.utils.euterpe --> euterpe.utils.context
 euterpe.utils.euterpe --> euterpe.utils.track
