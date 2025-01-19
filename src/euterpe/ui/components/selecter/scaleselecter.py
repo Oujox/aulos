@@ -2,9 +2,8 @@ import tkinter as tk
 import tkinter.ttk as ttk
 import typing as t
 
-from euterpe import _Scale
-from euterpe.TET12 import scale
-
+from .... import _Scale
+from ....TET12 import scale
 from ..base import BaseComponent
 
 SCALE_DEFAULTS: tuple[dict[str, type[_Scale]], dict[str, type[_Scale]]] = (
