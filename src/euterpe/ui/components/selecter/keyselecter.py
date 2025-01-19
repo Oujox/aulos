@@ -1,9 +1,9 @@
-import typing as t
 import tkinter as tk
 import tkinter.ttk as ttk
+import typing as t
 
-from ..base import BaseComponent
 from ...const import KEY_DEFAULTS
+from ..base import BaseComponent
 
 
 class KeySelecter(BaseComponent):
@@ -22,23 +22,28 @@ class KeySelecter(BaseComponent):
 
     def create_widget(self):
         self._selected_keyname = tk.StringVar()
-        self._keyselecter_wrap = ttk.Frame(self, padding=(24, 8), borderwidth=2, relief=tk.SOLID)
+        self._keyselecter_wrap = ttk.Frame(
+            self, padding=(24, 8), borderwidth=2, relief=tk.SOLID
+        )
         self._keyselecter_title = ttk.Label(self, text="Key")
         self._keyselecter_wrap.pack()
         self._keyselecter_title.place(relx=0.05, rely=0, anchor=tk.W)
 
         self._keygroups = [
-            ttk.Frame(self._keyselecter_wrap, padding=(6, 0)) for _ in range(len(KEY_DEFAULTS))
+            ttk.Frame(self._keyselecter_wrap, padding=(6, 0))
+            for _ in range(len(KEY_DEFAULTS))
         ]
         self._keybuttons = [
-            [ttk.Radiobutton(
-                keygroup,
-                text=key,
-                value=key,
-                variable=self._selected_keyname,
-                command=self._onClickKeyButton,
-            )
-            for key in keys]
+            [
+                ttk.Radiobutton(
+                    keygroup,
+                    text=key,
+                    value=key,
+                    variable=self._selected_keyname,
+                    command=self._onClickKeyButton,
+                )
+                for key in keys
+            ]
             for keygroup, keys in zip(self._keygroups, KEY_DEFAULTS)
         ]
 
@@ -48,7 +53,7 @@ class KeySelecter(BaseComponent):
         for keybuttons in self._keybuttons:
             for btn in keybuttons:
                 btn.pack(side=tk.TOP, anchor=tk.NW)
-    
+
     def default(self):
         self._selected_keyname.set("C")
         self._onClickKeyButton()
@@ -60,8 +65,9 @@ class KeySelecter(BaseComponent):
     @property
     def keyname(self):
         return self._selected_keyname.get()
-    
+
     callbacks_onClickKeyButton: list[t.Callable[[], t.Any]]
+
     def set_callback_onClickKeyButton(self, callback: t.Callable[[], t.Any]):
         if not hasattr(self, "callbacks_onClickKeyButton"):
             self.callbacks_onClickKeyButton = []

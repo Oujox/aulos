@@ -86,9 +86,17 @@ package "euterpe.ui" as euterpe.ui {
 }
 package "euterpe.ui.components" as euterpe.ui.components {
 }
+package "euterpe.ui.components.base" as euterpe.ui.components.base {
+}
 package "euterpe.ui.components.keyboard" as euterpe.ui.components.keyboard {
 }
 package "euterpe.ui.components.scaleviewer" as euterpe.ui.components.scaleviewer {
+}
+package "euterpe.ui.components.selecter" as euterpe.ui.components.selecter {
+}
+package "euterpe.ui.components.selecter.keyselecter" as euterpe.ui.components.selecter.keyselecter {
+}
+package "euterpe.ui.components.selecter.scaleselecter" as euterpe.ui.components.selecter.scaleselecter {
 }
 package "euterpe.ui.main" as euterpe.ui.main {
 }
@@ -159,6 +167,13 @@ euterpe.tuner.tuner --> euterpe.tuner.schemas
 euterpe.ui --> euterpe.ui.main
 euterpe.ui.components --> euterpe.ui.components.keyboard
 euterpe.ui.components --> euterpe.ui.components.scaleviewer
+euterpe.ui.components.scaleviewer --> euterpe.ui.components.base
+euterpe.ui.components.scaleviewer --> euterpe.ui.components.selecter
+euterpe.ui.components.selecter --> euterpe.ui.components.selecter.keyselecter
+euterpe.ui.components.selecter --> euterpe.ui.components.selecter.scaleselecter
+euterpe.ui.components.selecter.scaleselecter --> euterpe
+euterpe.ui.components.selecter.scaleselecter --> euterpe.TET12
+euterpe.ui.components.selecter.scaleselecter --> euterpe.TET12.scale
 euterpe.ui.main --> euterpe.ui.components
 euterpe.utils --> euterpe
 euterpe.utils.euterpe --> euterpe.utils.context

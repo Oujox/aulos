@@ -1,4 +1,3 @@
-
 KEY_DEFAULTS = (
     ("Cb", "Db", "Eb", "Fb", "Gb", "Ab", "Bb"),
     ("C", "D", "E", "F", "G", "A", "B"),

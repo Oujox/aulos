@@ -1,12 +1,11 @@
-import typing as t
 import tkinter as tk
 import tkinter.ttk as ttk
+import typing as t
 
 from euterpe import _Scale
 from euterpe.TET12 import scale
 
 from ..base import BaseComponent
-
 
 SCALE_DEFAULTS: tuple[dict[str, type[_Scale]], dict[str, type[_Scale]]] = (
     {
@@ -96,36 +95,37 @@ class ScaleSelecter(BaseComponent):
         for scalebuttons in self._scalebuttons:
             for btn in scalebuttons:
                 btn.pack(side=tk.TOP, anchor=tk.NW)
-    
+
     def default(self):
         self._selected_scalename.set(scale.Major.__name__)
         self._onClickScaleButton()
-    
+
     def _onClickScaleButton(self):
         for scales in SCALE_DEFAULTS:
             name = self._selected_scalename.get()
             if name in scales:
                 self._selected_scaleinfo.set(scales[name].__doc__ or "")
-            
+
         for callback in self.callbacks_onClickScaleButton:
             callback()
-    
+
     @property
     def scale(self) -> type[_Scale] | None:
         for scales in SCALE_DEFAULTS:
             if self.scalename in scales:
                 return scales[self.scalename]
         return None
-    
+
     @property
     def scalename(self) -> str:
         return self._selected_scalename.get()
-    
+
     @property
     def scaleinfo(self) -> str:
         return self._selected_scaleinfo.get()
 
     callbacks_onClickScaleButton: list[t.Callable[[], t.Any]]
+
     def set_callback_onClickScaleButton(self, callback: t.Callable[[], t.Any]):
         if not hasattr(self, "callbacks_onClickScaleButton"):
             self.callbacks_onClickScaleButton = []
