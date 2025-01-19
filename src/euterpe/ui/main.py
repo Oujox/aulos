@@ -3,7 +3,7 @@ import ctypes
 import tkinter as tk
 import tkinter.ttk as ttk
 
-from .components import KeyBoardComponent, ScaleViewer
+from .components import KeyBoard, ScaleViewer
 
 
 def run():
@@ -15,9 +15,9 @@ def run():
     root.geometry("1200x800")
     root.resizable(False, False)
     # root.attributes('-topmost', True)
-    keyboard = KeyBoardComponent(root)
-    keyboard.pack()
+    keyboard = KeyBoard(root)
+    keyboard.pack(fill=tk.X)
     scale = ScaleViewer(root)
-    scale.pack()
+    scale.pack(fill=tk.X)
 
     root.mainloop()

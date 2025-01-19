@@ -1,66 +1,107 @@
-import typing as t
 import tkinter as tk
 import tkinter.ttk as ttk
 
-from ..const import KEY_DEFAULTS
+from .base import BaseComponent
+from .selecter import KeySelecter, ScaleSelecter
 
 
-class ScaleViewer(tk.Frame):
+class _Display(BaseComponent):
 
-    selected_keyname: tk.StringVar
-    selected_scalename: tk.StringVar
+    _scale: tk.StringVar
+    _keyname: tk.StringVar
+    _scalename: tk.StringVar
+    _scaleinfo: tk.StringVar
 
-    keyselecter: ttk.Frame
-    keyselecter_title: ttk.Label
-    keygroup: list[ttk.Frame]
-    keybuttons: list[list[ttk.Radiobutton]]
-    
-    scalesetecter: ttk.Frame
-    scalesetecter_title: ttk.Label
-    scale_listbox: tk.Listbox
+    _wrapper: ttk.Frame
+    _scaledisplay: ttk.Label
+    _scaleinfodisplay: ttk.Label
 
     def __init__(self, master: tk.Misc):
-        super().__init__(master, pady=6)
+        super().__init__(master)
         self.master = master
         self.create_widget()
+    
+    def create_widget(self):
+        self._scale = tk.StringVar()
+        self._keyname = tk.StringVar()
+        self._scalename = tk.StringVar()
+        self._scaleinfo = tk.StringVar()
+
+        def combine(*args):
+            self._scale.set(f"{self.keyname} {self.scalename}")
+
+        self._keyname.trace_add("write", combine)
+        self._scalename.trace_add("write", combine)
+
+        self._wrapper = ttk.Frame(self, padding=(24, 8), borderwidth=2, relief=tk.SOLID)
+        self._scaledisplay = ttk.Label(self._wrapper, textvariable=self._scale, font=("Times", 18))
+        self._scaleinfodisplay = ttk.Label(self._wrapper, textvariable=self._scaleinfo, font=("Times", 10))
+
+        self._wrapper.pack()
+        self._scaledisplay.pack(side=tk.TOP, anchor=tk.NW)
+        self._scaleinfodisplay.pack(side=tk.TOP, anchor=tk.NW)
+    
+    def default(self):
+        return
+    
+    @property
+    def keyname(self):
+        return self._keyname.get()
+    
+    @property
+    def scalename(self):
+        return self._scalename.get()
+    
+    @property
+    def scaleinfo(self):
+        return self._scaleinfo.get()
+    
+    @keyname.setter
+    def keyname(self, value: str):
+        return self._keyname.set(value)
+    
+    @scalename.setter
+    def scalename(self, value: str):
+        self._scalename.set(value)
+
+    @scaleinfo.setter
+    def scaleinfo(self, value: str):
+        self._scaleinfo.set(value)
+
+
+class ScaleViewer(BaseComponent):
+
+    scaledisplay: _Display
+    keyselecter: KeySelecter
+    scaleselecter: ScaleSelecter
+
+    def __init__(self, master: tk.Misc):
+        super().__init__(master)
+        self.master = master
+        self.create_widget()
+        self.default()
 
     def create_widget(self):
-        self._create_scaledisplay()
-        self._create_keyselecter()
-        self._create_scaleselecter()
+        self.scaledisplay = _Display(self)
+        self.keyselecter = KeySelecter(self)
+        self.scaleselecter = ScaleSelecter(self)
 
-    def _create_scaledisplay(self):
-        ...
+        self.keyselecter.set_callback_onClickKeyButton(
+            self.display_scaledisplay
+        )
+        self.scaleselecter.set_callback_onClickScaleButton(
+            self.display_scaledisplay
+        )
+
+        self.scaledisplay.pack(side=tk.TOP, anchor=tk.W, expand=True)
+        self.keyselecter.pack(side=tk.LEFT, anchor=tk.N)
+        self.scaleselecter.pack(side=tk.LEFT, anchor=tk.N)
     
-    def _create_keyselecter(self):
-        self.selected_keyname = tk.StringVar()
-
-        self.keyselecter = ttk.Frame(self, padding=(24, 8), borderwidth=2, relief=tk.SOLID)
-        self.keyselecter_title = ttk.Label(self, text="Key")
-        self.keyselecter_title.place(relx=0.05, rely=0, anchor=tk.W)
-
-        self.keygroup = [
-            ttk.Frame(self.keyselecter, padding=(6, 0)) for _ in range(3)
-        ]
-        self.keybuttons = [
-            [ttk.Radiobutton(
-                keygroup,
-                text=key,
-                value=key,
-                variable=self.selected_keyname
-            )
-            for key in keys]
-            for keygroup, keys in zip(self.keygroup, KEY_DEFAULTS)
-        ]
-
-        for keygroup in self.keygroup:
-            keygroup.pack(side=tk.LEFT)
-
-        for keybuttons in self.keybuttons:
-            for btn in keybuttons:
-                btn.pack(side=tk.TOP)
-
-        self.keyselecter.pack()
+    def default(self):
+        self.keyselecter.default()
+        self.scaleselecter.default()
     
-    def _create_scaleselecter(self):
-        ...
+    def display_scaledisplay(self):
+        self.scaledisplay.keyname = self.keyselecter.keyname
+        self.scaledisplay.scalename = self.scaleselecter.scalename
+        self.scaledisplay.scaleinfo = self.scaleselecter.scaleinfo

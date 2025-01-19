@@ -8,7 +8,7 @@ from ..const import (
 )
 
 
-class KeyComponent(tk.Frame):
+class KeyElement(tk.Frame):
 
     key: tk.Button
     is_active: tk.BooleanVar
@@ -45,6 +45,9 @@ class KeyComponent(tk.Frame):
 
         self.is_active = tk.BooleanVar(value=True)        
         self.is_active.trace_add("write", callback_btn_bgcolor)
+    
+    def default(self):
+        return
 
     def is_white(self) -> bool:
         return (self.notenumber % 12) in KEYBOARD_WHITE_CLASSES
@@ -53,7 +56,7 @@ class KeyComponent(tk.Frame):
         return (self.notenumber % 12) in KEYBOARD_BLACK_CLASSES
 
 
-class KeyBoardComponent(tk.Frame):
+class KeyBoard(tk.Frame):
 
     notebook: ttk.Notebook
     tab1: tk.Frame
@@ -63,7 +66,7 @@ class KeyBoardComponent(tk.Frame):
     scrollbar: tk.Scrollbar
 
     keyboard: tk.Frame
-    keylist: list[KeyComponent]
+    keylist: list[KeyElement]
 
     def __init__(self, master: tk.Misc):
         super().__init__(master)
@@ -100,12 +103,12 @@ class KeyBoardComponent(tk.Frame):
         self.notebook.pack(fill=tk.BOTH, expand=True)
 
     
-    def _create_keylist(self) -> list[KeyComponent]:
+    def _create_keylist(self) -> list[KeyElement]:
         x = 0
-        keylist: list[KeyComponent] = []
+        keylist: list[KeyElement] = []
 
         for notenumber in range(0, 128):
-            key = KeyComponent(self.keyboard, notenumber, width=24, height=72)
+            key = KeyElement(self.keyboard, notenumber, width=24, height=72)
 
             if key.is_white():
                 key.place(x=x, y=0, anchor=tk.NW)
@@ -121,6 +124,9 @@ class KeyBoardComponent(tk.Frame):
                 key.lift(aboveThis=keylist[-1])
 
         return keylist
+
+    def default(self):
+        return
 
 
 

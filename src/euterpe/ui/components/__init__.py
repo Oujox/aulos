@@ -1,4 +1,4 @@
-from .keyboard import KeyBoardComponent, KeyComponent
+from .keyboard import KeyBoard
 from .scaleviewer import ScaleViewer
 
-__all__ = ["KeyBoardComponent", "KeyComponent", "ScaleViewer"]
+__all__ = ["KeyBoard", "ScaleViewer"]
