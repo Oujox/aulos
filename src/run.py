@@ -28,4 +28,4 @@ pprint(Dorian_s4.mro())
 # print(MinorPentatonic.PitchClass)
 # pprint(Aeorian(Key("C")).components)
 
-pprint(Note.schema.number2name)
+pprint(Ionian.__name__)

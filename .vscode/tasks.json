@@ -16,7 +16,7 @@
     {
       "label": "Output ClassDiagram",
       "type": "shell",
-      "command": "pyreverse ./src/euterpe -o png -d ./documents/design/class-diagram ; pyreverse ./src/euterpe -o puml -d ./documents/design/class-diagram",
+      "command": "pyreverse ./src/euterpe --all-associated --no-standalone -o png -d ./documents/design/class-diagram ; pyreverse ./src/euterpe --all-associated --no-standalone -o puml -d ./documents/design/class-diagram",
       "problemMatcher": []
     },
     {

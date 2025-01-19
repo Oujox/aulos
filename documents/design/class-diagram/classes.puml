@@ -6,6 +6,10 @@ class "Aeorian_f5" as euterpe.TET12.scale.Aeorian_f5 {
 }
 class "AlteredSuperLocrian" as euterpe.TET12.scale.AlteredSuperLocrian {
 }
+class "BaseComponent" as euterpe.ui.components.base.BaseComponent {
+  {abstract}create_widget() -> None
+  {abstract}default() -> None
+}
 class "Bluenote" as euterpe.TET12.scale.Bluenote {
 }
 class "Chord" as euterpe.chord.chord.Chord {
@@ -23,8 +27,6 @@ class "CombDiminish" as euterpe.TET12.scale.CombDiminish {
 class "Context" as euterpe._core.framework.context.Context {
   data : t.ClassVar[ContextVar[dict[str, t.Any]]]
   setting : t.ClassVar[ContextVar[Setting]]
-}
-class "DerivedCacheMeta" as euterpe._core.framework.derivedcache.DerivedCacheMeta {
 }
 class "Diminish" as euterpe.TET12.scale.Diminish {
 }
@@ -61,14 +63,6 @@ class "EuterpeObject" as euterpe._core.object.EuterpeObject {
 }
 class "HarmonicMinor" as euterpe.TET12.scale.HarmonicMinor {
 }
-class "InjectedMeta" as euterpe._core.framework.inject.InjectedMeta {
-  inject(func: t.Callable[P, R]) -> t.Callable[P, R]
-}
-class "InstanceCacheMeta" as euterpe._core.framework.instancecache.InstanceCacheMeta {
-}
-class "Intervals" as euterpe._core.utils.interval.Intervals {
-  rotate(shift: int)
-}
 class "Ionian" as euterpe.TET12.scale.Ionian {
 }
 class "Ionian_s5" as euterpe.TET12.scale.Ionian_s5 {
@@ -85,6 +79,14 @@ class "KeySchema" as euterpe.note.schemas.key.KeySchema {
   generate_key_signatures(keyname: str) -> tuple[int, ...]
   is_keyname(value: t.Any) -> t.TypeGuard[str]
   validate() -> None
+}
+class "KeySelecter" as euterpe.ui.components.selecter.keyselecter.KeySelecter {
+  callbacks_onClickKeyButton : list[t.Callable[[], t.Any]]
+  keyname
+  master : Misc
+  create_widget()
+  default()
+  set_callback_onClickKeyButton(callback: t.Callable[[], t.Any])
 }
 class "Locrian" as euterpe.TET12.scale.Locrian {
 }
@@ -141,8 +143,6 @@ class "NoteSchema" as euterpe.note.schemas.note.NoteSchema {
   is_notenumber(value: t.Any) -> t.TypeGuard[int]
   validate() -> None
 }
-class "OptimizedMeta" as euterpe._core.framework.optimize.OptimizedMeta {
-}
 class "Pentatonic" as euterpe.TET12.scale.Pentatonic {
 }
 class "Phrygian" as euterpe.TET12.scale.Phrygian {
@@ -176,9 +176,6 @@ class "PitchClassSchema" as euterpe.note.schemas.pitchclass.PitchClassSchema {
   is_symbol(value: t.Any) -> t.TypeGuard[str]
   validate() -> None
 }
-class "Positions" as euterpe._core.utils.interval.Positions {
-  rotate(shift: int)
-}
 class "PythagoreanTuner" as euterpe.TET12.tuner.PythagoreanTuner {
 }
 class "Quality" as euterpe.chord.quality.Quality {
@@ -189,6 +186,25 @@ class "Quality" as euterpe.chord.quality.Quality {
 class "ScaleSchema" as euterpe.scale.schemas.scale.ScaleSchema {
   pitchclass
   generate_scale_signatures(intervals: tuple[int, ...]) -> tuple[int, ...]
+}
+class "ScaleSelecter" as euterpe.ui.components.selecter.scaleselecter.ScaleSelecter {
+  callbacks_onClickScaleButton : list[t.Callable[[], t.Any]]
+  master : Misc
+  scale
+  scaleinfo
+  scalename
+  create_widget()
+  default()
+  set_callback_onClickScaleButton(callback: t.Callable[[], t.Any])
+}
+class "ScaleViewer" as euterpe.ui.components.scaleviewer.ScaleViewer {
+  keyselecter
+  master : Misc
+  scaledisplay
+  scaleselecter
+  create_widget()
+  default()
+  display_scaledisplay()
 }
 class "Schema" as euterpe._core.schema.Schema {
   initialize() -> None
@@ -202,8 +218,6 @@ class "Setting" as euterpe._core.setting.Setting {
 }
 class "SuperLocrian" as euterpe.TET12.scale.SuperLocrian {
 }
-class "Track" as euterpe.utils.track.Track {
-}
 class "TunerSchema" as euterpe.tuner.schemas.tuner.TunerSchema {
   note
   pitchclass
@@ -215,10 +229,13 @@ class "Wholetone" as euterpe.TET12.scale.Wholetone {
 class "_DiatonicScale" as euterpe.scale.diatonic._DiatonicScale {
   T : NoneType
 }
-class "_IChord" as euterpe.chord.chord._IChord {
-  on : str | None
-  quality : type[Quality]
-  root : str
+class "_Display" as euterpe.ui.components.scaleviewer._Display {
+  keyname
+  master : Misc
+  scaleinfo
+  scalename
+  create_widget()
+  default()
 }
 class "_Key" as euterpe.note.key._Key {
   name
@@ -255,11 +272,6 @@ class "_PitchClass" as euterpe.note.pitchclass._PitchClass {
   is_pitchclass(pitchclass: t.Any) -> t.TypeGuard[int]
   is_pitchname(pitchname: t.Any) -> t.TypeGuard[str]
 }
-class "_PitchClassLike" as euterpe.note.pitchclass._PitchClassLike {
-  pitchclass
-  pitchname
-  pitchnames
-}
 class "_Scale" as euterpe.scale.scale._Scale {
   PitchClass : type[T]
   T : NoneType
@@ -272,11 +284,6 @@ class "_Scale" as euterpe.scale.scale._Scale {
 class "_Tuner" as euterpe.tuner.tuner._Tuner {
   root
   hz(notenumber: int) -> float
-}
-class "classproperty" as euterpe._core.utils.decorators.classproperty {
-  T : NoneType
-  fget : t.Callable[..., T] | None
-  getter(method: t.Callable[..., T])
 }
 euterpe.TET12.note.Key --|> euterpe.note.key._Key
 euterpe.TET12.note.Note --|> euterpe.note.note._Note
@@ -327,6 +334,10 @@ euterpe.scale.scale._Scale --|> euterpe._core.object.EuterpeObject
 euterpe.scale.schemas.scale.ScaleSchema --|> euterpe._core.schema.Schema
 euterpe.tuner.schemas.tuner.TunerSchema --|> euterpe._core.schema.Schema
 euterpe.tuner.tuner._Tuner --|> euterpe._core.object.EuterpeObject
+euterpe.ui.components.scaleviewer.ScaleViewer --|> euterpe.ui.components.base.BaseComponent
+euterpe.ui.components.scaleviewer._Display --|> euterpe.ui.components.base.BaseComponent
+euterpe.ui.components.selecter.keyselecter.KeySelecter --|> euterpe.ui.components.base.BaseComponent
+euterpe.ui.components.selecter.scaleselecter.ScaleSelecter --|> euterpe.ui.components.base.BaseComponent
 euterpe.utils.context.EuterpeContext --|> euterpe._core.framework.context.Context
 euterpe._core.setting.Setting --* euterpe.utils.euterpe.Euterpe : setting
 euterpe.chord.quality.Quality --* euterpe.chord.chord.Chord : _quality
@@ -337,4 +348,7 @@ euterpe.note.schemas.pitchclass.PitchClassSchema --* euterpe.note.schemas.key.Ke
 euterpe.note.schemas.pitchclass.PitchClassSchema --* euterpe.note.schemas.note.NoteSchema : pitchclass
 euterpe.note.schemas.pitchclass.PitchClassSchema --* euterpe.scale.schemas.scale.ScaleSchema : pitchclass
 euterpe.note.schemas.pitchclass.PitchClassSchema --* euterpe.tuner.schemas.tuner.TunerSchema : pitchclass
+euterpe.ui.components.scaleviewer._Display --* euterpe.ui.components.scaleviewer.ScaleViewer : scaledisplay
+euterpe.ui.components.selecter.keyselecter.KeySelecter --* euterpe.ui.components.scaleviewer.ScaleViewer : keyselecter
+euterpe.ui.components.selecter.scaleselecter.ScaleSelecter --* euterpe.ui.components.scaleviewer.ScaleViewer : scaleselecter
 @enduml
