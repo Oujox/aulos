@@ -1,181 +1,179 @@
 @startuml packages
 set namespaceSeparator none
-package "euterpe" as euterpe {
+package "aulos" as aulos {
 }
-package "euterpe.TET12" as euterpe.TET12 {
+package "aulos.TET12" as aulos.TET12 {
 }
-package "euterpe.TET12.note" as euterpe.TET12.note {
+package "aulos.TET12.note" as aulos.TET12.note {
 }
-package "euterpe.TET12.scale" as euterpe.TET12.scale {
+package "aulos.TET12.scale" as aulos.TET12.scale {
 }
-package "euterpe.TET12.tuner" as euterpe.TET12.tuner {
+package "aulos.TET12.tuner" as aulos.TET12.tuner {
 }
-package "euterpe.TET12.utils" as euterpe.TET12.utils {
+package "aulos.TET12.utils" as aulos.TET12.utils {
 }
-package "euterpe.__main__" as euterpe.__main__ {
+package "aulos.__main__" as aulos.__main__ {
 }
-package "euterpe._core" as euterpe._core {
+package "aulos._core" as aulos._core {
 }
-package "euterpe._core.framework" as euterpe._core.framework {
+package "aulos._core.framework" as aulos._core.framework {
 }
-package "euterpe._core.framework.context" as euterpe._core.framework.context {
+package "aulos._core.framework.context" as aulos._core.framework.context {
 }
-package "euterpe._core.framework.derivedcache" as euterpe._core.framework.derivedcache {
+package "aulos._core.framework.derivedcache" as aulos._core.framework.derivedcache {
 }
-package "euterpe._core.framework.inject" as euterpe._core.framework.inject {
+package "aulos._core.framework.inject" as aulos._core.framework.inject {
 }
-package "euterpe._core.framework.instancecache" as euterpe._core.framework.instancecache {
+package "aulos._core.framework.instancecache" as aulos._core.framework.instancecache {
 }
-package "euterpe._core.framework.optimize" as euterpe._core.framework.optimize {
+package "aulos._core.framework.optimize" as aulos._core.framework.optimize {
 }
-package "euterpe._core.object" as euterpe._core.object {
+package "aulos._core.object" as aulos._core.object {
 }
-package "euterpe._core.schema" as euterpe._core.schema {
+package "aulos._core.schema" as aulos._core.schema {
 }
-package "euterpe._core.setting" as euterpe._core.setting {
+package "aulos._core.setting" as aulos._core.setting {
 }
-package "euterpe._core.utils" as euterpe._core.utils {
+package "aulos._core.utils" as aulos._core.utils {
 }
-package "euterpe._core.utils.array" as euterpe._core.utils.array {
+package "aulos._core.utils.array" as aulos._core.utils.array {
 }
-package "euterpe._core.utils.calculation" as euterpe._core.utils.calculation {
+package "aulos._core.utils.calculation" as aulos._core.utils.calculation {
 }
-package "euterpe._core.utils.dataclass" as euterpe._core.utils.dataclass {
+package "aulos._core.utils.dataclass" as aulos._core.utils.dataclass {
 }
-package "euterpe._core.utils.decorators" as euterpe._core.utils.decorators {
+package "aulos._core.utils.decorators" as aulos._core.utils.decorators {
 }
-package "euterpe._version" as euterpe._version {
+package "aulos._version" as aulos._version {
 }
-package "euterpe.chord" as euterpe.chord {
+package "aulos.chord" as aulos.chord {
 }
-package "euterpe.chord.chord" as euterpe.chord.chord {
+package "aulos.chord.chord" as aulos.chord.chord {
 }
-package "euterpe.chord.quality" as euterpe.chord.quality {
+package "aulos.chord.quality" as aulos.chord.quality {
 }
-package "euterpe.note" as euterpe.note {
+package "aulos.note" as aulos.note {
 }
-package "euterpe.note.key" as euterpe.note.key {
+package "aulos.note.key" as aulos.note.key {
 }
-package "euterpe.note.note" as euterpe.note.note {
+package "aulos.note.note" as aulos.note.note {
 }
-package "euterpe.note.pitchclass" as euterpe.note.pitchclass {
+package "aulos.note.pitchclass" as aulos.note.pitchclass {
 }
-package "euterpe.note.schemas" as euterpe.note.schemas {
+package "aulos.note.schemas" as aulos.note.schemas {
 }
-package "euterpe.note.schemas.key" as euterpe.note.schemas.key {
+package "aulos.note.schemas.key" as aulos.note.schemas.key {
 }
-package "euterpe.note.schemas.note" as euterpe.note.schemas.note {
+package "aulos.note.schemas.note" as aulos.note.schemas.note {
 }
-package "euterpe.note.schemas.pitchclass" as euterpe.note.schemas.pitchclass {
+package "aulos.note.schemas.pitchclass" as aulos.note.schemas.pitchclass {
 }
-package "euterpe.scale" as euterpe.scale {
+package "aulos.scale" as aulos.scale {
 }
-package "euterpe.scale.diatonic" as euterpe.scale.diatonic {
+package "aulos.scale.diatonic" as aulos.scale.diatonic {
 }
-package "euterpe.scale.scale" as euterpe.scale.scale {
+package "aulos.scale.scale" as aulos.scale.scale {
 }
-package "euterpe.scale.schemas" as euterpe.scale.schemas {
+package "aulos.scale.schemas" as aulos.scale.schemas {
 }
-package "euterpe.tuner" as euterpe.tuner {
+package "aulos.tuner" as aulos.tuner {
 }
-package "euterpe.tuner.schemas" as euterpe.tuner.schemas {
+package "aulos.tuner.schemas" as aulos.tuner.schemas {
 }
-package "euterpe.tuner.tuner" as euterpe.tuner.tuner {
+package "aulos.tuner.tuner" as aulos.tuner.tuner {
 }
-package "euterpe.ui" as euterpe.ui {
+package "aulos.ui" as aulos.ui {
 }
-package "euterpe.ui.components" as euterpe.ui.components {
+package "aulos.ui.components" as aulos.ui.components {
 }
-package "euterpe.ui.components.base" as euterpe.ui.components.base {
+package "aulos.ui.components.base" as aulos.ui.components.base {
 }
-package "euterpe.ui.components.keyboard" as euterpe.ui.components.keyboard {
+package "aulos.ui.components.keyboard" as aulos.ui.components.keyboard {
 }
-package "euterpe.ui.components.scaleviewer" as euterpe.ui.components.scaleviewer {
+package "aulos.ui.components.scaleviewer" as aulos.ui.components.scaleviewer {
 }
-package "euterpe.ui.components.selecter" as euterpe.ui.components.selecter {
+package "aulos.ui.components.selecter" as aulos.ui.components.selecter {
 }
-package "euterpe.ui.components.selecter.keyselecter" as euterpe.ui.components.selecter.keyselecter {
+package "aulos.ui.components.selecter.keyselecter" as aulos.ui.components.selecter.keyselecter {
 }
-package "euterpe.ui.components.selecter.scaleselecter" as euterpe.ui.components.selecter.scaleselecter {
+package "aulos.ui.components.selecter.scaleselecter" as aulos.ui.components.selecter.scaleselecter {
 }
-package "euterpe.ui.main" as euterpe.ui.main {
+package "aulos.ui.main" as aulos.ui.main {
 }
-package "euterpe.utils" as euterpe.utils {
+package "aulos.utils" as aulos.utils {
 }
-package "euterpe.utils.context" as euterpe.utils.context {
+package "aulos.utils.aulos" as aulos.utils.aulos {
 }
-package "euterpe.utils.euterpe" as euterpe.utils.euterpe {
+package "aulos.utils.context" as aulos.utils.context {
 }
-package "euterpe.utils.track" as euterpe.utils.track {
+package "aulos.utils.track" as aulos.utils.track {
 }
-euterpe --> euterpe._core
-euterpe --> euterpe._version
-euterpe --> euterpe.note
-euterpe --> euterpe.scale
-euterpe --> euterpe.tuner
-euterpe.TET12 --> euterpe.TET12.tuner
-euterpe.TET12 --> euterpe.note
-euterpe.TET12 --> euterpe.scale
-euterpe.TET12.note --> euterpe.TET12.note
-euterpe.TET12.scale --> euterpe.TET12.note
-euterpe.TET12.scale --> euterpe.TET12.scale
-euterpe.TET12.tuner --> euterpe.TET12.note
-euterpe.TET12.tuner --> euterpe.TET12.tuner
-euterpe.TET12.tuner --> euterpe.TET12.utils
-euterpe.__main__ --> euterpe.ui
-euterpe._core --> euterpe._core.object
-euterpe._core --> euterpe._core.schema
-euterpe._core --> euterpe._core.setting
-euterpe._core.framework --> euterpe._core.framework.context
-euterpe._core.framework --> euterpe._core.framework.derivedcache
-euterpe._core.framework --> euterpe._core.framework.inject
-euterpe._core.framework --> euterpe._core.framework.instancecache
-euterpe._core.framework --> euterpe._core.framework.optimize
-euterpe._core.framework.inject --> euterpe._core.framework.context
-euterpe._core.object --> euterpe._core.framework
-euterpe._core.object --> euterpe._core.schema
-euterpe._core.object --> euterpe._core.setting
-euterpe._core.object --> euterpe._core.utils
-euterpe._core.setting --> euterpe._core.utils
-euterpe._core.utils --> euterpe._core.utils.array
-euterpe._core.utils --> euterpe._core.utils.calculation
-euterpe._core.utils --> euterpe._core.utils.dataclass
-euterpe._core.utils --> euterpe._core.utils.decorators
-euterpe.chord --> euterpe.chord.chord
-euterpe.chord.chord --> euterpe.chord.quality
-euterpe.note --> euterpe.note.key
-euterpe.note --> euterpe.note.note
-euterpe.note --> euterpe.note.pitchclass
-euterpe.note.key --> euterpe.note.pitchclass
-euterpe.note.key --> euterpe.note.schemas
-euterpe.note.note --> euterpe.note.pitchclass
-euterpe.note.note --> euterpe.note.schemas
-euterpe.note.pitchclass --> euterpe.note.schemas
-euterpe.note.schemas --> euterpe.note.key
-euterpe.note.schemas --> euterpe.note.note
-euterpe.note.schemas --> euterpe.note.pitchclass
-euterpe.note.schemas.key --> euterpe.note.schemas.pitchclass
-euterpe.note.schemas.note --> euterpe.note.schemas.pitchclass
-euterpe.scale --> euterpe.scale.diatonic
-euterpe.scale --> euterpe.scale.scale
-euterpe.scale.diatonic --> euterpe.scale.scale
-euterpe.scale.scale --> euterpe.scale.schemas
-euterpe.scale.schemas --> euterpe.scale.scale
-euterpe.tuner --> euterpe.tuner.tuner
-euterpe.tuner.schemas --> euterpe.tuner.tuner
-euterpe.tuner.tuner --> euterpe.tuner.schemas
-euterpe.ui --> euterpe.ui.main
-euterpe.ui.components --> euterpe.ui.components.keyboard
-euterpe.ui.components --> euterpe.ui.components.scaleviewer
-euterpe.ui.components.scaleviewer --> euterpe.ui.components.base
-euterpe.ui.components.scaleviewer --> euterpe.ui.components.selecter
-euterpe.ui.components.selecter --> euterpe.ui.components.selecter.keyselecter
-euterpe.ui.components.selecter --> euterpe.ui.components.selecter.scaleselecter
-euterpe.ui.components.selecter.scaleselecter --> euterpe
-euterpe.ui.components.selecter.scaleselecter --> euterpe.TET12
-euterpe.ui.components.selecter.scaleselecter --> euterpe.TET12.scale
-euterpe.ui.main --> euterpe.ui.components
-euterpe.utils --> euterpe
-euterpe.utils.euterpe --> euterpe.utils.context
-euterpe.utils.euterpe --> euterpe.utils.track
+aulos --> aulos._core
+aulos --> aulos._version
+aulos --> aulos.note
+aulos --> aulos.scale
+aulos --> aulos.tuner
+aulos.TET12 --> aulos.TET12.tuner
+aulos.TET12 --> aulos.note
+aulos.TET12 --> aulos.scale
+aulos.TET12.note --> aulos.TET12.note
+aulos.TET12.scale --> aulos.TET12.note
+aulos.TET12.scale --> aulos.TET12.scale
+aulos.TET12.tuner --> aulos.TET12.note
+aulos.TET12.tuner --> aulos.TET12.tuner
+aulos.TET12.tuner --> aulos.TET12.utils
+aulos.__main__ --> aulos.ui
+aulos._core --> aulos._core.object
+aulos._core --> aulos._core.schema
+aulos._core --> aulos._core.setting
+aulos._core.framework --> aulos._core.framework.context
+aulos._core.framework --> aulos._core.framework.derivedcache
+aulos._core.framework --> aulos._core.framework.inject
+aulos._core.framework --> aulos._core.framework.instancecache
+aulos._core.framework --> aulos._core.framework.optimize
+aulos._core.framework.inject --> aulos._core.framework.context
+aulos._core.object --> aulos._core.framework
+aulos._core.object --> aulos._core.schema
+aulos._core.object --> aulos._core.setting
+aulos._core.object --> aulos._core.utils
+aulos._core.setting --> aulos._core.utils
+aulos._core.utils --> aulos._core.utils.array
+aulos._core.utils --> aulos._core.utils.calculation
+aulos._core.utils --> aulos._core.utils.dataclass
+aulos._core.utils --> aulos._core.utils.decorators
+aulos.chord --> aulos.chord.chord
+aulos.chord.chord --> aulos.chord.quality
+aulos.note --> aulos.note.key
+aulos.note --> aulos.note.note
+aulos.note --> aulos.note.pitchclass
+aulos.note.key --> aulos.note.pitchclass
+aulos.note.key --> aulos.note.schemas
+aulos.note.note --> aulos.note.pitchclass
+aulos.note.note --> aulos.note.schemas
+aulos.note.pitchclass --> aulos.note.schemas
+aulos.note.schemas --> aulos.note.key
+aulos.note.schemas --> aulos.note.note
+aulos.note.schemas --> aulos.note.pitchclass
+aulos.note.schemas.key --> aulos.note.schemas.pitchclass
+aulos.note.schemas.note --> aulos.note.schemas.pitchclass
+aulos.scale --> aulos.scale.diatonic
+aulos.scale --> aulos.scale.scale
+aulos.scale.diatonic --> aulos.scale.scale
+aulos.scale.scale --> aulos.scale.schemas
+aulos.scale.schemas --> aulos.scale.scale
+aulos.tuner --> aulos.tuner.tuner
+aulos.tuner.schemas --> aulos.tuner.tuner
+aulos.tuner.tuner --> aulos.tuner.schemas
+aulos.ui --> aulos.ui.components
+aulos.ui --> aulos.ui.main
+aulos.ui.components --> aulos.ui.components.keyboard
+aulos.ui.components --> aulos.ui.components.scaleviewer
+aulos.ui.components.scaleviewer --> aulos.ui.components.base
+aulos.ui.components.scaleviewer --> aulos.ui.components.selecter
+aulos.ui.components.selecter --> aulos.ui.components.selecter.keyselecter
+aulos.ui.components.selecter --> aulos.ui.components.selecter.scaleselecter
+aulos.ui.main --> aulos.ui.components
+aulos.utils --> aulos
+aulos.utils.aulos --> aulos.utils.context
+aulos.utils.aulos --> aulos.utils.track
 @enduml

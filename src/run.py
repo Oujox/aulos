@@ -1,5 +1,5 @@
-from euterpe.utils import *
-from euterpe.TET12 import *
+from aulos.utils import *
+from aulos.TET12 import *
 
 
 
