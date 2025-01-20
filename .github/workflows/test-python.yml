@@ -39,7 +39,7 @@ jobs:
           geom=640x480x24
           exec Xvfb $disp -screen $screen $geom 2>/tmp/Xvfb.log &
           export DISPLAY=:99
-          python -m pytest . --benchmark-skip --cov=./src/euterpe --cov-report=xml
+          python -m pytest . --benchmark-skip --cov=./src/aulos --cov-report=xml
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3

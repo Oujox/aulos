@@ -1,44 +1,12 @@
 @startuml classes
 set namespaceSeparator none
-class "Aeorian" as euterpe.TET12.scale.Aeorian {
+class "Aeorian" as aulos.TET12.scale.Aeorian {
 }
-class "Aeorian_f5" as euterpe.TET12.scale.Aeorian_f5 {
+class "Aeorian_f5" as aulos.TET12.scale.Aeorian_f5 {
 }
-class "AlteredSuperLocrian" as euterpe.TET12.scale.AlteredSuperLocrian {
+class "AlteredSuperLocrian" as aulos.TET12.scale.AlteredSuperLocrian {
 }
-class "BaseComponent" as euterpe.ui.components.base.BaseComponent {
-  {abstract}create_widget() -> None
-  {abstract}default() -> None
-}
-class "Bluenote" as euterpe.TET12.scale.Bluenote {
-}
-class "Chord" as euterpe.chord.chord.Chord {
-  components
-  on
-  positions
-  quality
-  root
-  invert(inversion: int) -> Chord
-  is_inverted() -> bool
-  transpose(interval: int) -> Chord
-}
-class "CombDiminish" as euterpe.TET12.scale.CombDiminish {
-}
-class "Context" as euterpe._core.framework.context.Context {
-  data : t.ClassVar[ContextVar[dict[str, t.Any]]]
-  setting : t.ClassVar[ContextVar[Setting]]
-}
-class "Diminish" as euterpe.TET12.scale.Diminish {
-}
-class "Dorian" as euterpe.TET12.scale.Dorian {
-}
-class "Dorian_f2" as euterpe.TET12.scale.Dorian_f2 {
-}
-class "Dorian_s4" as euterpe.TET12.scale.Dorian_s4 {
-}
-class "Equal12Tuner" as euterpe.TET12.tuner.Equal12Tuner {
-}
-class "Euterpe" as euterpe.utils.euterpe.Euterpe {
+class "Aulos" as aulos.utils.aulos.Aulos {
   name : str
   setting
   Chorus()
@@ -54,24 +22,56 @@ class "Euterpe" as euterpe.utils.euterpe.Euterpe {
   Tremolo()
   WorkSpace()
 }
-class "EuterpeContext" as euterpe.utils.context.EuterpeContext {
+class "AulosContext" as aulos.utils.context.AulosContext {
 }
-class "EuterpeObject" as euterpe._core.object.EuterpeObject {
+class "AulosObject" as aulos._core.object.AulosObject {
   T : NoneType
   setting
   schema() -> T
 }
-class "HarmonicMinor" as euterpe.TET12.scale.HarmonicMinor {
+class "BaseComponent" as aulos.ui.components.base.BaseComponent {
+  {abstract}create_widget() -> None
+  {abstract}default() -> None
 }
-class "Ionian" as euterpe.TET12.scale.Ionian {
+class "Bluenote" as aulos.TET12.scale.Bluenote {
 }
-class "Ionian_s5" as euterpe.TET12.scale.Ionian_s5 {
+class "Chord" as aulos.chord.chord.Chord {
+  components
+  on
+  positions
+  quality
+  root
+  invert(inversion: int) -> Chord
+  is_inverted() -> bool
+  transpose(interval: int) -> Chord
 }
-class "JustIntonationTuner" as euterpe.TET12.tuner.JustIntonationTuner {
+class "CombDiminish" as aulos.TET12.scale.CombDiminish {
 }
-class "Key" as euterpe.TET12.note.Key {
+class "Context" as aulos._core.framework.context.Context {
+  data : t.ClassVar[ContextVar[dict[str, t.Any]]]
+  setting : t.ClassVar[ContextVar[Setting]]
 }
-class "KeySchema" as euterpe.note.schemas.key.KeySchema {
+class "Diminish" as aulos.TET12.scale.Diminish {
+}
+class "Dorian" as aulos.TET12.scale.Dorian {
+}
+class "Dorian_f2" as aulos.TET12.scale.Dorian_f2 {
+}
+class "Dorian_s4" as aulos.TET12.scale.Dorian_s4 {
+}
+class "Equal12Tuner" as aulos.TET12.tuner.Equal12Tuner {
+}
+class "HarmonicMinor" as aulos.TET12.scale.HarmonicMinor {
+}
+class "Ionian" as aulos.TET12.scale.Ionian {
+}
+class "Ionian_s5" as aulos.TET12.scale.Ionian_s5 {
+}
+class "JustIntonationTuner" as aulos.TET12.tuner.JustIntonationTuner {
+}
+class "Key" as aulos.TET12.note.Key {
+}
+class "KeySchema" as aulos.note.schemas.key.KeySchema {
   accidental : int
   keynames
   pitchclass
@@ -80,7 +80,7 @@ class "KeySchema" as euterpe.note.schemas.key.KeySchema {
   is_keyname(value: t.Any) -> t.TypeGuard[str]
   validate() -> None
 }
-class "KeySelecter" as euterpe.ui.components.selecter.keyselecter.KeySelecter {
+class "KeySelecter" as aulos.ui.components.selecter.keyselecter.KeySelecter {
   callbacks_onClickKeyButton : list[t.Callable[[], t.Any]]
   keyname
   master : Misc
@@ -88,37 +88,37 @@ class "KeySelecter" as euterpe.ui.components.selecter.keyselecter.KeySelecter {
   default()
   set_callback_onClickKeyButton(callback: t.Callable[[], t.Any])
 }
-class "Locrian" as euterpe.TET12.scale.Locrian {
+class "Locrian" as aulos.TET12.scale.Locrian {
 }
-class "Locrian_n6" as euterpe.TET12.scale.Locrian_n6 {
+class "Locrian_n6" as aulos.TET12.scale.Locrian_n6 {
 }
-class "Lydian" as euterpe.TET12.scale.Lydian {
+class "Lydian" as aulos.TET12.scale.Lydian {
 }
-class "Lydian_f7" as euterpe.TET12.scale.Lydian_f7 {
+class "Lydian_f7" as aulos.TET12.scale.Lydian_f7 {
 }
-class "Lydian_s2" as euterpe.TET12.scale.Lydian_s2 {
+class "Lydian_s2" as aulos.TET12.scale.Lydian_s2 {
 }
-class "Lydian_s5" as euterpe.TET12.scale.Lydian_s5 {
+class "Lydian_s5" as aulos.TET12.scale.Lydian_s5 {
 }
-class "Major" as euterpe.TET12.scale.Major {
+class "Major" as aulos.TET12.scale.Major {
 }
-class "MeantoneTuner" as euterpe.TET12.tuner.MeantoneTuner {
+class "MeantoneTuner" as aulos.TET12.tuner.MeantoneTuner {
 }
-class "MelodicMinor" as euterpe.TET12.scale.MelodicMinor {
+class "MelodicMinor" as aulos.TET12.scale.MelodicMinor {
 }
-class "Minor" as euterpe.TET12.scale.Minor {
+class "Minor" as aulos.TET12.scale.Minor {
 }
-class "MinorPentatonic" as euterpe.TET12.scale.MinorPentatonic {
+class "MinorPentatonic" as aulos.TET12.scale.MinorPentatonic {
 }
-class "Mixolydian" as euterpe.TET12.scale.Mixolydian {
+class "Mixolydian" as aulos.TET12.scale.Mixolydian {
 }
-class "Mixolydian_f6" as euterpe.TET12.scale.Mixolydian_f6 {
+class "Mixolydian_f6" as aulos.TET12.scale.Mixolydian_f6 {
 }
-class "Mixolydian_f9" as euterpe.TET12.scale.Mixolydian_f9 {
+class "Mixolydian_f9" as aulos.TET12.scale.Mixolydian_f9 {
 }
-class "Note" as euterpe.TET12.note.Note {
+class "Note" as aulos.TET12.note.Note {
 }
-class "NoteSchema" as euterpe.note.schemas.note.NoteSchema {
+class "NoteSchema" as aulos.note.schemas.note.NoteSchema {
   name2number : dict[str, int]
   notenames
   notenumbers
@@ -143,13 +143,13 @@ class "NoteSchema" as euterpe.note.schemas.note.NoteSchema {
   is_notenumber(value: t.Any) -> t.TypeGuard[int]
   validate() -> None
 }
-class "Pentatonic" as euterpe.TET12.scale.Pentatonic {
+class "Pentatonic" as aulos.TET12.scale.Pentatonic {
 }
-class "Phrygian" as euterpe.TET12.scale.Phrygian {
+class "Phrygian" as aulos.TET12.scale.Phrygian {
 }
-class "PitchClass" as euterpe.TET12.note.PitchClass {
+class "PitchClass" as aulos.TET12.note.PitchClass {
 }
-class "PitchClassSchema" as euterpe.note.schemas.pitchclass.PitchClassSchema {
+class "PitchClassSchema" as aulos.note.schemas.pitchclass.PitchClassSchema {
   accidental : int
   cardinality : int
   class2name : dict[int, tuple[str | None, ...]]
@@ -176,18 +176,18 @@ class "PitchClassSchema" as euterpe.note.schemas.pitchclass.PitchClassSchema {
   is_symbol(value: t.Any) -> t.TypeGuard[str]
   validate() -> None
 }
-class "PythagoreanTuner" as euterpe.TET12.tuner.PythagoreanTuner {
+class "PythagoreanTuner" as aulos.TET12.tuner.PythagoreanTuner {
 }
-class "Quality" as euterpe.chord.quality.Quality {
+class "Quality" as aulos.chord.quality.Quality {
   areas() -> tuple[str, ...]
   name() -> str
   positions() -> tuple[int, ...]
 }
-class "ScaleSchema" as euterpe.scale.schemas.scale.ScaleSchema {
+class "ScaleSchema" as aulos.scale.schemas.scale.ScaleSchema {
   pitchclass
   generate_scale_signatures(intervals: tuple[int, ...]) -> tuple[int, ...]
 }
-class "ScaleSelecter" as euterpe.ui.components.selecter.scaleselecter.ScaleSelecter {
+class "ScaleSelecter" as aulos.ui.components.selecter.scaleselecter.ScaleSelecter {
   callbacks_onClickScaleButton : list[t.Callable[[], t.Any]]
   master : Misc
   scale
@@ -197,7 +197,7 @@ class "ScaleSelecter" as euterpe.ui.components.selecter.scaleselecter.ScaleSelec
   default()
   set_callback_onClickScaleButton(callback: t.Callable[[], t.Any])
 }
-class "ScaleViewer" as euterpe.ui.components.scaleviewer.ScaleViewer {
+class "ScaleViewer" as aulos.ui.components.scaleviewer.ScaleViewer {
   keyselecter
   master : Misc
   scaledisplay
@@ -206,30 +206,30 @@ class "ScaleViewer" as euterpe.ui.components.scaleviewer.ScaleViewer {
   default()
   display_scaledisplay()
 }
-class "Schema" as euterpe._core.schema.Schema {
+class "Schema" as aulos._core.schema.Schema {
   initialize() -> None
   validate() -> None
 }
-class "Setting" as euterpe._core.setting.Setting {
+class "Setting" as aulos._core.setting.Setting {
   default() -> t.Self
   from_dict(value: dict[str, t.Any]) -> t.Self
   from_json(path: Path) -> t.Self
   from_toml(path: Path) -> t.Self
 }
-class "SuperLocrian" as euterpe.TET12.scale.SuperLocrian {
+class "SuperLocrian" as aulos.TET12.scale.SuperLocrian {
 }
-class "TunerSchema" as euterpe.tuner.schemas.tuner.TunerSchema {
+class "TunerSchema" as aulos.tuner.schemas.tuner.TunerSchema {
   note
   pitchclass
   reference_notenumber : int
   validate() -> None
 }
-class "Wholetone" as euterpe.TET12.scale.Wholetone {
+class "Wholetone" as aulos.TET12.scale.Wholetone {
 }
-class "_DiatonicScale" as euterpe.scale.diatonic._DiatonicScale {
+class "_DiatonicScale" as aulos.scale.diatonic._DiatonicScale {
   T : NoneType
 }
-class "_Display" as euterpe.ui.components.scaleviewer._Display {
+class "_Display" as aulos.ui.components.scaleviewer._Display {
   keyname
   master : Misc
   scaleinfo
@@ -237,7 +237,7 @@ class "_Display" as euterpe.ui.components.scaleviewer._Display {
   create_widget()
   default()
 }
-class "_Key" as euterpe.note.key._Key {
+class "_Key" as aulos.note.key._Key {
   name
   pitchclass
   pitchname
@@ -245,13 +245,13 @@ class "_Key" as euterpe.note.key._Key {
   signature
   is_keyname(value: t.Any) -> t.TypeGuard[str]
 }
-class "_NondiatonicScale" as euterpe.scale.diatonic._NondiatonicScale {
+class "_NondiatonicScale" as aulos.scale.diatonic._NondiatonicScale {
   T : NoneType
   signatures
   intervals() -> tuple[int, ...]
   positions() -> tuple[int, ...]
 }
-class "_Note" as euterpe.note.note._Note {
+class "_Note" as aulos.note.note._Note {
   hz
   notename
   notenames
@@ -264,7 +264,7 @@ class "_Note" as euterpe.note.note._Note {
   is_notename(notename: t.Any) -> t.TypeGuard[str]
   is_notenumber(notenumber: t.Any) -> t.TypeGuard[int]
 }
-class "_PitchClass" as euterpe.note.pitchclass._PitchClass {
+class "_PitchClass" as aulos.note.pitchclass._PitchClass {
   pitchclass
   pitchname
   pitchnames
@@ -272,7 +272,7 @@ class "_PitchClass" as euterpe.note.pitchclass._PitchClass {
   is_pitchclass(pitchclass: t.Any) -> t.TypeGuard[int]
   is_pitchname(pitchname: t.Any) -> t.TypeGuard[str]
 }
-class "_Scale" as euterpe.scale.scale._Scale {
+class "_Scale" as aulos.scale.scale._Scale {
   PitchClass : type[T]
   T : NoneType
   components
@@ -281,74 +281,74 @@ class "_Scale" as euterpe.scale.scale._Scale {
   intervals() -> tuple[int, ...]
   positions() -> tuple[int, ...]
 }
-class "_Tuner" as euterpe.tuner.tuner._Tuner {
+class "_Tuner" as aulos.tuner.tuner._Tuner {
   root
   hz(notenumber: int) -> float
 }
-euterpe.TET12.note.Key --|> euterpe.note.key._Key
-euterpe.TET12.note.Note --|> euterpe.note.note._Note
-euterpe.TET12.note.PitchClass --|> euterpe.note.pitchclass._PitchClass
-euterpe.TET12.scale.Aeorian --|> euterpe.TET12.scale.Major
-euterpe.TET12.scale.Aeorian_f5 --|> euterpe.TET12.scale.MelodicMinor
-euterpe.TET12.scale.AlteredSuperLocrian --|> euterpe.TET12.scale.HarmonicMinor
-euterpe.TET12.scale.Bluenote --|> euterpe.scale.diatonic._NondiatonicScale
-euterpe.TET12.scale.CombDiminish --|> euterpe.scale.diatonic._NondiatonicScale
-euterpe.TET12.scale.Diminish --|> euterpe.scale.diatonic._NondiatonicScale
-euterpe.TET12.scale.Dorian --|> euterpe.TET12.scale.Major
-euterpe.TET12.scale.Dorian_f2 --|> euterpe.TET12.scale.MelodicMinor
-euterpe.TET12.scale.Dorian_s4 --|> euterpe.TET12.scale.HarmonicMinor
-euterpe.TET12.scale.HarmonicMinor --|> euterpe.scale.diatonic._DiatonicScale
-euterpe.TET12.scale.Ionian --|> euterpe.TET12.scale.Major
-euterpe.TET12.scale.Ionian_s5 --|> euterpe.TET12.scale.HarmonicMinor
-euterpe.TET12.scale.Locrian --|> euterpe.TET12.scale.Major
-euterpe.TET12.scale.Locrian_n6 --|> euterpe.TET12.scale.HarmonicMinor
-euterpe.TET12.scale.Lydian --|> euterpe.TET12.scale.Major
-euterpe.TET12.scale.Lydian_f7 --|> euterpe.TET12.scale.MelodicMinor
-euterpe.TET12.scale.Lydian_s2 --|> euterpe.TET12.scale.HarmonicMinor
-euterpe.TET12.scale.Lydian_s5 --|> euterpe.TET12.scale.MelodicMinor
-euterpe.TET12.scale.Major --|> euterpe.scale.diatonic._DiatonicScale
-euterpe.TET12.scale.MelodicMinor --|> euterpe.scale.diatonic._DiatonicScale
-euterpe.TET12.scale.Minor --|> euterpe.scale.diatonic._DiatonicScale
-euterpe.TET12.scale.MinorPentatonic --|> euterpe.scale.diatonic._NondiatonicScale
-euterpe.TET12.scale.Mixolydian --|> euterpe.TET12.scale.Major
-euterpe.TET12.scale.Mixolydian_f6 --|> euterpe.TET12.scale.MelodicMinor
-euterpe.TET12.scale.Mixolydian_f9 --|> euterpe.TET12.scale.HarmonicMinor
-euterpe.TET12.scale.Pentatonic --|> euterpe.scale.diatonic._NondiatonicScale
-euterpe.TET12.scale.Phrygian --|> euterpe.TET12.scale.Major
-euterpe.TET12.scale.SuperLocrian --|> euterpe.TET12.scale.MelodicMinor
-euterpe.TET12.scale.Wholetone --|> euterpe.scale.diatonic._NondiatonicScale
-euterpe.TET12.tuner.Equal12Tuner --|> euterpe.tuner.tuner._Tuner
-euterpe.TET12.tuner.JustIntonationTuner --|> euterpe.tuner.tuner._Tuner
-euterpe.TET12.tuner.MeantoneTuner --|> euterpe.tuner.tuner._Tuner
-euterpe.TET12.tuner.PythagoreanTuner --|> euterpe.tuner.tuner._Tuner
-euterpe.chord.chord.Chord --|> euterpe._core.object.EuterpeObject
-euterpe.note.key._Key --|> euterpe._core.object.EuterpeObject
-euterpe.note.note._Note --|> euterpe._core.object.EuterpeObject
-euterpe.note.pitchclass._PitchClass --|> euterpe._core.object.EuterpeObject
-euterpe.note.schemas.key.KeySchema --|> euterpe._core.schema.Schema
-euterpe.note.schemas.note.NoteSchema --|> euterpe._core.schema.Schema
-euterpe.note.schemas.pitchclass.PitchClassSchema --|> euterpe._core.schema.Schema
-euterpe.scale.diatonic._DiatonicScale --|> euterpe.scale.scale._Scale
-euterpe.scale.diatonic._NondiatonicScale --|> euterpe.scale.scale._Scale
-euterpe.scale.scale._Scale --|> euterpe._core.object.EuterpeObject
-euterpe.scale.schemas.scale.ScaleSchema --|> euterpe._core.schema.Schema
-euterpe.tuner.schemas.tuner.TunerSchema --|> euterpe._core.schema.Schema
-euterpe.tuner.tuner._Tuner --|> euterpe._core.object.EuterpeObject
-euterpe.ui.components.scaleviewer.ScaleViewer --|> euterpe.ui.components.base.BaseComponent
-euterpe.ui.components.scaleviewer._Display --|> euterpe.ui.components.base.BaseComponent
-euterpe.ui.components.selecter.keyselecter.KeySelecter --|> euterpe.ui.components.base.BaseComponent
-euterpe.ui.components.selecter.scaleselecter.ScaleSelecter --|> euterpe.ui.components.base.BaseComponent
-euterpe.utils.context.EuterpeContext --|> euterpe._core.framework.context.Context
-euterpe._core.setting.Setting --* euterpe.utils.euterpe.Euterpe : setting
-euterpe.chord.quality.Quality --* euterpe.chord.chord.Chord : _quality
-euterpe.note.key._Key --* euterpe.scale.scale._Scale : _key
-euterpe.note.pitchclass._PitchClass --* euterpe.chord.chord.Chord : _root
-euterpe.note.schemas.note.NoteSchema --* euterpe.tuner.schemas.tuner.TunerSchema : note
-euterpe.note.schemas.pitchclass.PitchClassSchema --* euterpe.note.schemas.key.KeySchema : pitchclass
-euterpe.note.schemas.pitchclass.PitchClassSchema --* euterpe.note.schemas.note.NoteSchema : pitchclass
-euterpe.note.schemas.pitchclass.PitchClassSchema --* euterpe.scale.schemas.scale.ScaleSchema : pitchclass
-euterpe.note.schemas.pitchclass.PitchClassSchema --* euterpe.tuner.schemas.tuner.TunerSchema : pitchclass
-euterpe.ui.components.scaleviewer._Display --* euterpe.ui.components.scaleviewer.ScaleViewer : scaledisplay
-euterpe.ui.components.selecter.keyselecter.KeySelecter --* euterpe.ui.components.scaleviewer.ScaleViewer : keyselecter
-euterpe.ui.components.selecter.scaleselecter.ScaleSelecter --* euterpe.ui.components.scaleviewer.ScaleViewer : scaleselecter
+aulos.TET12.note.Key --|> aulos.note.key._Key
+aulos.TET12.note.Note --|> aulos.note.note._Note
+aulos.TET12.note.PitchClass --|> aulos.note.pitchclass._PitchClass
+aulos.TET12.scale.Aeorian --|> aulos.TET12.scale.Major
+aulos.TET12.scale.Aeorian_f5 --|> aulos.TET12.scale.MelodicMinor
+aulos.TET12.scale.AlteredSuperLocrian --|> aulos.TET12.scale.HarmonicMinor
+aulos.TET12.scale.Bluenote --|> aulos.scale.diatonic._NondiatonicScale
+aulos.TET12.scale.CombDiminish --|> aulos.scale.diatonic._NondiatonicScale
+aulos.TET12.scale.Diminish --|> aulos.scale.diatonic._NondiatonicScale
+aulos.TET12.scale.Dorian --|> aulos.TET12.scale.Major
+aulos.TET12.scale.Dorian_f2 --|> aulos.TET12.scale.MelodicMinor
+aulos.TET12.scale.Dorian_s4 --|> aulos.TET12.scale.HarmonicMinor
+aulos.TET12.scale.HarmonicMinor --|> aulos.scale.diatonic._DiatonicScale
+aulos.TET12.scale.Ionian --|> aulos.TET12.scale.Major
+aulos.TET12.scale.Ionian_s5 --|> aulos.TET12.scale.HarmonicMinor
+aulos.TET12.scale.Locrian --|> aulos.TET12.scale.Major
+aulos.TET12.scale.Locrian_n6 --|> aulos.TET12.scale.HarmonicMinor
+aulos.TET12.scale.Lydian --|> aulos.TET12.scale.Major
+aulos.TET12.scale.Lydian_f7 --|> aulos.TET12.scale.MelodicMinor
+aulos.TET12.scale.Lydian_s2 --|> aulos.TET12.scale.HarmonicMinor
+aulos.TET12.scale.Lydian_s5 --|> aulos.TET12.scale.MelodicMinor
+aulos.TET12.scale.Major --|> aulos.scale.diatonic._DiatonicScale
+aulos.TET12.scale.MelodicMinor --|> aulos.scale.diatonic._DiatonicScale
+aulos.TET12.scale.Minor --|> aulos.scale.diatonic._DiatonicScale
+aulos.TET12.scale.MinorPentatonic --|> aulos.scale.diatonic._NondiatonicScale
+aulos.TET12.scale.Mixolydian --|> aulos.TET12.scale.Major
+aulos.TET12.scale.Mixolydian_f6 --|> aulos.TET12.scale.MelodicMinor
+aulos.TET12.scale.Mixolydian_f9 --|> aulos.TET12.scale.HarmonicMinor
+aulos.TET12.scale.Pentatonic --|> aulos.scale.diatonic._NondiatonicScale
+aulos.TET12.scale.Phrygian --|> aulos.TET12.scale.Major
+aulos.TET12.scale.SuperLocrian --|> aulos.TET12.scale.MelodicMinor
+aulos.TET12.scale.Wholetone --|> aulos.scale.diatonic._NondiatonicScale
+aulos.TET12.tuner.Equal12Tuner --|> aulos.tuner.tuner._Tuner
+aulos.TET12.tuner.JustIntonationTuner --|> aulos.tuner.tuner._Tuner
+aulos.TET12.tuner.MeantoneTuner --|> aulos.tuner.tuner._Tuner
+aulos.TET12.tuner.PythagoreanTuner --|> aulos.tuner.tuner._Tuner
+aulos.chord.chord.Chord --|> aulos._core.object.AulosObject
+aulos.note.key._Key --|> aulos._core.object.AulosObject
+aulos.note.note._Note --|> aulos._core.object.AulosObject
+aulos.note.pitchclass._PitchClass --|> aulos._core.object.AulosObject
+aulos.note.schemas.key.KeySchema --|> aulos._core.schema.Schema
+aulos.note.schemas.note.NoteSchema --|> aulos._core.schema.Schema
+aulos.note.schemas.pitchclass.PitchClassSchema --|> aulos._core.schema.Schema
+aulos.scale.diatonic._DiatonicScale --|> aulos.scale.scale._Scale
+aulos.scale.diatonic._NondiatonicScale --|> aulos.scale.scale._Scale
+aulos.scale.scale._Scale --|> aulos._core.object.AulosObject
+aulos.scale.schemas.scale.ScaleSchema --|> aulos._core.schema.Schema
+aulos.tuner.schemas.tuner.TunerSchema --|> aulos._core.schema.Schema
+aulos.tuner.tuner._Tuner --|> aulos._core.object.AulosObject
+aulos.ui.components.scaleviewer.ScaleViewer --|> aulos.ui.components.base.BaseComponent
+aulos.ui.components.scaleviewer._Display --|> aulos.ui.components.base.BaseComponent
+aulos.ui.components.selecter.keyselecter.KeySelecter --|> aulos.ui.components.base.BaseComponent
+aulos.ui.components.selecter.scaleselecter.ScaleSelecter --|> aulos.ui.components.base.BaseComponent
+aulos.utils.context.AulosContext --|> aulos._core.framework.context.Context
+aulos._core.setting.Setting --* aulos.utils.aulos.Aulos : setting
+aulos.chord.quality.Quality --* aulos.chord.chord.Chord : _quality
+aulos.note.key._Key --* aulos.scale.scale._Scale : _key
+aulos.note.pitchclass._PitchClass --* aulos.chord.chord.Chord : _root
+aulos.note.schemas.note.NoteSchema --* aulos.tuner.schemas.tuner.TunerSchema : note
+aulos.note.schemas.pitchclass.PitchClassSchema --* aulos.note.schemas.key.KeySchema : pitchclass
+aulos.note.schemas.pitchclass.PitchClassSchema --* aulos.note.schemas.note.NoteSchema : pitchclass
+aulos.note.schemas.pitchclass.PitchClassSchema --* aulos.scale.schemas.scale.ScaleSchema : pitchclass
+aulos.note.schemas.pitchclass.PitchClassSchema --* aulos.tuner.schemas.tuner.TunerSchema : pitchclass
+aulos.ui.components.scaleviewer._Display --* aulos.ui.components.scaleviewer.ScaleViewer : scaledisplay
+aulos.ui.components.selecter.keyselecter.KeySelecter --* aulos.ui.components.scaleviewer.ScaleViewer : keyselecter
+aulos.ui.components.selecter.scaleselecter.ScaleSelecter --* aulos.ui.components.scaleviewer.ScaleViewer : scaleselecter
 @enduml
