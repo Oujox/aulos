@@ -10,6 +10,18 @@ branches:
     prefix: feature/
     prTarget: main
     skip: false
+  
+  - label: bug
+    name: main
+    prefix: bug/
+    prTarget: main
+    skip: false
+  
+  - label: documentation
+    name: main
+    prefix: documentation/
+    prTarget: main
+    skip: false
 
   - label: "*"
     skip: true
