@@ -1,25 +1,35 @@
 [build-system]
-requires = ["setuptools", "wheel"]
+requires = [
+    "setuptools",
+    "setuptools-scm",
+    "wheel"
+]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "aulos"
-description = "lib for music theory"
+description = "Python library for speech processing and analysis from a music theory perspective."
 readme = "README.md"
 license = { file = "LICENSE" }
 classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Topic :: Multimedia :: Sound/Audio :: Analysis",
+    "Operating System :: OS Independent",
+    "Typing :: Typed",
 ]
-requires-python = "==3.12.*"
-dependencies = [
-]
+requires-python = ">=3.12"
+dependencies = []
 dynamic = ["version"]
 
-[project.optional-dependencies]
-dev = [
-    "mypy"
-]
+[project.urls]
+Homepage = "https://github.com/Oujox/aulos"
+Repository = "https://github.com/Oujox/aulos"
 
 [tool.setuptools]
 package-dir = { "" = "src" }
+
+[tool.setuptools_scm]
+version_file = "aulos/_version.py"

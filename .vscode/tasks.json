@@ -2,27 +2,9 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Activate venv",
-      "type": "shell",
-      "command": "${workspaceFolder}/venv-3.13/Scripts/activate",
-      "problemMatcher": []
-    },
-    {
-      "label": "Deactivate venv",
-      "type": "shell",
-      "command": "${workspaceFolder}/venv-3.13/Scripts/deactivate",
-      "problemMatcher": []
-    },
-    {
-      "label": "Output ClassDiagram",
-      "type": "shell",
-      "command": "pyreverse ./src/aulos --all-associated --no-standalone -o png -d ./documents/design/class-diagram ; pyreverse ./src/aulos --all-associated --no-standalone -o puml -d ./documents/design/class-diagram",
-      "problemMatcher": []
-    },
-    {
       "label": "test",
       "type": "shell",
-      "command": "python -m pytest --benchmark-skip",
+      "command": "python -m pytest",
       "group": {
         "kind": "test",
         "isDefault": true
@@ -32,37 +14,28 @@
     {
       "label": "test with coverage",
       "type": "shell",
-      "command": "python -m pytest --benchmark-skip --cov=./src/aulos --cov-report=html:./documents/coverage/html",
+      "command": "python -m pytest --cov=./src/aulos --cov-report=html:./documents/coverage/html",
       "group": {
         "kind": "test"
       },
       "problemMatcher": []
     },
     {
-      "label": "test with benchmark",
-      "type": "shell",
-      "command": "python -m pytest --benchmark-only --benchmark-autosave --benchmark-histogram=./documents/benchmark/benchmark-histogram",
-      "group": {
-        "kind": "test"
-      },
-      "problemMatcher": []
-    },
-    {
-      "label": "format",
+      "label": "formater",
       "type": "shell",
       "command": "black ./src/aulos ./tests/aulos ; isort ./src/aulos ./tests/aulos",
       "problemMatcher": []
     },
     {
-      "label": "lint",
+      "label": "linter",
       "type": "shell",
-      "command": "pylint ./src/aulos ./tests/aulos",
+      "command": "ruff check ./src/aulos ./tests/aulos",
       "problemMatcher": []
     },
     {
       "label": "type-check",
       "type": "shell",
-      "command": "mypy ./src/aulos",
+      "command": "mypy ./src/aulos ./tests/aulos",
       "problemMatcher": []
     }
   ]
