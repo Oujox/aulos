@@ -3,7 +3,7 @@ from functools import wraps
 
 from .._core import Setting
 from ..scale import _Scale
-from ..tuner import _Tuner
+from ..tuner import BaseTuner
 from .context import AulosContext
 from .track import Track
 

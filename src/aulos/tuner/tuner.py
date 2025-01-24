@@ -1,17 +1,17 @@
 import typing as t
 
 from .._core import AulosObject
-from ..note import _Note
+from ..note import BaseNote
 from .schemas import TunerSchema
 
 
-class _Tuner(AulosObject[TunerSchema]):
+class BaseTuner(AulosObject[TunerSchema]):
 
     _ratios: t.ClassVar[tuple[int]]
     _root: float
 
     def __new__(cls, *args, **kwargs) -> t.Self:
-        if cls is _Tuner:
+        if cls is BaseTuner:
             raise TypeError("Tuner cannot be instantiated directly.")
         return super().__new__(cls)
 
@@ -24,7 +24,7 @@ class _Tuner(AulosObject[TunerSchema]):
         *,
         ratios: tuple[int],
         reference_notenumber: int,
-        note: type[_Note],
+        note: type[BaseNote],
         **kwargs,
     ):
         schema = TunerSchema(
@@ -46,7 +46,7 @@ class _Tuner(AulosObject[TunerSchema]):
         return self._root * (2**octnumber) * self._ratios[pitchclass]
 
     def __eq__(self, other: t.Any) -> bool:
-        if not isinstance(other, _Tuner):
+        if not isinstance(other, BaseTuner):
             return NotImplemented
         return self._ratios == other._ratios
 

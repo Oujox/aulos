@@ -3,24 +3,24 @@ from itertools import accumulate, starmap
 
 from .._core import AulosObject
 from .._core.utils import classproperty
-from ..note import _Key, _PitchClass
+from ..note import BaseKey, BasePitchClass
 from .schemas import ScaleSchema
 
 
-class _Scale[T: _PitchClass](AulosObject[ScaleSchema]):
+class BaseScale[T: BasePitchClass](AulosObject[ScaleSchema]):
 
     PitchClass: type[T]
     _intervals: t.ClassVar[tuple[int, ...]]
     _positions: t.ClassVar[tuple[int, ...]]
-    _key: _Key
+    _key: BaseKey
     _signatures: tuple[int, ...]
 
     def __new__(cls, *args, **kwargs) -> t.Self:
-        if cls is _Scale:
+        if cls is BaseScale:
             raise TypeError("Scale cannot be instantiated directly.")
         return super().__new__(cls)
 
-    def __init__(self, key: _Key, **kwargs) -> None:
+    def __init__(self, key: BaseKey, **kwargs) -> None:
         super().__init__(**kwargs)
         self._key = key
         self._signatures = tuple(
@@ -49,7 +49,7 @@ class _Scale[T: _PitchClass](AulosObject[ScaleSchema]):
         cls._positions = tuple(accumulate((0,) + cls._intervals[:-1]))
 
     @property
-    def key(self) -> _Key:
+    def key(self) -> BaseKey:
         return self._key
 
     @classproperty
@@ -75,7 +75,7 @@ class _Scale[T: _PitchClass](AulosObject[ScaleSchema]):
         return tuple(components)
 
     def __eq__(self, other: t.Any) -> bool:
-        if not isinstance(other, _Scale):
+        if not isinstance(other, BaseScale):
             return NotImplemented
         return self._intervals == other._intervals and self._key == other._key
 

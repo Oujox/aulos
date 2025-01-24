@@ -1,11 +1,11 @@
 import typing as t
 
 from .._core import AulosObject
-from .pitchclass import _PitchClass, _PitchClassLike
+from .pitchclass import BasePitchClass, _PitchClassLike
 from .schemas import KeySchema
 
 
-class _Key(AulosObject[KeySchema]):
+class BaseKey(AulosObject[KeySchema]):
 
     _pitchname: str
     _pitchclass: int
@@ -25,7 +25,7 @@ class _Key(AulosObject[KeySchema]):
             raise ValueError()
 
     def __init_subclass__(
-        cls, *, accidental: int, base: type[_PitchClass], **kwargs
+        cls, *, accidental: int, base: type[BasePitchClass], **kwargs
     ) -> None:
         schema = KeySchema(
             accidental,

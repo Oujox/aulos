@@ -7,12 +7,12 @@ composition, music analysis, and algorithmic music generation.
 """
 
 from . import schemas
-from .diatonic import _DiatonicScale, _NondiatonicScale
-from .scale import _Scale
+from .diatonic import DiatonicScale, NondiatonicScale
+from .scale import BaseScale
 
 __all__ = [
-    "_Scale",
-    "_DiatonicScale",
-    "_NondiatonicScale",
+    "BaseScale",
+    "DiatonicScale",
+    "NondiatonicScale",
     "schemas",
 ]

@@ -2,18 +2,18 @@ import typing as t
 from itertools import pairwise
 
 from .._core.utils import classproperty, rotated
-from ..note import _Key, _PitchClass
-from .scale import _Scale
+from ..note import BaseKey, BasePitchClass
+from .scale import BaseScale
 
 
-class _DiatonicScale[T: _PitchClass](_Scale[T]):
+class DiatonicScale[T: BasePitchClass](BaseScale[T]):
 
     def __new__(cls, *args, **kwargs) -> t.Self:
-        if cls is _DiatonicScale:
+        if cls is DiatonicScale:
             raise TypeError("DiatonicScale cannot be instantiated directly.")
         return super().__new__(cls)
 
-    def __init__(self, key: _Key, **kwargs) -> None:
+    def __init__(self, key: BaseKey, **kwargs) -> None:
         super().__init__(key, **kwargs)
 
     def __init_subclass__(
@@ -31,24 +31,24 @@ class _DiatonicScale[T: _PitchClass](_Scale[T]):
         )
 
 
-class _NondiatonicScale[T: _PitchClass](_Scale[T]):
+class NondiatonicScale[T: BasePitchClass](BaseScale[T]):
 
     _extensions: t.ClassVar[tuple[tuple[int, ...], ...]]
-    _base: t.ClassVar[type[_Scale]]
+    _base: t.ClassVar[type[BaseScale]]
 
     def __new__(cls, *args, **kwargs) -> t.Self:
-        if cls is _NondiatonicScale:
+        if cls is NondiatonicScale:
             raise TypeError("NondiatonicScale cannot be instantiated directly.")
         return super().__new__(cls)
 
-    def __init__(self, key: _Key, **kwargs) -> None:
+    def __init__(self, key: BaseKey, **kwargs) -> None:
         super().__init__(key, **kwargs)
 
     def __init_subclass__(
         cls,
         *,
         extensions: t.Sequence[t.Sequence[int]],
-        base: type[_DiatonicScale],
+        base: type[DiatonicScale],
         pitchclass: type[T],
         **kwargs,
     ) -> None:

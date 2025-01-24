@@ -3,7 +3,7 @@ from __future__ import annotations
 import typing as t
 
 from .._core import AulosObject
-from ..note import _PitchClass
+from ..note import BasePitchClass
 from .quality import Quality, parse_quality
 
 
@@ -34,18 +34,18 @@ def parse_chord(name: str, instance: Chord) -> _IChord | None:
 
 class Chord(AulosObject):
 
-    _root: _PitchClass
+    _root: BasePitchClass
     _quality: Quality
-    _on: _PitchClass | None
+    _on: BasePitchClass | None
 
     def __init__(self, identify: str, **kwargs):
         super().__init__(**kwargs)
 
         if (parsed := parse_chord(identify, self)) is not None:
-            root = _PitchClass(parsed["root"], setting=self.setting)
+            root = BasePitchClass(parsed["root"], setting=self.setting)
             quality = parsed["quality"]()
             on = (
-                _PitchClass(parsed["on"], setting=self.setting)
+                BasePitchClass(parsed["on"], setting=self.setting)
                 if parsed["on"] is not None
                 else None
             )
@@ -57,7 +57,7 @@ class Chord(AulosObject):
             raise ValueError()
 
     @property
-    def root(self) -> _PitchClass:
+    def root(self) -> BasePitchClass:
         return self._root
 
     @property
@@ -65,7 +65,7 @@ class Chord(AulosObject):
         return self._quality
 
     @property
-    def on(self) -> _PitchClass | None:
+    def on(self) -> BasePitchClass | None:
         return self._on
 
     @property
@@ -73,7 +73,7 @@ class Chord(AulosObject):
         return self._quality.positions
 
     @property
-    def components(self) -> tuple[_PitchClass, ...]:
+    def components(self) -> tuple[BasePitchClass, ...]:
         return ()
 
     def invert(self, inversion: int) -> Chord: ...

@@ -9,7 +9,7 @@ from .schemas import PitchClassSchema
 
 # type annotaion
 if TYPE_CHECKING:
-    from ..scale import _Scale  # pragma: no cover
+    from ..scale import BaseScale  # pragma: no cover
 
 
 @t.runtime_checkable
@@ -26,15 +26,15 @@ class _PitchClassLike(t.Protocol):
     def pitchnames(self) -> list[str]: ...
 
 
-class _PitchClass(AulosObject[PitchClassSchema]):
+class BasePitchClass(AulosObject[PitchClassSchema]):
 
     _pitchclass: int
     _pitchnames: tuple[str | None, ...]
     _pitchname: str | None
-    _scale: _Scale | None
+    _scale: BaseScale | None
 
     def __init__(
-        self, identify: int | str, *, scale: _Scale | None = None, **kwargs
+        self, identify: int | str, *, scale: BaseScale | None = None, **kwargs
     ) -> None:
         super().__init__(**kwargs)
 
@@ -86,7 +86,7 @@ class _PitchClass(AulosObject[PitchClassSchema]):
         return [n for n in self._pitchnames if n is not None]
 
     @property
-    def scale(self) -> _Scale | None:
+    def scale(self) -> BaseScale | None:
         return self._scale
 
     @pitchname.setter
@@ -95,10 +95,10 @@ class _PitchClass(AulosObject[PitchClassSchema]):
             self._pitchname = name
 
     @scale.setter
-    def scale(self, scale: _Scale | None):
-        from ..scale import _Scale
+    def scale(self, scale: BaseScale | None):
+        from ..scale import BaseScale
 
-        if isinstance(scale, _Scale):
+        if isinstance(scale, BaseScale):
             self._scale = scale
             pitchclass = (
                 self.pitchclass - scale.key.pitchclass

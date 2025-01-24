@@ -5,28 +5,28 @@ from typing import TYPE_CHECKING
 
 from .._core import AulosObject
 from .._core.utils import index
-from .pitchclass import _PitchClass, _PitchClassLike
+from .pitchclass import BasePitchClass, _PitchClassLike
 from .schemas import NoteSchema
 
 if TYPE_CHECKING:
-    from ..scale import _Scale  # pragma: no cover
-    from ..tuner import _Tuner  # pragma: no cover
+    from ..scale import BaseScale  # pragma: no cover
+    from ..tuner import BaseTuner  # pragma: no cover
 
 
-class _Note(AulosObject[NoteSchema]):
+class BaseNote(AulosObject[NoteSchema]):
 
     _notenumber: int
     _notenames: tuple[str | None, ...]
     _notename: str | None
-    _tuner: _Tuner | None
-    _scale: _Scale | None
+    _tuner: BaseTuner | None
+    _scale: BaseScale | None
 
     def __init__(
         self,
         identify: int | str,
         *,
-        scale: _Scale | None = None,
-        tuner: _Tuner | None = None,
+        scale: BaseScale | None = None,
+        tuner: BaseTuner | None = None,
         **kwargs,
     ) -> None:
         super().__init__(**kwargs)
@@ -60,7 +60,7 @@ class _Note(AulosObject[NoteSchema]):
         symbols_octave: t.Sequence[str],
         reference_notenumber: int,
         reference_octave: int,
-        base: type[_PitchClass],
+        base: type[BasePitchClass],
         **kwargs,
     ) -> None:
         schema = NoteSchema(
@@ -110,25 +110,25 @@ class _Note(AulosObject[NoteSchema]):
             self._notename = name
 
     @property
-    def tuner(self) -> _Tuner | None:
+    def tuner(self) -> BaseTuner | None:
         return self._tuner
 
     @property
-    def scale(self) -> _Scale | None:
+    def scale(self) -> BaseScale | None:
         return self._scale
 
     @tuner.setter
-    def tuner(self, tuner: _Tuner):
-        from ..tuner import _Tuner
+    def tuner(self, tuner: BaseTuner):
+        from ..tuner import BaseTuner
 
-        if isinstance(tuner, _Tuner):
+        if isinstance(tuner, BaseTuner):
             self._tuner = tuner
 
     @scale.setter
-    def scale(self, scale: _Scale | None):
-        from ..scale import _Scale
+    def scale(self, scale: BaseScale | None):
+        from ..scale import BaseScale
 
-        if isinstance(scale, _Scale):
+        if isinstance(scale, BaseScale):
             self._scale = scale
             pitchclass = self.schema.convert_notenumber_to_pitchclass(self._notenumber)
             pitchclass = (
