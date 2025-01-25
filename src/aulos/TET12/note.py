@@ -1,8 +1,8 @@
-from ..note import _Key, _Note, _PitchClass
+from ..note import BaseKey, BaseNote, BasePitchClass
 
 
 class PitchClass(
-    _PitchClass,
+    BasePitchClass,
     intervals=(2, 2, 1, 2, 2, 2, 1),
     symbols_pitchclass=("C", "D", "E", "F", "G", "A", "B"),
     symbols_accidental=("bbb", "bb", "b", "#", "##", "###"),
@@ -11,7 +11,7 @@ class PitchClass(
 
 
 class Note(
-    _Note,
+    BaseNote,
     symbols_notenumber=range(128),
     symbols_octave=(
         "<N>-1",
@@ -34,7 +34,7 @@ class Note(
 
 
 class Key(
-    _Key,
+    BaseKey,
     accidental=1,
     base=PitchClass,
 ):

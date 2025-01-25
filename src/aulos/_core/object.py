@@ -6,11 +6,12 @@ from .schema import Schema
 from .setting import Setting
 from .utils import classproperty
 
-AulosObjectMeta = type("AulosObjectMeta", (InjectedMeta, OptimizedMeta, ABCMeta), {})
+
+class AulosObjectMeta(InjectedMeta, OptimizedMeta, ABCMeta):
+    pass
 
 
 class AulosObject[T: Schema](metaclass=AulosObjectMeta):
-
     _schema: T
     _setting: Setting | None
 

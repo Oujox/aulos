@@ -2,11 +2,11 @@ import tkinter as tk
 import tkinter.ttk as ttk
 import typing as t
 
-from .... import _Scale
+from .... import BaseScale
 from ....TET12 import scale
 from ..base import BaseComponent
 
-SCALE_DEFAULTS: tuple[dict[str, type[_Scale]], dict[str, type[_Scale]]] = (
+SCALE_DEFAULTS: tuple[dict[str, type[BaseScale]], dict[str, type[BaseScale]]] = (
     {
         scale.Major.__name__: scale.Major,
         scale.Minor.__name__: scale.Minor,
@@ -44,7 +44,6 @@ SCALE_DEFAULTS: tuple[dict[str, type[_Scale]], dict[str, type[_Scale]]] = (
 
 
 class ScaleSelecter(BaseComponent):
-
     _selected_scalename: tk.StringVar
     _selected_scaleinfo: tk.StringVar
 
@@ -59,7 +58,6 @@ class ScaleSelecter(BaseComponent):
         self.create_widget()
 
     def create_widget(self):
-
         self._selected_scalename = tk.StringVar()
         self._selected_scaleinfo = tk.StringVar()
 
@@ -109,7 +107,7 @@ class ScaleSelecter(BaseComponent):
             callback()
 
     @property
-    def scale(self) -> type[_Scale] | None:
+    def scale(self) -> type[BaseScale] | None:
         for scales in SCALE_DEFAULTS:
             if self.scalename in scales:
                 return scales[self.scalename]

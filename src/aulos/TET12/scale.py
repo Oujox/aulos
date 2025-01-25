@@ -1,9 +1,9 @@
-from ..scale import _DiatonicScale, _NondiatonicScale
+from ..scale import DiatonicScale, NondiatonicScale
 from .note import PitchClass
 
 
 class Major(
-    _DiatonicScale[PitchClass],
+    DiatonicScale[PitchClass],
     intervals=[2, 2, 1, 2, 2, 2, 1],
     pitchclass=PitchClass,
 ):
@@ -17,7 +17,7 @@ class Major(
 
 
 class Minor(
-    _DiatonicScale[PitchClass],
+    DiatonicScale[PitchClass],
     intervals=[2, 1, 2, 2, 1, 2, 2],
     pitchclass=PitchClass,
 ):
@@ -32,7 +32,7 @@ class Minor(
 
 
 class HarmonicMinor(
-    _DiatonicScale[PitchClass],
+    DiatonicScale[PitchClass],
     intervals=[2, 1, 2, 2, 1, 3, 1],
     pitchclass=PitchClass,
 ):
@@ -47,7 +47,7 @@ class HarmonicMinor(
 
 
 class MelodicMinor(
-    _DiatonicScale[PitchClass],
+    DiatonicScale[PitchClass],
     intervals=[2, 1, 2, 2, 2, 2, 1],
     pitchclass=PitchClass,
 ):
@@ -62,7 +62,7 @@ class MelodicMinor(
 
 
 class Pentatonic(
-    _NondiatonicScale[PitchClass],
+    NondiatonicScale[PitchClass],
     extensions=[[0], [0], [0], [], [0], [0], []],
     base=Major,
     pitchclass=PitchClass,
@@ -78,7 +78,7 @@ class Pentatonic(
 
 
 class MinorPentatonic(
-    _NondiatonicScale[PitchClass],
+    NondiatonicScale[PitchClass],
     extensions=[[0], [], [0], [0], [0], [], [0]],
     base=Minor,
     pitchclass=PitchClass,
@@ -94,7 +94,7 @@ class MinorPentatonic(
 
 
 class Bluenote(
-    _NondiatonicScale[PitchClass],
+    NondiatonicScale[PitchClass],
     extensions=[[0], [0], [-1, 0], [0], [-1, 0], [0], [-1, 0]],
     base=Major,
     pitchclass=PitchClass,
@@ -110,7 +110,7 @@ class Bluenote(
 
 
 class Diminish(
-    _NondiatonicScale[PitchClass],
+    NondiatonicScale[PitchClass],
     extensions=[[0], [0], [-1], [0, 1], [1], [0], [0]],
     base=Major,
     pitchclass=PitchClass,
@@ -126,7 +126,7 @@ class Diminish(
 
 
 class CombDiminish(
-    _NondiatonicScale[PitchClass],
+    NondiatonicScale[PitchClass],
     extensions=[[0], [-1], [-1, 0], [1], [0], [0], [-1]],
     base=Major,
     pitchclass=PitchClass,
@@ -141,7 +141,7 @@ class CombDiminish(
 
 
 class Wholetone(
-    _NondiatonicScale[PitchClass],
+    NondiatonicScale[PitchClass],
     extensions=[[0], [0], [0], [1], [1], [1], []],
     base=Major,
     pitchclass=PitchClass,

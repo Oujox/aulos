@@ -7,7 +7,6 @@ from ..base import BaseComponent
 
 
 class KeySelecter(BaseComponent):
-
     _selected_keyname: tk.StringVar
 
     _keyselecter_wrap: ttk.Frame

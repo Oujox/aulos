@@ -1,3 +1,7 @@
+"""UI
+---
+"""
+
 from .keyboard import KeyBoard
 from .scaleviewer import ScaleViewer
 

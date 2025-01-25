@@ -6,7 +6,6 @@ from .selecter import KeySelecter, ScaleSelecter
 
 
 class _Display(BaseComponent):
-
     _scale: tk.StringVar
     _keyname: tk.StringVar
     _scalename: tk.StringVar
@@ -52,21 +51,21 @@ class _Display(BaseComponent):
     def keyname(self):
         return self._keyname.get()
 
-    @property
-    def scalename(self):
-        return self._scalename.get()
-
-    @property
-    def scaleinfo(self):
-        return self._scaleinfo.get()
-
     @keyname.setter
     def keyname(self, value: str):
         return self._keyname.set(value)
 
+    @property
+    def scalename(self):
+        return self._scalename.get()
+
     @scalename.setter
     def scalename(self, value: str):
         self._scalename.set(value)
+
+    @property
+    def scaleinfo(self):
+        return self._scaleinfo.get()
 
     @scaleinfo.setter
     def scaleinfo(self, value: str):
@@ -74,7 +73,6 @@ class _Display(BaseComponent):
 
 
 class ScaleViewer(BaseComponent):
-
     scaledisplay: _Display
     keyselecter: KeySelecter
     scaleselecter: ScaleSelecter

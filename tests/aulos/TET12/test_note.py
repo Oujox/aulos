@@ -29,7 +29,7 @@ def test_Note_property_get_notenumber(data_notenumbers):
 
 def test_Note_property_get_notename(data_notenumbers, data_notenames):
     for notenumber in data_notenumbers:
-        assert Note(notenumber).notename == None
+        assert Note(notenumber).notename is None
     for notename in data_notenames:
         assert Note(notename).notename == notename
 

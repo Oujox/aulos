@@ -29,7 +29,7 @@ def test_PitchClass_property_get_pitchclass(data_pitchclass):
 
 def test_PitchClass_property_get_pitchname(data_pitchclass, data_pitchname):
     for pitchclass in data_pitchclass:
-        assert PitchClass(pitchclass).pitchname == None
+        assert PitchClass(pitchclass).pitchname is None
     for pitchname in data_pitchname:
         assert PitchClass(pitchname).pitchname == pitchname
 

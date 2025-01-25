@@ -1,24 +1,23 @@
-""" aulos (library for music theory)
-"""
+"""aulos (library for music theory)"""
 
-# implements
-from . import TET12
+from . import TET12, TET24
 from ._core import Setting
-from ._errors import *
-from ._version import *
-from ._warnings import *
-from .note import _Key, _Note, _PitchClass
-from .scale import _DiatonicScale, _NondiatonicScale, _Scale
-from .tuner import _Tuner
+from .note import BaseKey, BaseNote, BasePitchClass
+from .scale import BaseScale, DiatonicScale, NondiatonicScale
+from .tuner import BaseTuner
+
+from ._errors import *  # noqa: F403
+from ._warnings import *  # noqa: F403
 
 __all__ = [
-    "_PitchClass",
-    "_Key",
-    "_Note",
-    "_Scale",
-    "_DiatonicScale",
-    "_NondiatonicScale",
-    "_Tuner",
+    "BasePitchClass",
+    "BaseKey",
+    "BaseNote",
+    "BaseScale",
+    "DiatonicScale",
+    "NondiatonicScale",
+    "BaseTuner",
     "Setting",
     "TET12",
+    "TET24",
 ]

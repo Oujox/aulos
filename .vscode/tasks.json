@@ -21,13 +21,13 @@
       "problemMatcher": []
     },
     {
-      "label": "formater",
+      "label": "format",
       "type": "shell",
-      "command": "black ./src/aulos ./tests/aulos ; isort ./src/aulos ./tests/aulos",
+      "command": "ruff format ./src/aulos ./tests/aulos",
       "problemMatcher": []
     },
     {
-      "label": "linter",
+      "label": "lint",
       "type": "shell",
       "command": "ruff check ./src/aulos ./tests/aulos",
       "problemMatcher": []
@@ -35,7 +35,7 @@
     {
       "label": "type-check",
       "type": "shell",
-      "command": "mypy ./src/aulos ./tests/aulos",
+      "command": "mypy ./src/aulos",
       "problemMatcher": []
     }
   ]
