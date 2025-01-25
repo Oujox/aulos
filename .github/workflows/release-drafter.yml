@@ -11,7 +11,7 @@ permissions:
   contents: read
 
 jobs:
-  release:
+  create_release_draft_job:
     permissions:
       contents: write
       pull-requests: write
