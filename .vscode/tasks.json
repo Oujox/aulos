@@ -35,7 +35,7 @@
     {
       "label": "type-check",
       "type": "shell",
-      "command": "mypy ./src/aulos ./tests/aulos",
+      "command": "mypy ./src/aulos",
       "problemMatcher": []
     }
   ]

@@ -49,11 +49,10 @@ class PitchClassSchema(Schema):
 
         accidental = len(self.symbols_accidental) // 2
         upper_accidentals = self.symbols_accidental[accidental:]
-        lower_accidentals = self.symbols_accidental[:accidental]
-        lower_accidentals = reversed(lower_accidentals)
+        lower_accidentals = reversed(self.symbols_accidental[:accidental])
 
-        def create_upper_sequences():
-            sequences: list[list[str]] = []
+        def create_upper_sequences() -> list[list[str | None]]:
+            sequences = []
             for i, acc in enumerate(upper_accidentals, start=1):
                 sequence = create_symbol_sequence(suffix=acc)
                 for _ in range(i):
@@ -61,8 +60,8 @@ class PitchClassSchema(Schema):
                 sequences.append(sequence)
             return sequences
 
-        def create_lower_sequences():
-            sequences: list[list[str]] = []
+        def create_lower_sequences() -> list[list[str | None]]:
+            sequences = []
             for i, acc in enumerate(lower_accidentals, start=1):
                 sequence = create_symbol_sequence(suffix=acc)
                 for _ in range(i):
@@ -70,8 +69,10 @@ class PitchClassSchema(Schema):
                 sequences.append(sequence)
             return sequences
 
-        def create_symbol_sequence(*, prefix: str = "", suffix: str = "") -> list[str]:
-            sequence = []
+        def create_symbol_sequence(
+            *, prefix: str = "", suffix: str = ""
+        ) -> list[str | None]:
+            sequence: list[str | None] = []
             for deg in range(cardinality):
                 if deg in positions:
                     index = positions.index(deg)
@@ -82,8 +83,7 @@ class PitchClassSchema(Schema):
 
         no_accidental_sequence = create_symbol_sequence()
         accidental_upper_sequences = create_upper_sequences()
-        accidental_lower_sequences = create_lower_sequences()
-        accidental_lower_sequences = reversed(accidental_lower_sequences)
+        accidental_lower_sequences = reversed(create_lower_sequences())
         accidental_sequences = tuple(
             zip(
                 *accidental_lower_sequences,

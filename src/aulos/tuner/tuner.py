@@ -6,7 +6,7 @@ from .schemas import TunerSchema
 
 
 class BaseTuner(AulosObject[TunerSchema]):
-    _ratios: t.ClassVar[tuple[int]]
+    _ratios: t.ClassVar[tuple[float, ...]]
     _root: float
 
     def __new__(cls, *args, **kwargs) -> t.Self:
@@ -21,7 +21,7 @@ class BaseTuner(AulosObject[TunerSchema]):
     def __init_subclass__(
         cls,
         *,
-        ratios: tuple[int],
+        ratios: tuple[float, ...],
         reference_notenumber: int,
         note: type[BaseNote],
         **kwargs,

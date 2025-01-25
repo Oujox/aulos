@@ -48,11 +48,10 @@ class NoteSchema(Schema):
     def initialize(self) -> None:
         accidental = len(self.pitchclass.symbols_accidental) // 2
         upper_accidentals = self.pitchclass.symbols_accidental[accidental:]
-        lower_accidentals = self.pitchclass.symbols_accidental[:accidental]
-        lower_accidentals = reversed(lower_accidentals)
+        lower_accidentals = reversed(self.pitchclass.symbols_accidental[:accidental])
 
-        def create_upper_sequences():
-            sequences: list[list[str]] = []
+        def create_upper_sequences() -> list[list[str | None]]:
+            sequences = []
             for i, acc in enumerate(upper_accidentals, start=1):
                 sequence = create_symbol_sequence(suffix=acc)
                 for _ in range(i):
@@ -60,8 +59,8 @@ class NoteSchema(Schema):
                 sequences.append(sequence)
             return sequences
 
-        def create_lower_sequences():
-            sequences: list[list[str]] = []
+        def create_lower_sequences() -> list[list[str | None]]:
+            sequences = []
             for i, acc in enumerate(lower_accidentals, start=1):
                 sequence = create_symbol_sequence(suffix=acc)
                 for _ in range(i):
@@ -69,8 +68,10 @@ class NoteSchema(Schema):
                 sequences.append(sequence)
             return sequences
 
-        def create_symbol_sequence(*, prefix: str = "", suffix: str = "") -> list[str]:
-            sequence = []
+        def create_symbol_sequence(
+            *, prefix: str = "", suffix: str = ""
+        ) -> list[str | None]:
+            sequence: list[str | None] = []
             for symbol_octave in self.symbols_octave:
                 for deg in range(self.pitchclass.cardinality):
                     if deg in self.pitchclass.positions:
@@ -99,8 +100,7 @@ class NoteSchema(Schema):
 
         no_accidental_sequence = create_symbol_sequence()
         accidental_upper_sequences = create_upper_sequences()
-        accidental_lower_sequences = create_lower_sequences()
-        accidental_lower_sequences = reversed(accidental_lower_sequences)
+        accidental_lower_sequences = reversed(create_lower_sequences())
         accidental_sequences = tuple(
             zip(
                 *accidental_lower_sequences,

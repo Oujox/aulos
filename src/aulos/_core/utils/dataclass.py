@@ -4,12 +4,12 @@ from dataclasses import fields, is_dataclass
 
 def from_dict[T](cls: type[T], value: dict[str, t.Any]) -> T:
     # 1. Check if the provided class is a dataclass
-    if not is_dataclass(cls):
+    if not is_dataclass(cls.__class__):
         raise ValueError(f"The provided class {cls.__name__} is not a dataclass type.")
 
     # 2. Convert list type in dictionary to tuple type
     # 3. Recursively convert dict to dataclass
-    init_dict = {}
+    init_dict: dict[str, t.Any] = {}
     dfields_type = {f.name: f.type for f in fields(cls)}
     dfields_init = {f.name: f.init for f in fields(cls)}
 
@@ -20,7 +20,9 @@ def from_dict[T](cls: type[T], value: dict[str, t.Any]) -> T:
                 continue
             # initialize parameter
             if isinstance(v, dict):
-                init_dict[k] = from_dict(dfields_type[k], v)
+                inner_cls = dfields_type[k]
+                if isinstance(inner_cls, type):
+                    init_dict[k] = from_dict(inner_cls, v)
             elif isinstance(v, list):
                 init_dict[k] = tuple(v)
             else:

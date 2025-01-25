@@ -17,7 +17,7 @@ class InjectedMeta(type):
     def inject[**P, R](func: t.Callable[P, R]) -> t.Callable[P, R]:
         @wraps(func)
         def wrapper(*args: P.args, **kwargs: P.kwargs) -> R:
-            injected = {}
+            injected: dict[str, t.Any] = {}
             if (setting := Context.setting.get(None)) is not None:
                 injected["setting"] = setting
 

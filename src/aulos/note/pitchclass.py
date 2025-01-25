@@ -77,21 +77,21 @@ class BasePitchClass(AulosObject[PitchClassSchema]):
         return self._pitchclass
 
     @property
-    def pitchname(self) -> str | None:
-        return self._pitchname
-
-    @property
     def pitchnames(self) -> list[str]:
         return [n for n in self._pitchnames if n is not None]
 
     @property
-    def scale(self) -> BaseScale | None:
-        return self._scale
+    def pitchname(self) -> str | None:
+        return self._pitchname
 
     @pitchname.setter
     def pitchname(self, name: str):
         if self.is_pitchname(name) and name in self._pitchnames:
             self._pitchname = name
+
+    @property
+    def scale(self) -> BaseScale | None:
+        return self._scale
 
     @scale.setter
     def scale(self, scale: BaseScale | None):

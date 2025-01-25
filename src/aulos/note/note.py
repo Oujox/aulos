@@ -76,22 +76,21 @@ class BaseNote(AulosObject[NoteSchema]):
         return self._notenumber
 
     @property
-    def notename(self) -> str | None:
-        return self._notename
-
-    @property
     def notenames(self) -> list[str]:
         return [n for n in self._notenames if n is not None]
 
     @property
-    def pitchclass(self) -> int:
-        return self.schema.convert_notenumber_to_pitchclass(self._notenumber)
+    def notename(self) -> str | None:
+        return self._notename
+
+    @notename.setter
+    def notename(self, name: str):
+        if self.is_notename(name) and name in self._notenames:
+            self._notename = name
 
     @property
-    def pitchname(self) -> str | None:
-        if self._notename is None:
-            return None
-        return self.schema.convert_notename_to_pitchname(self._notename)
+    def pitchclass(self) -> int:
+        return self.schema.convert_notenumber_to_pitchclass(self._notenumber)
 
     @property
     def pitchnames(self) -> list[str]:
@@ -103,18 +102,15 @@ class BaseNote(AulosObject[NoteSchema]):
             if n is not None
         ]
 
-    @notename.setter
-    def notename(self, name: str):
-        if self.is_notename(name) and name in self._notenames:
-            self._notename = name
+    @property
+    def pitchname(self) -> str | None:
+        if self._notename is None:
+            return None
+        return self.schema.convert_notename_to_pitchname(self._notename)
 
     @property
     def tuner(self) -> BaseTuner | None:
         return self._tuner
-
-    @property
-    def scale(self) -> BaseScale | None:
-        return self._scale
 
     @tuner.setter
     def tuner(self, tuner: BaseTuner):
@@ -122,6 +118,10 @@ class BaseNote(AulosObject[NoteSchema]):
 
         if isinstance(tuner, BaseTuner):
             self._tuner = tuner
+
+    @property
+    def scale(self) -> BaseScale | None:
+        return self._scale
 
     @scale.setter
     def scale(self, scale: BaseScale | None):

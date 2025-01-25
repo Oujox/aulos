@@ -39,7 +39,7 @@ class Aulos:
             func: t.Callable[t.Concatenate[Track, ...], Track],
         ) -> t.Callable[t.Concatenate[Track, ...], Track]:
             @wraps(func)
-            def wrapper(track: Track, **kwargs: ...) -> Track:
+            def wrapper(track: Track, **kwargs: t.Any) -> Track:
                 return func(track, **kwargs)
 
             return AulosContext(setting=self.setting)(wrapper)
@@ -51,7 +51,7 @@ class Aulos:
             func: t.Callable[t.Concatenate[Track, ...], Track],
         ) -> t.Callable[t.Concatenate[Track, ...], Track]:
             @wraps(func)
-            def wrapper(track: Track, **kwargs: ...) -> Track:
+            def wrapper(track: Track, **kwargs: t.Any) -> Track:
                 return func(track, **kwargs)
 
             return AulosContext(setting=self.setting)(wrapper)
@@ -63,7 +63,7 @@ class Aulos:
             func: t.Callable[t.Concatenate[Track, ...], Track],
         ) -> t.Callable[t.Concatenate[Track, ...], Track]:
             @wraps(func)
-            def wrapper(track: Track, **kwargs: ...) -> Track:
+            def wrapper(track: Track, **kwargs: t.Any) -> Track:
                 return func(track, **kwargs)
 
             return AulosContext(setting=self.setting)(wrapper)
@@ -75,7 +75,7 @@ class Aulos:
             func: t.Callable[t.Concatenate[Track, ...], Track],
         ) -> t.Callable[t.Concatenate[Track, ...], Track]:
             @wraps(func)
-            def wrapper(track: Track, **kwargs: ...) -> Track:
+            def wrapper(track: Track, **kwargs: t.Any) -> Track:
                 return func(track, **kwargs)
 
             return AulosContext(setting=self.setting)(wrapper)
@@ -87,7 +87,7 @@ class Aulos:
             func: t.Callable[t.Concatenate[Track, ...], Track],
         ) -> t.Callable[t.Concatenate[Track, ...], Track]:
             @wraps(func)
-            def wrapper(track: Track, **kwargs: ...) -> Track:
+            def wrapper(track: Track, **kwargs: t.Any) -> Track:
                 return func(track, **kwargs)
 
             return AulosContext(setting=self.setting)(wrapper)
@@ -99,7 +99,7 @@ class Aulos:
             func: t.Callable[t.Concatenate[Track, ...], Track],
         ) -> t.Callable[t.Concatenate[Track, ...], Track]:
             @wraps(func)
-            def wrapper(track: Track, **kwargs: ...) -> Track:
+            def wrapper(track: Track, **kwargs: t.Any) -> Track:
                 return func(track, **kwargs)
 
             return AulosContext(setting=self.setting)(wrapper)
@@ -111,7 +111,7 @@ class Aulos:
             func: t.Callable[t.Concatenate[Track, ...], Track],
         ) -> t.Callable[t.Concatenate[Track, ...], Track]:
             @wraps(func)
-            def wrapper(track: Track, **kwargs: ...) -> Track:
+            def wrapper(track: Track, **kwargs: t.Any) -> Track:
                 return func(track, **kwargs)
 
             return AulosContext(setting=self.setting)(wrapper)
@@ -123,7 +123,7 @@ class Aulos:
             func: t.Callable[t.Concatenate[Track, ...], Track],
         ) -> t.Callable[t.Concatenate[Track, ...], Track]:
             @wraps(func)
-            def wrapper(track: Track, **kwargs: ...) -> Track:
+            def wrapper(track: Track, **kwargs: t.Any) -> Track:
                 return func(track, **kwargs)
 
             return AulosContext(setting=self.setting)(wrapper)
@@ -135,7 +135,7 @@ class Aulos:
             func: t.Callable[t.Concatenate[Track, ...], Track],
         ) -> t.Callable[t.Concatenate[Track, ...], Track]:
             @wraps(func)
-            def wrapper(track: Track, **kwargs: ...) -> Track:
+            def wrapper(track: Track, **kwargs: t.Any) -> Track:
                 return func(track, **kwargs)
 
             return AulosContext(setting=self.setting)(wrapper)
@@ -147,7 +147,7 @@ class Aulos:
             func: t.Callable[t.Concatenate[Track, ...], Track],
         ) -> t.Callable[t.Concatenate[Track, ...], Track]:
             @wraps(func)
-            def wrapper(track: Track, **kwargs: ...) -> Track:
+            def wrapper(track: Track, **kwargs: t.Any) -> Track:
                 return func(track, **kwargs)
 
             return AulosContext(setting=self.setting)(wrapper)
@@ -159,7 +159,7 @@ class Aulos:
             func: t.Callable[t.Concatenate[Track, ...], Track],
         ) -> t.Callable[t.Concatenate[Track, ...], Track]:
             @wraps(func)
-            def wrapper(track: Track, **kwargs: ...) -> Track:
+            def wrapper(track: Track, **kwargs: t.Any) -> Track:
                 return func(track, **kwargs)
 
             return AulosContext(setting=self.setting)(wrapper)

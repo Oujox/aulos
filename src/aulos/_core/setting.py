@@ -22,11 +22,9 @@ class Setting:
     @classmethod
     def from_toml(cls, path: Path) -> t.Self:
         setting = tomllib.load(open(path, mode="rb"))
-        setting = from_dict(cls, setting)
-        return setting
+        return from_dict(cls, setting)
 
     @classmethod
     def from_json(cls, path: Path) -> t.Self:
         setting = json.load(open(path, mode="rb"))
-        setting = from_dict(cls, setting)
-        return setting
+        return from_dict(cls, setting)
