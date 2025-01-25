@@ -10,7 +10,6 @@ AulosObjectMeta = type("AulosObjectMeta", (InjectedMeta, OptimizedMeta, ABCMeta)
 
 
 class AulosObject[T: Schema](metaclass=AulosObjectMeta):
-
     _schema: T
     _setting: Setting | None
 

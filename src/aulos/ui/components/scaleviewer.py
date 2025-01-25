@@ -6,7 +6,6 @@ from .selecter import KeySelecter, ScaleSelecter
 
 
 class _Display(BaseComponent):
-
     _scale: tk.StringVar
     _keyname: tk.StringVar
     _scalename: tk.StringVar
@@ -74,7 +73,6 @@ class _Display(BaseComponent):
 
 
 class ScaleViewer(BaseComponent):
-
     scaledisplay: _Display
     keyselecter: KeySelecter
     scaleselecter: ScaleSelecter

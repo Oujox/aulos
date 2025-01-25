@@ -44,7 +44,6 @@ SCALE_DEFAULTS: tuple[dict[str, type[BaseScale]], dict[str, type[BaseScale]]] = 
 
 
 class ScaleSelecter(BaseComponent):
-
     _selected_scalename: tk.StringVar
     _selected_scaleinfo: tk.StringVar
 
@@ -59,7 +58,6 @@ class ScaleSelecter(BaseComponent):
         self.create_widget()
 
     def create_widget(self):
-
         self._selected_scalename = tk.StringVar()
         self._selected_scaleinfo = tk.StringVar()
 

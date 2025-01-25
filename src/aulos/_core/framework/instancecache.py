@@ -2,7 +2,6 @@ import typing as t
 
 
 class InstanceCacheMeta(type):
-
     _instance_cache: t.ClassVar[dict[tuple[tuple, frozenset], t.Any]]
 
     def __new__(cls, name: str, bases: tuple[type], dct: dict[str, t.Any], **kwargs):

@@ -2,14 +2,11 @@ import typing as t
 from functools import wraps
 
 from .._core import Setting
-from ..scale import _Scale
-from ..tuner import BaseTuner
 from .context import AulosContext
 from .track import Track
 
 
 class Aulos:
-
     def __init__(self, name: str, *, setting: Setting | None = None):
         self.name = name
         self.setting = setting or Setting.default()
@@ -39,7 +36,7 @@ class Aulos:
         """
 
         def inner(
-            func: t.Callable[t.Concatenate[Track, ...], Track]
+            func: t.Callable[t.Concatenate[Track, ...], Track],
         ) -> t.Callable[t.Concatenate[Track, ...], Track]:
             @wraps(func)
             def wrapper(track: Track, **kwargs: ...) -> Track:
@@ -51,7 +48,7 @@ class Aulos:
 
     def Reverb(self):
         def inner(
-            func: t.Callable[t.Concatenate[Track, ...], Track]
+            func: t.Callable[t.Concatenate[Track, ...], Track],
         ) -> t.Callable[t.Concatenate[Track, ...], Track]:
             @wraps(func)
             def wrapper(track: Track, **kwargs: ...) -> Track:
@@ -63,7 +60,7 @@ class Aulos:
 
     def Distortion(self):
         def inner(
-            func: t.Callable[t.Concatenate[Track, ...], Track]
+            func: t.Callable[t.Concatenate[Track, ...], Track],
         ) -> t.Callable[t.Concatenate[Track, ...], Track]:
             @wraps(func)
             def wrapper(track: Track, **kwargs: ...) -> Track:
@@ -75,7 +72,7 @@ class Aulos:
 
     def Deray(self):
         def inner(
-            func: t.Callable[t.Concatenate[Track, ...], Track]
+            func: t.Callable[t.Concatenate[Track, ...], Track],
         ) -> t.Callable[t.Concatenate[Track, ...], Track]:
             @wraps(func)
             def wrapper(track: Track, **kwargs: ...) -> Track:
@@ -87,7 +84,7 @@ class Aulos:
 
     def Chorus(self):
         def inner(
-            func: t.Callable[t.Concatenate[Track, ...], Track]
+            func: t.Callable[t.Concatenate[Track, ...], Track],
         ) -> t.Callable[t.Concatenate[Track, ...], Track]:
             @wraps(func)
             def wrapper(track: Track, **kwargs: ...) -> Track:
@@ -99,7 +96,7 @@ class Aulos:
 
     def Flanger(self):
         def inner(
-            func: t.Callable[t.Concatenate[Track, ...], Track]
+            func: t.Callable[t.Concatenate[Track, ...], Track],
         ) -> t.Callable[t.Concatenate[Track, ...], Track]:
             @wraps(func)
             def wrapper(track: Track, **kwargs: ...) -> Track:
@@ -111,7 +108,7 @@ class Aulos:
 
     def Equalizer(self):
         def inner(
-            func: t.Callable[t.Concatenate[Track, ...], Track]
+            func: t.Callable[t.Concatenate[Track, ...], Track],
         ) -> t.Callable[t.Concatenate[Track, ...], Track]:
             @wraps(func)
             def wrapper(track: Track, **kwargs: ...) -> Track:
@@ -123,7 +120,7 @@ class Aulos:
 
     def Compressor(self):
         def inner(
-            func: t.Callable[t.Concatenate[Track, ...], Track]
+            func: t.Callable[t.Concatenate[Track, ...], Track],
         ) -> t.Callable[t.Concatenate[Track, ...], Track]:
             @wraps(func)
             def wrapper(track: Track, **kwargs: ...) -> Track:
@@ -135,7 +132,7 @@ class Aulos:
 
     def Tremolo(self):
         def inner(
-            func: t.Callable[t.Concatenate[Track, ...], Track]
+            func: t.Callable[t.Concatenate[Track, ...], Track],
         ) -> t.Callable[t.Concatenate[Track, ...], Track]:
             @wraps(func)
             def wrapper(track: Track, **kwargs: ...) -> Track:
@@ -147,7 +144,7 @@ class Aulos:
 
     def PitchShift(self):
         def inner(
-            func: t.Callable[t.Concatenate[Track, ...], Track]
+            func: t.Callable[t.Concatenate[Track, ...], Track],
         ) -> t.Callable[t.Concatenate[Track, ...], Track]:
             @wraps(func)
             def wrapper(track: Track, **kwargs: ...) -> Track:
@@ -159,7 +156,7 @@ class Aulos:
 
     def Looper(self):
         def inner(
-            func: t.Callable[t.Concatenate[Track, ...], Track]
+            func: t.Callable[t.Concatenate[Track, ...], Track],
         ) -> t.Callable[t.Concatenate[Track, ...], Track]:
             @wraps(func)
             def wrapper(track: Track, **kwargs: ...) -> Track:

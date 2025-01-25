@@ -9,7 +9,6 @@ def run_gui():
     root.title("Aulos Application GUI")
     root.geometry("1200x800")
     root.resizable(False, False)
-    root.attributes('-topmost', True)
     keyboard = KeyBoard(root)
     keyboard.pack(fill=tk.X)
     scale = ScaleViewer(root)
@@ -29,6 +28,7 @@ def main():
 
     if args.gui:
         run_gui()
+
 
 if __name__ == "__main__":
     main()

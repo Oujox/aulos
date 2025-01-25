@@ -27,7 +27,6 @@ class _PitchClassLike(t.Protocol):
 
 
 class BasePitchClass(AulosObject[PitchClassSchema]):
-
     _pitchclass: int
     _pitchnames: tuple[str | None, ...]
     _pitchname: str | None

@@ -9,7 +9,6 @@ from .pitchclass import PitchClassSchema
 
 @dataclass(frozen=True, slots=True)
 class NoteSchema(Schema):
-
     symbols_notenumber: tuple[int, ...]
     symbols_octave: tuple[str, ...]
     reference_notenumber: int
@@ -39,11 +38,11 @@ class NoteSchema(Schema):
             raise Exception()
 
         # [check] reference_notenumber
-        if not self.reference_notenumber in self.symbols_notenumber:
+        if self.reference_notenumber not in self.symbols_notenumber:
             raise Exception()
 
         # [check] reference_octave
-        if not self.reference_octave in range(len(self.symbols_octave)):
+        if self.reference_octave not in range(len(self.symbols_octave)):
             raise Exception()
 
     def initialize(self) -> None:

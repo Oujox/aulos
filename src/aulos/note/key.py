@@ -6,7 +6,6 @@ from .schemas import KeySchema
 
 
 class BaseKey(AulosObject[KeySchema]):
-
     _pitchname: str
     _pitchclass: int
     _signatures: tuple[int, ...]

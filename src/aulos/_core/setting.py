@@ -10,7 +10,6 @@ from .utils import from_dict
 
 @dataclass(frozen=True, slots=True)
 class Setting:
-
     @classmethod
     def default(cls) -> t.Self:
         path = Path(os.path.dirname(__file__)) / "default.toml"

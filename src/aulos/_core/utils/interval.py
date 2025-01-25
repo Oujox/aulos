@@ -29,7 +29,6 @@ class Positions(t.Sequence[int]):
         return self._interval.__len__()
 
     def __getitem__(self, key: int | slice) -> int | t.Sequence[int]:
-
         return self._interval.__getitem__(key)
 
     def rotate(self, shift: int = 0):

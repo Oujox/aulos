@@ -6,7 +6,6 @@ from ..setting import Setting
 
 
 class Context(ContextDecorator):
-
     setting: t.ClassVar[ContextVar[Setting]] = ContextVar("setting")
     data: t.ClassVar[ContextVar[dict[str, t.Any]]] = ContextVar("data")
 

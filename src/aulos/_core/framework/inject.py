@@ -5,7 +5,6 @@ from .context import Context
 
 
 class InjectedMeta(type):
-
     def __new__(cls, name: str, bases: tuple[type], dct: dict[str, t.Any], **kwargs):
         for attr_name, attr_value in dct.items():
             if callable(attr_value):
@@ -16,7 +15,6 @@ class InjectedMeta(type):
 
     @staticmethod
     def inject[**P, R](func: t.Callable[P, R]) -> t.Callable[P, R]:
-
         @wraps(func)
         def wrapper(*args: P.args, **kwargs: P.kwargs) -> R:
             injected = {}

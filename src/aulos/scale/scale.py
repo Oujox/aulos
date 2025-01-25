@@ -8,7 +8,6 @@ from .schemas import ScaleSchema
 
 
 class BaseScale[T: BasePitchClass](AulosObject[ScaleSchema]):
-
     PitchClass: type[T]
     _intervals: t.ClassVar[tuple[int, ...]]
     _positions: t.ClassVar[tuple[int, ...]]

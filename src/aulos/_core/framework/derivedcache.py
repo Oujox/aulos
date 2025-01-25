@@ -2,7 +2,6 @@ import typing as t
 
 
 class DerivedCacheMeta(type):
-
     _derived_cache: t.ClassVar[list[type]]
 
     def __new__(cls, name: str, bases: tuple[type], dct: dict[str, t.Any], **kwargs):

@@ -6,7 +6,6 @@ from .schemas import TunerSchema
 
 
 class BaseTuner(AulosObject[TunerSchema]):
-
     _ratios: t.ClassVar[tuple[int]]
     _root: float
 

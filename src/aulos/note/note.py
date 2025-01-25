@@ -14,7 +14,6 @@ if TYPE_CHECKING:
 
 
 class BaseNote(AulosObject[NoteSchema]):
-
     _notenumber: int
     _notenames: tuple[str | None, ...]
     _notename: str | None

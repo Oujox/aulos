@@ -33,7 +33,6 @@ def parse_chord(name: str, instance: Chord) -> _IChord | None:
 
 
 class Chord(AulosObject):
-
     _root: BasePitchClass
     _quality: Quality
     _on: BasePitchClass | None

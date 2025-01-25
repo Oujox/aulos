@@ -7,7 +7,6 @@ from ...note.schemas import PitchClassSchema
 
 @dataclass(frozen=True, slots=True)
 class ScaleSchema(Schema):
-
     pitchclass: PitchClassSchema
 
     def generate_scale_signatures(self, intervals: tuple[int, ...]) -> tuple[int, ...]:

@@ -9,7 +9,6 @@ from .pitchclass import PitchClassSchema
 
 @dataclass(frozen=True, slots=True)
 class KeySchema(Schema):
-
     accidental: int
     pitchclass: PitchClassSchema
 

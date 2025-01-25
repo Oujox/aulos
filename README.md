@@ -31,10 +31,8 @@ The following libraries are used during development and testing **but are not in
 
 - [**pytest**](https://docs.pytest.org/en/latest/)
 - [**pytest-cov**](https://github.com/pytest-dev/pytest-cov)
-- [**mypy**](https://www.mypy-lang.org/)
 - [**ruff**](https://docs.astral.sh/ruff)
-- [**black**](https://github.com/psf/black)
-- [**isort**](https://pycqa.github.io/isort/)
+- [**mypy**](https://www.mypy-lang.org/)
 
 ### GitHub Actions ⚙️
 

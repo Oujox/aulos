@@ -15,5 +15,5 @@ class TunerSchema(Schema):
 
     def validate(self) -> None:
         # [check] reference_notenumber
-        if not self.reference_notenumber in self.note.notenumbers:
+        if self.reference_notenumber not in self.note.notenumbers:
             raise Exception()

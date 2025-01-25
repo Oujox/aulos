@@ -8,7 +8,6 @@ from ..._core import Schema
 
 @dataclass(frozen=True, slots=True)
 class PitchClassSchema(Schema):
-
     intervals: tuple[int, ...]
     symbols_pitchclass: tuple[str, ...]
     symbols_accidental: tuple[str, ...]

@@ -1,12 +1,10 @@
 import tkinter as tk
 import tkinter.ttk as ttk
-import typing as t
 
 from ..const import KEYBOARD_BLACK_CLASSES, KEYBOARD_WHITE_CLASSES
 
 
 class KeyElement(tk.Frame):
-
     key: tk.Button
     is_active: tk.BooleanVar
 
@@ -56,7 +54,6 @@ class KeyElement(tk.Frame):
 
 
 class KeyBoard(tk.Frame):
-
     notebook: ttk.Notebook
     tab1: tk.Frame
     tab2: tk.Frame

@@ -7,7 +7,6 @@ from .scale import BaseScale
 
 
 class DiatonicScale[T: BasePitchClass](BaseScale[T]):
-
     def __new__(cls, *args, **kwargs) -> t.Self:
         if cls is DiatonicScale:
             raise TypeError("DiatonicScale cannot be instantiated directly.")
@@ -32,7 +31,6 @@ class DiatonicScale[T: BasePitchClass](BaseScale[T]):
 
 
 class NondiatonicScale[T: BasePitchClass](BaseScale[T]):
-
     _extensions: t.ClassVar[tuple[tuple[int, ...], ...]]
     _base: t.ClassVar[type[BaseScale]]
 
