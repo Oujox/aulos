@@ -1,11 +1,16 @@
 import typing as t
+from typing import TYPE_CHECKING
 
 from .._core import AulosObject
-from ..note import BaseNote
 from .schemas import TunerSchema
 
+# type annotaion
+if TYPE_CHECKING:
+    from ..note import BaseNote  # pragma: no cover
 
-class Tuner(AulosObject[TunerSchema]):
+
+class Tuner[NOTE: BaseNote](AulosObject[TunerSchema]):
+    Note: type[NOTE]
     _ratios: t.ClassVar[tuple[float, ...]]
     _root: float
 
@@ -23,7 +28,7 @@ class Tuner(AulosObject[TunerSchema]):
         *,
         ratios: tuple[float, ...],
         reference_notenumber: int,
-        note: type[BaseNote],
+        note: type[NOTE],
         **kwargs,
     ):
         schema = TunerSchema(
@@ -32,6 +37,7 @@ class Tuner(AulosObject[TunerSchema]):
             note.schema.pitchclass,
         )
         super().__init_subclass__(schema=schema, **kwargs)
+        cls.Note = note
         cls._ratios = ratios
 
     @property

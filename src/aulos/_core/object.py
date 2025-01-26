@@ -8,7 +8,7 @@ from .utils import classproperty
 
 
 class AulosObjectMeta(InjectedMeta, OptimizedMeta, ABCMeta):
-    pass
+    """This metaclass enables dependency injection, optimizations, and abstract base class capabilities."""
 
 
 class AulosObject[T: Schema, *_](metaclass=AulosObjectMeta):

@@ -1,21 +1,15 @@
-from __future__ import annotations
-
 import typing as t
-from typing import TYPE_CHECKING
 
 from .._core import AulosObject
 from .._core.utils import index
+from ..scale import Scale
 from .schemas import PitchClassSchema
-
-# type annotaion
-if TYPE_CHECKING:
-    from ..scale import Scale  # pragma: no cover
 
 
 @t.runtime_checkable
 class PitchClassConvertible(t.Protocol):
     def __int__(self) -> int: ...
-    def to_pitchclass(self) -> BasePitchClass: ...
+    def to_pitchclass(self) -> "BasePitchClass": ...
 
 
 class BasePitchClass(AulosObject[PitchClassSchema]):
@@ -94,8 +88,6 @@ class BasePitchClass(AulosObject[PitchClassSchema]):
 
     @scale.setter
     def scale(self, scale: Scale | None):
-        from ..scale import Scale
-
         if isinstance(scale, Scale):
             self._scale = scale
             pitchclass = (int(self) - int(scale.key)) % self.schema.cardinality

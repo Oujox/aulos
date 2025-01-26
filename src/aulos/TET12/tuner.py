@@ -11,7 +11,7 @@ FIVELIMIT_TUNING_RATIOS: t.Final[tuple[float, ...]] = fivelimit_tuning_table()
 
 
 class JustIntonationTuner(
-    Tuner,
+    Tuner[Note],
     ratios=FIVELIMIT_TUNING_RATIOS,
     reference_notenumber=60,
     note=Note,
@@ -28,7 +28,7 @@ class JustIntonationTuner(
 
 
 class MeantoneTuner(
-    Tuner,
+    Tuner[Note],
     ratios=MEANTONE_TUNING_RATIOS,
     reference_notenumber=60,
     note=Note,
@@ -45,7 +45,7 @@ class MeantoneTuner(
 
 
 class PythagoreanTuner(
-    Tuner,
+    Tuner[Note],
     ratios=PYTHAGOREAN_TUNING_RATIOS,
     reference_notenumber=60,
     note=Note,
@@ -61,7 +61,7 @@ class PythagoreanTuner(
 
 
 class Equal12Tuner(
-    Tuner,
+    Tuner[Note],
     ratios=EQUAL12_TUNING_RATIOS,
     reference_notenumber=60,
     note=Note,

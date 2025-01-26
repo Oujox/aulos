@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 import typing as t
 
 from .._core import AulosObject
@@ -13,7 +11,7 @@ class BaseKey[PITCHCLASS: BasePitchClass](AulosObject[KeySchema]):
     _pitchclass: int
     _signatures: tuple[int, ...]
 
-    def __init__(self, identify: str | BaseKey, **kwargs) -> None:
+    def __init__(self, identify: str | t.Self, **kwargs) -> None:
         super().__init__(**kwargs)
 
         if isinstance(identify, BaseKey):

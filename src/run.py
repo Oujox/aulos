@@ -3,4 +3,4 @@
 from aulos.TET12 import *
 
 import pprint
-pprint.pprint(AlteredSuperLocrian("C").components)
+print(Note("C5", tuner=Equal12Tuner(440)).hz)

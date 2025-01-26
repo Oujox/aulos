@@ -1,16 +1,11 @@
-from __future__ import annotations
-
 import typing as t
-from typing import TYPE_CHECKING
 
 from .._core import AulosObject
 from .._core.utils import index
+from ..scale import Scale
+from ..tuner import Tuner
 from .pitchclass import BasePitchClass, PitchClassConvertible
 from .schemas import NoteSchema
-
-if TYPE_CHECKING:
-    from ..scale import Scale  # pragma: no cover
-    from ..tuner import Tuner  # pragma: no cover
 
 
 class BaseNote[PITCHCLASS: BasePitchClass](AulosObject[NoteSchema]):
@@ -104,8 +99,6 @@ class BaseNote[PITCHCLASS: BasePitchClass](AulosObject[NoteSchema]):
 
     @tuner.setter
     def tuner(self, tuner: Tuner):
-        from ..tuner import Tuner
-
         if isinstance(tuner, Tuner):
             self._tuner = tuner
 
@@ -115,8 +108,6 @@ class BaseNote[PITCHCLASS: BasePitchClass](AulosObject[NoteSchema]):
 
     @scale.setter
     def scale(self, scale: Scale | None):
-        from ..scale import Scale
-
         if isinstance(scale, Scale):
             self._scale = scale
             pitchclass = self.schema.convert_notenumber_to_pitchclass(self._notenumber)

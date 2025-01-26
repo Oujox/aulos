@@ -1,10 +1,17 @@
 import typing as t
 from itertools import accumulate, starmap
+from typing import TYPE_CHECKING
 
 from .._core import AulosObject
 from .._core.utils import classproperty
-from ..note import BaseKey, BasePitchClass
 from .schemas import ScaleSchema
+
+# type annotaion
+if TYPE_CHECKING:
+    from ..note import (
+        BaseKey,  # pragma: no cover
+        BasePitchClass,  # pragma: no cover
+    )
 
 
 class Scale[KEY: BaseKey, PITCHCLASS: BasePitchClass](AulosObject[ScaleSchema]):

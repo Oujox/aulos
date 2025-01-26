@@ -1,9 +1,16 @@
 import typing as t
 from itertools import pairwise
+from typing import TYPE_CHECKING
 
 from .._core.utils import classproperty, rotated
-from ..note import BaseKey, BasePitchClass
 from .scale import Scale
+
+# type annotaion
+if TYPE_CHECKING:
+    from ..note import (
+        BaseKey,  # pragma: no cover
+        BasePitchClass,  # pragma: no cover
+    )
 
 
 class DiatonicScale[KEY: BaseKey, PITCHCLASS: BasePitchClass](Scale[KEY, PITCHCLASS]):
