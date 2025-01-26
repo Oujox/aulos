@@ -3,55 +3,55 @@ from itertools import pairwise
 
 from .._core.utils import classproperty, rotated
 from ..note import BaseKey, BasePitchClass
-from .scale import BaseScale
+from .scale import Scale
 
 
-class DiatonicScale[T: BasePitchClass](BaseScale[T]):
+class DiatonicScale[KEY: BaseKey, PITCHCLASS: BasePitchClass](Scale[KEY, PITCHCLASS]):
     def __new__(cls, *args, **kwargs) -> t.Self:
         if cls is DiatonicScale:
             raise TypeError("DiatonicScale cannot be instantiated directly.")
         return super().__new__(cls)
-
-    def __init__(self, key: BaseKey, **kwargs) -> None:
-        super().__init__(key, **kwargs)
 
     def __init_subclass__(
         cls,
         *,
         intervals: t.Sequence[int],
         shift: int = 0,
-        pitchclass: type[T],
+        key: type[KEY],
+        pitchclass: type[PITCHCLASS],
         **kwargs,
     ) -> None:
         super().__init_subclass__(
             intervals=rotated(intervals, -shift),
+            key=key,
             pitchclass=pitchclass,
             **kwargs,
         )
 
 
-class NondiatonicScale[T: BasePitchClass](BaseScale[T]):
+class NondiatonicScale[KEY: BaseKey, PITCHCLASS: BasePitchClass](
+    Scale[KEY, PITCHCLASS]
+):
     _extensions: t.ClassVar[tuple[tuple[int, ...], ...]]
-    _base: t.ClassVar[type[BaseScale]]
+    _base: t.ClassVar[type[Scale]]
 
     def __new__(cls, *args, **kwargs) -> t.Self:
         if cls is NondiatonicScale:
             raise TypeError("NondiatonicScale cannot be instantiated directly.")
         return super().__new__(cls)
 
-    def __init__(self, key: BaseKey, **kwargs) -> None:
-        super().__init__(key, **kwargs)
-
     def __init_subclass__(
         cls,
         *,
         extensions: t.Sequence[t.Sequence[int]],
         base: type[DiatonicScale],
-        pitchclass: type[T],
+        key: type[KEY],
+        pitchclass: type[PITCHCLASS],
         **kwargs,
     ) -> None:
         super().__init_subclass__(
             intervals=base.intervals,
+            key=key,
             pitchclass=pitchclass,
             **kwargs,
         )

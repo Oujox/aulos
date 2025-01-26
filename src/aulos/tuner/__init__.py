@@ -3,9 +3,9 @@
 """
 
 from . import schemas
-from .tuner import BaseTuner
+from .tuner import Tuner
 
 __all__ = [
-    "BaseTuner",
+    "Tuner",
     "schemas",
 ]

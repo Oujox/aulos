@@ -5,12 +5,12 @@ from ..note import BaseNote
 from .schemas import TunerSchema
 
 
-class BaseTuner(AulosObject[TunerSchema]):
+class Tuner(AulosObject[TunerSchema]):
     _ratios: t.ClassVar[tuple[float, ...]]
     _root: float
 
     def __new__(cls, *args, **kwargs) -> t.Self:
-        if cls is BaseTuner:
+        if cls is Tuner:
             raise TypeError("Tuner cannot be instantiated directly.")
         return super().__new__(cls)
 
@@ -45,7 +45,7 @@ class BaseTuner(AulosObject[TunerSchema]):
         return self._root * (2**octnumber) * self._ratios[pitchclass]
 
     def __eq__(self, other: t.Any) -> bool:
-        if not isinstance(other, BaseTuner):
+        if not isinstance(other, Tuner):
             return NotImplemented
         return self._ratios == other._ratios
 
