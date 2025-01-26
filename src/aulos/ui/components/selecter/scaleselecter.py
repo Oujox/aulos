@@ -2,11 +2,11 @@ import tkinter as tk
 import tkinter.ttk as ttk
 import typing as t
 
-from .... import BaseScale
+from .... import Scale
 from ....TET12 import scale
 from ..base import BaseComponent
 
-SCALE_DEFAULTS: tuple[dict[str, type[BaseScale]], dict[str, type[BaseScale]]] = (
+SCALE_DEFAULTS: tuple[dict[str, type[Scale]], dict[str, type[Scale]]] = (
     {
         scale.Major.__name__: scale.Major,
         scale.Minor.__name__: scale.Minor,
@@ -107,7 +107,7 @@ class ScaleSelecter(BaseComponent):
             callback()
 
     @property
-    def scale(self) -> type[BaseScale] | None:
+    def scale(self) -> type[Scale] | None:
         for scales in SCALE_DEFAULTS:
             if self.scalename in scales:
                 return scales[self.scalename]

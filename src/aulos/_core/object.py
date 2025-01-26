@@ -11,7 +11,7 @@ class AulosObjectMeta(InjectedMeta, OptimizedMeta, ABCMeta):
     pass
 
 
-class AulosObject[T: Schema](metaclass=AulosObjectMeta):
+class AulosObject[T: Schema, *_](metaclass=AulosObjectMeta):
     _schema: T
     _setting: Setting | None
 

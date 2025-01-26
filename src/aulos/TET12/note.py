@@ -11,7 +11,7 @@ class PitchClass(
 
 
 class Note(
-    BaseNote,
+    BaseNote[PitchClass],
     symbols_notenumber=range(128),
     symbols_octave=(
         "<N>-1",
@@ -28,14 +28,14 @@ class Note(
     ),
     reference_notenumber=60,
     reference_octave=5,
-    base=PitchClass,
+    pitchclass=PitchClass,
 ):
     """ """
 
 
 class Key(
-    BaseKey,
+    BaseKey[PitchClass],
     accidental=1,
-    base=PitchClass,
+    pitchclass=PitchClass,
 ):
     """ """

@@ -4,10 +4,10 @@
 
 from . import schemas
 from .diatonic import DiatonicScale, NondiatonicScale
-from .scale import BaseScale
+from .scale import Scale
 
 __all__ = [
-    "BaseScale",
+    "Scale",
     "DiatonicScale",
     "NondiatonicScale",
     "schemas",
