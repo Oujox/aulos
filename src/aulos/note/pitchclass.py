@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 import typing as t
 from typing import TYPE_CHECKING
 
@@ -7,25 +5,22 @@ from .._core import AulosObject
 from .._core.utils import index
 from .schemas import PitchClassSchema
 
-# type annotaion
 if TYPE_CHECKING:
     from ..scale import Scale  # pragma: no cover
-
-
-@t.runtime_checkable
-class PitchClassConvertible(t.Protocol):
-    def __int__(self) -> int: ...
-    def to_pitchclass(self) -> BasePitchClass: ...
 
 
 class BasePitchClass(AulosObject[PitchClassSchema]):
     _pitchclass: int
     _pitchnames: tuple[str | None, ...]
     _pitchname: str | None
-    _scale: Scale | None
+    _scale: t.Optional["Scale"]
 
     def __init__(
-        self, identify: int | str | t.Self, *, scale: Scale | None = None, **kwargs
+        self,
+        identify: int | str | t.Self,
+        *,
+        scale: t.Optional["Scale"] = None,
+        **kwargs,
     ) -> None:
         super().__init__(**kwargs)
 
@@ -89,11 +84,11 @@ class BasePitchClass(AulosObject[PitchClassSchema]):
             self._pitchname = name
 
     @property
-    def scale(self) -> Scale | None:
+    def scale(self) -> t.Optional["Scale"]:
         return self._scale
 
     @scale.setter
-    def scale(self, scale: Scale | None):
+    def scale(self, scale: t.Optional["Scale"]):
         from ..scale import Scale
 
         if isinstance(scale, Scale):
@@ -114,18 +109,18 @@ class BasePitchClass(AulosObject[PitchClassSchema]):
         return cls.schema.is_pitchclass(pitchclass)
 
     def __eq__(self, other: t.Any) -> bool:
-        if not isinstance(other, (int, PitchClassConvertible)):
+        if not isinstance(other, t.SupportsInt):
             return NotImplemented
         return int(self) == int(other)
 
     def __ne__(self, other: t.Any) -> bool:
         return not self.__eq__(other)
 
-    def __add__(self, other: int | PitchClassConvertible) -> t.Self:
+    def __add__(self, other: t.SupportsInt) -> t.Self:
         pitchclass = (int(self) + int(other)) % self.schema.cardinality
         return self.__class__(pitchclass, scale=self.scale, setting=self.setting)
 
-    def __sub__(self, other: int | PitchClassConvertible) -> t.Self:
+    def __sub__(self, other: t.SupportsInt) -> t.Self:
         pitchclass = (int(self) - int(other)) % self.schema.cardinality
         return self.__class__(pitchclass, scale=self.scale, setting=self.setting)
 

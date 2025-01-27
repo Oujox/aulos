@@ -8,7 +8,8 @@ class OptimizedMeta(type):
         slots = tuple(
             name
             for name, typ in annotations.items()
-            if not (hasattr(typ, "__origin__") and typ.__origin__ is ClassVar)
+            if not (hasattr(typ, "__origin__") and t.get_origin(typ) is ClassVar)
+            if not (hasattr(typ, "__origin__") and t.get_origin(typ) is type)
         )
         dct["__slots__"] = slots
         return super(OptimizedMeta, cls).__new__(cls, name, bases, dct, **kwargs)

@@ -1,9 +1,7 @@
-from __future__ import annotations
-
 import typing as t
 
 from .._core import AulosObject
-from .pitchclass import BasePitchClass, PitchClassConvertible
+from .pitchclass import BasePitchClass
 from .schemas import KeySchema
 
 
@@ -13,7 +11,7 @@ class BaseKey[PITCHCLASS: BasePitchClass](AulosObject[KeySchema]):
     _pitchclass: int
     _signatures: tuple[int, ...]
 
-    def __init__(self, identify: str | BaseKey, **kwargs) -> None:
+    def __init__(self, identify: str | t.Self, **kwargs) -> None:
         super().__init__(**kwargs)
 
         if isinstance(identify, BaseKey):
@@ -57,7 +55,7 @@ class BaseKey[PITCHCLASS: BasePitchClass](AulosObject[KeySchema]):
         return cls.schema.is_keyname(value)
 
     def __eq__(self, other: t.Any) -> bool:
-        if not isinstance(other, (int, PitchClassConvertible)):
+        if not isinstance(other, t.SupportsInt):
             return NotImplemented
         return int(self) == int(other)
 

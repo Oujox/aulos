@@ -5,7 +5,8 @@ from ..note import BaseNote
 from .schemas import TunerSchema
 
 
-class Tuner(AulosObject[TunerSchema]):
+class Tuner[NOTE: BaseNote](AulosObject[TunerSchema]):
+    Note: type[NOTE]
     _ratios: t.ClassVar[tuple[float, ...]]
     _root: float
 
@@ -23,7 +24,7 @@ class Tuner(AulosObject[TunerSchema]):
         *,
         ratios: tuple[float, ...],
         reference_notenumber: int,
-        note: type[BaseNote],
+        note: type[NOTE],
         **kwargs,
     ):
         schema = TunerSchema(
@@ -32,6 +33,7 @@ class Tuner(AulosObject[TunerSchema]):
             note.schema.pitchclass,
         )
         super().__init_subclass__(schema=schema, **kwargs)
+        cls.Note = note
         cls._ratios = ratios
 
     @property

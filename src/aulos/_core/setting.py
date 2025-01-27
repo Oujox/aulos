@@ -1,9 +1,10 @@
 import json
 import os
-import tomllib
 import typing as t
 from dataclasses import dataclass
 from pathlib import Path
+
+import tomllib
 
 from .utils import from_dict
 

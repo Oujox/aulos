@@ -1,11 +1,9 @@
-from __future__ import annotations
-
 import typing as t
 from typing import TYPE_CHECKING
 
 from .._core import AulosObject
 from .._core.utils import index
-from .pitchclass import BasePitchClass, PitchClassConvertible
+from .pitchclass import BasePitchClass
 from .schemas import NoteSchema
 
 if TYPE_CHECKING:
@@ -18,15 +16,15 @@ class BaseNote[PITCHCLASS: BasePitchClass](AulosObject[NoteSchema]):
     _notenumber: int
     _notenames: tuple[str | None, ...]
     _notename: str | None
-    _tuner: Tuner | None
-    _scale: Scale | None
+    _tuner: t.Optional["Tuner"]
+    _scale: t.Optional["Scale"]
 
     def __init__(
         self,
         identify: int | str,
         *,
-        scale: Scale | None = None,
-        tuner: Tuner | None = None,
+        tuner: t.Optional["Tuner"] = None,
+        scale: t.Optional["Scale"] = None,
         **kwargs,
     ) -> None:
         super().__init__(**kwargs)
@@ -99,22 +97,22 @@ class BaseNote[PITCHCLASS: BasePitchClass](AulosObject[NoteSchema]):
             self._notename = name
 
     @property
-    def tuner(self) -> Tuner | None:
+    def tuner(self) -> t.Optional["Tuner"]:
         return self._tuner
 
     @tuner.setter
-    def tuner(self, tuner: Tuner):
+    def tuner(self, tuner: t.Optional["Tuner"]):
         from ..tuner import Tuner
 
         if isinstance(tuner, Tuner):
             self._tuner = tuner
 
     @property
-    def scale(self) -> Scale | None:
+    def scale(self) -> t.Optional["Scale"]:
         return self._scale
 
     @scale.setter
-    def scale(self, scale: Scale | None):
+    def scale(self, scale: t.Optional["Scale"]):
         from ..scale import Scale
 
         if isinstance(scale, Scale):
@@ -150,19 +148,19 @@ class BaseNote[PITCHCLASS: BasePitchClass](AulosObject[NoteSchema]):
         return cls.schema.is_notenumber(notenumber)
 
     def __eq__(self, other: t.Any) -> bool:
-        if not isinstance(other, (int, PitchClassConvertible)):
+        if not isinstance(other, t.SupportsInt):
             return NotImplemented
         return int(self) == int(other)
 
     def __ne__(self, other: t.Any) -> bool:
         return not self.__eq__(other)
 
-    def __add__(self, other: int | PitchClassConvertible) -> t.Self:
+    def __add__(self, other: t.SupportsInt) -> t.Self:
         return self.__class__(
             int(self) + int(other), scale=self.scale, setting=self.setting
         )
 
-    def __sub__(self, other: int | PitchClassConvertible) -> t.Self:
+    def __sub__(self, other: t.SupportsInt) -> t.Self:
         return self.__class__(
             int(self) - int(other), scale=self.scale, setting=self.setting
         )
