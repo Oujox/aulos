@@ -1,16 +1,16 @@
 [build-system]
 requires = [
     "setuptools",
+    "setuptools_scm",
     "wheel"
 ]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "aulos"
-version = "0.1.0"
 description = "Python library for speech processing and analysis from a music theory perspective."
 readme = "README.md"
-license = { file = "LICENSE" }
+license = { text = "MIT License" }
 classifiers = [
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3 :: Only",
@@ -22,9 +22,9 @@ classifiers = [
 ]
 requires-python = ">=3.12"
 dependencies = []
-
-[project.scripts]
-aulos = "aulos.__main__:main"
+dynamic = [
+    "version"
+]
 
 [project.urls]
 Homepage = "https://github.com/Oujox/aulos"
@@ -32,3 +32,8 @@ Repository = "https://github.com/Oujox/aulos"
 
 [tool.setuptools]
 package-dir = { "" = "src" }
+
+[tool.setuptools_scm]
+
+[project.scripts]
+aulos = "aulos.__main__:main"
