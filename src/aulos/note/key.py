@@ -1,7 +1,7 @@
 import typing as t
 
 from .._core import AulosObject
-from .pitchclass import BasePitchClass, PitchClassConvertible
+from .pitchclass import BasePitchClass
 from .schemas import KeySchema
 
 
@@ -55,7 +55,7 @@ class BaseKey[PITCHCLASS: BasePitchClass](AulosObject[KeySchema]):
         return cls.schema.is_keyname(value)
 
     def __eq__(self, other: t.Any) -> bool:
-        if not isinstance(other, (int, PitchClassConvertible)):
+        if not isinstance(other, t.SupportsInt):
             return NotImplemented
         return int(self) == int(other)
 

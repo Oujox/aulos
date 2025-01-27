@@ -1,12 +1,8 @@
 import typing as t
-from typing import TYPE_CHECKING
 
 from .._core import AulosObject
+from ..note import BaseNote
 from .schemas import TunerSchema
-
-# type annotaion
-if TYPE_CHECKING:
-    from ..note import BaseNote  # pragma: no cover
 
 
 class Tuner[NOTE: BaseNote](AulosObject[TunerSchema]):
