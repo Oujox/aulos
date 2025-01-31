@@ -18,9 +18,9 @@ class KeySchema(Schema):
     def validate(self) -> None:
         # [check] accidental
         if not self.accidental > 0:
-            raise Exception()
+            raise Exception
         if not self.accidental < self.pitchclass.accidental:
-            raise Exception()
+            raise Exception
 
     @cached_property
     def keynames(self) -> tuple[str, ...]:
@@ -43,7 +43,7 @@ class KeySchema(Schema):
             + self.pitchclass.symbols_pitchclass[:idx]
         )
 
-        for pos, symbol in zip(self.pitchclass.positions, symbols):
+        for pos, symbol in zip(self.pitchclass.positions, symbols, strict=False):
             n_pos = self.pitchclass.convert_pitchname_to_picthclass(symbol)
             a_pos = (r_pitchclass + pos) % self.pitchclass.cardinality
             positions.append(wrapped_diff(a_pos, n_pos, self.pitchclass.cardinality))
@@ -54,4 +54,4 @@ class KeySchema(Schema):
 
     def ensure_valid_keyname(self, keyname: str) -> None:
         if not self.is_keyname(keyname):
-            raise ValueError()
+            raise ValueError

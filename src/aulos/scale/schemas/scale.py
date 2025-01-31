@@ -11,7 +11,7 @@ class ScaleSchema(Schema):
 
     def generate_scale_signatures(self, intervals: tuple[int, ...]) -> tuple[int, ...]:
         diff = list(
-            starmap(lambda x, y: y - x, zip(self.pitchclass.intervals, intervals))
+            starmap(lambda x, y: y - x, zip(self.pitchclass.intervals, intervals, strict=False)),
         )
         signature = []
         for i in range(len(self.pitchclass.intervals)):

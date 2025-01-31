@@ -57,7 +57,7 @@ class BaseNote[PITCHCLASS: BasePitchClass](AulosObject[NoteSchema]):
             self.scale = scale
 
         else:
-            raise ValueError()
+            raise ValueError
 
     def __init_subclass__(
         cls,
@@ -124,7 +124,7 @@ class BaseNote[PITCHCLASS: BasePitchClass](AulosObject[NoteSchema]):
 
             if (idx := index(scale.positions, pitchclass)) is not None:
                 self._notename = self.schema.convert_notenumber_to_notename(
-                    self._notenumber, scale.signatures[idx]
+                    self._notenumber, scale.signatures[idx],
                 )
 
     @property
@@ -136,7 +136,7 @@ class BaseNote[PITCHCLASS: BasePitchClass](AulosObject[NoteSchema]):
     def to_pitchclass(self) -> PITCHCLASS:
         pitchlass = self.schema.convert_notenumber_to_pitchclass(self._notenumber)
         return self.PitchClass(
-            pitchlass, tuner=self._tuner, scale=self._scale, setting=self._setting
+            pitchlass, tuner=self._tuner, scale=self._scale, setting=self._setting,
         )
 
     @classmethod
@@ -147,22 +147,22 @@ class BaseNote[PITCHCLASS: BasePitchClass](AulosObject[NoteSchema]):
     def is_notenumber(cls, notenumber: t.Any) -> t.TypeGuard[int]:
         return cls.schema.is_notenumber(notenumber)
 
-    def __eq__(self, other: t.Any) -> bool:
+    def __eq__(self, other: object) -> bool:
         if not isinstance(other, t.SupportsInt):
             return NotImplemented
         return int(self) == int(other)
 
-    def __ne__(self, other: t.Any) -> bool:
+    def __ne__(self, other: object) -> bool:
         return not self.__eq__(other)
 
     def __add__(self, other: t.SupportsInt) -> t.Self:
         return self.__class__(
-            int(self) + int(other), scale=self.scale, setting=self.setting
+            int(self) + int(other), scale=self.scale, setting=self.setting,
         )
 
     def __sub__(self, other: t.SupportsInt) -> t.Self:
         return self.__class__(
-            int(self) - int(other), scale=self.scale, setting=self.setting
+            int(self) - int(other), scale=self.scale, setting=self.setting,
         )
 
     def __int__(self):

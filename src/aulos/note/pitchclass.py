@@ -49,7 +49,7 @@ class BasePitchClass(AulosObject[PitchClassSchema]):
             self.scale = scale
 
         else:
-            raise ValueError()
+            raise ValueError
 
     def __init_subclass__(
         cls,
@@ -97,7 +97,7 @@ class BasePitchClass(AulosObject[PitchClassSchema]):
 
             if (idx := index(scale.positions, pitchclass)) is not None:
                 self._pitchname = self.schema.convert_pitchclass_to_pitchname(
-                    self._pitchclass, scale.signatures[idx]
+                    self._pitchclass, scale.signatures[idx],
                 )
 
     @classmethod
@@ -108,12 +108,12 @@ class BasePitchClass(AulosObject[PitchClassSchema]):
     def is_pitchclass(cls, pitchclass: t.Any) -> t.TypeGuard[int]:
         return cls.schema.is_pitchclass(pitchclass)
 
-    def __eq__(self, other: t.Any) -> bool:
+    def __eq__(self, other: object) -> bool:
         if not isinstance(other, t.SupportsInt):
             return NotImplemented
         return int(self) == int(other)
 
-    def __ne__(self, other: t.Any) -> bool:
+    def __ne__(self, other: object) -> bool:
         return not self.__eq__(other)
 
     def __add__(self, other: t.SupportsInt) -> t.Self:

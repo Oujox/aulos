@@ -22,15 +22,15 @@ class BaseKey[PITCHCLASS: BasePitchClass](AulosObject[KeySchema]):
         elif self.is_keyname(identify):
             self._pitchname = identify
             self._pitchclass = self.schema.pitchclass.convert_pitchname_to_picthclass(
-                identify
+                identify,
             )
             self._signatures = self.schema.generate_key_signatures(identify)
 
         else:
-            raise ValueError()
+            raise ValueError
 
     def __init_subclass__(
-        cls, *, accidental: int, pitchclass: type[BasePitchClass], **kwargs
+        cls, *, accidental: int, pitchclass: type[BasePitchClass], **kwargs,
     ) -> None:
         schema = KeySchema(
             accidental,
@@ -54,12 +54,12 @@ class BaseKey[PITCHCLASS: BasePitchClass](AulosObject[KeySchema]):
     def is_keyname(cls, value: t.Any) -> t.TypeGuard[str]:
         return cls.schema.is_keyname(value)
 
-    def __eq__(self, other: t.Any) -> bool:
+    def __eq__(self, other: object) -> bool:
         if not isinstance(other, t.SupportsInt):
             return NotImplemented
         return int(self) == int(other)
 
-    def __ne__(self, other: t.Any) -> bool:
+    def __ne__(self, other: object) -> bool:
         return not self.__eq__(other)
 
     def __int__(self) -> int:

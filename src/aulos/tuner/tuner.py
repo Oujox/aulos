@@ -46,16 +46,16 @@ class Tuner[NOTE: BaseNote](AulosObject[TunerSchema]):
         pitchclass = ref % self.schema.pitchclass.cardinality
         return self._root * (2**octnumber) * self._ratios[pitchclass]
 
-    def __eq__(self, other: t.Any) -> bool:
+    def __eq__(self, other: object) -> bool:
         if not isinstance(other, Tuner):
             return NotImplemented
         return self._ratios == other._ratios
 
-    def __ne__(self, other: t.Any) -> bool:
+    def __ne__(self, other: object) -> bool:
         return not self.__eq__(other)
 
     def __str__(self) -> str:
-        return "<Tuner: {}>".format(self.__class__.__name__)
+        return f"<Tuner: {self.__class__.__name__}>"
 
     def __repr__(self) -> str:
-        return "<Tuner: {}>".format(self.__class__.__name__)
+        return f"<Tuner: {self.__class__.__name__}>"

@@ -1,5 +1,5 @@
 import tkinter as tk
-import tkinter.ttk as ttk
+from tkinter import ttk
 
 from .base import BaseComponent
 from .selecter import KeySelecter, ScaleSelecter
@@ -34,10 +34,10 @@ class _Display(BaseComponent):
 
         self._wrapper = ttk.Frame(self, padding=(24, 8), borderwidth=2, relief=tk.SOLID)
         self._scaledisplay = ttk.Label(
-            self._wrapper, textvariable=self._scale, font=("Times", 18)
+            self._wrapper, textvariable=self._scale, font=("Times", 18),
         )
         self._scaleinfodisplay = ttk.Label(
-            self._wrapper, textvariable=self._scaleinfo, font=("Times", 10)
+            self._wrapper, textvariable=self._scaleinfo, font=("Times", 10),
         )
 
         self._wrapper.pack()

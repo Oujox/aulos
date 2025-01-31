@@ -1,6 +1,6 @@
 import tkinter as tk
-import tkinter.ttk as ttk
 import typing as t
+from tkinter import ttk
 
 from .... import Scale
 from ....TET12 import scale
@@ -62,7 +62,7 @@ class ScaleSelecter(BaseComponent):
         self._selected_scaleinfo = tk.StringVar()
 
         self._scaleselecter_wrap = ttk.Frame(
-            self, padding=(24, 8), borderwidth=2, relief=tk.SOLID
+            self, padding=(24, 8), borderwidth=2, relief=tk.SOLID,
         )
         self._scalesetecter_title = ttk.Label(self, text="Scale")
         self._scaleselecter_wrap.pack()
@@ -83,7 +83,7 @@ class ScaleSelecter(BaseComponent):
                 )
                 for scale in scales.keys()
             ]
-            for scalegroup, scales in zip(self._scalegroups, SCALE_DEFAULTS)
+            for scalegroup, scales in zip(self._scalegroups, SCALE_DEFAULTS, strict=False)
         ]
 
         for scalegroup in self._scalegroups:

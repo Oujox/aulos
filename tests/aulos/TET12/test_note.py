@@ -90,7 +90,7 @@ def test_Note_dunder_int(data_notenumbers):
 
 
 def test_PitchClass_dunder_str(
-    data_notenumbers, data_notenames, data_map_notenumber_to_notenames
+    data_notenumbers, data_notenames, data_map_notenumber_to_notenames,
 ):
     for notenumber in data_notenumbers:
         notenames = [

@@ -37,7 +37,7 @@ class DiatonicScale[KEY: BaseKey, PITCHCLASS: BasePitchClass](Scale[KEY, PITCHCL
 
 
 class NondiatonicScale[KEY: BaseKey, PITCHCLASS: BasePitchClass](
-    Scale[KEY, PITCHCLASS]
+    Scale[KEY, PITCHCLASS],
 ):
     _extensions: t.ClassVar[tuple[tuple[int, ...], ...]]
     _base: t.ClassVar[type[Scale]]
@@ -76,7 +76,7 @@ class NondiatonicScale[KEY: BaseKey, PITCHCLASS: BasePitchClass](
     def positions(cls) -> tuple[int, ...]:
         positions = tuple(
             pos + ext
-            for pos, exts in zip(super().positions, cls._extensions)
+            for pos, exts in zip(super().positions, cls._extensions, strict=False)
             for ext in exts
         )
         return positions
@@ -85,7 +85,7 @@ class NondiatonicScale[KEY: BaseKey, PITCHCLASS: BasePitchClass](
     def signatures(self) -> tuple[int, ...]:
         signatures = tuple(
             sig + ext
-            for sig, exts in zip(super().signatures, self._extensions)
+            for sig, exts in zip(super().signatures, self._extensions, strict=False)
             for ext in exts
         )
         return signatures

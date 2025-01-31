@@ -86,7 +86,7 @@ def test_PitchClass_dunder_int(data_pitchclass):
 
 
 def test_PitchClass_dunder_str(
-    data_pitchclass, data_pitchname, data_map_pitchclass_to_pitchnames
+    data_pitchclass, data_pitchname, data_map_pitchclass_to_pitchnames,
 ):
     for pitchclass in data_pitchclass:
         pitchnames = [

@@ -7,8 +7,8 @@ from .diatonic import DiatonicScale, NondiatonicScale
 from .scale import Scale
 
 __all__ = [
-    "Scale",
     "DiatonicScale",
     "NondiatonicScale",
+    "Scale",
     "schemas",
 ]

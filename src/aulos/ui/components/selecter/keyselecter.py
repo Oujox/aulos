@@ -1,6 +1,6 @@
 import tkinter as tk
-import tkinter.ttk as ttk
 import typing as t
+from tkinter import ttk
 
 from ...const import KEY_DEFAULTS
 from ..base import BaseComponent
@@ -22,7 +22,7 @@ class KeySelecter(BaseComponent):
     def create_widget(self):
         self._selected_keyname = tk.StringVar()
         self._keyselecter_wrap = ttk.Frame(
-            self, padding=(24, 8), borderwidth=2, relief=tk.SOLID
+            self, padding=(24, 8), borderwidth=2, relief=tk.SOLID,
         )
         self._keyselecter_title = ttk.Label(self, text="Key")
         self._keyselecter_wrap.pack()
@@ -43,7 +43,7 @@ class KeySelecter(BaseComponent):
                 )
                 for key in keys
             ]
-            for keygroup, keys in zip(self._keygroups, KEY_DEFAULTS)
+            for keygroup, keys in zip(self._keygroups, KEY_DEFAULTS, strict=False)
         ]
 
         for keygroup in self._keygroups:

@@ -12,8 +12,8 @@ from .setting import Setting
 
 __all__ = [
     "AulosObject",
-    "Setting",
     "Schema",
+    "Setting",
     "framework",
     "utils",
 ]

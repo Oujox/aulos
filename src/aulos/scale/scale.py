@@ -30,9 +30,9 @@ class Scale[KEY: BaseKey, PITCHCLASS: BasePitchClass](AulosObject[ScaleSchema]):
                     lambda x, y: x + y,
                     zip(
                         self._key.signature,
-                        self.schema.generate_scale_signatures(self._intervals),
+                        self.schema.generate_scale_signatures(self._intervals), strict=False,
                     ),
-                )
+                ),
             )
 
         elif isinstance(key, BaseKey):
@@ -42,13 +42,13 @@ class Scale[KEY: BaseKey, PITCHCLASS: BasePitchClass](AulosObject[ScaleSchema]):
                     lambda x, y: x + y,
                     zip(
                         self._key.signature,
-                        self.schema.generate_scale_signatures(self._intervals),
+                        self.schema.generate_scale_signatures(self._intervals), strict=False,
                     ),
-                )
+                ),
             )
 
         else:
-            raise ValueError()
+            raise ValueError
 
     def __init_subclass__(
         cls,
@@ -59,7 +59,7 @@ class Scale[KEY: BaseKey, PITCHCLASS: BasePitchClass](AulosObject[ScaleSchema]):
         **kwargs,
     ) -> None:
         if intervals is None or key is None or pitchclass is None:
-            return None
+            return
         schema = ScaleSchema(pitchclass.schema)
         super().__init_subclass__(schema=schema, **kwargs)
         cls.Key = key
@@ -93,12 +93,12 @@ class Scale[KEY: BaseKey, PITCHCLASS: BasePitchClass](AulosObject[ScaleSchema]):
             components.append(note)
         return tuple(components)
 
-    def __eq__(self, other: t.Any) -> bool:
+    def __eq__(self, other: object) -> bool:
         if not isinstance(other, Scale):
             return NotImplemented
         return self._intervals == other._intervals and self._key == other._key
 
-    def __ne__(self, other: t.Any) -> bool:
+    def __ne__(self, other: object) -> bool:
         return not self.__eq__(other)
 
     def __str__(self) -> str:

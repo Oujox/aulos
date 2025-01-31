@@ -1,5 +1,5 @@
 import tkinter as tk
-import tkinter.ttk as ttk
+from tkinter import ttk
 
 from ..const import KEYBOARD_BLACK_CLASSES, KEYBOARD_WHITE_CLASSES
 
@@ -28,17 +28,16 @@ class KeyElement(tk.Frame):
             self.key.config(bg="#000000")
             self.config(width=width * (2 / 3), height=height * (2 / 3))
             self.key.place(
-                x=0, y=0, anchor=tk.NW, width=width * (2 / 3), height=height * (2 / 3)
+                x=0, y=0, anchor=tk.NW, width=width * (2 / 3), height=height * (2 / 3),
             )
 
         def callback_btn_bgcolor(*args):
             if self.is_active.get():
                 self.key.config(bg="#FF6347")
-            else:
-                if self.is_white():
-                    self.key.config(bg="#FFFFFF")
-                elif self.is_black():
-                    self.key.config(bg="#000000")
+            elif self.is_white():
+                self.key.config(bg="#FFFFFF")
+            elif self.is_black():
+                self.key.config(bg="#000000")
 
         self.is_active = tk.BooleanVar(value=True)
         self.is_active.trace_add("write", callback_btn_bgcolor)
@@ -78,7 +77,7 @@ class KeyBoard(tk.Frame):
         self.canvas = tk.Canvas(self.tab1, width=1000, height=72)
         self.keyboard = tk.Frame(self.canvas, width=1750, height=72, bg="#F0F0F0")
         self.scrollbar = tk.Scrollbar(
-            self.tab1, orient=tk.HORIZONTAL, command=self.canvas.xview
+            self.tab1, orient=tk.HORIZONTAL, command=self.canvas.xview,
         )
 
         self.canvas.create_window((0, 0), window=self.keyboard, anchor=tk.NW)
@@ -107,7 +106,7 @@ class KeyBoard(tk.Frame):
         x = 0
         keylist: list[KeyElement] = []
 
-        for notenumber in range(0, 128):
+        for notenumber in range(128):
             key = KeyElement(self.keyboard, notenumber, width=24, height=72)
 
             if key.is_white():

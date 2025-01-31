@@ -38,16 +38,16 @@ class AulosObject[T: Schema, *_](metaclass=AulosObjectMeta):
     def setting(self) -> Setting | None:
         return self._setting
 
-    def __eq__(self, other: t.Any) -> bool:
+    def __eq__(self, other: object) -> bool:
         if not isinstance(other, AulosObject):
             return NotImplemented
         return self._schema == self._schema and self._setting == other._setting
 
-    def __ne__(self, other: t.Any) -> bool:
+    def __ne__(self, other: object) -> bool:
         return not self.__eq__(other)
 
     def __str__(self) -> str:
-        return "<AulosObject: setting={}>".format(self._setting)
+        return f"<AulosObject: setting={self._setting}>"
 
     def __repr__(self) -> str:
-        return "<AulosObject: setting={}>".format(self._setting)
+        return f"<AulosObject: setting={self._setting}>"

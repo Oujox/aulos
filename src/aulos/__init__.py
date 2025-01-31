@@ -9,14 +9,14 @@ from .scale import DiatonicScale, NondiatonicScale, Scale
 from .tuner import Tuner
 
 __all__ = [
-    "BasePitchClass",
-    "BaseKey",
-    "BaseNote",
-    "Scale",
-    "DiatonicScale",
-    "NondiatonicScale",
-    "Tuner",
-    "Setting",
     "TET12",
     "TET24",
+    "BaseKey",
+    "BaseNote",
+    "BasePitchClass",
+    "DiatonicScale",
+    "NondiatonicScale",
+    "Scale",
+    "Setting",
+    "Tuner",
 ]
