@@ -47,8 +47,9 @@ jobs:
           geom=640x480x24
           exec Xvfb $disp -screen $screen $geom 2>/tmp/Xvfb.log &
           export DISPLAY=:99
+          python -m pip install -e .
           python -m pip install pytest pytest-cov
-          python -m pytest --rootdir=${{ github.workspace }}/src --cov=./src/aulos --cov-report=xml
+          python -m pytest . --cov=./src/aulos --cov-report=xml
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
