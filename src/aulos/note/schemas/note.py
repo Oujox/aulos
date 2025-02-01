@@ -27,23 +27,29 @@ class NoteSchema(Schema):
     def validate(self) -> None:
         # [check] symbols_notenumber
         if not len(self.symbols_notenumber) > 0:
-            raise ValidationError("")
+            msg = ""
+            raise ValidationError(msg)
         if not all(v >= 0 for v in self.symbols_notenumber):
-            raise ValidationError("")
+            msg = ""
+            raise ValidationError(msg)
 
         # [check] symbols_octave
         if not len(self.symbols_octave) > 0:
-            raise ValidationError("")
+            msg = ""
+            raise ValidationError(msg)
         if not all(bool(v.find("<N>")) or bool(v.find("<n>")) for v in self.symbols_octave):
-            raise ValidationError("")
+            msg = ""
+            raise ValidationError(msg)
 
         # [check] reference_notenumber
         if self.reference_notenumber not in self.symbols_notenumber:
-            raise ValidationError("")
+            msg = ""
+            raise ValidationError(msg)
 
         # [check] reference_octave
         if self.reference_octave not in range(len(self.symbols_octave)):
-            raise ValidationError("")
+            msg = ""
+            raise ValidationError(msg)
 
     def initialize(self) -> None:
         accidental = len(self.pitchclass.symbols_accidental) // 2

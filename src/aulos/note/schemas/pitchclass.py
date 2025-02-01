@@ -26,23 +26,29 @@ class PitchClassSchema(Schema):
     def validate(self) -> None:
         # [check] intervals
         if not len(self.intervals) > 0:
-            raise ValidationError("")
+            msg = ""
+            raise ValidationError(msg)
         if not all(v >= 0 for v in self.intervals):
-            raise ValidationError("")
+            msg = ""
+            raise ValidationError(msg)
 
         # [check] symbols_pitchclass
         if not len(self.symbols_pitchclass) > 0:
-            raise ValidationError("")
+            msg = ""
+            raise ValidationError(msg)
 
         # [check] symbols_accidental
         if not len(self.symbols_accidental) > 0:
-            raise ValidationError("")
-        if not (len(self.symbols_accidental) % 2) == 0:
-            raise ValidationError("")
+            msg = ""
+            raise ValidationError(msg)
+        if len(self.symbols_accidental) % 2 != 0:
+            msg = ""
+            raise ValidationError(msg)
 
         # [cross-field check]
-        if not len(self.intervals) == len(self.symbols_pitchclass):
-            raise ValidationError("")
+        if len(self.intervals) != len(self.symbols_pitchclass):
+            msg = ""
+            raise ValidationError(msg)
 
     def initialize(self) -> None:
         cardinality = sum(self.intervals)
