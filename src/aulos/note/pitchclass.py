@@ -10,7 +10,7 @@ if TYPE_CHECKING:
     from aulos.scale import Scale  # pragma: no cover
 
 
-def resolve_pitchname_from_scale(pitchclass: int, scale: "Scale | None", schema: PitchClassSchema) -> str|None:
+def resolve_pitchname_from_scale(pitchclass: int, scale: "Scale | None", schema: PitchClassSchema) -> str | None:
     if scale is not None:
         relative_pitchclass = (pitchclass - int(scale.key)) % schema.cardinality
         if (idx := index(scale.positions, relative_pitchclass)) is not None:
