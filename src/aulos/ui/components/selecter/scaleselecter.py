@@ -2,9 +2,9 @@ import tkinter as tk
 import typing as t
 from tkinter import ttk
 
-from .... import Scale
-from ....TET12 import scale
-from ..base import BaseComponent
+from aulos import Scale
+from aulos.TET12 import scale
+from aulos.ui.components.base import BaseComponent
 
 SCALE_DEFAULTS: tuple[dict[str, type[Scale]], dict[str, type[Scale]]] = (
     {
@@ -52,12 +52,12 @@ class ScaleSelecter(BaseComponent):
     _scalegroups: list[ttk.Frame]
     _scalebuttons: list[list[ttk.Radiobutton]]
 
-    def __init__(self, master: tk.Misc):
+    def __init__(self, master: tk.Misc) -> None:
         super().__init__(master)
         self.master = master
         self.create_widget()
 
-    def create_widget(self):
+    def create_widget(self) -> None:
         self._selected_scalename = tk.StringVar()
         self._selected_scaleinfo = tk.StringVar()
 
@@ -81,7 +81,7 @@ class ScaleSelecter(BaseComponent):
                     variable=self._selected_scalename,
                     command=self._onClickScaleButton,
                 )
-                for scale in scales.keys()
+                for scale in scales
             ]
             for scalegroup, scales in zip(self._scalegroups, SCALE_DEFAULTS, strict=False)
         ]
@@ -93,11 +93,11 @@ class ScaleSelecter(BaseComponent):
             for btn in scalebuttons:
                 btn.pack(side=tk.TOP, anchor=tk.NW)
 
-    def default(self):
+    def default(self) -> None:
         self._selected_scalename.set(scale.Major.__name__)
         self._onClickScaleButton()
 
-    def _onClickScaleButton(self):
+    def _onClickScaleButton(self) -> None:
         for scales in SCALE_DEFAULTS:
             name = self._selected_scalename.get()
             if name in scales:
@@ -123,7 +123,7 @@ class ScaleSelecter(BaseComponent):
 
     callbacks_onClickScaleButton: list[t.Callable[[], t.Any]]
 
-    def set_callback_onClickScaleButton(self, callback: t.Callable[[], t.Any]):
+    def set_callback_onClickScaleButton(self, callback: t.Callable[[], t.Any]) -> None:
         if not hasattr(self, "callbacks_onClickScaleButton"):
             self.callbacks_onClickScaleButton = []
         self.callbacks_onClickScaleButton.append(callback)

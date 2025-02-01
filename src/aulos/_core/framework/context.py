@@ -2,7 +2,7 @@ import typing as t
 from contextlib import ContextDecorator
 from contextvars import ContextVar
 
-from ..setting import Setting
+from aulos._core.setting import Setting
 
 
 class Context(ContextDecorator):

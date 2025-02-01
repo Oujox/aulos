@@ -3,7 +3,7 @@ from dataclasses import dataclass, field
 from functools import cached_property
 from itertools import accumulate, chain
 
-from ..._core import Schema
+from aulos._core import Schema
 
 
 @dataclass(frozen=True, slots=True)
@@ -118,7 +118,7 @@ class PitchClassSchema(Schema):
             key=len,
             reverse=True,
         )
-        return (finded + [None])[0]
+        return ([*finded, None])[0]
 
     def count_accidental(self, pitchname: str) -> int:
         self.ensure_valid_pitchname(pitchname)
@@ -154,7 +154,8 @@ class PitchClassSchema(Schema):
         pitchclass = (pitchclass - accidental) % self.cardinality
         symbol = self.convert_pitchclass_to_pitchname(pitchclass, 0)
         if symbol is None:
-            raise RuntimeError("unreachable error")
+            msg = "unreachable error"
+            raise RuntimeError(msg)
         return symbol
 
     def is_symbol(self, value: t.Any) -> t.TypeGuard[str]:
@@ -168,21 +169,30 @@ class PitchClassSchema(Schema):
 
     def ensure_valid_pitchname(self, pitchname: str) -> None:
         if not self.is_pitchname(pitchname):
-            raise ValueError(
+            msg = (
                 f"Invalid pitchname '{pitchname}'. "
-                f"Pitchname must be a valid musical note name {self.pitchnames[:3]}.",
+                f"Pitchname must be a valid musical note name {self.pitchnames[:3]}."
+            )
+            raise ValueError(
+                msg,
             )
 
     def ensure_valid_pitchclass(self, pitchclass: int) -> None:
         if not self.is_pitchclass(pitchclass):
-            raise ValueError(
+            msg = (
                 f"Invalid pitchclass '{pitchclass}'."
-                f"Pitchclass must be an integer between {min(self.pitchclasses)} and {max(self.pitchclasses)} inclusive.",
+                f"Pitchclass must be an integer between {min(self.pitchclasses)} and {max(self.pitchclasses)} inclusive."
+            )
+            raise ValueError(
+                msg,
             )
 
     def ensure_valid_accidental(self, accidental: int) -> None:
         if not abs(accidental) <= self.accidental:
-            raise ValueError(
+            msg = (
                 f"Invalid accidental '{accidental}'. "
-                f"Accidental must be within the range -{self.accidental} to +{self.accidental}.",
+                f"Accidental must be within the range -{self.accidental} to +{self.accidental}."
+            )
+            raise ValueError(
+                msg,
             )

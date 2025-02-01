@@ -1,7 +1,8 @@
 import typing as t
 
-from .._core import AulosObject
-from ..note import BaseNote
+from aulos._core import AulosObject
+from aulos.note import BaseNote
+
 from .schemas import TunerSchema
 
 
@@ -12,10 +13,11 @@ class Tuner[NOTE: BaseNote](AulosObject[TunerSchema]):
 
     def __new__(cls, *args, **kwargs) -> t.Self:
         if cls is Tuner:
-            raise TypeError("Tuner cannot be instantiated directly.")
+            msg = "Tuner cannot be instantiated directly."
+            raise TypeError(msg)
         return super().__new__(cls)
 
-    def __init__(self, root: float, **kwargs):
+    def __init__(self, root: float, **kwargs) -> None:
         super().__init__(**kwargs)
         self._root = root
 

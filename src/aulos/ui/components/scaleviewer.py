@@ -15,18 +15,18 @@ class _Display(BaseComponent):
     _scaledisplay: ttk.Label
     _scaleinfodisplay: ttk.Label
 
-    def __init__(self, master: tk.Misc):
+    def __init__(self, master: tk.Misc) -> None:
         super().__init__(master)
         self.master = master
         self.create_widget()
 
-    def create_widget(self):
+    def create_widget(self) -> None:
         self._scale = tk.StringVar()
         self._keyname = tk.StringVar()
         self._scalename = tk.StringVar()
         self._scaleinfo = tk.StringVar()
 
-        def combine(*args):
+        def combine(*args) -> None:
             self._scale.set(f"{self.keyname} {self.scalename}")
 
         self._keyname.trace_add("write", combine)
@@ -44,7 +44,7 @@ class _Display(BaseComponent):
         self._scaledisplay.pack(side=tk.TOP, anchor=tk.NW)
         self._scaleinfodisplay.pack(side=tk.TOP, anchor=tk.NW)
 
-    def default(self):
+    def default(self) -> None:
         return
 
     @property
@@ -60,7 +60,7 @@ class _Display(BaseComponent):
         return self._scalename.get()
 
     @scalename.setter
-    def scalename(self, value: str):
+    def scalename(self, value: str) -> None:
         self._scalename.set(value)
 
     @property
@@ -68,7 +68,7 @@ class _Display(BaseComponent):
         return self._scaleinfo.get()
 
     @scaleinfo.setter
-    def scaleinfo(self, value: str):
+    def scaleinfo(self, value: str) -> None:
         self._scaleinfo.set(value)
 
 
@@ -77,13 +77,13 @@ class ScaleViewer(BaseComponent):
     keyselecter: KeySelecter
     scaleselecter: ScaleSelecter
 
-    def __init__(self, master: tk.Misc):
+    def __init__(self, master: tk.Misc) -> None:
         super().__init__(master)
         self.master = master
         self.create_widget()
         self.default()
 
-    def create_widget(self):
+    def create_widget(self) -> None:
         self.scaledisplay = _Display(self)
         self.keyselecter = KeySelecter(self)
         self.scaleselecter = ScaleSelecter(self)
@@ -95,11 +95,11 @@ class ScaleViewer(BaseComponent):
         self.keyselecter.pack(side=tk.LEFT, anchor=tk.N)
         self.scaleselecter.pack(side=tk.LEFT, anchor=tk.N)
 
-    def default(self):
+    def default(self) -> None:
         self.keyselecter.default()
         self.scaleselecter.default()
 
-    def display_scaledisplay(self):
+    def display_scaledisplay(self) -> None:
         self.scaledisplay.keyname = self.keyselecter.keyname
         self.scaledisplay.scalename = self.scaleselecter.scalename
         self.scaledisplay.scaleinfo = self.scaleselecter.scaleinfo

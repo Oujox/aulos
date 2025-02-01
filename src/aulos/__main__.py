@@ -1,4 +1,4 @@
-def run_gui():
+def run_gui() -> None:
     import ctypes
     import tkinter as tk
 
@@ -18,7 +18,7 @@ def run_gui():
     root.mainloop()
 
 
-def main():
+def main() -> None:
     import argparse
 
     parser = argparse.ArgumentParser(description="Aulos Application")

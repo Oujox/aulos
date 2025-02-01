@@ -1,12 +1,13 @@
 import typing as t
 from typing import TYPE_CHECKING
 
-from .._core import AulosObject
-from .._core.utils import index
+from aulos._core import AulosObject
+from aulos._core.utils import index
+
 from .schemas import PitchClassSchema
 
 if TYPE_CHECKING:
-    from ..scale import Scale  # pragma: no cover
+    from aulos.scale import Scale  # pragma: no cover
 
 
 class BasePitchClass(AulosObject[PitchClassSchema]):
@@ -79,7 +80,7 @@ class BasePitchClass(AulosObject[PitchClassSchema]):
         return self._pitchname
 
     @pitchname.setter
-    def pitchname(self, name: str):
+    def pitchname(self, name: str) -> None:
         if self.is_pitchname(name) and name in self._pitchnames:
             self._pitchname = name
 
@@ -88,8 +89,8 @@ class BasePitchClass(AulosObject[PitchClassSchema]):
         return self._scale
 
     @scale.setter
-    def scale(self, scale: t.Optional["Scale"]):
-        from ..scale import Scale
+    def scale(self, scale: t.Optional["Scale"]) -> None:
+        from aulos.scale import Scale
 
         if isinstance(scale, Scale):
             self._scale = scale

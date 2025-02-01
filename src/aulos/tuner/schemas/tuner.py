@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
-from ..._core import Schema
-from ...note.schemas import NoteSchema, PitchClassSchema
+from aulos._core import Schema
+from aulos.note.schemas import NoteSchema, PitchClassSchema
 
 
 @dataclass(frozen=True)

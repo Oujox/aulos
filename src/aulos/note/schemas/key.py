@@ -2,8 +2,9 @@ import typing as t
 from dataclasses import dataclass
 from functools import cached_property
 
-from ..._core import Schema
-from ..._core.utils import wrapped_diff
+from aulos._core import Schema
+from aulos._core.utils import wrapped_diff
+
 from .pitchclass import PitchClassSchema
 
 

@@ -1,9 +1,10 @@
 import typing as t
 from itertools import accumulate, starmap
 
-from .._core import AulosObject
-from .._core.utils import classproperty
-from ..note import BaseKey, BasePitchClass
+from aulos._core import AulosObject
+from aulos._core.utils import classproperty
+from aulos.note import BaseKey, BasePitchClass
+
 from .schemas import ScaleSchema
 
 
@@ -17,7 +18,8 @@ class Scale[KEY: BaseKey, PITCHCLASS: BasePitchClass](AulosObject[ScaleSchema]):
 
     def __new__(cls, *args, **kwargs) -> t.Self:
         if cls is Scale:
-            raise TypeError("Scale cannot be instantiated directly.")
+            msg = "Scale cannot be instantiated directly."
+            raise TypeError(msg)
         return super().__new__(cls)
 
     def __init__(self, key: str | KEY, **kwargs) -> None:
@@ -72,12 +74,12 @@ class Scale[KEY: BaseKey, PITCHCLASS: BasePitchClass](AulosObject[ScaleSchema]):
         return self._key
 
     @classproperty
-    def intervals(cls) -> tuple[int, ...]:
-        return cls._intervals
+    def intervals(self) -> tuple[int, ...]:
+        return self._intervals
 
     @classproperty
-    def positions(cls) -> tuple[int, ...]:
-        return cls._positions
+    def positions(self) -> tuple[int, ...]:
+        return self._positions
 
     @property
     def signatures(self) -> tuple[int, ...]:

@@ -1,4 +1,5 @@
-from ..scale import DiatonicScale, NondiatonicScale
+from aulos.scale import DiatonicScale, NondiatonicScale
+
 from .note import Key, PitchClass
 
 

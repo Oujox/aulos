@@ -1,14 +1,15 @@
 import typing as t
 from typing import TYPE_CHECKING
 
-from .._core import AulosObject
-from .._core.utils import index
+from aulos._core import AulosObject
+from aulos._core.utils import index
+
 from .pitchclass import BasePitchClass
 from .schemas import NoteSchema
 
 if TYPE_CHECKING:
-    from ..scale import Scale  # pragma: no cover
-    from ..tuner import Tuner  # pragma: no cover
+    from aulos.scale import Scale  # pragma: no cover
+    from aulos.tuner import Tuner  # pragma: no cover
 
 
 class BaseNote[PITCHCLASS: BasePitchClass](AulosObject[NoteSchema]):
@@ -92,7 +93,7 @@ class BaseNote[PITCHCLASS: BasePitchClass](AulosObject[NoteSchema]):
         return self._notename
 
     @notename.setter
-    def notename(self, name: str):
+    def notename(self, name: str) -> None:
         if self.is_notename(name) and name in self._notenames:
             self._notename = name
 
@@ -101,8 +102,8 @@ class BaseNote[PITCHCLASS: BasePitchClass](AulosObject[NoteSchema]):
         return self._tuner
 
     @tuner.setter
-    def tuner(self, tuner: t.Optional["Tuner"]):
-        from ..tuner import Tuner
+    def tuner(self, tuner: t.Optional["Tuner"]) -> None:
+        from aulos.tuner import Tuner
 
         if isinstance(tuner, Tuner):
             self._tuner = tuner
@@ -112,8 +113,8 @@ class BaseNote[PITCHCLASS: BasePitchClass](AulosObject[NoteSchema]):
         return self._scale
 
     @scale.setter
-    def scale(self, scale: t.Optional["Scale"]):
-        from ..scale import Scale
+    def scale(self, scale: t.Optional["Scale"]) -> None:
+        from aulos.scale import Scale
 
         if isinstance(scale, Scale):
             self._scale = scale
@@ -165,7 +166,7 @@ class BaseNote[PITCHCLASS: BasePitchClass](AulosObject[NoteSchema]):
             int(self) - int(other), scale=self.scale, setting=self.setting,
         )
 
-    def __int__(self):
+    def __int__(self) -> int:
         return self._notenumber
 
     def __str__(self) -> str:

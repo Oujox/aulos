@@ -20,7 +20,7 @@ def fivelimit_tuning_table() -> tuple[float, ...]:
             compress_ratio((3**j) * (5**i))
             for i in range(-1, 1 + 1)
             for j in range(-2, 2 + 1)
-            if not j == -2
+            if j != -2
         ]
     ).sort()
 

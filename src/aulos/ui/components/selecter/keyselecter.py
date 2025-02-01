@@ -2,8 +2,8 @@ import tkinter as tk
 import typing as t
 from tkinter import ttk
 
-from ...const import KEY_DEFAULTS
-from ..base import BaseComponent
+from aulos.ui.components.base import BaseComponent
+from aulos.ui.const import KEY_DEFAULTS
 
 
 class KeySelecter(BaseComponent):
@@ -14,12 +14,12 @@ class KeySelecter(BaseComponent):
     _keygroups: list[ttk.Frame]
     _keybuttons: list[list[ttk.Radiobutton]]
 
-    def __init__(self, master: tk.Misc):
+    def __init__(self, master: tk.Misc) -> None:
         super().__init__(master)
         self.master = master
         self.create_widget()
 
-    def create_widget(self):
+    def create_widget(self) -> None:
         self._selected_keyname = tk.StringVar()
         self._keyselecter_wrap = ttk.Frame(
             self, padding=(24, 8), borderwidth=2, relief=tk.SOLID,
@@ -53,11 +53,11 @@ class KeySelecter(BaseComponent):
             for btn in keybuttons:
                 btn.pack(side=tk.TOP, anchor=tk.NW)
 
-    def default(self):
+    def default(self) -> None:
         self._selected_keyname.set("C")
         self._onClickKeyButton()
 
-    def _onClickKeyButton(self):
+    def _onClickKeyButton(self) -> None:
         for callback in self.callbacks_onClickKeyButton:
             callback()
 
@@ -67,7 +67,7 @@ class KeySelecter(BaseComponent):
 
     callbacks_onClickKeyButton: list[t.Callable[[], t.Any]]
 
-    def set_callback_onClickKeyButton(self, callback: t.Callable[[], t.Any]):
+    def set_callback_onClickKeyButton(self, callback: t.Callable[[], t.Any]) -> None:
         if not hasattr(self, "callbacks_onClickKeyButton"):
             self.callbacks_onClickKeyButton = []
         self.callbacks_onClickKeyButton.append(callback)

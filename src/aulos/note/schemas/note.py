@@ -3,7 +3,8 @@ from dataclasses import dataclass, field
 from functools import cached_property
 from itertools import chain
 
-from ..._core import Schema
+from aulos._core import Schema
+
 from .pitchclass import PitchClassSchema
 
 
@@ -130,13 +131,10 @@ class NoteSchema(Schema):
                 ],
             ),
         )
-        number2name = dict(
-            [
-                (index + adjust_notenumber, name)
+        number2name = {
+            index + adjust_notenumber: name
                 for index, name in enumerate(accidental_sequences)
-                if index + adjust_notenumber in self.symbols_notenumber
-            ],
-        )
+                if index + adjust_notenumber in self.symbols_notenumber}
 
         object.__setattr__(self, "name2number", name2number)
         object.__setattr__(self, "number2name", number2name)
@@ -191,7 +189,8 @@ class NoteSchema(Schema):
             pitchclass, accidental,
         )
         if pitchname is None:
-            raise RuntimeError("unreachable error")
+            msg = "unreachable error"
+            raise RuntimeError(msg)
         return pitchname
 
     # [unstable]
@@ -202,7 +201,8 @@ class NoteSchema(Schema):
         notenumber = self.convert_pitchclass_to_notenumber(pitchclass, octave)
         notename = self.convert_notenumber_to_notename(notenumber, accidental)
         if notename is None:
-            raise RuntimeError("unreachable error")
+            msg = "unreachable error"
+            raise RuntimeError(msg)
         return notename
 
     def is_notename(self, value: t.Any) -> t.TypeGuard[str]:
@@ -213,14 +213,20 @@ class NoteSchema(Schema):
 
     def ensure_valid_notename(self, notename: str) -> None:
         if not self.is_notename(notename):
-            raise ValueError(
+            msg = (
                 f"Invalid notename '{notename}'. "
-                f"Notename must be a valid musical note name {self.notenames[:3]}.",
+                f"Notename must be a valid musical note name {self.notenames[:3]}."
+            )
+            raise ValueError(
+                msg,
             )
 
     def ensure_valid_notenumber(self, notenumber: int) -> None:
         if not self.is_notenumber(notenumber):
-            raise ValueError(
+            msg = (
                 f"Invalid pitchclass '{notenumber}'."
-                f"Notenumber must be an integer between {min(self.notenumbers)} and {max(self.notenumbers)} inclusive.",
+                f"Notenumber must be an integer between {min(self.notenumbers)} and {max(self.notenumbers)} inclusive."
+            )
+            raise ValueError(
+                msg,
             )

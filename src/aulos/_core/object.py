@@ -17,22 +17,23 @@ class AulosObject[T: Schema, *_](metaclass=AulosObjectMeta):
 
     def __new__(cls, *args, **kwargs) -> t.Self:
         if cls is AulosObject:
-            raise TypeError("AulosObject cannot be instantiated directly.")
+            msg = "AulosObject cannot be instantiated directly."
+            raise TypeError(msg)
         return super().__new__(cls)
 
     def __init__(self, setting: Setting | None = None) -> None:
-        super(AulosObject, self).__init__()
+        super().__init__()
         self._setting = setting
 
     def __init_subclass__(cls, *, schema: T | None = None) -> None:
         if schema is None:
             return
-        super(AulosObject, cls).__init_subclass__()
+        super().__init_subclass__()
         cls._schema = schema
 
     @classproperty
-    def schema(cls) -> T:
-        return cls._schema
+    def schema(self) -> T:
+        return self._schema
 
     @property
     def setting(self) -> Setting | None:
