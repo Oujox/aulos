@@ -5,7 +5,7 @@ from .context import Context
 
 
 class InjectedMeta(type):
-    def __new__(cls, name: str, bases: tuple[type], dct: dict[str, t.Any], **kwargs):
+    def __new__(cls, name: str, bases: tuple[type], dct: dict[str, t.Any], **kwargs: t.Any) -> "InjectedMeta":
         for attr_name, attr_value in dct.items():
             if callable(attr_value):
                 if attr_name != "__init__":

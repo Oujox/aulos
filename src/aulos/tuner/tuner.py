@@ -11,13 +11,13 @@ class Tuner[NOTE: BaseNote](AulosObject[TunerSchema]):
     _ratios: t.ClassVar[tuple[float, ...]]
     _root: float
 
-    def __new__(cls, *args, **kwargs) -> t.Self:
+    def __new__(cls, *args: t.Any, **kwargs: t.Any) -> t.Self:
         if cls is Tuner:
             msg = "Tuner cannot be instantiated directly."
             raise TypeError(msg)
         return super().__new__(cls)
 
-    def __init__(self, root: float, **kwargs) -> None:
+    def __init__(self, root: float, **kwargs: t.Any) -> None:
         super().__init__(**kwargs)
         self._root = root
 
@@ -27,8 +27,8 @@ class Tuner[NOTE: BaseNote](AulosObject[TunerSchema]):
         ratios: tuple[float, ...],
         reference_notenumber: int,
         note: type[NOTE],
-        **kwargs,
-    ):
+        **kwargs: t.Any,
+    ) -> None:
         schema = TunerSchema(
             reference_notenumber,
             note.schema,

@@ -15,7 +15,7 @@ class AulosObject[T: Schema, *_](metaclass=AulosObjectMeta):
     _schema: T
     _setting: Setting | None
 
-    def __new__(cls, *args, **kwargs) -> t.Self:
+    def __new__(cls, *args: t.Any, **kwargs: t.Any) -> t.Self:
         if cls is AulosObject:
             msg = "AulosObject cannot be instantiated directly."
             raise TypeError(msg)

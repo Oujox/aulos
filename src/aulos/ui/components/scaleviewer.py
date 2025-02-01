@@ -1,4 +1,5 @@
 import tkinter as tk
+import typing as t
 from tkinter import ttk
 
 from .base import BaseComponent
@@ -26,7 +27,7 @@ class _Display(BaseComponent):
         self._scalename = tk.StringVar()
         self._scaleinfo = tk.StringVar()
 
-        def combine(*args) -> None:
+        def combine(*args: t.Any) -> None:
             self._scale.set(f"{self.keyname} {self.scalename}")
 
         self._keyname.trace_add("write", combine)
@@ -34,10 +35,14 @@ class _Display(BaseComponent):
 
         self._wrapper = ttk.Frame(self, padding=(24, 8), borderwidth=2, relief=tk.SOLID)
         self._scaledisplay = ttk.Label(
-            self._wrapper, textvariable=self._scale, font=("Times", 18),
+            self._wrapper,
+            textvariable=self._scale,
+            font=("Times", 18),
         )
         self._scaleinfodisplay = ttk.Label(
-            self._wrapper, textvariable=self._scaleinfo, font=("Times", 10),
+            self._wrapper,
+            textvariable=self._scaleinfo,
+            font=("Times", 10),
         )
 
         self._wrapper.pack()
@@ -48,15 +53,15 @@ class _Display(BaseComponent):
         return
 
     @property
-    def keyname(self):
+    def keyname(self) -> str:
         return self._keyname.get()
 
     @keyname.setter
-    def keyname(self, value: str):
+    def keyname(self, value: str) -> None:
         return self._keyname.set(value)
 
     @property
-    def scalename(self):
+    def scalename(self) -> str:
         return self._scalename.get()
 
     @scalename.setter
@@ -64,7 +69,7 @@ class _Display(BaseComponent):
         self._scalename.set(value)
 
     @property
-    def scaleinfo(self):
+    def scaleinfo(self) -> str:
         return self._scaleinfo.get()
 
     @scaleinfo.setter

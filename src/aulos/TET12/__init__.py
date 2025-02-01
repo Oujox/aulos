@@ -45,11 +45,9 @@ from .scale import (
 from .tuner import Equal12Tuner, JustIntonationTuner, MeantoneTuner, PythagoreanTuner
 
 __all__ = [
-    # Modes
     "Aeorian",
     "Aeorian_f5",
     "AlteredSuperLocrian",
-    # Scales
     "Bluenote",
     "CombDiminish",
     "Diminish",
@@ -60,9 +58,7 @@ __all__ = [
     "HarmonicMinor",
     "Ionian",
     "Ionian_s5",
-    # tuners
     "JustIntonationTuner",
-    # Note classes
     "Key",
     "Locrian",
     "Locrian_n6",

@@ -39,10 +39,7 @@ class KeySchema(Schema):
         r_pitchclass = self.pitchclass.convert_pitchname_to_picthclass(keyname)
 
         idx = self.pitchclass.symbols_pitchclass.index(r_symbol)
-        symbols = (
-            self.pitchclass.symbols_pitchclass[idx:]
-            + self.pitchclass.symbols_pitchclass[:idx]
-        )
+        symbols = self.pitchclass.symbols_pitchclass[idx:] + self.pitchclass.symbols_pitchclass[:idx]
 
         for pos, symbol in zip(self.pitchclass.positions, symbols, strict=False):
             n_pos = self.pitchclass.convert_pitchname_to_picthclass(symbol)

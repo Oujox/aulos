@@ -22,16 +22,16 @@ class KeySelecter(BaseComponent):
     def create_widget(self) -> None:
         self._selected_keyname = tk.StringVar()
         self._keyselecter_wrap = ttk.Frame(
-            self, padding=(24, 8), borderwidth=2, relief=tk.SOLID,
+            self,
+            padding=(24, 8),
+            borderwidth=2,
+            relief=tk.SOLID,
         )
         self._keyselecter_title = ttk.Label(self, text="Key")
         self._keyselecter_wrap.pack()
         self._keyselecter_title.place(relx=0.05, rely=0, anchor=tk.W)
 
-        self._keygroups = [
-            ttk.Frame(self._keyselecter_wrap, padding=(6, 0))
-            for _ in range(len(KEY_DEFAULTS))
-        ]
+        self._keygroups = [ttk.Frame(self._keyselecter_wrap, padding=(6, 0)) for _ in range(len(KEY_DEFAULTS))]
         self._keybuttons = [
             [
                 ttk.Radiobutton(
@@ -62,7 +62,7 @@ class KeySelecter(BaseComponent):
             callback()
 
     @property
-    def keyname(self):
+    def keyname(self) -> str:
         return self._selected_keyname.get()
 
     callbacks_onClickKeyButton: list[t.Callable[[], t.Any]]

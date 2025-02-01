@@ -70,7 +70,9 @@ class PitchClassSchema(Schema):
             return sequences
 
         def create_symbol_sequence(
-            *, prefix: str = "", suffix: str = "",
+            *,
+            prefix: str = "",
+            suffix: str = "",
         ) -> list[str | None]:
             sequence: list[str | None] = []
             for deg in range(cardinality):
@@ -88,12 +90,12 @@ class PitchClassSchema(Schema):
             zip(
                 *accidental_lower_sequences,
                 no_accidental_sequence,
-                *accidental_upper_sequences, strict=False,
+                *accidental_upper_sequences,
+                strict=False,
             ),
         )
         name2class = [
-            [(name, index) for name in names if name is not None]
-            for index, names in enumerate(accidental_sequences)
+            [(name, index) for name in names if name is not None] for index, names in enumerate(accidental_sequences)
         ]
         class2name = [(index, name) for index, name in enumerate(accidental_sequences)]
 
@@ -127,14 +129,17 @@ class PitchClassSchema(Schema):
         return pitchnames.index(pitchname) - self.accidental
 
     def convert_pitchclass_to_pitchname(
-        self, pitchclass: int, accidental: int,
+        self,
+        pitchclass: int,
+        accidental: int,
     ) -> str | None:
         self.ensure_valid_pitchclass(pitchclass)
         self.ensure_valid_accidental(accidental)
         return self.class2name[pitchclass][self.accidental + accidental]
 
     def convert_pitchclass_to_pitchnames(
-        self, pitchclass: int,
+        self,
+        pitchclass: int,
     ) -> tuple[str | None, ...]:
         self.ensure_valid_pitchclass(pitchclass)
         return self.class2name[pitchclass]
@@ -169,10 +174,7 @@ class PitchClassSchema(Schema):
 
     def ensure_valid_pitchname(self, pitchname: str) -> None:
         if not self.is_pitchname(pitchname):
-            msg = (
-                f"Invalid pitchname '{pitchname}'. "
-                f"Pitchname must be a valid musical note name {self.pitchnames[:3]}."
-            )
+            msg = f"Invalid pitchname '{pitchname}'. Pitchname must be a valid musical note name {self.pitchnames[:3]}."
             raise ValueError(
                 msg,
             )
@@ -181,7 +183,8 @@ class PitchClassSchema(Schema):
         if not self.is_pitchclass(pitchclass):
             msg = (
                 f"Invalid pitchclass '{pitchclass}'."
-                f"Pitchclass must be an integer between {min(self.pitchclasses)} and {max(self.pitchclasses)} inclusive."
+                f"Pitchclass must be an integer between {min(self.pitchclasses)} and"
+                f"{max(self.pitchclasses)} inclusive."
             )
             raise ValueError(
                 msg,

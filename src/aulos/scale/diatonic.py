@@ -12,7 +12,7 @@ if TYPE_CHECKING:
 
 
 class DiatonicScale[KEY: BaseKey, PITCHCLASS: BasePitchClass](Scale[KEY, PITCHCLASS]):
-    def __new__(cls, *args, **kwargs) -> t.Self:
+    def __new__(cls, *args: t.Any, **kwargs: t.Any) -> t.Self:
         if cls is DiatonicScale:
             msg = "DiatonicScale cannot be instantiated directly."
             raise TypeError(msg)
@@ -25,7 +25,7 @@ class DiatonicScale[KEY: BaseKey, PITCHCLASS: BasePitchClass](Scale[KEY, PITCHCL
         shift: int = 0,
         key: type[KEY],
         pitchclass: type[PITCHCLASS],
-        **kwargs,
+        **kwargs: t.Any,
     ) -> None:
         super().__init_subclass__(
             intervals=rotated(intervals, -shift),
@@ -41,7 +41,7 @@ class NondiatonicScale[KEY: BaseKey, PITCHCLASS: BasePitchClass](
     _extensions: t.ClassVar[tuple[tuple[int, ...], ...]]
     _base: t.ClassVar[type[Scale]]
 
-    def __new__(cls, *args, **kwargs) -> t.Self:
+    def __new__(cls, *args: t.Any, **kwargs: t.Any) -> t.Self:
         if cls is NondiatonicScale:
             msg = "NondiatonicScale cannot be instantiated directly."
             raise TypeError(msg)
@@ -54,7 +54,7 @@ class NondiatonicScale[KEY: BaseKey, PITCHCLASS: BasePitchClass](
         base: type[DiatonicScale],
         key: type[KEY],
         pitchclass: type[PITCHCLASS],
-        **kwargs,
+        **kwargs: t.Any,
     ) -> None:
         super().__init_subclass__(
             intervals=base.intervals,
@@ -67,22 +67,12 @@ class NondiatonicScale[KEY: BaseKey, PITCHCLASS: BasePitchClass](
 
     @classproperty
     def intervals(self) -> tuple[int, ...]:
-        return tuple(
-            b - a for a, b in pairwise((*self.positions, sum(super().intervals)))
-        )
+        return tuple(b - a for a, b in pairwise((*self.positions, sum(super().intervals))))
 
     @classproperty
     def positions(self) -> tuple[int, ...]:
-        return tuple(
-            pos + ext
-            for pos, exts in zip(super().positions, self._extensions, strict=False)
-            for ext in exts
-        )
+        return tuple(pos + ext for pos, exts in zip(super().positions, self._extensions, strict=False) for ext in exts)
 
     @property
     def signatures(self) -> tuple[int, ...]:
-        return tuple(
-            sig + ext
-            for sig, exts in zip(super().signatures, self._extensions, strict=False)
-            for ext in exts
-        )
+        return tuple(sig + ext for sig, exts in zip(super().signatures, self._extensions, strict=False) for ext in exts)

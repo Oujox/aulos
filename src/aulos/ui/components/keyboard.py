@@ -1,4 +1,5 @@
 import tkinter as tk
+import typing as t
 from tkinter import ttk
 
 from aulos.ui.const import KEYBOARD_BLACK_CLASSES, KEYBOARD_WHITE_CLASSES
@@ -28,10 +29,14 @@ class KeyElement(tk.Frame):
             self.key.config(bg="#000000")
             self.config(width=width * (2 / 3), height=height * (2 / 3))
             self.key.place(
-                x=0, y=0, anchor=tk.NW, width=width * (2 / 3), height=height * (2 / 3),
+                x=0,
+                y=0,
+                anchor=tk.NW,
+                width=width * (2 / 3),
+                height=height * (2 / 3),
             )
 
-        def callback_btn_bgcolor(*args) -> None:
+        def callback_btn_bgcolor(*args: t.Any) -> None:
             if self.is_active.get():
                 self.key.config(bg="#FF6347")
             elif self.is_white():
@@ -77,7 +82,9 @@ class KeyBoard(tk.Frame):
         self.canvas = tk.Canvas(self.tab1, width=1000, height=72)
         self.keyboard = tk.Frame(self.canvas, width=1750, height=72, bg="#F0F0F0")
         self.scrollbar = tk.Scrollbar(
-            self.tab1, orient=tk.HORIZONTAL, command=self.canvas.xview,
+            self.tab1,
+            orient=tk.HORIZONTAL,
+            command=self.canvas.xview,
         )
 
         self.canvas.create_window((0, 0), window=self.keyboard, anchor=tk.NW)

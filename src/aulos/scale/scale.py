@@ -16,13 +16,13 @@ class Scale[KEY: BaseKey, PITCHCLASS: BasePitchClass](AulosObject[ScaleSchema]):
     _key: KEY
     _signatures: tuple[int, ...]
 
-    def __new__(cls, *args, **kwargs) -> t.Self:
+    def __new__(cls, *args: t.Any, **kwargs: t.Any) -> t.Self:
         if cls is Scale:
             msg = "Scale cannot be instantiated directly."
             raise TypeError(msg)
         return super().__new__(cls)
 
-    def __init__(self, key: str | KEY, **kwargs) -> None:
+    def __init__(self, key: str | KEY, **kwargs: t.Any) -> None:
         super().__init__(**kwargs)
 
         if isinstance(key, str):
@@ -32,7 +32,8 @@ class Scale[KEY: BaseKey, PITCHCLASS: BasePitchClass](AulosObject[ScaleSchema]):
                     lambda x, y: x + y,
                     zip(
                         self._key.signature,
-                        self.schema.generate_scale_signatures(self._intervals), strict=False,
+                        self.schema.generate_scale_signatures(self._intervals),
+                        strict=False,
                     ),
                 ),
             )
@@ -44,7 +45,8 @@ class Scale[KEY: BaseKey, PITCHCLASS: BasePitchClass](AulosObject[ScaleSchema]):
                     lambda x, y: x + y,
                     zip(
                         self._key.signature,
-                        self.schema.generate_scale_signatures(self._intervals), strict=False,
+                        self.schema.generate_scale_signatures(self._intervals),
+                        strict=False,
                     ),
                 ),
             )
@@ -58,7 +60,7 @@ class Scale[KEY: BaseKey, PITCHCLASS: BasePitchClass](AulosObject[ScaleSchema]):
         intervals: t.Sequence[int] | None = None,
         key: type[KEY] | None = None,
         pitchclass: type[PITCHCLASS] | None = None,
-        **kwargs,
+        **kwargs: t.Any,
     ) -> None:
         if intervals is None or key is None or pitchclass is None:
             return

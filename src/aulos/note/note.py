@@ -26,7 +26,7 @@ class BaseNote[PITCHCLASS: BasePitchClass](AulosObject[NoteSchema]):
         *,
         tuner: t.Optional["Tuner"] = None,
         scale: t.Optional["Scale"] = None,
-        **kwargs,
+        **kwargs: t.Any,
     ) -> None:
         super().__init__(**kwargs)
 
@@ -68,7 +68,7 @@ class BaseNote[PITCHCLASS: BasePitchClass](AulosObject[NoteSchema]):
         reference_notenumber: int,
         reference_octave: int,
         pitchclass: type[PITCHCLASS],
-        **kwargs,
+        **kwargs: t.Any,
     ) -> None:
         schema = NoteSchema(
             tuple(symbols_notenumber),
@@ -119,13 +119,12 @@ class BaseNote[PITCHCLASS: BasePitchClass](AulosObject[NoteSchema]):
         if isinstance(scale, Scale):
             self._scale = scale
             pitchclass = self.schema.convert_notenumber_to_pitchclass(self._notenumber)
-            pitchclass = (
-                pitchclass - scale.key.pitchclass
-            ) % self.schema.pitchclass.cardinality
+            pitchclass = (pitchclass - scale.key.pitchclass) % self.schema.pitchclass.cardinality
 
             if (idx := index(scale.positions, pitchclass)) is not None:
                 self._notename = self.schema.convert_notenumber_to_notename(
-                    self._notenumber, scale.signatures[idx],
+                    self._notenumber,
+                    scale.signatures[idx],
                 )
 
     @property
@@ -137,7 +136,10 @@ class BaseNote[PITCHCLASS: BasePitchClass](AulosObject[NoteSchema]):
     def to_pitchclass(self) -> PITCHCLASS:
         pitchlass = self.schema.convert_notenumber_to_pitchclass(self._notenumber)
         return self.PitchClass(
-            pitchlass, tuner=self._tuner, scale=self._scale, setting=self._setting,
+            pitchlass,
+            tuner=self._tuner,
+            scale=self._scale,
+            setting=self._setting,
         )
 
     @classmethod
@@ -158,12 +160,16 @@ class BaseNote[PITCHCLASS: BasePitchClass](AulosObject[NoteSchema]):
 
     def __add__(self, other: t.SupportsInt) -> t.Self:
         return self.__class__(
-            int(self) + int(other), scale=self.scale, setting=self.setting,
+            int(self) + int(other),
+            scale=self.scale,
+            setting=self.setting,
         )
 
     def __sub__(self, other: t.SupportsInt) -> t.Self:
         return self.__class__(
-            int(self) - int(other), scale=self.scale, setting=self.setting,
+            int(self) - int(other),
+            scale=self.scale,
+            setting=self.setting,
         )
 
     def __int__(self) -> int:

@@ -12,7 +12,7 @@ class BaseKey[PITCHCLASS: BasePitchClass](AulosObject[KeySchema]):
     _pitchclass: int
     _signatures: tuple[int, ...]
 
-    def __init__(self, identify: str | t.Self, **kwargs) -> None:
+    def __init__(self, identify: str | t.Self, **kwargs: t.Any) -> None:
         super().__init__(**kwargs)
 
         if isinstance(identify, BaseKey):
@@ -31,7 +31,11 @@ class BaseKey[PITCHCLASS: BasePitchClass](AulosObject[KeySchema]):
             raise ValueError
 
     def __init_subclass__(
-        cls, *, accidental: int, pitchclass: type[BasePitchClass], **kwargs,
+        cls,
+        *,
+        accidental: int,
+        pitchclass: type[BasePitchClass],
+        **kwargs: t.Any,
     ) -> None:
         schema = KeySchema(
             accidental,

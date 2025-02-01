@@ -62,16 +62,16 @@ class ScaleSelecter(BaseComponent):
         self._selected_scaleinfo = tk.StringVar()
 
         self._scaleselecter_wrap = ttk.Frame(
-            self, padding=(24, 8), borderwidth=2, relief=tk.SOLID,
+            self,
+            padding=(24, 8),
+            borderwidth=2,
+            relief=tk.SOLID,
         )
         self._scalesetecter_title = ttk.Label(self, text="Scale")
         self._scaleselecter_wrap.pack()
         self._scalesetecter_title.place(relx=0.05, rely=0, anchor=tk.W)
 
-        self._scalegroups = [
-            ttk.Frame(self._scaleselecter_wrap, padding=(6, 0))
-            for _ in range(len(SCALE_DEFAULTS))
-        ]
+        self._scalegroups = [ttk.Frame(self._scaleselecter_wrap, padding=(6, 0)) for _ in range(len(SCALE_DEFAULTS))]
         self._scalebuttons = [
             [
                 ttk.Radiobutton(

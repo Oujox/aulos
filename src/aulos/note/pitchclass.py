@@ -21,7 +21,7 @@ class BasePitchClass(AulosObject[PitchClassSchema]):
         identify: int | str | t.Self,
         *,
         scale: t.Optional["Scale"] = None,
-        **kwargs,
+        **kwargs: t.Any,
     ) -> None:
         super().__init__(**kwargs)
 
@@ -58,7 +58,7 @@ class BasePitchClass(AulosObject[PitchClassSchema]):
         intervals: t.Sequence[int],
         symbols_pitchclass: t.Sequence[str],
         symbols_accidental: t.Sequence[str],
-        **kwargs,
+        **kwargs: t.Any,
     ) -> None:
         schema = PitchClassSchema(
             tuple(intervals),
@@ -98,7 +98,8 @@ class BasePitchClass(AulosObject[PitchClassSchema]):
 
             if (idx := index(scale.positions, pitchclass)) is not None:
                 self._pitchname = self.schema.convert_pitchclass_to_pitchname(
-                    self._pitchclass, scale.signatures[idx],
+                    self._pitchclass,
+                    scale.signatures[idx],
                 )
 
     @classmethod
