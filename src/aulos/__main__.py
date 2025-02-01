@@ -1,10 +1,7 @@
 def run_gui() -> None:
-    import ctypes
     import tkinter as tk
 
     from aulos.ui import KeyBoard, ScaleViewer
-
-    ctypes.windll.shcore.SetProcessDpiAwareness(1)
 
     root = tk.Tk()
     root.title("Aulos Application GUI")
