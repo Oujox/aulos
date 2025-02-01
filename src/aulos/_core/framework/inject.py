@@ -1,8 +1,6 @@
 import typing as t
 from functools import wraps
 
-from .context import Context
-
 
 class InjectedMeta(type):
     def __new__(cls, name: str, bases: tuple[type], dct: dict[str, t.Any], **kwargs: t.Any) -> "InjectedMeta":
@@ -17,6 +15,8 @@ class InjectedMeta(type):
     def inject[**P, R](func: t.Callable[P, R]) -> t.Callable[P, R]:
         @wraps(func)
         def wrapper(*args: P.args, **kwargs: P.kwargs) -> R:
+            from aulos._core import Context
+
             injected: dict[str, t.Any] = {}
             if (setting := Context.setting.get(None)) is not None:
                 injected["setting"] = setting

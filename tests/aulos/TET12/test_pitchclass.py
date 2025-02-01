@@ -64,7 +64,7 @@ def test_PitchClass_dunder_add(data_pitchclass):
     for pitchclass in data_pitchclass:
         for pitchclass2 in data_pitchclass:
             assert (PitchClass(pitchclass) + pitchclass2) == (pitchclass + pitchclass2) % sum(
-                PitchClass.schema.intervals
+                PitchClass.schema.intervals,
             )
 
 
@@ -72,7 +72,7 @@ def test_PitchClass_dunder_sub(data_pitchclass):
     for pitchclass in data_pitchclass:
         for pitchclass2 in data_pitchclass:
             assert (PitchClass(pitchclass) - pitchclass2) == (pitchclass - pitchclass2) % sum(
-                PitchClass.schema.intervals
+                PitchClass.schema.intervals,
             )
 
 

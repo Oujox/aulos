@@ -4,6 +4,7 @@ from functools import cached_property
 from itertools import accumulate, chain
 
 from aulos._core import Schema
+from aulos._errors import ValidationError
 
 
 @dataclass(frozen=True, slots=True)
@@ -25,23 +26,23 @@ class PitchClassSchema(Schema):
     def validate(self) -> None:
         # [check] intervals
         if not len(self.intervals) > 0:
-            raise Exception
+            raise ValidationError
         if not all(v >= 0 for v in self.intervals):
-            raise Exception
+            raise ValidationError
 
         # [check] symbols_pitchclass
         if not len(self.symbols_pitchclass) > 0:
-            raise Exception
+            raise ValidationError
 
         # [check] symbols_accidental
         if not len(self.symbols_accidental) > 0:
-            raise Exception
+            raise ValidationError
         if not (len(self.symbols_accidental) % 2) == 0:
-            raise Exception
+            raise ValidationError
 
         # [cross-field check]
         if not len(self.intervals) == len(self.symbols_pitchclass):
-            raise Exception
+            raise ValidationError
 
     def initialize(self) -> None:
         cardinality = sum(self.intervals)
@@ -113,7 +114,7 @@ class PitchClassSchema(Schema):
     def pitchclasses(self) -> tuple[int, ...]:
         return tuple(self.class2name.keys())
 
-    # [unstable]
+    # unstable
     def find_pitchname(self, value: str) -> str | None:
         finded = sorted(
             [pitchname for pitchname in self.pitchnames if value.find(pitchname) == 0],

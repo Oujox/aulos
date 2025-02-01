@@ -4,6 +4,7 @@ from functools import cached_property
 
 from aulos._core import Schema
 from aulos._core.utils import wrapped_diff
+from aulos._errors import ValidationError
 
 from .pitchclass import PitchClassSchema
 
@@ -19,9 +20,9 @@ class KeySchema(Schema):
     def validate(self) -> None:
         # [check] accidental
         if not self.accidental > 0:
-            raise Exception
+            raise ValidationError
         if not self.accidental < self.pitchclass.accidental:
-            raise Exception
+            raise ValidationError
 
     @cached_property
     def keynames(self) -> tuple[str, ...]:

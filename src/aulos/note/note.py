@@ -12,50 +12,63 @@ if TYPE_CHECKING:
     from aulos.tuner import Tuner  # pragma: no cover
 
 
+def resolve_notename_from_scale(notenumber: int, scale: "Scale | None", schema: NoteSchema) -> str | None:
+    if scale is not None:
+        relative_pitchclass = schema.convert_notenumber_to_pitchclass(notenumber)
+        relative_pitchclass = (relative_pitchclass - int(scale.key)) % schema.pitchclass.cardinality
+        if (idx := index(scale.positions, relative_pitchclass)) is not None:
+            return schema.convert_notenumber_to_notename(
+                notenumber,
+                scale.signatures[idx],
+            )
+    return None
+
+
 class BaseNote[PITCHCLASS: BasePitchClass](AulosObject[NoteSchema]):
     PitchClass: type[PITCHCLASS]
     _notenumber: int
     _notenames: tuple[str | None, ...]
     _notename: str | None
-    _tuner: t.Optional["Tuner"]
-    _scale: t.Optional["Scale"]
+    _tuner: "Tuner | None"
+    _scale: "Scale | None"
 
     def __init__(
         self,
         identify: int | str,
         *,
-        tuner: t.Optional["Tuner"] = None,
-        scale: t.Optional["Scale"] = None,
+        tuner: "Tuner | None" = None,
+        scale: "Scale | None" = None,
         **kwargs: t.Any,
     ) -> None:
         super().__init__(**kwargs)
 
         if isinstance(identify, BaseNote):
-            self._notenumber = identify._notenumber
-            self._notenames = identify._notenames
-            self._notename = identify._notename
-            self._scale = None
-            self._tuner = identify._tuner
-            self.scale = identify._scale
+            notenames = self.schema.convert_notenumber_to_notenames(identify.notenumber)
+            notename = resolve_notename_from_scale(identify.notenumber, scale, self.schema)
+            self._notenumber = identify.notenumber
+            self._notenames = notenames
+            self._notename = notename or identify.notename
+            self._tuner = tuner or identify.tuner
+            self._scale = scale or identify.scale
 
         elif self.is_notenumber(identify):
             notenames = self.schema.convert_notenumber_to_notenames(identify)
+            notename = resolve_notename_from_scale(identify, scale, self.schema)
             self._notenumber = identify
             self._notenames = notenames
-            self._notename = None
-            self._scale = None
+            self._notename = notename
             self._tuner = tuner
-            self.scale = scale
+            self._scale = scale
 
         elif self.is_notename(identify):
             notenumber = self.schema.convert_notename_to_notenumber(identify)
             notenames = self.schema.convert_notenumber_to_notenames(notenumber)
+            notename = resolve_notename_from_scale(notenumber, scale, self.schema)
             self._notenumber = notenumber
             self._notenames = notenames
-            self._notename = identify
-            self._scale = None
+            self._notename = notename or identify
             self._tuner = tuner
-            self.scale = scale
+            self._scale = scale
 
         else:
             raise ValueError
@@ -92,40 +105,13 @@ class BaseNote[PITCHCLASS: BasePitchClass](AulosObject[NoteSchema]):
     def notename(self) -> str | None:
         return self._notename
 
-    @notename.setter
-    def notename(self, name: str) -> None:
-        if self.is_notename(name) and name in self._notenames:
-            self._notename = name
-
     @property
-    def tuner(self) -> t.Optional["Tuner"]:
+    def tuner(self) -> "Tuner | None":
         return self._tuner
 
-    @tuner.setter
-    def tuner(self, tuner: t.Optional["Tuner"]) -> None:
-        from aulos.tuner import Tuner
-
-        if isinstance(tuner, Tuner):
-            self._tuner = tuner
-
     @property
-    def scale(self) -> t.Optional["Scale"]:
+    def scale(self) -> "Scale | None":
         return self._scale
-
-    @scale.setter
-    def scale(self, scale: t.Optional["Scale"]) -> None:
-        from aulos.scale import Scale
-
-        if isinstance(scale, Scale):
-            self._scale = scale
-            pitchclass = self.schema.convert_notenumber_to_pitchclass(self._notenumber)
-            pitchclass = (pitchclass - scale.key.pitchclass) % self.schema.pitchclass.cardinality
-
-            if (idx := index(scale.positions, pitchclass)) is not None:
-                self._notename = self.schema.convert_notenumber_to_notename(
-                    self._notenumber,
-                    scale.signatures[idx],
-                )
 
     @property
     def hz(self) -> float | None:

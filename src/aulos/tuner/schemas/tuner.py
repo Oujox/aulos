@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 
 from aulos._core import Schema
+from aulos._errors import ValidationError
 from aulos.note.schemas import NoteSchema, PitchClassSchema
 
 
@@ -16,4 +17,4 @@ class TunerSchema(Schema):
     def validate(self) -> None:
         # [check] reference_notenumber
         if self.reference_notenumber not in self.note.notenumbers:
-            raise Exception
+            raise ValidationError

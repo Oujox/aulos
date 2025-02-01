@@ -4,6 +4,7 @@ from functools import cached_property
 from itertools import chain
 
 from aulos._core import Schema
+from aulos._errors import ValidationError
 
 from .pitchclass import PitchClassSchema
 
@@ -26,23 +27,23 @@ class NoteSchema(Schema):
     def validate(self) -> None:
         # [check] symbols_notenumber
         if not len(self.symbols_notenumber) > 0:
-            raise Exception
+            raise ValidationError
         if not all(v >= 0 for v in self.symbols_notenumber):
-            raise Exception
+            raise ValidationError
 
         # [check] symbols_octave
         if not len(self.symbols_octave) > 0:
-            raise Exception
+            raise ValidationError
         if not all(bool(v.find("<N>")) or bool(v.find("<n>")) for v in self.symbols_octave):
-            raise Exception
+            raise ValidationError
 
         # [check] reference_notenumber
         if self.reference_notenumber not in self.symbols_notenumber:
-            raise Exception
+            raise ValidationError
 
         # [check] reference_octave
         if self.reference_octave not in range(len(self.symbols_octave)):
-            raise Exception
+            raise ValidationError
 
     def initialize(self) -> None:
         accidental = len(self.pitchclass.symbols_accidental) // 2

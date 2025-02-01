@@ -3,7 +3,8 @@ from contextlib import ContextDecorator
 from contextvars import ContextVar
 from types import TracebackType
 
-from aulos._core import AulosObject, Setting
+from .object import AulosObject
+from .setting import Setting
 
 
 class Context(ContextDecorator):

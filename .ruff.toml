@@ -31,7 +31,7 @@ exclude = [
 line-length = 120
 indent-width = 4
 
-# Assume Python 3.9
+# Assume Python 3.12
 target-version = "py312"
 
 [lint]
@@ -44,4 +44,12 @@ fixable = ["ALL"]
 
 # Per-file-ignores
 [lint.per-file-ignores]
-"tests/*" = ["ANN", "D", "N", "S", "SIM", "INP", "PT011"]
+"tests/*" = [
+    "ANN",
+    "D",
+    "N",
+    "S",
+    "SIM",
+    "INP",
+    "PT011" # will be removed
+]

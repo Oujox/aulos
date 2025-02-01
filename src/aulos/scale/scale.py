@@ -52,7 +52,7 @@ class Scale[KEY: BaseKey, PITCHCLASS: BasePitchClass](AulosObject[ScaleSchema]):
             )
 
         else:
-            raise ValueError
+            raise TypeError
 
     def __init_subclass__(
         cls,

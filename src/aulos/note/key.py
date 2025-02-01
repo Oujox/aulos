@@ -8,23 +8,21 @@ from .schemas import KeySchema
 
 class BaseKey[PITCHCLASS: BasePitchClass](AulosObject[KeySchema]):
     PitchClass: type[PITCHCLASS]
-    _pitchname: str
-    _pitchclass: int
+    _keyname: str
+    _keyclass: int
     _signatures: tuple[int, ...]
 
     def __init__(self, identify: str | t.Self, **kwargs: t.Any) -> None:
         super().__init__(**kwargs)
 
         if isinstance(identify, BaseKey):
-            self._pitchname = identify._pitchname
-            self._pitchclass = identify._pitchclass
-            self._signatures = identify._signatures
+            self._keyname = identify.keyname
+            self._keyclass = self.schema.pitchclass.convert_pitchname_to_picthclass(identify.keyname)
+            self._signatures = self.schema.generate_key_signatures(identify.keyname)
 
         elif self.is_keyname(identify):
-            self._pitchname = identify
-            self._pitchclass = self.schema.pitchclass.convert_pitchname_to_picthclass(
-                identify,
-            )
+            self._keyname = identify
+            self._keyclass = self.schema.pitchclass.convert_pitchname_to_picthclass(identify)
             self._signatures = self.schema.generate_key_signatures(identify)
 
         else:
@@ -46,14 +44,14 @@ class BaseKey[PITCHCLASS: BasePitchClass](AulosObject[KeySchema]):
 
     @property
     def keyname(self) -> str:
-        return self._pitchname
+        return self._keyname
 
     @property
     def signature(self) -> tuple[int, ...]:
         return self._signatures
 
     def to_pitchclass(self) -> PITCHCLASS:
-        return self.PitchClass(self._pitchname, setting=self._setting)
+        return self.PitchClass(self._keyname, setting=self._setting)
 
     @classmethod
     def is_keyname(cls, value: t.Any) -> t.TypeGuard[str]:
@@ -68,7 +66,7 @@ class BaseKey[PITCHCLASS: BasePitchClass](AulosObject[KeySchema]):
         return not self.__eq__(other)
 
     def __int__(self) -> int:
-        return self._pitchclass
+        return self._keyclass
 
     def __str__(self) -> str:
         return f"<Key: {self.keyname}>"
