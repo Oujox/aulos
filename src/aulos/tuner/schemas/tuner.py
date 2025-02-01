@@ -14,6 +14,9 @@ class TunerSchema(Schema):
     def __post_init__(self) -> None:
         self.validate()
 
+    def initialize(self) -> None:
+        pass
+
     def validate(self) -> None:
         # [check] reference_notenumber
         if self.reference_notenumber not in self.note.notenumbers:

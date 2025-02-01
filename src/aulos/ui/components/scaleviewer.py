@@ -27,7 +27,7 @@ class _Display(BaseComponent):
         self._scalename = tk.StringVar()
         self._scaleinfo = tk.StringVar()
 
-        def combine(*args: t.Any) -> None:
+        def combine(*_args: t.Any) -> None:
             self._scale.set(f"{self.keyname} {self.scalename}")
 
         self._keyname.trace_add("write", combine)
@@ -93,8 +93,8 @@ class ScaleViewer(BaseComponent):
         self.keyselecter = KeySelecter(self)
         self.scaleselecter = ScaleSelecter(self)
 
-        self.keyselecter.set_callback_onClickKeyButton(self.display_scaledisplay)
-        self.scaleselecter.set_callback_onClickScaleButton(self.display_scaledisplay)
+        self.keyselecter.set_callback_on_click_keybutton(self.display_scaledisplay)
+        self.scaleselecter.set_callback_on_click_scalebutton(self.display_scaledisplay)
 
         self.scaledisplay.pack(side=tk.TOP, anchor=tk.W, expand=True)
         self.keyselecter.pack(side=tk.LEFT, anchor=tk.N)

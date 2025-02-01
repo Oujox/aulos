@@ -1,3 +1,6 @@
+# ruff: noqa: PLR2004
+
+
 def compress_ratio(ratio: float) -> float:
     while ratio > 2:
         ratio = ratio / 2

@@ -170,13 +170,13 @@ class PitchClassSchema(Schema):
             raise RuntimeError(msg)
         return symbol
 
-    def is_symbol(self, value: t.Any) -> t.TypeGuard[str]:
+    def is_symbol(self, value: object) -> t.TypeGuard[str]:
         return isinstance(value, str) and value in self.symbols_pitchclass
 
-    def is_pitchname(self, value: t.Any) -> t.TypeGuard[str]:
+    def is_pitchname(self, value: object) -> t.TypeGuard[str]:
         return isinstance(value, str) and value in self.pitchnames
 
-    def is_pitchclass(self, value: t.Any) -> t.TypeGuard[int]:
+    def is_pitchclass(self, value: object) -> t.TypeGuard[int]:
         return isinstance(value, int) and value in self.pitchclasses
 
     def ensure_valid_pitchname(self, pitchname: str) -> None:

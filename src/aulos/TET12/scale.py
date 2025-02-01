@@ -292,7 +292,7 @@ class Locrian(
     """
 
 
-class Dorian_f2(
+class Dorian_f2(  # noqa: N801
     MelodicMinor,
     intervals=MelodicMinor.intervals,
     shift=1,
@@ -309,7 +309,7 @@ class Dorian_f2(
     """
 
 
-class Lydian_s5(
+class Lydian_s5(  # noqa: N801
     MelodicMinor,
     intervals=MelodicMinor.intervals,
     shift=2,
@@ -327,7 +327,7 @@ class Lydian_s5(
     """
 
 
-class Lydian_f7(
+class Lydian_f7(  # noqa: N801
     MelodicMinor,
     intervals=MelodicMinor.intervals,
     shift=3,
@@ -344,7 +344,7 @@ class Lydian_f7(
     """
 
 
-class Mixolydian_f6(
+class Mixolydian_f6(  # noqa: N801
     MelodicMinor,
     intervals=MelodicMinor.intervals,
     shift=4,
@@ -362,7 +362,7 @@ class Mixolydian_f6(
     """
 
 
-class Aeorian_f5(
+class Aeorian_f5(  # noqa: N801
     MelodicMinor,
     intervals=MelodicMinor.intervals,
     shift=5,
@@ -397,7 +397,7 @@ class SuperLocrian(
     """
 
 
-class Locrian_n6(
+class Locrian_n6(  # noqa: N801
     HarmonicMinor,
     intervals=HarmonicMinor.intervals,
     shift=1,
@@ -414,7 +414,7 @@ class Locrian_n6(
     """
 
 
-class Ionian_s5(
+class Ionian_s5(  # noqa: N801
     HarmonicMinor,
     intervals=HarmonicMinor.intervals,
     shift=2,
@@ -431,7 +431,7 @@ class Ionian_s5(
     """
 
 
-class Dorian_s4(
+class Dorian_s4(  # noqa: N801
     HarmonicMinor,
     intervals=HarmonicMinor.intervals,
     shift=3,
@@ -448,7 +448,7 @@ class Dorian_s4(
     """
 
 
-class Mixolydian_f9(
+class Mixolydian_f9(  # noqa: N801
     HarmonicMinor,
     intervals=HarmonicMinor.intervals,
     shift=4,
@@ -465,7 +465,7 @@ class Mixolydian_f9(
     """
 
 
-class Lydian_s2(
+class Lydian_s2(  # noqa: N801
     HarmonicMinor,
     intervals=HarmonicMinor.intervals,
     shift=5,

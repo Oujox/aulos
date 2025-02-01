@@ -1,7 +1,7 @@
 import typing as t
 
 
-class classproperty[R: object]:
+class classproperty[R: object]:  # noqa: N801
     def __init__(self, method: t.Callable[..., R] | None = None) -> None:
         self.fget = method
 

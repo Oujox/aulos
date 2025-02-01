@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from functools import cached_property
 
 from aulos._core import Schema
-from aulos._core.utils import wrapped_diff
+from aulos._core.utils import cyclic_difference
 from aulos._errors import ValidationError
 
 from .pitchclass import PitchClassSchema
@@ -16,6 +16,9 @@ class KeySchema(Schema):
 
     def __post_init__(self) -> None:
         self.validate()
+
+    def initialize(self) -> None:
+        pass
 
     def validate(self) -> None:
         # [check] accidental
@@ -47,10 +50,10 @@ class KeySchema(Schema):
         for pos, symbol in zip(self.pitchclass.positions, symbols, strict=False):
             n_pos = self.pitchclass.convert_pitchname_to_picthclass(symbol)
             a_pos = (r_pitchclass + pos) % self.pitchclass.cardinality
-            positions.append(wrapped_diff(a_pos, n_pos, self.pitchclass.cardinality))
+            positions.append(cyclic_difference(a_pos, n_pos, self.pitchclass.cardinality))
         return tuple(positions)
 
-    def is_keyname(self, value: t.Any) -> t.TypeGuard[str]:
+    def is_keyname(self, value: object) -> t.TypeGuard[str]:
         return isinstance(value, str) and value in self.keynames
 
     def ensure_valid_keyname(self, keyname: str) -> None:

@@ -30,23 +30,22 @@ exclude = [
 
 line-length = 120
 indent-width = 4
-
-# Assume Python 3.12
 target-version = "py312"
 
 [lint]
-# List of enabled rules
 select = ["ALL"]
-ignore = ["D", "ANN401"]
-
-# Enable autofix for certain rules
+ignore = ["D"]
 fixable = ["ALL"]
 
-# Per-file-ignores
+[lint.mccabe]
+max-complexity = 12
+
+[lint.flake8-annotations]
+allow-star-arg-any = true
+
 [lint.per-file-ignores]
 "tests/*" = [
     "ANN",
-    "D",
     "N",
     "S",
     "SIM",

@@ -12,7 +12,7 @@ if TYPE_CHECKING:
 
 
 class DiatonicScale[KEY: BaseKey, PITCHCLASS: BasePitchClass](Scale[KEY, PITCHCLASS]):
-    def __new__(cls, *args: t.Any, **kwargs: t.Any) -> t.Self:
+    def __new__(cls, *_args: t.Any, **_kwargs: t.Any) -> t.Self:
         if cls is DiatonicScale:
             msg = "DiatonicScale cannot be instantiated directly."
             raise TypeError(msg)
@@ -41,7 +41,7 @@ class NondiatonicScale[KEY: BaseKey, PITCHCLASS: BasePitchClass](
     _extensions: t.ClassVar[tuple[tuple[int, ...], ...]]
     _base: t.ClassVar[type[Scale]]
 
-    def __new__(cls, *args: t.Any, **kwargs: t.Any) -> t.Self:
+    def __new__(cls, *_args: t.Any, **_kwargs: t.Any) -> t.Self:
         if cls is NondiatonicScale:
             msg = "NondiatonicScale cannot be instantiated directly."
             raise TypeError(msg)

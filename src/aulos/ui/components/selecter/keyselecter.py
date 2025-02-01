@@ -39,7 +39,7 @@ class KeySelecter(BaseComponent):
                     text=key,
                     value=key,
                     variable=self._selected_keyname,
-                    command=self._onClickKeyButton,
+                    command=self._on_click_keybutton,
                 )
                 for key in keys
             ]
@@ -55,19 +55,19 @@ class KeySelecter(BaseComponent):
 
     def default(self) -> None:
         self._selected_keyname.set("C")
-        self._onClickKeyButton()
+        self._on_click_keybutton()
 
-    def _onClickKeyButton(self) -> None:
-        for callback in self.callbacks_onClickKeyButton:
+    def _on_click_keybutton(self) -> None:
+        for callback in self.callbacks_on_click_keybutton:
             callback()
 
     @property
     def keyname(self) -> str:
         return self._selected_keyname.get()
 
-    callbacks_onClickKeyButton: list[t.Callable[[], t.Any]]
+    callbacks_on_click_keybutton: list[t.Callable[[], t.Any]]
 
-    def set_callback_onClickKeyButton(self, callback: t.Callable[[], t.Any]) -> None:
+    def set_callback_on_click_keybutton(self, callback: t.Callable[[], t.Any]) -> None:
         if not hasattr(self, "callbacks_onClickKeyButton"):
-            self.callbacks_onClickKeyButton = []
-        self.callbacks_onClickKeyButton.append(callback)
+            self.callbacks_on_click_keybutton = []
+        self.callbacks_on_click_keybutton.append(callback)

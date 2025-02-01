@@ -9,7 +9,7 @@ def run_gui() -> None:
     root = tk.Tk()
     root.title("Aulos Application GUI")
     root.geometry("1200x800")
-    root.resizable(False, False)
+    root.resizable(width=False, height=False)
     keyboard = KeyBoard(root)
     keyboard.pack(fill=tk.X)
     scale = ScaleViewer(root)

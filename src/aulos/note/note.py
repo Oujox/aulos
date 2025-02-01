@@ -129,11 +129,11 @@ class BaseNote[PITCHCLASS: BasePitchClass](AulosObject[NoteSchema]):
         )
 
     @classmethod
-    def is_notename(cls, notename: t.Any) -> t.TypeGuard[str]:
+    def is_notename(cls, notename: object) -> t.TypeGuard[str]:
         return cls.schema.is_notename(notename)
 
     @classmethod
-    def is_notenumber(cls, notenumber: t.Any) -> t.TypeGuard[int]:
+    def is_notenumber(cls, notenumber: object) -> t.TypeGuard[int]:
         return cls.schema.is_notenumber(notenumber)
 
     def __eq__(self, other: object) -> bool:

@@ -54,7 +54,7 @@ class BaseKey[PITCHCLASS: BasePitchClass](AulosObject[KeySchema]):
         return self.PitchClass(self._keyname, setting=self._setting)
 
     @classmethod
-    def is_keyname(cls, value: t.Any) -> t.TypeGuard[str]:
+    def is_keyname(cls, value: object) -> t.TypeGuard[str]:
         return cls.schema.is_keyname(value)
 
     def __eq__(self, other: object) -> bool:

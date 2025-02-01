@@ -9,6 +9,16 @@ from aulos._errors import ValidationError
 from .pitchclass import PitchClassSchema
 
 
+def convert_pitchname_to_notename(pitchname: str, symbol_octave: str) -> str:
+    # <N>
+    if symbol_octave.find("<N>") >= 0:
+        return symbol_octave.replace("<N>", pitchname, 1)
+    # <n>
+    if symbol_octave.find("<n>") >= 0:
+        return symbol_octave.replace("<n>", pitchname, 1)
+    return symbol_octave + pitchname
+
+
 @dataclass(frozen=True, slots=True)
 class NoteSchema(Schema):
     symbols_notenumber: tuple[int, ...]
@@ -94,15 +104,6 @@ class NoteSchema(Schema):
                         sequence.append(None)
             return sequence
 
-        def convert_pitchname_to_notename(pitchname: str, symbol_octave: str) -> str:
-            # <N>
-            if symbol_octave.find("<N>") >= 0:
-                return symbol_octave.replace("<N>", pitchname, 1)
-            # <n>
-            if symbol_octave.find("<n>") >= 0:
-                return symbol_octave.replace("<n>", pitchname, 1)
-            return symbol_octave + pitchname
-
         no_accidental_sequence = create_symbol_sequence()
         accidental_upper_sequences = create_upper_sequences()
         accidental_lower_sequences = reversed(create_lower_sequences())
@@ -176,17 +177,14 @@ class NoteSchema(Schema):
         self.ensure_valid_notename(notename)
         return self.name2number[notename]
 
-    # [unstable]
     def convert_notenumber_to_pitchclass(self, notenumber: int) -> int:
         self.ensure_valid_notenumber(notenumber)
         return notenumber % self.pitchclass.cardinality
 
-    # [unstable]
     def convert_pitchclass_to_notenumber(self, pitchclass: int, octave: int) -> int:
         self.pitchclass.ensure_valid_pitchclass(pitchclass)
         return pitchclass + (self.pitchclass.cardinality * octave)
 
-    # [unstable]
     def convert_notename_to_pitchname(self, notename: str) -> str:
         self.ensure_valid_notename(notename)
         accidental = self.count_accidental(notename)
@@ -201,7 +199,6 @@ class NoteSchema(Schema):
             raise RuntimeError(msg)
         return pitchname
 
-    # [unstable]
     def convert_pitchname_to_notename(self, pitchname: str, octave: int) -> str:
         self.pitchclass.ensure_valid_pitchname(pitchname)
         accidental = self.pitchclass.count_accidental(pitchname)
@@ -213,10 +210,10 @@ class NoteSchema(Schema):
             raise RuntimeError(msg)
         return notename
 
-    def is_notename(self, value: t.Any) -> t.TypeGuard[str]:
+    def is_notename(self, value: object) -> t.TypeGuard[str]:
         return isinstance(value, str) and value in self.notenames
 
-    def is_notenumber(self, value: t.Any) -> t.TypeGuard[int]:
+    def is_notenumber(self, value: object) -> t.TypeGuard[int]:
         return isinstance(value, int) and value in self.notenumbers
 
     def ensure_valid_notename(self, notename: str) -> None:

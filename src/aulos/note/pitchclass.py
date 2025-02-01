@@ -96,11 +96,11 @@ class BasePitchClass(AulosObject[PitchClassSchema]):
         return self._scale
 
     @classmethod
-    def is_pitchname(cls, pitchname: t.Any) -> t.TypeGuard[str]:
+    def is_pitchname(cls, pitchname: object) -> t.TypeGuard[str]:
         return cls.schema.is_pitchname(pitchname)
 
     @classmethod
-    def is_pitchclass(cls, pitchclass: t.Any) -> t.TypeGuard[int]:
+    def is_pitchclass(cls, pitchclass: object) -> t.TypeGuard[int]:
         return cls.schema.is_pitchclass(pitchclass)
 
     def __eq__(self, other: object) -> bool:

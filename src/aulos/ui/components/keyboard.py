@@ -36,7 +36,7 @@ class KeyElement(tk.Frame):
                 height=height * (2 / 3),
             )
 
-        def callback_btn_bgcolor(*args: t.Any) -> None:
+        def callback_btn_bgcolor(*_args: t.Any) -> None:
             if self.is_active.get():
                 self.key.config(bg="#FF6347")
             elif self.is_white():

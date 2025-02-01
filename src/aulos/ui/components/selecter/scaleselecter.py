@@ -79,7 +79,7 @@ class ScaleSelecter(BaseComponent):
                     text=scale,
                     value=scale,
                     variable=self._selected_scalename,
-                    command=self._onClickScaleButton,
+                    command=self._on_click_scalebutton,
                 )
                 for scale in scales
             ]
@@ -95,15 +95,15 @@ class ScaleSelecter(BaseComponent):
 
     def default(self) -> None:
         self._selected_scalename.set(scale.Major.__name__)
-        self._onClickScaleButton()
+        self._on_click_scalebutton()
 
-    def _onClickScaleButton(self) -> None:
+    def _on_click_scalebutton(self) -> None:
         for scales in SCALE_DEFAULTS:
             name = self._selected_scalename.get()
             if name in scales:
                 self._selected_scaleinfo.set(scales[name].__doc__ or "")
 
-        for callback in self.callbacks_onClickScaleButton:
+        for callback in self.callbacks_on_click_scalebutton:
             callback()
 
     @property
@@ -121,9 +121,9 @@ class ScaleSelecter(BaseComponent):
     def scaleinfo(self) -> str:
         return self._selected_scaleinfo.get()
 
-    callbacks_onClickScaleButton: list[t.Callable[[], t.Any]]
+    callbacks_on_click_scalebutton: list[t.Callable[[], t.Any]]
 
-    def set_callback_onClickScaleButton(self, callback: t.Callable[[], t.Any]) -> None:
+    def set_callback_on_click_scalebutton(self, callback: t.Callable[[], t.Any]) -> None:
         if not hasattr(self, "callbacks_onClickScaleButton"):
-            self.callbacks_onClickScaleButton = []
-        self.callbacks_onClickScaleButton.append(callback)
+            self.callbacks_on_click_scalebutton = []
+        self.callbacks_on_click_scalebutton.append(callback)

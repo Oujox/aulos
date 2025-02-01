@@ -1,12 +1,12 @@
-from .array import index, rotated
-from .calculation import wrapped_diff
+from .calculation import cyclic_difference
 from .dataclass import from_dict
-from .decorators import classproperty
+from .property import classproperty
+from .sequence import index, rotated
 
 __all__ = [
     "classproperty",
+    "cyclic_difference",
     "from_dict",
     "index",
     "rotated",
-    "wrapped_diff",
 ]

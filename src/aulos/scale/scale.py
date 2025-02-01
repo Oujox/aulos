@@ -16,7 +16,7 @@ class Scale[KEY: BaseKey, PITCHCLASS: BasePitchClass](AulosObject[ScaleSchema]):
     _key: KEY
     _signatures: tuple[int, ...]
 
-    def __new__(cls, *args: t.Any, **kwargs: t.Any) -> t.Self:
+    def __new__(cls, *_args: t.Any, **_kwargs: t.Any) -> t.Self:
         if cls is Scale:
             msg = "Scale cannot be instantiated directly."
             raise TypeError(msg)
