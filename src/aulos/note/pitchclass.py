@@ -1,55 +1,68 @@
 import typing as t
 from typing import TYPE_CHECKING
 
-from .._core import AulosObject
-from .._core.utils import index
+from aulos._core import AulosObject
+from aulos._core.utils import index
+
 from .schemas import PitchClassSchema
 
 if TYPE_CHECKING:
-    from ..scale import Scale  # pragma: no cover
+    from aulos.scale import Scale  # pragma: no cover
+
+
+def resolve_pitchname_from_scale(pitchclass: int, scale: "Scale | None", schema: PitchClassSchema) -> str | None:
+    if scale is not None:
+        relative_pitchclass = (pitchclass - int(scale.key)) % schema.cardinality
+        if (idx := index(scale.positions, relative_pitchclass)) is not None:
+            return schema.convert_pitchclass_to_pitchname(
+                pitchclass,
+                scale.signatures[idx],
+            )
+    return None
 
 
 class BasePitchClass(AulosObject[PitchClassSchema]):
     _pitchclass: int
     _pitchnames: tuple[str | None, ...]
     _pitchname: str | None
-    _scale: t.Optional["Scale"]
+    _scale: "Scale | None"
 
     def __init__(
         self,
         identify: int | str | t.Self,
         *,
-        scale: t.Optional["Scale"] = None,
-        **kwargs,
+        scale: "Scale | None" = None,
+        **kwargs: t.Any,
     ) -> None:
         super().__init__(**kwargs)
 
         if isinstance(identify, BasePitchClass):
-            self._pitchclass = identify._pitchclass
-            self._pitchnames = identify._pitchnames
-            self._pitchname = identify._pitchname
-            self._scale = None
-            self.scale = identify._scale
+            pitchnames = self.schema.convert_pitchclass_to_pitchnames(identify.pitchclass)
+            pitchname = resolve_pitchname_from_scale(identify.pitchclass, scale, self.schema)
+            self._pitchclass = identify.pitchclass
+            self._pitchnames = pitchnames
+            self._pitchname = pitchname or identify.pitchname
+            self._scale = scale or identify.scale
 
         elif self.is_pitchclass(identify):
             pitchnames = self.schema.convert_pitchclass_to_pitchnames(identify)
+            pitchname = resolve_pitchname_from_scale(identify, scale, self.schema)
             self._pitchclass = identify
             self._pitchnames = pitchnames
-            self._pitchname = None
-            self._scale = None
-            self.scale = scale
+            self._pitchname = pitchname
+            self._scale = scale
 
         elif self.is_pitchname(identify):
             pitchclass = self.schema.convert_pitchname_to_picthclass(identify)
             pitchnames = self.schema.convert_pitchclass_to_pitchnames(pitchclass)
+            pitchname = resolve_pitchname_from_scale(pitchclass, scale, self.schema)
             self._pitchclass = pitchclass
             self._pitchnames = pitchnames
-            self._pitchname = identify
-            self._scale = None
-            self.scale = scale
+            self._pitchname = pitchname or identify
+            self._scale = scale
 
         else:
-            raise ValueError()
+            raise ValueError
 
     def __init_subclass__(
         cls,
@@ -57,7 +70,7 @@ class BasePitchClass(AulosObject[PitchClassSchema]):
         intervals: t.Sequence[int],
         symbols_pitchclass: t.Sequence[str],
         symbols_accidental: t.Sequence[str],
-        **kwargs,
+        **kwargs: t.Any,
     ) -> None:
         schema = PitchClassSchema(
             tuple(intervals),
@@ -78,42 +91,24 @@ class BasePitchClass(AulosObject[PitchClassSchema]):
     def pitchname(self) -> str | None:
         return self._pitchname
 
-    @pitchname.setter
-    def pitchname(self, name: str):
-        if self.is_pitchname(name) and name in self._pitchnames:
-            self._pitchname = name
-
     @property
-    def scale(self) -> t.Optional["Scale"]:
+    def scale(self) -> "Scale | None":
         return self._scale
 
-    @scale.setter
-    def scale(self, scale: t.Optional["Scale"]):
-        from ..scale import Scale
-
-        if isinstance(scale, Scale):
-            self._scale = scale
-            pitchclass = (int(self) - int(scale.key)) % self.schema.cardinality
-
-            if (idx := index(scale.positions, pitchclass)) is not None:
-                self._pitchname = self.schema.convert_pitchclass_to_pitchname(
-                    self._pitchclass, scale.signatures[idx]
-                )
-
     @classmethod
-    def is_pitchname(cls, pitchname: t.Any) -> t.TypeGuard[str]:
+    def is_pitchname(cls, pitchname: object) -> t.TypeGuard[str]:
         return cls.schema.is_pitchname(pitchname)
 
     @classmethod
-    def is_pitchclass(cls, pitchclass: t.Any) -> t.TypeGuard[int]:
+    def is_pitchclass(cls, pitchclass: object) -> t.TypeGuard[int]:
         return cls.schema.is_pitchclass(pitchclass)
 
-    def __eq__(self, other: t.Any) -> bool:
+    def __eq__(self, other: object) -> bool:
         if not isinstance(other, t.SupportsInt):
             return NotImplemented
         return int(self) == int(other)
 
-    def __ne__(self, other: t.Any) -> bool:
+    def __ne__(self, other: object) -> bool:
         return not self.__eq__(other)
 
     def __add__(self, other: t.SupportsInt) -> t.Self:

@@ -47,6 +47,7 @@ jobs:
           geom=640x480x24
           exec Xvfb $disp -screen $screen $geom 2>/tmp/Xvfb.log &
           export DISPLAY=:99
+          python -m pip install -e .
           python -m pip install pytest pytest-cov
           python -m pytest . --cov=./src/aulos --cov-report=xml
 

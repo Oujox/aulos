@@ -1,7 +1,8 @@
 import tkinter as tk
-import tkinter.ttk as ttk
+import typing as t
+from tkinter import ttk
 
-from ..const import KEYBOARD_BLACK_CLASSES, KEYBOARD_WHITE_CLASSES
+from aulos.ui.const import KEYBOARD_BLACK_CLASSES, KEYBOARD_WHITE_CLASSES
 
 
 class KeyElement(tk.Frame):
@@ -10,13 +11,13 @@ class KeyElement(tk.Frame):
 
     notenumber: int
 
-    def __init__(self, master: tk.Misc, notenumber: int, *, width: int, height: int):
+    def __init__(self, master: tk.Misc, notenumber: int, *, width: int, height: int) -> None:
         super().__init__(master)
         self.master = master
         self.notenumber = notenumber
         self.create_widget(width, height)
 
-    def create_widget(self, width: int, height: int):
+    def create_widget(self, width: int, height: int) -> None:
         if self.is_white():
             self.key = tk.Button(self)
             self.key.config(bg="#FFFFFF")
@@ -28,22 +29,25 @@ class KeyElement(tk.Frame):
             self.key.config(bg="#000000")
             self.config(width=width * (2 / 3), height=height * (2 / 3))
             self.key.place(
-                x=0, y=0, anchor=tk.NW, width=width * (2 / 3), height=height * (2 / 3)
+                x=0,
+                y=0,
+                anchor=tk.NW,
+                width=width * (2 / 3),
+                height=height * (2 / 3),
             )
 
-        def callback_btn_bgcolor(*args):
+        def callback_btn_bgcolor(*_args: t.Any) -> None:
             if self.is_active.get():
                 self.key.config(bg="#FF6347")
-            else:
-                if self.is_white():
-                    self.key.config(bg="#FFFFFF")
-                elif self.is_black():
-                    self.key.config(bg="#000000")
+            elif self.is_white():
+                self.key.config(bg="#FFFFFF")
+            elif self.is_black():
+                self.key.config(bg="#000000")
 
         self.is_active = tk.BooleanVar(value=True)
         self.is_active.trace_add("write", callback_btn_bgcolor)
 
-    def default(self):
+    def default(self) -> None:
         return
 
     def is_white(self) -> bool:
@@ -64,12 +68,12 @@ class KeyBoard(tk.Frame):
     keyboard: tk.Frame
     keylist: list[KeyElement]
 
-    def __init__(self, master: tk.Misc):
+    def __init__(self, master: tk.Misc) -> None:
         super().__init__(master)
         self.master = master
         self.create_widget()
 
-    def create_widget(self):
+    def create_widget(self) -> None:
         self.notebook = ttk.Notebook(self)
         self.tab1 = tk.Frame(self.notebook)
         self.tab2 = tk.Frame(self.notebook)
@@ -78,7 +82,9 @@ class KeyBoard(tk.Frame):
         self.canvas = tk.Canvas(self.tab1, width=1000, height=72)
         self.keyboard = tk.Frame(self.canvas, width=1750, height=72, bg="#F0F0F0")
         self.scrollbar = tk.Scrollbar(
-            self.tab1, orient=tk.HORIZONTAL, command=self.canvas.xview
+            self.tab1,
+            orient=tk.HORIZONTAL,
+            command=self.canvas.xview,
         )
 
         self.canvas.create_window((0, 0), window=self.keyboard, anchor=tk.NW)
@@ -107,7 +113,7 @@ class KeyBoard(tk.Frame):
         x = 0
         keylist: list[KeyElement] = []
 
-        for notenumber in range(0, 128):
+        for notenumber in range(128):
             key = KeyElement(self.keyboard, notenumber, width=24, height=72)
 
             if key.is_white():
@@ -125,5 +131,5 @@ class KeyBoard(tk.Frame):
 
         return keylist
 
-    def default(self):
+    def default(self) -> None:
         return

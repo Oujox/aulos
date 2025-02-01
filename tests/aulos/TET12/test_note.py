@@ -42,16 +42,12 @@ def test_Note_property_get_notenames(
 ):
     for notenumber in data_notenumbers:
         assert Note(notenumber).notenames == [
-            item
-            for item in data_map_notenumber_to_notenames[notenumber]
-            if item is not None
+            item for item in data_map_notenumber_to_notenames[notenumber] if item is not None
         ]
     for notename in data_notenames:
         assert Note(notename).notenames == [
             item
-            for item in data_map_notenumber_to_notenames[
-                data_map_notename_to_notenumber[notename]
-            ]
+            for item in data_map_notenumber_to_notenames[data_map_notename_to_notenumber[notename]]
             if item is not None
         ]
 
@@ -90,14 +86,12 @@ def test_Note_dunder_int(data_notenumbers):
 
 
 def test_PitchClass_dunder_str(
-    data_notenumbers, data_notenames, data_map_notenumber_to_notenames
+    data_notenumbers,
+    data_notenames,
+    data_map_notenumber_to_notenames,
 ):
     for notenumber in data_notenumbers:
-        notenames = [
-            name
-            for name in data_map_notenumber_to_notenames[notenumber]
-            if name is not None
-        ]
+        notenames = [name for name in data_map_notenumber_to_notenames[notenumber] if name is not None]
         assert str(Note(notenumber)) == f"<Note: {notenames}, scale: None>"
     for notename in data_notenames:
         assert str(Note(notename)) == f"<Note: {notename}, scale: None>"

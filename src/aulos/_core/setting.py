@@ -1,10 +1,8 @@
 import json
-import os
+import tomllib
 import typing as t
 from dataclasses import dataclass
 from pathlib import Path
-
-import tomllib
 
 from .utils import from_dict
 
@@ -13,7 +11,7 @@ from .utils import from_dict
 class Setting:
     @classmethod
     def default(cls) -> t.Self:
-        path = Path(os.path.dirname(__file__)) / "default.toml"
+        path = Path().parent / "default.toml"
         return cls.from_toml(path)
 
     @classmethod
@@ -22,10 +20,12 @@ class Setting:
 
     @classmethod
     def from_toml(cls, path: Path) -> t.Self:
-        setting = tomllib.load(open(path, mode="rb"))
-        return from_dict(cls, setting)
+        with Path.open(path, mode="rb") as f:
+            setting = tomllib.load(f)
+            return from_dict(cls, setting)
 
     @classmethod
     def from_json(cls, path: Path) -> t.Self:
-        setting = json.load(open(path, mode="rb"))
-        return from_dict(cls, setting)
+        with Path.open(path, mode="rb") as f:
+            setting = json.load(f)
+            return from_dict(cls, setting)

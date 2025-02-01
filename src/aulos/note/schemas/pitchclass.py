@@ -3,7 +3,8 @@ from dataclasses import dataclass, field
 from functools import cached_property
 from itertools import accumulate, chain
 
-from ..._core import Schema
+from aulos._core import Schema
+from aulos._errors import ValidationError
 
 
 @dataclass(frozen=True, slots=True)
@@ -25,23 +26,29 @@ class PitchClassSchema(Schema):
     def validate(self) -> None:
         # [check] intervals
         if not len(self.intervals) > 0:
-            raise Exception()
-        if not all(0 <= v for v in self.intervals):
-            raise Exception()
+            msg = ""
+            raise ValidationError(msg)
+        if not all(v >= 0 for v in self.intervals):
+            msg = ""
+            raise ValidationError(msg)
 
         # [check] symbols_pitchclass
         if not len(self.symbols_pitchclass) > 0:
-            raise Exception()
+            msg = ""
+            raise ValidationError(msg)
 
         # [check] symbols_accidental
         if not len(self.symbols_accidental) > 0:
-            raise Exception()
-        if not (len(self.symbols_accidental) % 2) == 0:
-            raise Exception()
+            msg = ""
+            raise ValidationError(msg)
+        if len(self.symbols_accidental) % 2 != 0:
+            msg = ""
+            raise ValidationError(msg)
 
         # [cross-field check]
-        if not len(self.intervals) == len(self.symbols_pitchclass):
-            raise Exception()
+        if len(self.intervals) != len(self.symbols_pitchclass):
+            msg = ""
+            raise ValidationError(msg)
 
     def initialize(self) -> None:
         cardinality = sum(self.intervals)
@@ -70,7 +77,9 @@ class PitchClassSchema(Schema):
             return sequences
 
         def create_symbol_sequence(
-            *, prefix: str = "", suffix: str = ""
+            *,
+            prefix: str = "",
+            suffix: str = "",
         ) -> list[str | None]:
             sequence: list[str | None] = []
             for deg in range(cardinality):
@@ -89,11 +98,11 @@ class PitchClassSchema(Schema):
                 *accidental_lower_sequences,
                 no_accidental_sequence,
                 *accidental_upper_sequences,
-            )
+                strict=False,
+            ),
         )
         name2class = [
-            [(name, index) for name in names if name is not None]
-            for index, names in enumerate(accidental_sequences)
+            [(name, index) for name in names if name is not None] for index, names in enumerate(accidental_sequences)
         ]
         class2name = [(index, name) for index, name in enumerate(accidental_sequences)]
 
@@ -111,14 +120,14 @@ class PitchClassSchema(Schema):
     def pitchclasses(self) -> tuple[int, ...]:
         return tuple(self.class2name.keys())
 
-    # [unstable]
+    # unstable
     def find_pitchname(self, value: str) -> str | None:
         finded = sorted(
             [pitchname for pitchname in self.pitchnames if value.find(pitchname) == 0],
             key=len,
             reverse=True,
         )
-        return (finded + [None])[0]
+        return ([*finded, None])[0]
 
     def count_accidental(self, pitchname: str) -> int:
         self.ensure_valid_pitchname(pitchname)
@@ -127,14 +136,17 @@ class PitchClassSchema(Schema):
         return pitchnames.index(pitchname) - self.accidental
 
     def convert_pitchclass_to_pitchname(
-        self, pitchclass: int, accidental: int
+        self,
+        pitchclass: int,
+        accidental: int,
     ) -> str | None:
         self.ensure_valid_pitchclass(pitchclass)
         self.ensure_valid_accidental(accidental)
         return self.class2name[pitchclass][self.accidental + accidental]
 
     def convert_pitchclass_to_pitchnames(
-        self, pitchclass: int
+        self,
+        pitchclass: int,
     ) -> tuple[str | None, ...]:
         self.ensure_valid_pitchclass(pitchclass)
         return self.class2name[pitchclass]
@@ -154,35 +166,43 @@ class PitchClassSchema(Schema):
         pitchclass = (pitchclass - accidental) % self.cardinality
         symbol = self.convert_pitchclass_to_pitchname(pitchclass, 0)
         if symbol is None:
-            raise RuntimeError("unreachable error")
+            msg = "unreachable error"
+            raise RuntimeError(msg)
         return symbol
 
-    def is_symbol(self, value: t.Any) -> t.TypeGuard[str]:
+    def is_symbol(self, value: object) -> t.TypeGuard[str]:
         return isinstance(value, str) and value in self.symbols_pitchclass
 
-    def is_pitchname(self, value: t.Any) -> t.TypeGuard[str]:
+    def is_pitchname(self, value: object) -> t.TypeGuard[str]:
         return isinstance(value, str) and value in self.pitchnames
 
-    def is_pitchclass(self, value: t.Any) -> t.TypeGuard[int]:
+    def is_pitchclass(self, value: object) -> t.TypeGuard[int]:
         return isinstance(value, int) and value in self.pitchclasses
 
     def ensure_valid_pitchname(self, pitchname: str) -> None:
         if not self.is_pitchname(pitchname):
+            msg = f"Invalid pitchname '{pitchname}'. Pitchname must be a valid musical note name {self.pitchnames[:3]}."
             raise ValueError(
-                f"Invalid pitchname '{pitchname}'. "
-                f"Pitchname must be a valid musical note name {self.pitchnames[:3]}."
+                msg,
             )
 
     def ensure_valid_pitchclass(self, pitchclass: int) -> None:
         if not self.is_pitchclass(pitchclass):
-            raise ValueError(
+            msg = (
                 f"Invalid pitchclass '{pitchclass}'."
-                f"Pitchclass must be an integer between {min(self.pitchclasses)} and {max(self.pitchclasses)} inclusive."
+                f"Pitchclass must be an integer between {min(self.pitchclasses)} and"
+                f"{max(self.pitchclasses)} inclusive."
+            )
+            raise ValueError(
+                msg,
             )
 
     def ensure_valid_accidental(self, accidental: int) -> None:
         if not abs(accidental) <= self.accidental:
-            raise ValueError(
+            msg = (
                 f"Invalid accidental '{accidental}'. "
                 f"Accidental must be within the range -{self.accidental} to +{self.accidental}."
+            )
+            raise ValueError(
+                msg,
             )

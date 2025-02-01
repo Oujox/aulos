@@ -1,10 +1,10 @@
 import tkinter as tk
-import tkinter.ttk as ttk
 import typing as t
+from tkinter import ttk
 
-from .... import Scale
-from ....TET12 import scale
-from ..base import BaseComponent
+from aulos import Scale
+from aulos.TET12 import scale
+from aulos.ui.components.base import BaseComponent
 
 SCALE_DEFAULTS: tuple[dict[str, type[Scale]], dict[str, type[Scale]]] = (
     {
@@ -52,26 +52,26 @@ class ScaleSelecter(BaseComponent):
     _scalegroups: list[ttk.Frame]
     _scalebuttons: list[list[ttk.Radiobutton]]
 
-    def __init__(self, master: tk.Misc):
+    def __init__(self, master: tk.Misc) -> None:
         super().__init__(master)
         self.master = master
         self.create_widget()
 
-    def create_widget(self):
+    def create_widget(self) -> None:
         self._selected_scalename = tk.StringVar()
         self._selected_scaleinfo = tk.StringVar()
 
         self._scaleselecter_wrap = ttk.Frame(
-            self, padding=(24, 8), borderwidth=2, relief=tk.SOLID
+            self,
+            padding=(24, 8),
+            borderwidth=2,
+            relief=tk.SOLID,
         )
         self._scalesetecter_title = ttk.Label(self, text="Scale")
         self._scaleselecter_wrap.pack()
         self._scalesetecter_title.place(relx=0.05, rely=0, anchor=tk.W)
 
-        self._scalegroups = [
-            ttk.Frame(self._scaleselecter_wrap, padding=(6, 0))
-            for _ in range(len(SCALE_DEFAULTS))
-        ]
+        self._scalegroups = [ttk.Frame(self._scaleselecter_wrap, padding=(6, 0)) for _ in range(len(SCALE_DEFAULTS))]
         self._scalebuttons = [
             [
                 ttk.Radiobutton(
@@ -79,11 +79,11 @@ class ScaleSelecter(BaseComponent):
                     text=scale,
                     value=scale,
                     variable=self._selected_scalename,
-                    command=self._onClickScaleButton,
+                    command=self._on_click_scalebutton,
                 )
-                for scale in scales.keys()
+                for scale in scales
             ]
-            for scalegroup, scales in zip(self._scalegroups, SCALE_DEFAULTS)
+            for scalegroup, scales in zip(self._scalegroups, SCALE_DEFAULTS, strict=False)
         ]
 
         for scalegroup in self._scalegroups:
@@ -93,17 +93,17 @@ class ScaleSelecter(BaseComponent):
             for btn in scalebuttons:
                 btn.pack(side=tk.TOP, anchor=tk.NW)
 
-    def default(self):
+    def default(self) -> None:
         self._selected_scalename.set(scale.Major.__name__)
-        self._onClickScaleButton()
+        self._on_click_scalebutton()
 
-    def _onClickScaleButton(self):
+    def _on_click_scalebutton(self) -> None:
         for scales in SCALE_DEFAULTS:
             name = self._selected_scalename.get()
             if name in scales:
                 self._selected_scaleinfo.set(scales[name].__doc__ or "")
 
-        for callback in self.callbacks_onClickScaleButton:
+        for callback in self.callbacks_on_click_scalebutton:
             callback()
 
     @property
@@ -121,9 +121,9 @@ class ScaleSelecter(BaseComponent):
     def scaleinfo(self) -> str:
         return self._selected_scaleinfo.get()
 
-    callbacks_onClickScaleButton: list[t.Callable[[], t.Any]]
+    callbacks_on_click_scalebutton: list[t.Callable[[], t.Any]]
 
-    def set_callback_onClickScaleButton(self, callback: t.Callable[[], t.Any]):
+    def set_callback_on_click_scalebutton(self, callback: t.Callable[[], t.Any]) -> None:
         if not hasattr(self, "callbacks_onClickScaleButton"):
-            self.callbacks_onClickScaleButton = []
-        self.callbacks_onClickScaleButton.append(callback)
+            self.callbacks_on_click_scalebutton = []
+        self.callbacks_on_click_scalebutton.append(callback)

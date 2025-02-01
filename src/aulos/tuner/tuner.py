@@ -1,7 +1,8 @@
 import typing as t
 
-from .._core import AulosObject
-from ..note import BaseNote
+from aulos._core import AulosObject
+from aulos.note import BaseNote
+
 from .schemas import TunerSchema
 
 
@@ -10,12 +11,13 @@ class Tuner[NOTE: BaseNote](AulosObject[TunerSchema]):
     _ratios: t.ClassVar[tuple[float, ...]]
     _root: float
 
-    def __new__(cls, *args, **kwargs) -> t.Self:
+    def __new__(cls, *_args: t.Any, **_kwargs: t.Any) -> t.Self:
         if cls is Tuner:
-            raise TypeError("Tuner cannot be instantiated directly.")
+            msg = "Tuner cannot be instantiated directly."
+            raise TypeError(msg)
         return super().__new__(cls)
 
-    def __init__(self, root: float, **kwargs):
+    def __init__(self, root: float, **kwargs: t.Any) -> None:
         super().__init__(**kwargs)
         self._root = root
 
@@ -25,8 +27,8 @@ class Tuner[NOTE: BaseNote](AulosObject[TunerSchema]):
         ratios: tuple[float, ...],
         reference_notenumber: int,
         note: type[NOTE],
-        **kwargs,
-    ):
+        **kwargs: t.Any,
+    ) -> None:
         schema = TunerSchema(
             reference_notenumber,
             note.schema,
@@ -46,16 +48,16 @@ class Tuner[NOTE: BaseNote](AulosObject[TunerSchema]):
         pitchclass = ref % self.schema.pitchclass.cardinality
         return self._root * (2**octnumber) * self._ratios[pitchclass]
 
-    def __eq__(self, other: t.Any) -> bool:
+    def __eq__(self, other: object) -> bool:
         if not isinstance(other, Tuner):
             return NotImplemented
         return self._ratios == other._ratios
 
-    def __ne__(self, other: t.Any) -> bool:
+    def __ne__(self, other: object) -> bool:
         return not self.__eq__(other)
 
     def __str__(self) -> str:
-        return "<Tuner: {}>".format(self.__class__.__name__)
+        return f"<Tuner: {self.__class__.__name__}>"
 
     def __repr__(self) -> str:
-        return "<Tuner: {}>".format(self.__class__.__name__)
+        return f"<Tuner: {self.__class__.__name__}>"

@@ -42,16 +42,12 @@ def test_PitchClass_property_get_pitchnames(
 ):
     for pitchclass in data_pitchclass:
         assert PitchClass(pitchclass).pitchnames == [
-            item
-            for item in data_map_pitchclass_to_pitchnames[pitchclass]
-            if item is not None
+            item for item in data_map_pitchclass_to_pitchnames[pitchclass] if item is not None
         ]
     for pitchname in data_pitchname:
         assert PitchClass(pitchname).pitchnames == [
             item
-            for item in data_map_pitchclass_to_pitchnames[
-                data_map_pitchname_to_pitchclass[pitchname]
-            ]
+            for item in data_map_pitchclass_to_pitchnames[data_map_pitchname_to_pitchclass[pitchname]]
             if item is not None
         ]
 
@@ -67,17 +63,17 @@ def test_PitchClass_dunder_eqne(data_map_pitchname_to_pitchclass):
 def test_PitchClass_dunder_add(data_pitchclass):
     for pitchclass in data_pitchclass:
         for pitchclass2 in data_pitchclass:
-            assert (PitchClass(pitchclass) + pitchclass2) == (
-                pitchclass + pitchclass2
-            ) % sum(PitchClass.schema.intervals)
+            assert (PitchClass(pitchclass) + pitchclass2) == (pitchclass + pitchclass2) % sum(
+                PitchClass.schema.intervals,
+            )
 
 
 def test_PitchClass_dunder_sub(data_pitchclass):
     for pitchclass in data_pitchclass:
         for pitchclass2 in data_pitchclass:
-            assert (PitchClass(pitchclass) - pitchclass2) == (
-                pitchclass - pitchclass2
-            ) % sum(PitchClass.schema.intervals)
+            assert (PitchClass(pitchclass) - pitchclass2) == (pitchclass - pitchclass2) % sum(
+                PitchClass.schema.intervals,
+            )
 
 
 def test_PitchClass_dunder_int(data_pitchclass):
@@ -86,14 +82,12 @@ def test_PitchClass_dunder_int(data_pitchclass):
 
 
 def test_PitchClass_dunder_str(
-    data_pitchclass, data_pitchname, data_map_pitchclass_to_pitchnames
+    data_pitchclass,
+    data_pitchname,
+    data_map_pitchclass_to_pitchnames,
 ):
     for pitchclass in data_pitchclass:
-        pitchnames = [
-            name
-            for name in data_map_pitchclass_to_pitchnames[pitchclass]
-            if name is not None
-        ]
+        pitchnames = [name for name in data_map_pitchclass_to_pitchnames[pitchclass] if name is not None]
         assert str(PitchClass(pitchclass)) == f"<PitchClass: {pitchnames}, scale: None>"
     for pitchname in data_pitchname:
         assert str(PitchClass(pitchname)) == f"<PitchClass: {pitchname}, scale: None>"

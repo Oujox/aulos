@@ -3,8 +3,20 @@ from dataclasses import dataclass, field
 from functools import cached_property
 from itertools import chain
 
-from ..._core import Schema
+from aulos._core import Schema
+from aulos._errors import ValidationError
+
 from .pitchclass import PitchClassSchema
+
+
+def convert_pitchname_to_notename(pitchname: str, symbol_octave: str) -> str:
+    # <N>
+    if symbol_octave.find("<N>") >= 0:
+        return symbol_octave.replace("<N>", pitchname, 1)
+    # <n>
+    if symbol_octave.find("<n>") >= 0:
+        return symbol_octave.replace("<n>", pitchname, 1)
+    return symbol_octave + pitchname
 
 
 @dataclass(frozen=True, slots=True)
@@ -25,25 +37,29 @@ class NoteSchema(Schema):
     def validate(self) -> None:
         # [check] symbols_notenumber
         if not len(self.symbols_notenumber) > 0:
-            raise Exception()
-        if not all(0 <= v for v in self.symbols_notenumber):
-            raise Exception()
+            msg = ""
+            raise ValidationError(msg)
+        if not all(v >= 0 for v in self.symbols_notenumber):
+            msg = ""
+            raise ValidationError(msg)
 
         # [check] symbols_octave
         if not len(self.symbols_octave) > 0:
-            raise Exception()
-        if not all(
-            bool(v.find("<N>")) or bool(v.find("<n>")) for v in self.symbols_octave
-        ):
-            raise Exception()
+            msg = ""
+            raise ValidationError(msg)
+        if not all(bool(v.find("<N>")) or bool(v.find("<n>")) for v in self.symbols_octave):
+            msg = ""
+            raise ValidationError(msg)
 
         # [check] reference_notenumber
         if self.reference_notenumber not in self.symbols_notenumber:
-            raise Exception()
+            msg = ""
+            raise ValidationError(msg)
 
         # [check] reference_octave
         if self.reference_octave not in range(len(self.symbols_octave)):
-            raise Exception()
+            msg = ""
+            raise ValidationError(msg)
 
     def initialize(self) -> None:
         accidental = len(self.pitchclass.symbols_accidental) // 2
@@ -69,16 +85,16 @@ class NoteSchema(Schema):
             return sequences
 
         def create_symbol_sequence(
-            *, prefix: str = "", suffix: str = ""
+            *,
+            prefix: str = "",
+            suffix: str = "",
         ) -> list[str | None]:
             sequence: list[str | None] = []
             for symbol_octave in self.symbols_octave:
                 for deg in range(self.pitchclass.cardinality):
                     if deg in self.pitchclass.positions:
                         index = self.pitchclass.positions.index(deg)
-                        pitchname = (
-                            prefix + self.pitchclass.symbols_pitchclass[index] + suffix
-                        )
+                        pitchname = prefix + self.pitchclass.symbols_pitchclass[index] + suffix
                         notename = convert_pitchname_to_notename(
                             pitchname,
                             symbol_octave,
@@ -88,16 +104,6 @@ class NoteSchema(Schema):
                         sequence.append(None)
             return sequence
 
-        def convert_pitchname_to_notename(pitchname: str, symbol_octave: str) -> str:
-            # <N>
-            if symbol_octave.find("<N>") >= 0:
-                return symbol_octave.replace("<N>", pitchname, 1)
-            # <n>
-            elif symbol_octave.find("<n>") >= 0:
-                return symbol_octave.replace("<n>", pitchname, 1)
-            else:
-                return symbol_octave + pitchname
-
         no_accidental_sequence = create_symbol_sequence()
         accidental_upper_sequences = create_upper_sequences()
         accidental_lower_sequences = reversed(create_lower_sequences())
@@ -106,38 +112,34 @@ class NoteSchema(Schema):
                 *accidental_lower_sequences,
                 no_accidental_sequence,
                 *accidental_upper_sequences,
-            )
+                strict=False,
+            ),
         )
 
         # adjust notenumber
         ref_pitchname = self.pitchclass.symbols_pitchclass[0]
         ref_octave_notename = convert_pitchname_to_notename(
-            ref_pitchname, self.symbols_octave[self.reference_octave]
+            ref_pitchname,
+            self.symbols_octave[self.reference_octave],
         )
         adjust_notenumber = self.reference_notenumber - no_accidental_sequence.index(
-            ref_octave_notename
+            ref_octave_notename,
         )
 
         name2number = dict(
             chain.from_iterable(
                 [
-                    [
-                        (name, index + adjust_notenumber)
-                        for name in names
-                        if name is not None
-                    ]
+                    [(name, index + adjust_notenumber) for name in names if name is not None]
                     for index, names in enumerate(accidental_sequences)
                     if index + adjust_notenumber in self.symbols_notenumber
-                ]
-            )
+                ],
+            ),
         )
-        number2name = dict(
-            [
-                (index + adjust_notenumber, name)
-                for index, name in enumerate(accidental_sequences)
-                if index + adjust_notenumber in self.symbols_notenumber
-            ]
-        )
+        number2name = {
+            index + adjust_notenumber: name
+            for index, name in enumerate(accidental_sequences)
+            if index + adjust_notenumber in self.symbols_notenumber
+        }
 
         object.__setattr__(self, "name2number", name2number)
         object.__setattr__(self, "number2name", number2name)
@@ -157,13 +159,16 @@ class NoteSchema(Schema):
         return notenames.index(notename) - self.pitchclass.accidental
 
     def convert_notenumber_to_notename(
-        self, notenumber: int, accidental: int
+        self,
+        notenumber: int,
+        accidental: int,
     ) -> str | None:
         self.ensure_valid_notenumber(notenumber)
         return self.number2name[notenumber][self.pitchclass.accidental + accidental]
 
     def convert_notenumber_to_notenames(
-        self, notenumber: int
+        self,
+        notenumber: int,
     ) -> tuple[str | None, ...]:
         self.ensure_valid_notenumber(notenumber)
         return self.number2name[notenumber]
@@ -172,30 +177,28 @@ class NoteSchema(Schema):
         self.ensure_valid_notename(notename)
         return self.name2number[notename]
 
-    # [unstable]
     def convert_notenumber_to_pitchclass(self, notenumber: int) -> int:
         self.ensure_valid_notenumber(notenumber)
         return notenumber % self.pitchclass.cardinality
 
-    # [unstable]
     def convert_pitchclass_to_notenumber(self, pitchclass: int, octave: int) -> int:
         self.pitchclass.ensure_valid_pitchclass(pitchclass)
         return pitchclass + (self.pitchclass.cardinality * octave)
 
-    # [unstable]
     def convert_notename_to_pitchname(self, notename: str) -> str:
         self.ensure_valid_notename(notename)
         accidental = self.count_accidental(notename)
         notenumber = self.convert_notename_to_notenumber(notename)
         pitchclass = self.convert_notenumber_to_pitchclass(notenumber)
         pitchname = self.pitchclass.convert_pitchclass_to_pitchname(
-            pitchclass, accidental
+            pitchclass,
+            accidental,
         )
         if pitchname is None:
-            raise RuntimeError("unreachable error")
+            msg = "unreachable error"
+            raise RuntimeError(msg)
         return pitchname
 
-    # [unstable]
     def convert_pitchname_to_notename(self, pitchname: str, octave: int) -> str:
         self.pitchclass.ensure_valid_pitchname(pitchname)
         accidental = self.pitchclass.count_accidental(pitchname)
@@ -203,25 +206,29 @@ class NoteSchema(Schema):
         notenumber = self.convert_pitchclass_to_notenumber(pitchclass, octave)
         notename = self.convert_notenumber_to_notename(notenumber, accidental)
         if notename is None:
-            raise RuntimeError("unreachable error")
+            msg = "unreachable error"
+            raise RuntimeError(msg)
         return notename
 
-    def is_notename(self, value: t.Any) -> t.TypeGuard[str]:
+    def is_notename(self, value: object) -> t.TypeGuard[str]:
         return isinstance(value, str) and value in self.notenames
 
-    def is_notenumber(self, value: t.Any) -> t.TypeGuard[int]:
+    def is_notenumber(self, value: object) -> t.TypeGuard[int]:
         return isinstance(value, int) and value in self.notenumbers
 
     def ensure_valid_notename(self, notename: str) -> None:
         if not self.is_notename(notename):
+            msg = f"Invalid notename '{notename}'. Notename must be a valid musical note name {self.notenames[:3]}."
             raise ValueError(
-                f"Invalid notename '{notename}'. "
-                f"Notename must be a valid musical note name {self.notenames[:3]}."
+                msg,
             )
 
     def ensure_valid_notenumber(self, notenumber: int) -> None:
         if not self.is_notenumber(notenumber):
-            raise ValueError(
+            msg = (
                 f"Invalid pitchclass '{notenumber}'."
                 f"Notenumber must be an integer between {min(self.notenumbers)} and {max(self.notenumbers)} inclusive."
+            )
+            raise ValueError(
+                msg,
             )

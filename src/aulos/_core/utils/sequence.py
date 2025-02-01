@@ -14,6 +14,6 @@ def rotated[T](sequence: t.Sequence[T], shift: int = 0) -> tuple[T, ...]:
     return tuple(rotated)
 
 
-def inplace[T](sequence: t.MutableSequence[T], f: t.Callable[[T], T]):
+def inplace[T](sequence: t.MutableSequence[T], f: t.Callable[[T], T]) -> None:
     for i in range(len(sequence)):
         sequence[i] = f(sequence[i])

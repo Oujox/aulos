@@ -5,7 +5,7 @@ import pytest
 from src.aulos.ui import KeyBoard, ScaleViewer
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture
 def root():
     root = tk.Tk()
     yield root

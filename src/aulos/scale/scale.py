@@ -1,9 +1,10 @@
 import typing as t
 from itertools import accumulate, starmap
 
-from .._core import AulosObject
-from .._core.utils import classproperty
-from ..note import BaseKey, BasePitchClass
+from aulos._core import AulosObject
+from aulos._core.utils import classproperty
+from aulos.note import BaseKey, BasePitchClass
+
 from .schemas import ScaleSchema
 
 
@@ -15,12 +16,13 @@ class Scale[KEY: BaseKey, PITCHCLASS: BasePitchClass](AulosObject[ScaleSchema]):
     _key: KEY
     _signatures: tuple[int, ...]
 
-    def __new__(cls, *args, **kwargs) -> t.Self:
+    def __new__(cls, *_args: t.Any, **_kwargs: t.Any) -> t.Self:
         if cls is Scale:
-            raise TypeError("Scale cannot be instantiated directly.")
+            msg = "Scale cannot be instantiated directly."
+            raise TypeError(msg)
         return super().__new__(cls)
 
-    def __init__(self, key: str | KEY, **kwargs) -> None:
+    def __init__(self, key: str | KEY, **kwargs: t.Any) -> None:
         super().__init__(**kwargs)
 
         if isinstance(key, str):
@@ -31,8 +33,9 @@ class Scale[KEY: BaseKey, PITCHCLASS: BasePitchClass](AulosObject[ScaleSchema]):
                     zip(
                         self._key.signature,
                         self.schema.generate_scale_signatures(self._intervals),
+                        strict=False,
                     ),
-                )
+                ),
             )
 
         elif isinstance(key, BaseKey):
@@ -43,12 +46,13 @@ class Scale[KEY: BaseKey, PITCHCLASS: BasePitchClass](AulosObject[ScaleSchema]):
                     zip(
                         self._key.signature,
                         self.schema.generate_scale_signatures(self._intervals),
+                        strict=False,
                     ),
-                )
+                ),
             )
 
         else:
-            raise ValueError()
+            raise TypeError
 
     def __init_subclass__(
         cls,
@@ -56,10 +60,10 @@ class Scale[KEY: BaseKey, PITCHCLASS: BasePitchClass](AulosObject[ScaleSchema]):
         intervals: t.Sequence[int] | None = None,
         key: type[KEY] | None = None,
         pitchclass: type[PITCHCLASS] | None = None,
-        **kwargs,
+        **kwargs: t.Any,
     ) -> None:
         if intervals is None or key is None or pitchclass is None:
-            return None
+            return
         schema = ScaleSchema(pitchclass.schema)
         super().__init_subclass__(schema=schema, **kwargs)
         cls.Key = key
@@ -72,12 +76,12 @@ class Scale[KEY: BaseKey, PITCHCLASS: BasePitchClass](AulosObject[ScaleSchema]):
         return self._key
 
     @classproperty
-    def intervals(cls) -> tuple[int, ...]:
-        return cls._intervals
+    def intervals(self) -> tuple[int, ...]:
+        return self._intervals
 
     @classproperty
-    def positions(cls) -> tuple[int, ...]:
-        return cls._positions
+    def positions(self) -> tuple[int, ...]:
+        return self._positions
 
     @property
     def signatures(self) -> tuple[int, ...]:
@@ -93,12 +97,12 @@ class Scale[KEY: BaseKey, PITCHCLASS: BasePitchClass](AulosObject[ScaleSchema]):
             components.append(note)
         return tuple(components)
 
-    def __eq__(self, other: t.Any) -> bool:
+    def __eq__(self, other: object) -> bool:
         if not isinstance(other, Scale):
             return NotImplemented
         return self._intervals == other._intervals and self._key == other._key
 
-    def __ne__(self, other: t.Any) -> bool:
+    def __ne__(self, other: object) -> bool:
         return not self.__eq__(other)
 
     def __str__(self) -> str:

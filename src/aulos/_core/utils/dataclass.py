@@ -5,7 +5,8 @@ from dataclasses import fields, is_dataclass
 def from_dict[T](cls: type[T], value: dict[str, t.Any]) -> T:
     # 1. Check if the provided class is a dataclass
     if not is_dataclass(cls.__class__):
-        raise ValueError(f"The provided class {cls.__name__} is not a dataclass type.")
+        msg = f"The provided class {cls.__name__} is not a dataclass type."
+        raise ValueError(msg)
 
     # 2. Convert list type in dictionary to tuple type
     # 3. Recursively convert dict to dataclass

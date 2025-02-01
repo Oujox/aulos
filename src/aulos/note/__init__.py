@@ -8,8 +8,8 @@ from .note import BaseNote
 from .pitchclass import BasePitchClass
 
 __all__ = [
-    "BasePitchClass",
     "BaseKey",
     "BaseNote",
+    "BasePitchClass",
     "schemas",
 ]

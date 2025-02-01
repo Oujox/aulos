@@ -1,36 +1,39 @@
 import typing as t
 
-from .._core import AulosObject
+from aulos._core import AulosObject
+
 from .pitchclass import BasePitchClass
 from .schemas import KeySchema
 
 
 class BaseKey[PITCHCLASS: BasePitchClass](AulosObject[KeySchema]):
     PitchClass: type[PITCHCLASS]
-    _pitchname: str
-    _pitchclass: int
+    _keyname: str
+    _keyclass: int
     _signatures: tuple[int, ...]
 
-    def __init__(self, identify: str | t.Self, **kwargs) -> None:
+    def __init__(self, identify: str | t.Self, **kwargs: t.Any) -> None:
         super().__init__(**kwargs)
 
         if isinstance(identify, BaseKey):
-            self._pitchname = identify._pitchname
-            self._pitchclass = identify._pitchclass
-            self._signatures = identify._signatures
+            self._keyname = identify.keyname
+            self._keyclass = self.schema.pitchclass.convert_pitchname_to_picthclass(identify.keyname)
+            self._signatures = self.schema.generate_key_signatures(identify.keyname)
 
         elif self.is_keyname(identify):
-            self._pitchname = identify
-            self._pitchclass = self.schema.pitchclass.convert_pitchname_to_picthclass(
-                identify
-            )
+            self._keyname = identify
+            self._keyclass = self.schema.pitchclass.convert_pitchname_to_picthclass(identify)
             self._signatures = self.schema.generate_key_signatures(identify)
 
         else:
-            raise ValueError()
+            raise ValueError
 
     def __init_subclass__(
-        cls, *, accidental: int, pitchclass: type[BasePitchClass], **kwargs
+        cls,
+        *,
+        accidental: int,
+        pitchclass: type[BasePitchClass],
+        **kwargs: t.Any,
     ) -> None:
         schema = KeySchema(
             accidental,
@@ -41,29 +44,29 @@ class BaseKey[PITCHCLASS: BasePitchClass](AulosObject[KeySchema]):
 
     @property
     def keyname(self) -> str:
-        return self._pitchname
+        return self._keyname
 
     @property
     def signature(self) -> tuple[int, ...]:
         return self._signatures
 
     def to_pitchclass(self) -> PITCHCLASS:
-        return self.PitchClass(self._pitchname, setting=self._setting)
+        return self.PitchClass(self._keyname, setting=self._setting)
 
     @classmethod
-    def is_keyname(cls, value: t.Any) -> t.TypeGuard[str]:
+    def is_keyname(cls, value: object) -> t.TypeGuard[str]:
         return cls.schema.is_keyname(value)
 
-    def __eq__(self, other: t.Any) -> bool:
+    def __eq__(self, other: object) -> bool:
         if not isinstance(other, t.SupportsInt):
             return NotImplemented
         return int(self) == int(other)
 
-    def __ne__(self, other: t.Any) -> bool:
+    def __ne__(self, other: object) -> bool:
         return not self.__eq__(other)
 
     def __int__(self) -> int:
-        return self._pitchclass
+        return self._keyclass
 
     def __str__(self) -> str:
         return f"<Key: {self.keyname}>"

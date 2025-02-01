@@ -1,3 +1,6 @@
+# ruff: noqa: PLR2004
+
+
 def compress_ratio(ratio: float) -> float:
     while ratio > 2:
         ratio = ratio / 2
@@ -15,13 +18,6 @@ def standard_tuning_table(p5th_ratio: float) -> tuple[float, ...]:
 
 def fivelimit_tuning_table() -> tuple[float, ...]:
     # https://en.wikipedia.org/wiki/Just_intonation#Five-limit_tuning
-    (
-        ratios := [
-            compress_ratio((3**j) * (5**i))
-            for i in range(-1, 1 + 1)
-            for j in range(-2, 2 + 1)
-            if not j == -2
-        ]
-    ).sort()
+    (ratios := [compress_ratio((3**j) * (5**i)) for i in range(-1, 1 + 1) for j in range(-2, 2 + 1) if j != -2]).sort()
 
     return tuple(ratios)
