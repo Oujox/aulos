@@ -20,9 +20,9 @@ class KeySchema(Schema):
     def validate(self) -> None:
         # [check] accidental
         if not self.accidental > 0:
-            raise ValidationError
+            raise ValidationError("")
         if not self.accidental < self.pitchclass.accidental:
-            raise ValidationError
+            raise ValidationError("")
 
     @cached_property
     def keynames(self) -> tuple[str, ...]:
