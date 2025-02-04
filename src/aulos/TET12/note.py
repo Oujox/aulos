@@ -26,8 +26,6 @@ class Note(
         "<N>8",
         "<N>9",
     ),
-    reference_notenumber=60,
-    reference_octave=5,
     pitchclass=PitchClass,
 ):
     """ """

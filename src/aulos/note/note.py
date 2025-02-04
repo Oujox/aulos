@@ -78,16 +78,12 @@ class BaseNote[PITCHCLASS: BasePitchClass](AulosObject[NoteSchema]):
         *,
         symbols_notenumber: t.Sequence[int],
         symbols_octave: t.Sequence[str],
-        reference_notenumber: int,
-        reference_octave: int,
         pitchclass: type[PITCHCLASS],
         **kwargs: t.Any,
     ) -> None:
         schema = NoteSchema(
             tuple(symbols_notenumber),
             tuple(symbols_octave),
-            reference_notenumber,
-            reference_octave,
             pitchclass.schema,
         )
         super().__init_subclass__(schema=schema, **kwargs)

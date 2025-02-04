@@ -24,13 +24,11 @@ class DiatonicScale[KEY: BaseKey, PITCHCLASS: BasePitchClass](Scale[KEY, PITCHCL
         intervals: t.Sequence[int],
         shift: int = 0,
         key: type[KEY],
-        pitchclass: type[PITCHCLASS],
         **kwargs: t.Any,
     ) -> None:
         super().__init_subclass__(
             intervals=rotated(intervals, -shift),
             key=key,
-            pitchclass=pitchclass,
             **kwargs,
         )
 
@@ -53,13 +51,11 @@ class NondiatonicScale[KEY: BaseKey, PITCHCLASS: BasePitchClass](
         extensions: t.Sequence[t.Sequence[int]],
         base: type[DiatonicScale],
         key: type[KEY],
-        pitchclass: type[PITCHCLASS],
         **kwargs: t.Any,
     ) -> None:
         super().__init_subclass__(
             intervals=base.intervals,
             key=key,
-            pitchclass=pitchclass,
             **kwargs,
         )
         cls._base = base
