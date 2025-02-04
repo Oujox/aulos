@@ -59,15 +59,14 @@ class Scale[KEY: BaseKey, PITCHCLASS: BasePitchClass](AulosObject[ScaleSchema]):
         *,
         intervals: t.Sequence[int] | None = None,
         key: type[KEY] | None = None,
-        pitchclass: type[PITCHCLASS] | None = None,
         **kwargs: t.Any,
     ) -> None:
-        if intervals is None or key is None or pitchclass is None:
+        if intervals is None or key is None:
             return
-        schema = ScaleSchema(pitchclass.schema)
+        schema = ScaleSchema(key.schema.pitchclass)
         super().__init_subclass__(schema=schema, **kwargs)
         cls.Key = key
-        cls.PitchClass = pitchclass
+        cls.PitchClass = key.PitchClass
         cls._intervals = tuple(intervals)
         cls._positions = tuple(accumulate((0,) + cls._intervals[:-1]))
 
