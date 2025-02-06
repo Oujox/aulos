@@ -134,7 +134,6 @@ class BaseNote[PITCHCLASS: BasePitchClass](AulosObject[NoteSchema]):
         pitchlass = self.schema.convert_notenumber_to_pitchclass(self._notenumber)
         return self.PitchClass(
             pitchlass,
-            tuner=self._tuner,
             scale=self._scale,
             setting=self._setting,
         )

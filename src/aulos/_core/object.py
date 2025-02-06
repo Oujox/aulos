@@ -5,7 +5,7 @@ from .setting import Setting
 from .utils import classproperty
 
 
-class AulosObject[T: Schema, *_]:
+class AulosObject[T: Schema]:
     """
     AulosObject is a generic base class that enforces a schema and optional settings.
 
