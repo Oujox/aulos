@@ -9,6 +9,18 @@ from .schemas import ScaleSchema
 
 
 class Scale[KEY: BaseKey, PITCHCLASS: BasePitchClass](AulosObject[ScaleSchema]):
+    """
+    Scale class representing a musical scale.
+
+    Attributes:
+        Key (type[KEY]): The key type.
+        PitchClass (type[PITCHCLASS]): The pitch class type.
+        _intervals (t.ClassVar[tuple[int, ...]]): Intervals of the scale.
+        _positions (t.ClassVar[tuple[int, ...]]): Positions of the scale.
+        _key (KEY): The key of the scale.
+        _signatures (tuple[int, ...]): Signatures of the scale.
+    """
+
     Key: type[KEY]
     PitchClass: type[PITCHCLASS]
     _intervals: t.ClassVar[tuple[int, ...]]
@@ -16,11 +28,7 @@ class Scale[KEY: BaseKey, PITCHCLASS: BasePitchClass](AulosObject[ScaleSchema]):
     _key: KEY
     _signatures: tuple[int, ...]
 
-    def __new__(cls, *_args: t.Any, **_kwargs: t.Any) -> t.Self:
-        if cls is Scale:
-            msg = "Scale cannot be instantiated directly."
-            raise TypeError(msg)
-        return super().__new__(cls)
+    __slots__ = "_key", "_signatures"
 
     def __init__(self, key: str | KEY, **kwargs: t.Any) -> None:
         super().__init__(**kwargs)
@@ -59,12 +67,11 @@ class Scale[KEY: BaseKey, PITCHCLASS: BasePitchClass](AulosObject[ScaleSchema]):
         *,
         intervals: t.Sequence[int] | None = None,
         key: type[KEY] | None = None,
-        **kwargs: t.Any,
     ) -> None:
         if intervals is None or key is None:
             return
         schema = ScaleSchema(key.schema.pitchclass)
-        super().__init_subclass__(schema=schema, **kwargs)
+        super().__init_subclass__(schema=schema)
         cls.Key = key
         cls.PitchClass = key.PitchClass
         cls._intervals = tuple(intervals)

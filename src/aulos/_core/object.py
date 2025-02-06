@@ -1,23 +1,30 @@
 import typing as t
-from abc import ABCMeta
 
-from .framework import InjectedMeta, OptimizedMeta
 from .schema import Schema
 from .setting import Setting
 from .utils import classproperty
 
 
-class AulosObjectMeta(InjectedMeta, OptimizedMeta, ABCMeta):
-    """This metaclass enables dependency injection, optimizations, and abstract base class capabilities."""
+class AulosObject[T: Schema, *_]:
+    """
+    AulosObject is a generic base class that enforces a schema and optional settings.
 
+    Type Parameters:
+        T (Schema): The schema type that the class will enforce.
 
-class AulosObject[T: Schema, *_](metaclass=AulosObjectMeta):
+    Attributes:
+        _schema (T): The schema associated with the object.
+        _setting (Setting | None): Optional settings for the object.
+    """
+
     _schema: T
     _setting: Setting | None
 
+    __slots__ = ("_setting",)
+
     def __new__(cls, *_args: t.Any, **_kwargs: t.Any) -> t.Self:
-        if cls is AulosObject:
-            msg = "AulosObject cannot be instantiated directly."
+        if not hasattr(cls, "_schema"):
+            msg = f"{cls.__name__} cannot be instantiated directly."
             raise TypeError(msg)
         return super().__new__(cls)
 
@@ -26,8 +33,6 @@ class AulosObject[T: Schema, *_](metaclass=AulosObjectMeta):
         self._setting = setting
 
     def __init_subclass__(cls, *, schema: T | None = None) -> None:
-        if schema is None:
-            return
         super().__init_subclass__()
         cls._schema = schema
 

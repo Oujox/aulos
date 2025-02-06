@@ -7,10 +7,22 @@ from .schemas import KeySchema
 
 
 class BaseKey[PITCHCLASS: BasePitchClass](AulosObject[KeySchema]):
+    """
+    BaseKey class represents a musical key and provides methods to handle key-related operations.
+
+    Attributes:
+        PitchClass (type[PITCHCLASS]): The pitch class type associated with the key.
+        _keyname (str): The name of the key.
+        _keyclass (int): The class of the key.
+        _signatures (tuple[int, ...]): The key signatures.
+    """
+
     PitchClass: type[PITCHCLASS]
     _keyname: str
     _keyclass: int
     _signatures: tuple[int, ...]
+
+    __slots__ = "_keyclass", "_keyname", "_signature"
 
     def __init__(self, identify: str | t.Self, **kwargs: t.Any) -> None:
         super().__init__(**kwargs)
@@ -33,13 +45,12 @@ class BaseKey[PITCHCLASS: BasePitchClass](AulosObject[KeySchema]):
         *,
         accidental: int,
         pitchclass: type[BasePitchClass],
-        **kwargs: t.Any,
     ) -> None:
         schema = KeySchema(
             accidental,
             pitchclass.schema,
         )
-        super().__init_subclass__(schema=schema, **kwargs)
+        super().__init_subclass__(schema=schema)
         cls.PitchClass = pitchclass
 
     @property

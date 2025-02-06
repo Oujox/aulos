@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import typing as t
 from typing import TYPE_CHECKING
 
@@ -10,7 +12,7 @@ if TYPE_CHECKING:
     from aulos.scale import Scale  # pragma: no cover
 
 
-def resolve_pitchname_from_scale(pitchclass: int, scale: "Scale | None", schema: PitchClassSchema) -> str | None:
+def resolve_pitchname_from_scale(pitchclass: int, scale: Scale | None, schema: PitchClassSchema) -> str | None:
     if scale is not None:
         relative_pitchclass = (pitchclass - int(scale.key)) % schema.cardinality
         if (idx := index(scale.positions, relative_pitchclass)) is not None:
@@ -22,16 +24,28 @@ def resolve_pitchname_from_scale(pitchclass: int, scale: "Scale | None", schema:
 
 
 class BasePitchClass(AulosObject[PitchClassSchema]):
+    """
+    Base class representing a pitch class in a musical context.
+
+    Attributes:
+        _pitchclass (int): The pitch class as an integer.
+        _pitchnames (tuple[str | None, ...]): Tuple of pitch names.
+        _pitchname (str | None): The primary pitch name.
+        _scale (Scale | None): The scale associated with the pitch class.
+    """
+
     _pitchclass: int
     _pitchnames: tuple[str | None, ...]
     _pitchname: str | None
-    _scale: "Scale | None"
+    _scale: Scale | None
+
+    __slots__ = "_pitchclass", "_pitchname", "_pitchnames", "_scale"
 
     def __init__(
         self,
         identify: int | str | t.Self,
         *,
-        scale: "Scale | None" = None,
+        scale: Scale | None = None,
         **kwargs: t.Any,
     ) -> None:
         super().__init__(**kwargs)
@@ -70,14 +84,13 @@ class BasePitchClass(AulosObject[PitchClassSchema]):
         intervals: t.Sequence[int],
         symbols_pitchclass: t.Sequence[str],
         symbols_accidental: t.Sequence[str],
-        **kwargs: t.Any,
     ) -> None:
         schema = PitchClassSchema(
             tuple(intervals),
             tuple(symbols_pitchclass),
             tuple(symbols_accidental),
         )
-        super().__init_subclass__(schema=schema, **kwargs)
+        super().__init_subclass__(schema=schema)
 
     @property
     def pitchclass(self) -> int:
@@ -92,7 +105,7 @@ class BasePitchClass(AulosObject[PitchClassSchema]):
         return self._pitchname
 
     @property
-    def scale(self) -> "Scale | None":
+    def scale(self) -> Scale | None:
         return self._scale
 
     @classmethod

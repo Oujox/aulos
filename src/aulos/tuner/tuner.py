@@ -7,15 +7,20 @@ from .schemas import TunerSchema
 
 
 class Tuner[NOTE: BaseNote](AulosObject[TunerSchema]):
+    """
+    Tuner class for tuning musical notes.
+
+    Attributes:
+        Note (type[NOTE]): The note type used by the tuner.
+        _ratios (ClassVar[tuple[float, ...]]): The tuning ratios.
+        _root (float): The root frequency.
+    """
+
     Note: type[NOTE]
     _ratios: t.ClassVar[tuple[float, ...]]
     _root: float
 
-    def __new__(cls, *_args: t.Any, **_kwargs: t.Any) -> t.Self:
-        if cls is Tuner:
-            msg = "Tuner cannot be instantiated directly."
-            raise TypeError(msg)
-        return super().__new__(cls)
+    __slots__ = ("_root",)
 
     def __init__(self, root: float, **kwargs: t.Any) -> None:
         super().__init__(**kwargs)

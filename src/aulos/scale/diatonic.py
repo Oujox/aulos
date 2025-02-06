@@ -12,11 +12,16 @@ if TYPE_CHECKING:
 
 
 class DiatonicScale[KEY: BaseKey, PITCHCLASS: BasePitchClass](Scale[KEY, PITCHCLASS]):
-    def __new__(cls, *_args: t.Any, **_kwargs: t.Any) -> t.Self:
-        if cls is DiatonicScale:
-            msg = "DiatonicScale cannot be instantiated directly."
-            raise TypeError(msg)
-        return super().__new__(cls)
+    """
+    DiatonicScale class represents a diatonic scale in music theory.
+    This class is a subclass of the Scale class and uses the provided key and pitch class types.
+    It allows for the creation of diatonic scales with specified intervals and an optional shift.
+
+    Attributes:
+        __slots__ (tuple): An empty tuple to indicate that this class does not have instance attributes.
+    """
+
+    __slots__ = ()
 
     def __init_subclass__(
         cls,
@@ -24,26 +29,28 @@ class DiatonicScale[KEY: BaseKey, PITCHCLASS: BasePitchClass](Scale[KEY, PITCHCL
         intervals: t.Sequence[int],
         shift: int = 0,
         key: type[KEY],
-        **kwargs: t.Any,
     ) -> None:
         super().__init_subclass__(
             intervals=rotated(intervals, -shift),
             key=key,
-            **kwargs,
         )
 
 
 class NondiatonicScale[KEY: BaseKey, PITCHCLASS: BasePitchClass](
     Scale[KEY, PITCHCLASS],
 ):
+    """
+    NondiatonicScale class represents a musical scale that extends a diatonic scale with additional intervals.
+
+    Attributes:
+        _extensions (ClassVar[tuple[tuple[int, ...], ...]]): A class variable that holds the extensions for the scale.
+        _base (ClassVar[type[Scale]]): A class variable that holds the base diatonic scale type.
+    """
+
     _extensions: t.ClassVar[tuple[tuple[int, ...], ...]]
     _base: t.ClassVar[type[Scale]]
 
-    def __new__(cls, *_args: t.Any, **_kwargs: t.Any) -> t.Self:
-        if cls is NondiatonicScale:
-            msg = "NondiatonicScale cannot be instantiated directly."
-            raise TypeError(msg)
-        return super().__new__(cls)
+    __slots__ = ()
 
     def __init_subclass__(
         cls,
@@ -51,12 +58,10 @@ class NondiatonicScale[KEY: BaseKey, PITCHCLASS: BasePitchClass](
         extensions: t.Sequence[t.Sequence[int]],
         base: type[DiatonicScale],
         key: type[KEY],
-        **kwargs: t.Any,
     ) -> None:
         super().__init_subclass__(
             intervals=base.intervals,
             key=key,
-            **kwargs,
         )
         cls._base = base
         cls._extensions = tuple(tuple(inner) for inner in extensions)
