@@ -25,13 +25,11 @@ def resolve_pitchname_from_scale(pitchclass: int, scale: Scale | None, schema: P
 
 class BasePitchClass(AulosObject[PitchClassSchema]):
     """
-    Base class representing a pitch class in a musical context.
+    BasePitchClass represents a musical pitch class, which is
+    a set of all pitches that are a whole number of octaves apart.
 
-    Attributes:
-        _pitchclass (int): The pitch class as an integer.
-        _pitchnames (tuple[str | None, ...]): Tuple of pitch names.
-        _pitchname (str | None): The primary pitch name.
-        _scale (Scale | None): The scale associated with the pitch class.
+    This class provides the foundational structure for defining pitch classes, including properties and methods
+    to handle pitch class numbers, pitch names, and their relationships within a scale.
     """
 
     _pitchclass: int
@@ -94,26 +92,32 @@ class BasePitchClass(AulosObject[PitchClassSchema]):
 
     @property
     def pitchclass(self) -> int:
+        """Returns the pitch class as an integer."""
         return self._pitchclass
 
     @property
     def pitchnames(self) -> list[str]:
+        """Returns the pitch names of the pitch class."""
         return [n for n in self._pitchnames if n is not None]
 
     @property
     def pitchname(self) -> str | None:
+        """Returns the primary pitch name of the pitch class."""
         return self._pitchname
 
     @property
     def scale(self) -> Scale | None:
+        """Returns the scale associated with the pitch class."""
         return self._scale
 
     @classmethod
     def is_pitchname(cls, pitchname: object) -> t.TypeGuard[str]:
+        """Checks if the value is a valid pitch name."""
         return cls.schema.is_pitchname(pitchname)
 
     @classmethod
     def is_pitchclass(cls, pitchclass: object) -> t.TypeGuard[int]:
+        """Checks if the value is a valid pitch class."""
         return cls.schema.is_pitchclass(pitchclass)
 
     def __eq__(self, other: object) -> bool:

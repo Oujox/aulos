@@ -28,18 +28,15 @@ def resolve_notename_from_scale(notenumber: int, scale: Scale | None, schema: No
 
 class BaseNote[PITCHCLASS: BasePitchClass](AulosObject[NoteSchema]):
     """
-    Represents a musical note with various properties and methods for manipulation.
+    BaseNote class represents a musical note with various properties and methods for manipulation.
 
-    Attributes:
-        PitchClass (type[PITCHCLASS]): The pitch class type.
-        _notenumber (int): The note number.
-        _notenames (tuple[str | None, ...]): The note names.
-        _notename (str | None): The note name.
-        _tuner (Tuner | None): The tuner.
-        _scale (Scale | None): The scale.
+    This class provides the foundational structure for defining musical notes, including properties and methods
+    to handle note numbers, note names, and their relationships with pitch classes and scales.
     """
 
     PitchClass: type[PITCHCLASS]
+    """The type of pitch class associated with the note."""
+
     _notenumber: int
     _notenames: tuple[str | None, ...]
     _notename: str | None
@@ -106,31 +103,38 @@ class BaseNote[PITCHCLASS: BasePitchClass](AulosObject[NoteSchema]):
 
     @property
     def notenumber(self) -> int:
+        """Returns the note number of the note."""
         return self._notenumber
 
     @property
     def notenames(self) -> list[str]:
+        """Returns the note names of the note."""
         return [n for n in self._notenames if n is not None]
 
     @property
     def notename(self) -> str | None:
+        """Returns the note name of the note."""
         return self._notename
 
     @property
     def tuner(self) -> Tuner | None:
+        """Returns the tuner of the note."""
         return self._tuner
 
     @property
     def scale(self) -> Scale | None:
+        """Returns the scale of the note."""
         return self._scale
 
     @property
     def hz(self) -> float | None:
+        """Returns the frequency of the note in hertz."""
         if self._tuner is None:
             return None
         return self._tuner.hz(self._notenumber)
 
     def to_pitchclass(self) -> PITCHCLASS:
+        """Returns the pitch class of the note."""
         pitchlass = self.schema.convert_notenumber_to_pitchclass(self._notenumber)
         return self.PitchClass(
             pitchlass,
@@ -140,10 +144,12 @@ class BaseNote[PITCHCLASS: BasePitchClass](AulosObject[NoteSchema]):
 
     @classmethod
     def is_notename(cls, notename: object) -> t.TypeGuard[str]:
+        """Checks if the value is a valid note name."""
         return cls.schema.is_notename(notename)
 
     @classmethod
     def is_notenumber(cls, notenumber: object) -> t.TypeGuard[int]:
+        """Checks if the value is a valid note number."""
         return cls.schema.is_notenumber(notenumber)
 
     def __eq__(self, other: object) -> bool:

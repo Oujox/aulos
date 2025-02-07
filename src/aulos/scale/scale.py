@@ -10,25 +10,27 @@ from .schemas import ScaleSchema
 
 class Scale[KEY: BaseKey, PITCHCLASS: BasePitchClass](AulosObject[ScaleSchema]):
     """
-    Scale class representing a musical scale.
+    Represents a musical scale with a specific key and pitch class.
 
-    Attributes:
-        Key (type[KEY]): The key type.
-        PitchClass (type[PITCHCLASS]): The pitch class type.
-        _intervals (t.ClassVar[tuple[int, ...]]): Intervals of the scale.
-        _positions (t.ClassVar[tuple[int, ...]]): Positions of the scale.
-        _key (KEY): The key of the scale.
-        _signatures (tuple[int, ...]): Signatures of the scale.
+    This class provides the foundational structure for defining musical scales, including properties and methods
+    to handle intervals, positions, and key signatures. It allows for the creation and manipulation of scales
+    in a theoretical context, supporting various musical keys and pitch classes.
     """
 
     Key: type[KEY]
+    """The type of key associated with the scale."""
+
     PitchClass: type[PITCHCLASS]
+    """The type of pitch class associated with the scale."""
+
     _intervals: t.ClassVar[tuple[int, ...]]
+    """The sequence of intervals that define the scale."""
+
     _positions: t.ClassVar[tuple[int, ...]]
+    """The positions of the notes in the scale."""
+
     _key: KEY
     _signatures: tuple[int, ...]
-
-    __slots__ = "_key", "_signatures"
 
     def __init__(self, key: str | KEY, **kwargs: t.Any) -> None:
         super().__init__(**kwargs)
@@ -79,22 +81,27 @@ class Scale[KEY: BaseKey, PITCHCLASS: BasePitchClass](AulosObject[ScaleSchema]):
 
     @property
     def key(self) -> KEY:
+        """Returns the key of the scale."""
         return self._key
 
     @classproperty
     def intervals(self) -> tuple[int, ...]:
+        """Returns the intervals of the scale."""
         return self._intervals
 
     @classproperty
     def positions(self) -> tuple[int, ...]:
+        """Returns the positions of the notes in the scale."""
         return self._positions
 
     @property
     def signatures(self) -> tuple[int, ...]:
+        """Returns the key signatures of the scale."""
         return self._signatures
 
     @property
     def components(self) -> tuple[PITCHCLASS, ...]:
+        """Returns the pitch class components of the scale."""
         components = []
         root = self.PitchClass(self._key.keyname, scale=self, setting=self.setting)
         for pos in self.positions:

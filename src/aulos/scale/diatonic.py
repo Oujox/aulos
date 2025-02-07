@@ -13,15 +13,11 @@ if TYPE_CHECKING:
 
 class DiatonicScale[KEY: BaseKey, PITCHCLASS: BasePitchClass](Scale[KEY, PITCHCLASS]):
     """
-    DiatonicScale class represents a diatonic scale in music theory.
-    This class is a subclass of the Scale class and uses the provided key and pitch class types.
-    It allows for the creation of diatonic scales with specified intervals and an optional shift.
+    Represents a diatonic scale, which is a musical scale consisting of seven distinct pitch classes.
 
-    Attributes:
-        __slots__ (tuple): An empty tuple to indicate that this class does not have instance attributes.
+    This class provides the foundational structure for creating and manipulating diatonic scales,
+    allowing for the specification of intervals, key, and optional shifts in the scale's starting point.
     """
-
-    __slots__ = ()
 
     def __init_subclass__(
         cls,
@@ -40,17 +36,15 @@ class NondiatonicScale[KEY: BaseKey, PITCHCLASS: BasePitchClass](
     Scale[KEY, PITCHCLASS],
 ):
     """
-    NondiatonicScale class represents a musical scale that extends a diatonic scale with additional intervals.
+    Represents a nondiatonic scale, which extends a diatonic scale with additional intervals.
 
-    Attributes:
-        _extensions (ClassVar[tuple[tuple[int, ...], ...]]): A class variable that holds the extensions for the scale.
-        _base (ClassVar[type[Scale]]): A class variable that holds the base diatonic scale type.
+    This class allows for the creation and manipulation of scales that include extra notes beyond the
+    traditional diatonic framework, providing flexibility in defining unique musical scales with
+    extended harmonic possibilities.
     """
 
     _extensions: t.ClassVar[tuple[tuple[int, ...], ...]]
     _base: t.ClassVar[type[Scale]]
-
-    __slots__ = ()
 
     def __init_subclass__(
         cls,
