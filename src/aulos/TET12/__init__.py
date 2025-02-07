@@ -1,49 +1,18 @@
 """
-12-TET (12 equal temperament)
----
+TET12 Module Initialization
+---------------------------
 
-This module provides various musical scales, modes, and tuners.
-Classes:
-    Key: Represents a musical key.
-    Note: Represents a musical note.
-    PitchClass: Represents a pitch class.
-Scales and Modes:
-    Aeorian: Represents the Aeorian scale.
-    Aeorian_f5: Represents the Aeorian flat 5 scale.
-    AlteredSuperLocrian: Represents the Altered Super Locrian scale.
-    Bluenote: Represents the Bluenote scale.
-    CombDiminish: Represents the Comb Diminish scale.
-    Diminish: Represents the Diminish scale.
-    Dorian: Represents the Dorian scale.
-    Dorian_f2: Represents the Dorian flat 2 scale.
-    Dorian_s4: Represents the Dorian sharp 4 scale.
-    HarmonicMinor: Represents the Harmonic Minor scale.
-    Ionian: Represents the Ionian scale.
-    Ionian_s5: Represents the Ionian sharp 5 scale.
-    Locrian: Represents the Locrian scale.
-    Locrian_n6: Represents the Locrian natural 6 scale.
-    Lydian: Represents the Lydian scale.
-    Lydian_f7: Represents the Lydian flat 7 scale.
-    Lydian_s2: Represents the Lydian sharp 2 scale.
-    Lydian_s5: Represents the Lydian sharp 5 scale.
-    Major: Represents the Major scale.
-    MelodicMinor: Represents the Melodic Minor scale.
-    Minor: Represents the Minor scale.
-    MinorPentatonic: Represents the Minor Pentatonic scale.
-    Mixolydian: Represents the Mixolydian scale.
-    Mixolydian_f6: Represents the Mixolydian flat 6 scale.
-    Mixolydian_f9: Represents the Mixolydian flat 9 scale.
-    Pentatonic: Represents the Pentatonic scale.
-    Phrygian: Represents the Phrygian scale.
-    SuperLocrian: Represents the Super Locrian scale.
-    Wholetone: Represents the Wholetone scale.
-Tuners:
-    Equal12Tuner: Represents the Equal Temperament 12 Tuner.
-    JustIntonationTuner: Represents the Just Intonation Tuner.
-    MeantoneTuner: Represents the Meantone Tuner.
-    PythagoreanTuner: Represents the Pythagorean Tuner.
-__all__:
-    A list of all public classes and functions provided by this module.
+This module initializes the TET12 package, which is part of the Aulos library.
+It provides functionalities for handling 12-tone equal temperament systems,
+including musical notes, scales, and tuning systems.
+
+Modules and Classes:
+- note: Contains classes for musical notes, keys, and pitch classes.
+- scale: Provides various musical scales and modes.
+- tuner: Includes different tuning systems like Equal Temperament, Just Intonation, and more.
+
+The `__all__` list defines the public API of the module, specifying which components
+are accessible when the module is imported.
 """
 
 from .note import Key, Note, PitchClass
