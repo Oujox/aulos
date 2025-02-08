@@ -1,15 +1,17 @@
 import typing as t
-from typing import ClassVar
 
 
-class OptimizedMeta(type):
+class SlotsGenerateMeta(type):
     """
-    OptimizedMeta is a metaclass that optimizes class creation by automatically
-    generating __slots__ based on type annotations, excluding ClassVar and type annotations.
+    SlotsGenerateMeta is a metaclass that automatically generates __slots__ for classes.
 
-    Methods:
-        __new__(cls, name, bases, namespace, **kwargs):
-            Creates a new class with optimized __slots__ if not explicitly defined.
+    This metaclass inspects the class annotations and generates a __slots__ attribute
+    based on the annotated attributes, excluding those marked as ClassVar or type.
+    This helps in reducing memory usage and improving attribute access speed for instances
+    of the class.
+
+    Attributes:
+        slots_generate (bool): A flag to enable or disable the automatic generation of __slots__.
     """
 
     def __new__(
@@ -17,15 +19,16 @@ class OptimizedMeta(type):
         name: str,
         bases: tuple[type, ...],
         namespace: dict[str, t.Any],
-        /,
+        *,
+        slots_generate: bool = True,
         **kwargs: t.Any,
-    ) -> "OptimizedMeta":
-        if not namespace.get("__slots__"):
+    ) -> "SlotsGenerateMeta":
+        if slots_generate and not namespace.get("__slots__", False):
             annotations: dict[str, type] = namespace.get("__annotations__", {})
             slots = tuple(
                 name
                 for name, typ in annotations.items()
-                if not (hasattr(typ, "__origin__") and t.get_origin(typ) is ClassVar)
+                if not (hasattr(typ, "__origin__") and t.get_origin(typ) is t.ClassVar)
                 if not (hasattr(typ, "__origin__") and t.get_origin(typ) is type)
             )
             namespace["__slots__"] = slots

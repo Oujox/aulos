@@ -1,13 +1,13 @@
 import typing as t
 
-from aulos._core.utils import OptimizedMeta
+from aulos._core.utils import SlotsGenerateMeta
 
 from .schema import Schema
 from .setting import Setting
 from .utils import classproperty
 
 
-class AulosObjectMeta(OptimizedMeta):
+class AulosObjectMeta(SlotsGenerateMeta):
     """
     AulosObjectMeta is a metaclass that enforces a schema and optional settings.
 
