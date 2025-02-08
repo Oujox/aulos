@@ -3,7 +3,7 @@
 """
 
 # utils, framework
-from . import framework, utils
+from . import utils
 
 # implementation
 from .context import Context
@@ -16,6 +16,5 @@ __all__ = [
     "Context",
     "Schema",
     "Setting",
-    "framework",
     "utils",
 ]

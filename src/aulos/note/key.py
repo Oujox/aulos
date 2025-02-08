@@ -7,7 +7,16 @@ from .schemas import KeySchema
 
 
 class BaseKey[PITCHCLASS: BasePitchClass](AulosObject[KeySchema]):
+    """
+    BaseKey class represents a musical key in a theoretical context.
+
+    This class provides the foundational structure for defining and manipulating musical keys.
+    It includes properties and methods to handle key names, key classes, and key signatures.
+    """
+
     PitchClass: type[PITCHCLASS]
+    """The type of pitch class associated with the key."""
+
     _keyname: str
     _keyclass: int
     _signatures: tuple[int, ...]
@@ -33,28 +42,31 @@ class BaseKey[PITCHCLASS: BasePitchClass](AulosObject[KeySchema]):
         *,
         accidental: int,
         pitchclass: type[BasePitchClass],
-        **kwargs: t.Any,
     ) -> None:
         schema = KeySchema(
             accidental,
             pitchclass.schema,
         )
-        super().__init_subclass__(schema=schema, **kwargs)
+        super().__init_subclass__(schema=schema)
         cls.PitchClass = pitchclass
 
     @property
     def keyname(self) -> str:
+        """Returns the name of the key."""
         return self._keyname
 
     @property
     def signature(self) -> tuple[int, ...]:
+        """Returns the signature of the key."""
         return self._signatures
 
     def to_pitchclass(self) -> PITCHCLASS:
+        """Returns the pitch class of the key."""
         return self.PitchClass(self._keyname, setting=self._setting)
 
     @classmethod
     def is_keyname(cls, value: object) -> t.TypeGuard[str]:
+        """Checks if the value is a valid key name."""
         return cls.schema.is_keyname(value)
 
     def __eq__(self, other: object) -> bool:

@@ -7,7 +7,6 @@ class Major(
     DiatonicScale[Key, PitchClass],
     intervals=[2, 2, 1, 2, 2, 2, 1],
     key=Key,
-    pitchclass=PitchClass,
 ):
     """Major scale (Ionian mode)
 
@@ -22,7 +21,6 @@ class Minor(
     DiatonicScale[Key, PitchClass],
     intervals=[2, 1, 2, 2, 1, 2, 2],
     key=Key,
-    pitchclass=PitchClass,
 ):
     """Minor scale (Aeolian mode)
 
@@ -38,7 +36,6 @@ class HarmonicMinor(
     DiatonicScale[Key, PitchClass],
     intervals=[2, 1, 2, 2, 1, 3, 1],
     key=Key,
-    pitchclass=PitchClass,
 ):
     """Harmonic minor scale
 
@@ -54,7 +51,6 @@ class MelodicMinor(
     DiatonicScale[Key, PitchClass],
     intervals=[2, 1, 2, 2, 2, 2, 1],
     key=Key,
-    pitchclass=PitchClass,
 ):
     """Melodic minor scale
 
@@ -71,7 +67,6 @@ class Pentatonic(
     extensions=[[0], [0], [0], [], [0], [0], []],
     base=Major,
     key=Key,
-    pitchclass=PitchClass,
 ):
     """Pentatonic scale
 
@@ -88,7 +83,6 @@ class MinorPentatonic(
     extensions=[[0], [], [0], [0], [0], [], [0]],
     base=Minor,
     key=Key,
-    pitchclass=PitchClass,
 ):
     """Minor pentatonic scale
 
@@ -105,7 +99,6 @@ class Bluenote(
     extensions=[[0], [0], [-1, 0], [0], [-1, 0], [0], [-1, 0]],
     base=Major,
     key=Key,
-    pitchclass=PitchClass,
 ):
     """Bluenote scale
 
@@ -122,7 +115,6 @@ class Diminish(
     extensions=[[0], [0], [-1], [0, 1], [1], [0], [0]],
     base=Major,
     key=Key,
-    pitchclass=PitchClass,
 ):
     """Diminish scale
 
@@ -139,7 +131,6 @@ class CombDiminish(
     extensions=[[0], [-1], [-1, 0], [1], [0], [0], [-1]],
     base=Major,
     key=Key,
-    pitchclass=PitchClass,
 ):
     """CombDiminish scale
 
@@ -155,7 +146,6 @@ class Wholetone(
     extensions=[[0], [0], [0], [1], [1], [1], []],
     base=Major,
     key=Key,
-    pitchclass=PitchClass,
 ):
     """Whole tone scale
 
@@ -172,7 +162,6 @@ class Ionian(
     intervals=Major.intervals,
     shift=0,
     key=Key,
-    pitchclass=PitchClass,
 ):
     """Ionian mode (Major scale)
 
@@ -190,7 +179,6 @@ class Dorian(
     intervals=Major.intervals,
     shift=1,
     key=Key,
-    pitchclass=PitchClass,
 ):
     """Dorian mode
 
@@ -208,7 +196,6 @@ class Phrygian(
     intervals=Major.intervals,
     shift=2,
     key=Key,
-    pitchclass=PitchClass,
 ):
     """Phrygian mode
 
@@ -226,7 +213,6 @@ class Lydian(
     intervals=Major.intervals,
     shift=3,
     key=Key,
-    pitchclass=PitchClass,
 ):
     """Lydian mode
 
@@ -243,7 +229,6 @@ class Mixolydian(
     intervals=Major.intervals,
     shift=4,
     key=Key,
-    pitchclass=PitchClass,
 ):
     """Mixolydian mode
 
@@ -261,7 +246,6 @@ class Aeorian(
     intervals=Major.intervals,
     shift=5,
     key=Key,
-    pitchclass=PitchClass,
 ):
     """Aeolian mode (Natural minor scale)
 
@@ -279,7 +263,6 @@ class Locrian(
     intervals=Major.intervals,
     shift=6,
     key=Key,
-    pitchclass=PitchClass,
 ):
     """Locrian mode
 
@@ -297,7 +280,6 @@ class Dorian_f2(  # noqa: N801
     intervals=MelodicMinor.intervals,
     shift=1,
     key=Key,
-    pitchclass=PitchClass,
 ):
     """Dorian flat 2 mode (Dorian #2)
 
@@ -314,7 +296,6 @@ class Lydian_s5(  # noqa: N801
     intervals=MelodicMinor.intervals,
     shift=2,
     key=Key,
-    pitchclass=PitchClass,
 ):
     """Lydian sharp 5 mode (Lydian #5)
 
@@ -332,7 +313,6 @@ class Lydian_f7(  # noqa: N801
     intervals=MelodicMinor.intervals,
     shift=3,
     key=Key,
-    pitchclass=PitchClass,
 ):
     """Lydian flat 7 mode (Lydian b7)
 
@@ -349,7 +329,6 @@ class Mixolydian_f6(  # noqa: N801
     intervals=MelodicMinor.intervals,
     shift=4,
     key=Key,
-    pitchclass=PitchClass,
 ):
     """Mixolydian flat 6 mode (Mixolydian b6)
 
@@ -367,7 +346,6 @@ class Aeorian_f5(  # noqa: N801
     intervals=MelodicMinor.intervals,
     shift=5,
     key=Key,
-    pitchclass=PitchClass,
 ):
     """Aeolian flat 5 mode (Aeolian b5)
 
@@ -384,7 +362,6 @@ class SuperLocrian(
     intervals=MelodicMinor.intervals,
     shift=6,
     key=Key,
-    pitchclass=PitchClass,
 ):
     """Super Locrian mode (Altered scale)
 
@@ -402,7 +379,6 @@ class Locrian_n6(  # noqa: N801
     intervals=HarmonicMinor.intervals,
     shift=1,
     key=Key,
-    pitchclass=PitchClass,
 ):
     """Locrian natural 6 mode (Locrian #6)
 
@@ -419,7 +395,6 @@ class Ionian_s5(  # noqa: N801
     intervals=HarmonicMinor.intervals,
     shift=2,
     key=Key,
-    pitchclass=PitchClass,
 ):
     """Ionian sharp 5 mode (Ionian #5)
 
@@ -436,7 +411,6 @@ class Dorian_s4(  # noqa: N801
     intervals=HarmonicMinor.intervals,
     shift=3,
     key=Key,
-    pitchclass=PitchClass,
 ):
     """Dorian sharp 4 mode (Dorian #4)
 
@@ -453,7 +427,6 @@ class Mixolydian_f9(  # noqa: N801
     intervals=HarmonicMinor.intervals,
     shift=4,
     key=Key,
-    pitchclass=PitchClass,
 ):
     """Mixolydian flat 9 mode (Phrygian Dominant)
 
@@ -470,7 +443,6 @@ class Lydian_s2(  # noqa: N801
     intervals=HarmonicMinor.intervals,
     shift=5,
     key=Key,
-    pitchclass=PitchClass,
 ):
     """Lydian flat 2 mode (Lydian b2)
 
@@ -487,7 +459,6 @@ class AlteredSuperLocrian(
     intervals=HarmonicMinor.intervals,
     shift=6,
     key=Key,
-    pitchclass=PitchClass,
 ):
     """Altered Super Locrian mode (Altered scale with Super Locrian qualities)
 

@@ -7,15 +7,22 @@ from .schemas import TunerSchema
 
 
 class Tuner[NOTE: BaseNote](AulosObject[TunerSchema]):
-    Note: type[NOTE]
-    _ratios: t.ClassVar[tuple[float, ...]]
-    _root: float
+    """
+    Represents a musical tuner that can convert note numbers to their corresponding
+    frequencies in hertz (Hz) based on a specified tuning system.
 
-    def __new__(cls, *_args: t.Any, **_kwargs: t.Any) -> t.Self:
-        if cls is Tuner:
-            msg = "Tuner cannot be instantiated directly."
-            raise TypeError(msg)
-        return super().__new__(cls)
+    This class provides methods to handle different tuning systems, allowing for
+    the conversion of musical notes into precise frequencies. It supports various tuning ratios
+    and reference note numbers, making it versatile for different musical contexts.
+    """
+
+    Note: type[NOTE]
+    """The type of note associated with the tuner."""
+
+    _ratios: t.ClassVar[tuple[float, ...]]
+    """The tuning ratios used to calculate frequencies."""
+
+    _root: float
 
     def __init__(self, root: float, **kwargs: t.Any) -> None:
         super().__init__(**kwargs)
@@ -40,9 +47,11 @@ class Tuner[NOTE: BaseNote](AulosObject[TunerSchema]):
 
     @property
     def root(self) -> float:
+        """Returns the root frequency of the tuner."""
         return self._root
 
     def hz(self, notenumber: int) -> float:
+        """Converts a note number to its corresponding frequency in hertz."""
         ref = notenumber - self.schema.reference_notenumber
         octnumber = ref // self.schema.pitchclass.cardinality
         pitchclass = ref % self.schema.pitchclass.cardinality

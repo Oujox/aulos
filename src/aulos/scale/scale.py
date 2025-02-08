@@ -9,18 +9,28 @@ from .schemas import ScaleSchema
 
 
 class Scale[KEY: BaseKey, PITCHCLASS: BasePitchClass](AulosObject[ScaleSchema]):
+    """
+    Represents a musical scale with a specific key and pitch class.
+
+    This class provides the foundational structure for defining musical scales, including properties and methods
+    to handle intervals, positions, and key signatures. It allows for the creation and manipulation of scales
+    in a theoretical context, supporting various musical keys and pitch classes.
+    """
+
     Key: type[KEY]
+    """The type of key associated with the scale."""
+
     PitchClass: type[PITCHCLASS]
+    """The type of pitch class associated with the scale."""
+
     _intervals: t.ClassVar[tuple[int, ...]]
+    """The sequence of intervals that define the scale."""
+
     _positions: t.ClassVar[tuple[int, ...]]
+    """The positions of the notes in the scale."""
+
     _key: KEY
     _signatures: tuple[int, ...]
-
-    def __new__(cls, *_args: t.Any, **_kwargs: t.Any) -> t.Self:
-        if cls is Scale:
-            msg = "Scale cannot be instantiated directly."
-            raise TypeError(msg)
-        return super().__new__(cls)
 
     def __init__(self, key: str | KEY, **kwargs: t.Any) -> None:
         super().__init__(**kwargs)
@@ -59,36 +69,39 @@ class Scale[KEY: BaseKey, PITCHCLASS: BasePitchClass](AulosObject[ScaleSchema]):
         *,
         intervals: t.Sequence[int] | None = None,
         key: type[KEY] | None = None,
-        pitchclass: type[PITCHCLASS] | None = None,
-        **kwargs: t.Any,
     ) -> None:
-        if intervals is None or key is None or pitchclass is None:
+        if intervals is None or key is None:
             return
-        schema = ScaleSchema(pitchclass.schema)
-        super().__init_subclass__(schema=schema, **kwargs)
+        schema = ScaleSchema(key.schema.pitchclass)
+        super().__init_subclass__(schema=schema)
         cls.Key = key
-        cls.PitchClass = pitchclass
+        cls.PitchClass = key.PitchClass
         cls._intervals = tuple(intervals)
         cls._positions = tuple(accumulate((0,) + cls._intervals[:-1]))
 
     @property
     def key(self) -> KEY:
+        """Returns the key of the scale."""
         return self._key
 
     @classproperty
     def intervals(self) -> tuple[int, ...]:
+        """Returns the intervals of the scale."""
         return self._intervals
 
     @classproperty
     def positions(self) -> tuple[int, ...]:
+        """Returns the positions of the notes in the scale."""
         return self._positions
 
     @property
     def signatures(self) -> tuple[int, ...]:
+        """Returns the key signatures of the scale."""
         return self._signatures
 
     @property
     def components(self) -> tuple[PITCHCLASS, ...]:
+        """Returns the pitch class components of the scale."""
         components = []
         root = self.PitchClass(self._key.keyname, scale=self, setting=self.setting)
         for pos in self.positions:

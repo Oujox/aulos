@@ -1,19 +1,12 @@
-import typing as t
-
 from aulos.tuner import Tuner
 
 from .note import Note
 from .utils import fivelimit_tuning_table, standard_tuning_table
 
-EQUAL12_TUNING_RATIOS: t.Final[tuple[float, ...]] = standard_tuning_table(2 ** (1 / 12))
-PYTHAGOREAN_TUNING_RATIOS: t.Final[tuple[float, ...]] = standard_tuning_table(1.5)
-MEANTONE_TUNING_RATIOS: t.Final[tuple[float, ...]] = standard_tuning_table(5**0.25)
-FIVELIMIT_TUNING_RATIOS: t.Final[tuple[float, ...]] = fivelimit_tuning_table()
-
 
 class JustIntonationTuner(
     Tuner[Note],
-    ratios=FIVELIMIT_TUNING_RATIOS,
+    ratios=fivelimit_tuning_table(),
     reference_notenumber=60,
     note=Note,
 ):
@@ -30,7 +23,7 @@ class JustIntonationTuner(
 
 class MeantoneTuner(
     Tuner[Note],
-    ratios=MEANTONE_TUNING_RATIOS,
+    ratios=standard_tuning_table(5**0.25),
     reference_notenumber=60,
     note=Note,
 ):
@@ -47,7 +40,7 @@ class MeantoneTuner(
 
 class PythagoreanTuner(
     Tuner[Note],
-    ratios=PYTHAGOREAN_TUNING_RATIOS,
+    ratios=standard_tuning_table(1.5),
     reference_notenumber=60,
     note=Note,
 ):
@@ -63,7 +56,7 @@ class PythagoreanTuner(
 
 class Equal12Tuner(
     Tuner[Note],
-    ratios=EQUAL12_TUNING_RATIOS,
+    ratios=standard_tuning_table(2 ** (1 / 12)),
     reference_notenumber=60,
     note=Note,
 ):

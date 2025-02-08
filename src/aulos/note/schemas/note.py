@@ -23,8 +23,6 @@ def convert_pitchname_to_notename(pitchname: str, symbol_octave: str) -> str:
 class NoteSchema(Schema):
     symbols_notenumber: tuple[int, ...]
     symbols_octave: tuple[str, ...]
-    reference_notenumber: int
-    reference_octave: int
     pitchclass: PitchClassSchema
 
     name2number: dict[str, int] = field(init=False)
@@ -48,16 +46,6 @@ class NoteSchema(Schema):
             msg = ""
             raise ValidationError(msg)
         if not all(bool(v.find("<N>")) or bool(v.find("<n>")) for v in self.symbols_octave):
-            msg = ""
-            raise ValidationError(msg)
-
-        # [check] reference_notenumber
-        if self.reference_notenumber not in self.symbols_notenumber:
-            msg = ""
-            raise ValidationError(msg)
-
-        # [check] reference_octave
-        if self.reference_octave not in range(len(self.symbols_octave)):
             msg = ""
             raise ValidationError(msg)
 
@@ -116,29 +104,17 @@ class NoteSchema(Schema):
             ),
         )
 
-        # adjust notenumber
-        ref_pitchname = self.pitchclass.symbols_pitchclass[0]
-        ref_octave_notename = convert_pitchname_to_notename(
-            ref_pitchname,
-            self.symbols_octave[self.reference_octave],
-        )
-        adjust_notenumber = self.reference_notenumber - no_accidental_sequence.index(
-            ref_octave_notename,
-        )
-
         name2number = dict(
             chain.from_iterable(
                 [
-                    [(name, index + adjust_notenumber) for name in names if name is not None]
+                    [(name, index) for name in names if name is not None]
                     for index, names in enumerate(accidental_sequences)
-                    if index + adjust_notenumber in self.symbols_notenumber
+                    if index in self.symbols_notenumber
                 ],
             ),
         )
         number2name = {
-            index + adjust_notenumber: name
-            for index, name in enumerate(accidental_sequences)
-            if index + adjust_notenumber in self.symbols_notenumber
+            index: name for index, name in enumerate(accidental_sequences) if index in self.symbols_notenumber
         }
 
         object.__setattr__(self, "name2number", name2number)

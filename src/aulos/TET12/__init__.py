@@ -1,10 +1,18 @@
 """
-12-TET (12 equal temperament)
----
+TET12 Module Initialization
+---------------------------
 
-This module provides classes and functions for working with notes, pitch classes,
-and scales in the 12-tone equal temperament system.
-It includes definitions for various musical scales and modes.
+This module initializes the TET12 package, which is part of the Aulos library.
+It provides functionalities for handling 12-tone equal temperament systems,
+including musical notes, scales, and tuning systems.
+
+Modules and Classes:
+- note: Contains classes for musical notes, keys, and pitch classes.
+- scale: Provides various musical scales and modes.
+- tuner: Includes different tuning systems like Equal Temperament, Just Intonation, and more.
+
+The `__all__` list defines the public API of the module, specifying which components
+are accessible when the module is imported.
 """
 
 from .note import Key, Note, PitchClass
