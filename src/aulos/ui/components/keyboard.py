@@ -2,7 +2,22 @@ import tkinter as tk
 import typing as t
 from tkinter import ttk
 
-from aulos.ui.const import KEYBOARD_BLACK_CLASSES, KEYBOARD_WHITE_CLASSES
+KEYBOARD_WHITE_CLASSES = (
+    0,
+    2,
+    4,
+    5,
+    7,
+    9,
+    11,
+)
+KEYBOARD_BLACK_CLASSES = (
+    1,
+    3,
+    6,
+    8,
+    10,
+)
 
 
 class KeyElement(tk.Frame):

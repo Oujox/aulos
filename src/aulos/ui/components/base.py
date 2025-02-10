@@ -8,7 +8,9 @@ class BaseComponent(tk.Frame, metaclass=ABCMeta):
         super().__init__(master, padx=12, pady=4, **kwargs)
 
     @abstractmethod
-    def create_widget(self, *args: t.Any, **kwargs: t.Any) -> None: ...
+    def create_widget(self, *args: t.Any, **kwargs: t.Any) -> None:
+        return
 
     @abstractmethod
-    def default(self) -> None: ...
+    def default(self) -> None:
+        return

@@ -3,7 +3,12 @@ import typing as t
 from tkinter import ttk
 
 from aulos.ui.components.base import BaseComponent
-from aulos.ui.const import KEY_DEFAULTS
+
+KEY_DEFAULTS = (
+    ("Cb", "Db", "Eb", "Fb", "Gb", "Ab", "Bb"),
+    ("C", "D", "E", "F", "G", "A", "B"),
+    ("C#", "D#", "E#", "F#", "G#", "A#", "B#"),
+)
 
 
 class KeySelecter(BaseComponent):

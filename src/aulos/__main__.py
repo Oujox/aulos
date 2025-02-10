@@ -1,33 +1,17 @@
-def run_gui() -> None:
-    import tkinter as tk
+import argparse
 
-    from aulos.ui import KeyBoard, ScaleViewer
-
-    root = tk.Tk()
-    root.title("Aulos Application GUI")
-    root.geometry("1200x800")
-    root.resizable(width=False, height=False)
-    keyboard = KeyBoard(root)
-    keyboard.pack(fill=tk.X)
-    scale = ScaleViewer(root)
-    scale.pack(fill=tk.X)
-
-    root.mainloop()
+from aulos.ui import CommandResult, ScaleViewerCLI
 
 
 def main() -> None:
-    import argparse
+    parser = argparse.ArgumentParser("aulos")
+    parser.description = "Aulos Application"
 
-    parser = argparse.ArgumentParser(description="Aulos Application")
-    parser.add_argument(
-        "-gui",
-        action="store_true",
-        help="run the aulos application in GUI mode",
-    )
-    args = parser.parse_args()
+    subparsers = parser.add_subparsers(dest="command", required=True)
+    ScaleViewerCLI(subparsers.add_parser("scale"))
 
-    if args.gui:
-        run_gui()
+    args = parser.parse_args(namespace=CommandResult)
+    args.execute(args())
 
 
 if __name__ == "__main__":
