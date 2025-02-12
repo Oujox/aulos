@@ -48,16 +48,15 @@ class ScaleService:
         return Key.schema.keynames
 
     def get_scale_names(self) -> tuple[str, ...]:
-        return self.get_scalenames() + self.get_modenames()
+        return self.get_tonalscalenames() + self.get_modalscalenames()
 
-    def get_scalenames(self) -> tuple[str, ...]:
+    def get_tonalscalenames(self) -> tuple[str, ...]:
         return tuple(self.SCALES_BY_TET12[0].keys())
 
-    def get_modenames(self) -> tuple[str, ...]:
+    def get_modalscalenames(self) -> tuple[str, ...]:
         return tuple(self.SCALES_BY_TET12[1].keys())
 
-    def get_scale_components(self, scale_name: str, key: str) -> tuple[str, ...]:
-        return self.SCALES_BY_TET12[0][scale_name](key).components
-
-    def get_mode_components(self, mode_name: str, key: str) -> tuple[str, ...]:
-        return self.SCALES_BY_TET12[1][mode_name](key).components
+    def get_scale(self, scalename: str) -> type[Scale]:
+        if scalename in self.SCALES_BY_TET12[0]:
+            return self.SCALES_BY_TET12[0][scalename]
+        return self.SCALES_BY_TET12[1][scalename]

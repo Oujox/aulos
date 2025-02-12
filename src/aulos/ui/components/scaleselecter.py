@@ -2,89 +2,66 @@ import tkinter as tk
 import typing as t
 from tkinter import ttk
 
-from aulos import Scale
 from aulos.TET12 import scale
 from aulos.ui.components.base import BaseComponent
-
-SCALE_DEFAULTS: tuple[dict[str, type[Scale]], dict[str, type[Scale]]] = (
-    {
-        scale.Major.__name__: scale.Major,
-        scale.Minor.__name__: scale.Minor,
-        scale.MelodicMinor.__name__: scale.MelodicMinor,
-        scale.HarmonicMinor.__name__: scale.HarmonicMinor,
-        scale.Pentatonic.__name__: scale.Pentatonic,
-        scale.MinorPentatonic.__name__: scale.MinorPentatonic,
-        scale.Diminish.__name__: scale.Diminish,
-        scale.CombDiminish.__name__: scale.CombDiminish,
-        scale.Wholetone.__name__: scale.Wholetone,
-        scale.Bluenote.__name__: scale.Bluenote,
-    },
-    {
-        scale.Aeorian.__name__: scale.Aeorian,
-        scale.Aeorian_f5.__name__: scale.Aeorian_f5,
-        scale.AlteredSuperLocrian.__name__: scale.AlteredSuperLocrian,
-        scale.Dorian.__name__: scale.Dorian,
-        scale.Dorian_f2.__name__: scale.Dorian_f2,
-        scale.Dorian_s4.__name__: scale.Dorian_s4,
-        scale.Ionian.__name__: scale.Ionian,
-        scale.Ionian_s5.__name__: scale.Ionian_s5,
-        scale.Locrian.__name__: scale.Locrian,
-        scale.Locrian_n6.__name__: scale.Locrian_n6,
-        scale.Lydian.__name__: scale.Lydian,
-        scale.Lydian_f7.__name__: scale.Lydian_f7,
-        scale.Lydian_s2.__name__: scale.Lydian_s2,
-        scale.Lydian_s5.__name__: scale.Lydian_s5,
-        scale.Mixolydian.__name__: scale.Mixolydian,
-        scale.Mixolydian_f6.__name__: scale.Mixolydian_f6,
-        scale.Mixolydian_f9.__name__: scale.Mixolydian_f9,
-        scale.Phrygian.__name__: scale.Phrygian,
-        scale.SuperLocrian.__name__: scale.SuperLocrian,
-    },
-)
+from aulos.ui.services import ScaleService
 
 
 class ScaleSelecter(BaseComponent):
     _selected_scalename: tk.StringVar
     _selected_scaleinfo: tk.StringVar
 
-    _scaleselecter_wrap: ttk.Frame
-    _scalesetecter_title: ttk.Label
-    _scalegroups: list[ttk.Frame]
-    _scalebuttons: list[list[ttk.Radiobutton]]
+    _wrap: ttk.Frame
+    _title: ttk.Label
+    _scalegroups: tuple[ttk.Frame, ttk.Frame]
+    _scalebuttons: tuple[list[ttk.Radiobutton], list[ttk.Radiobutton]]
 
     def __init__(self, master: tk.Misc) -> None:
         super().__init__(master)
         self.master = master
-        self.create_widget()
+        self.service = ScaleService()
+        self.bind_callback("on_click_scalebutton", self.update_scaleinfo)
 
     def create_widget(self) -> None:
         self._selected_scalename = tk.StringVar()
         self._selected_scaleinfo = tk.StringVar()
 
-        self._scaleselecter_wrap = ttk.Frame(
+        self._wrap = ttk.Frame(
             self,
             padding=(24, 8),
             borderwidth=2,
             relief=tk.SOLID,
         )
-        self._scalesetecter_title = ttk.Label(self, text="Scale")
-        self._scaleselecter_wrap.pack()
-        self._scalesetecter_title.place(relx=0.05, rely=0, anchor=tk.W)
+        self._title = ttk.Label(self, text="Scale")
+        self._wrap.pack()
+        self._title.place(relx=0.05, rely=0, anchor=tk.W)
 
-        self._scalegroups = [ttk.Frame(self._scaleselecter_wrap, padding=(6, 0)) for _ in range(len(SCALE_DEFAULTS))]
-        self._scalebuttons = [
+        self._scalegroups = (
+            ttk.Frame(self._wrap, padding=(6, 0)),
+            ttk.Frame(self._wrap, padding=(6, 0)),
+        )
+        self._scalebuttons = (
             [
                 ttk.Radiobutton(
-                    scalegroup,
+                    self._scalegroups[0],
                     text=scale,
                     value=scale,
                     variable=self._selected_scalename,
-                    command=self._on_click_scalebutton,
+                    command=self.trigger_event("on_click_scalebutton"),
                 )
-                for scale in scales
-            ]
-            for scalegroup, scales in zip(self._scalegroups, SCALE_DEFAULTS, strict=False)
-        ]
+                for scale in self.service.get_tonalscalenames()
+            ],
+            [
+                ttk.Radiobutton(
+                    self._scalegroups[1],
+                    text=mode,
+                    value=mode,
+                    variable=self._selected_scalename,
+                    command=self.trigger_event("on_click_scalebutton"),
+                )
+                for mode in self.service.get_modalscalenames()
+            ],
+        )
 
         for scalegroup in self._scalegroups:
             scalegroup.pack(side=tk.LEFT, anchor=tk.NW)
@@ -95,23 +72,15 @@ class ScaleSelecter(BaseComponent):
 
     def default(self) -> None:
         self._selected_scalename.set(scale.Major.__name__)
-        self._on_click_scalebutton()
+        self._selected_scaleinfo.set(scale.Major.__doc__ or "")
 
-    def _on_click_scalebutton(self) -> None:
-        for scales in SCALE_DEFAULTS:
-            name = self._selected_scalename.get()
-            if name in scales:
-                self._selected_scaleinfo.set(scales[name].__doc__ or "")
+    def set_callback_on_click_scalebutton(self, callback: t.Callable[[], t.Any]) -> None:
+        self.bind_callback("on_click_scalebutton", callback)
 
-        for callback in self.callbacks_on_click_scalebutton:
-            callback()
-
-    @property
-    def scale(self) -> type[Scale] | None:
-        for scales in SCALE_DEFAULTS:
-            if self.scalename in scales:
-                return scales[self.scalename]
-        return None
+    def update_scaleinfo(self) -> None:
+        scalename = self._selected_scalename.get()
+        scale = self.service.get_scale(scalename)
+        self._selected_scaleinfo.set(scale.__doc__ or "")
 
     @property
     def scalename(self) -> str:
@@ -120,10 +89,3 @@ class ScaleSelecter(BaseComponent):
     @property
     def scaleinfo(self) -> str:
         return self._selected_scaleinfo.get()
-
-    callbacks_on_click_scalebutton: list[t.Callable[[], t.Any]]
-
-    def set_callback_on_click_scalebutton(self, callback: t.Callable[[], t.Any]) -> None:
-        if not hasattr(self, "callbacks_onClickScaleButton"):
-            self.callbacks_on_click_scalebutton = []
-        self.callbacks_on_click_scalebutton.append(callback)

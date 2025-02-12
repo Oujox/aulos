@@ -1,4 +1,4 @@
+from .commands import ScaleViewer
 from .stracture import CommandResult
-from .views import ScaleViewerCLI, ScaleViewerGUI
 
-__all__ = ["CommandResult", "ScaleViewerCLI", "ScaleViewerGUI"]
+__all__ = ["CommandResult", "ScaleViewer"]

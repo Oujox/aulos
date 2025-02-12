@@ -18,7 +18,6 @@ class ScaleDisplay(BaseComponent):
     def __init__(self, master: tk.Misc) -> None:
         super().__init__(master)
         self.master = master
-        self.create_widget()
 
     def create_widget(self) -> None:
         self._scale = tk.StringVar()

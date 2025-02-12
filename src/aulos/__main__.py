@@ -1,6 +1,6 @@
 import argparse
 
-from aulos.ui import CommandResult, ScaleViewerCLI
+from aulos.ui import CommandResult, ScaleViewer
 
 
 def main() -> None:
@@ -8,7 +8,7 @@ def main() -> None:
     parser.description = "Aulos Application"
 
     subparsers = parser.add_subparsers(dest="command", required=True)
-    ScaleViewerCLI(subparsers.add_parser("scale"))
+    ScaleViewer(subparsers.add_parser("scale"))
 
     args = parser.parse_args(namespace=CommandResult)
     args.execute(args())
