@@ -1,6 +1,4 @@
-from .components import KeyBoard, ScaleViewer
+from .commands import ScaleViewer
+from .stracture import CommandResult
 
-__all__ = [
-    "KeyBoard",
-    "ScaleViewer",
-]
+__all__ = ["CommandResult", "ScaleViewer"]
