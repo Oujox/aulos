@@ -31,6 +31,7 @@ class Note(
         "<N>8",
         "<N>9",
     ),
+    reference_notenumber=60,
     pitchclass=PitchClass,
 ):
     """

@@ -34,7 +34,7 @@ class KeySchema(Schema):
         keynames = [
             pitchname
             for pitchname in self.pitchclass.pitchnames
-            if abs(self.pitchclass.count_accidental(pitchname)) <= self.accidental
+            if abs(self.pitchclass.get_accidental(pitchname)) <= self.accidental
         ]
         return tuple(keynames)
 
