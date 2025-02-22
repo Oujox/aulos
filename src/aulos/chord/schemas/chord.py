@@ -8,7 +8,7 @@ from aulos.note.schemas import NoteSchema
 
 
 @dataclass(frozen=True, slots=True)
-class ParsedChord:
+class ChordComponents:
     root: str
     quality: Quality
     on: str | None
@@ -50,7 +50,7 @@ class ChordSchema(Schema):
     def validate(self) -> None:
         pass
 
-    def parse(self, name: str) -> ParsedChord | None:
+    def parse(self, name: str) -> ChordComponents | None:
         if "/" not in name:
             root = self.note.pitchclass.find_pitchname(name)
 
@@ -59,7 +59,7 @@ class ChordSchema(Schema):
 
             rest = name.split(root, 1)[1]
             quality = self.name2quality[rest]
-            return ParsedChord(root=root, quality=quality, on=None)
+            return ChordComponents(root=root, quality=quality, on=None)
         root_quality, maybe_on = name.split("/", 1)
         on = self.note.pitchclass.find_pitchname(maybe_on)
         root = self.note.pitchclass.find_pitchname(root_quality)
@@ -69,7 +69,7 @@ class ChordSchema(Schema):
 
         rest = root_quality.split(root, 1)[1]
         quality = self.name2quality[rest]
-        return ParsedChord(root=root, quality=quality, on=on)
+        return ChordComponents(root=root, quality=quality, on=on)
 
     def is_chord(self, name: object) -> t.TypeGuard[str]:
         return isinstance(name, str) and self.parse(name) is not None

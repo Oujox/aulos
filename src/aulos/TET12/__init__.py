@@ -7,6 +7,7 @@ It provides functionalities for handling 12-tone equal temperament systems,
 including musical notes, scales, and tuning systems.
 
 Modules and Classes:
+- chord: Contains the Chord class for handling musical chords.
 - note: Contains classes for musical notes, keys, and pitch classes.
 - scale: Provides various musical scales and modes.
 - tuner: Includes different tuning systems like Equal Temperament, Just Intonation, and more.
@@ -15,6 +16,7 @@ The `__all__` list defines the public API of the module, specifying which compon
 are accessible when the module is imported.
 """
 
+from .chord import Chord
 from .note import Key, Note, PitchClass
 
 # Scales
@@ -57,6 +59,7 @@ __all__ = [
     "Aeorian_f5",
     "AlteredSuperLocrian",
     "Bluenote",
+    "Chord",
     "CombDiminish",
     "Diminish",
     "Dorian",
