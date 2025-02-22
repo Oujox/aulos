@@ -4,13 +4,13 @@ import typing as t
 from typing import TYPE_CHECKING
 
 from aulos._core import AulosObject
-from aulos.note import BaseNote
+from aulos._core.note import BaseNote
 
 from .schemas import ChordSchema
 
 if TYPE_CHECKING:
-    from aulos.scale import Scale
-    from aulos.tuner import Tuner
+    from aulos._core.scale import Scale
+    from aulos._core.tuner import Tuner
 
     from .quality import Quality, QualityProperty
 

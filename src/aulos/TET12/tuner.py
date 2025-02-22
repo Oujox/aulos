@@ -1,4 +1,4 @@
-from aulos.tuner import Tuner
+from aulos._core import Tuner
 
 from .note import Note
 from .utils import fivelimit_tuning_table, standard_tuning_table

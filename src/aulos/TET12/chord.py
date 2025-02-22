@@ -1,4 +1,4 @@
-from aulos.chord import BaseChord
+from aulos._core import BaseChord
 
 from .note import Note
 

@@ -2,8 +2,8 @@ import typing as t
 from itertools import accumulate, starmap
 
 from aulos._core import AulosObject
+from aulos._core.note import BaseKey, BasePitchClass
 from aulos._core.utils import classproperty
-from aulos.note import BaseKey, BasePitchClass
 
 from .schemas import ScaleSchema
 

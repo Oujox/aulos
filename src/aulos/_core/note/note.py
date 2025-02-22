@@ -10,8 +10,8 @@ from .pitchclass import BasePitchClass
 from .schemas import NoteSchema
 
 if TYPE_CHECKING:
-    from aulos.scale import Scale  # pragma: no cover
-    from aulos.tuner import Tuner  # pragma: no cover
+    from aulos._core.scale import Scale  # pragma: no cover
+    from aulos._core.tuner import Tuner  # pragma: no cover
 
 
 def resolve_notename_from_scale(notenumber: int, scale: Scale | None, schema: NoteSchema) -> str | None:

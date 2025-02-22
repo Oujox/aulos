@@ -2,9 +2,9 @@ import typing as t
 from dataclasses import dataclass, field
 
 from aulos._core import Schema
+from aulos._core.chord.quality import Quality, QualityProperty
+from aulos._core.note.schemas import NoteSchema
 from aulos._core.utils import Positions
-from aulos.chord.quality import Quality, QualityProperty
-from aulos.note.schemas import NoteSchema
 
 
 @dataclass(frozen=True, slots=True)

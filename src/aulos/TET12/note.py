@@ -1,4 +1,4 @@
-from aulos.note import BaseKey, BaseNote, BasePitchClass
+from aulos._core import BaseKey, BaseNote, BasePitchClass
 
 
 class PitchClass(

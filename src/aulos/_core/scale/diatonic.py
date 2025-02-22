@@ -8,7 +8,7 @@ from .scale import Scale
 
 # type annotaion
 if TYPE_CHECKING:
-    from aulos.note import BaseKey, BasePitchClass
+    from aulos._core.note import BaseKey, BasePitchClass
 
 
 class DiatonicScale[KEY: BaseKey, PITCHCLASS: BasePitchClass](Scale[KEY, PITCHCLASS]):

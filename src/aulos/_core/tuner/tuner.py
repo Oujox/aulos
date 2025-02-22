@@ -1,7 +1,7 @@
 import typing as t
 
 from aulos._core import AulosObject
-from aulos.note import BaseNote
+from aulos._core.note import BaseNote
 
 from .schemas import TunerSchema
 

@@ -32,7 +32,9 @@ def build_scaleviewer_gui() -> None:
     scaleselecter.create_widget()
     keyselecter.default()
     scaleselecter.default()
+
     display_scaledisplay()
+
     scaledisplay.pack(side=tk.TOP, anchor=tk.W, expand=True)
     keyselecter.pack(side=tk.LEFT, anchor=tk.N)
     scaleselecter.pack(side=tk.LEFT, anchor=tk.N)

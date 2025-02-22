@@ -9,7 +9,7 @@ from aulos._core.utils import index
 from .schemas import PitchClassSchema
 
 if TYPE_CHECKING:
-    from aulos.scale import Scale  # pragma: no cover
+    from aulos._core.scale import Scale  # pragma: no cover
 
 
 def resolve_pitchname_from_scale(pitchclass: int, scale: Scale | None, schema: PitchClassSchema) -> str | None:
