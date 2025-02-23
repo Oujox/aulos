@@ -3,7 +3,7 @@ from dataclasses import dataclass, field
 from functools import cached_property
 from itertools import chain
 
-from aulos._core import Schema
+from aulos._core.schema import Schema
 from aulos._errors import ValidationError
 
 from .pitchclass import PitchClassSchema

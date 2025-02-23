@@ -2,7 +2,7 @@ import typing as t
 from dataclasses import dataclass
 from functools import cached_property
 
-from aulos._core import Schema
+from aulos._core.schema import Schema
 from aulos._core.utils import cyclic_difference
 from aulos._errors import ValidationError
 

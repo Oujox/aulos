@@ -1,7 +1,7 @@
 import typing as t
 
-from aulos._core import AulosObject
 from aulos._core.note import BaseNote
+from aulos._core.object import AulosObject
 
 from .schemas import TunerSchema
 
@@ -19,7 +19,7 @@ class Tuner[NOTE: BaseNote](AulosObject[TunerSchema]):
     Note: type[NOTE]
     """The type of note associated with the tuner."""
 
-    _ratios: t.ClassVar[tuple[float, ...]]
+    ratios: t.ClassVar[tuple[float, ...]]
     """The tuning ratios used to calculate frequencies."""
 
     _root: float
@@ -43,7 +43,7 @@ class Tuner[NOTE: BaseNote](AulosObject[TunerSchema]):
         )
         super().__init_subclass__(schema=schema, **kwargs)
         cls.Note = note
-        cls._ratios = ratios
+        cls.ratios = ratios
 
     @property
     def root(self) -> float:
@@ -55,12 +55,12 @@ class Tuner[NOTE: BaseNote](AulosObject[TunerSchema]):
         ref = notenumber - self.schema.reference_notenumber
         octnumber = ref // self.schema.pitchclass.cardinality
         pitchclass = ref % self.schema.pitchclass.cardinality
-        return self._root * (2**octnumber) * self._ratios[pitchclass]
+        return self._root * (2**octnumber) * self.ratios[pitchclass]
 
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, Tuner):
             return NotImplemented
-        return self._ratios == other._ratios
+        return self.ratios == other.ratios
 
     def __ne__(self, other: object) -> bool:
         return not self.__eq__(other)

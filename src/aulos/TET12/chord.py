@@ -26,4 +26,10 @@ class Chord(
     ),
     note=Note,
 ):
-    """ """
+    """
+    Represents a musical chord, which is a combination of notes played simultaneously.
+
+    This class extends the BaseChord and provides specific qualities and positions for various chord types,
+    including triads, seventh chords, and altered chords. It allows for the representation and manipulation
+    of chords in a musical context, using the Note class for individual notes.
+    """

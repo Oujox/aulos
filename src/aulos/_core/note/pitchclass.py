@@ -3,7 +3,7 @@ from __future__ import annotations
 import typing as t
 from typing import TYPE_CHECKING
 
-from aulos._core import AulosObject
+from aulos._core.object import AulosObject
 from aulos._core.utils import index
 
 from .schemas import PitchClassSchema
@@ -36,8 +36,6 @@ class BasePitchClass(AulosObject[PitchClassSchema]):
     _pitchnames: tuple[str | None, ...]
     _pitchname: str | None
     _scale: Scale | None
-
-    __slots__ = "_pitchclass", "_pitchname", "_pitchnames", "_scale"
 
     def __init__(
         self,

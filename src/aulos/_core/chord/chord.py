@@ -3,8 +3,8 @@ from __future__ import annotations
 import typing as t
 from typing import TYPE_CHECKING
 
-from aulos._core import AulosObject
 from aulos._core.note import BaseNote
+from aulos._core.object import AulosObject
 
 from .schemas import ChordSchema
 

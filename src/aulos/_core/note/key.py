@@ -1,6 +1,6 @@
 import typing as t
 
-from aulos._core import AulosObject
+from aulos._core.object import AulosObject
 
 from .pitchclass import BasePitchClass
 from .schemas import KeySchema
