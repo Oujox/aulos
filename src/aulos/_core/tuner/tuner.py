@@ -1,7 +1,9 @@
 import typing as t
+from typing import cast
 
 from aulos._core.note import BaseNote
 from aulos._core.object import AulosObject
+from aulos._core.utils import classproperty
 
 from .schemas import TunerSchema
 
@@ -16,11 +18,8 @@ class Tuner[NOTE: BaseNote](AulosObject[TunerSchema]):
     and reference note numbers, making it versatile for different musical contexts.
     """
 
-    Note: type[NOTE]
-    """The type of note associated with the tuner."""
-
-    ratios: t.ClassVar[tuple[float, ...]]
-    """The tuning ratios used to calculate frequencies."""
+    _Note: t.ClassVar[type[BaseNote]]
+    _ratios: t.ClassVar[tuple[float, ...]]
 
     _root: float
 
@@ -42,8 +41,18 @@ class Tuner[NOTE: BaseNote](AulosObject[TunerSchema]):
             note.schema.pitchclass,
         )
         super().__init_subclass__(schema=schema, **kwargs)
-        cls.Note = note
-        cls.ratios = ratios
+        cls._Note = note
+        cls._ratios = ratios
+
+    @classproperty
+    def Note(self) -> type[NOTE]:  # noqa: N802
+        """The type of note associated with the tuner."""
+        return cast(type[NOTE], self._Note)
+
+    @classproperty
+    def ratios(self) -> tuple[float, ...]:
+        """The tuning ratios used to calculate frequencies."""
+        return self._ratios
 
     @property
     def root(self) -> float:

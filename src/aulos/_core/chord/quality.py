@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from aulos._core.utils import index
 
 if t.TYPE_CHECKING:
-    from aulos._core.utils import Intervals, Positions
+    from aulos._core.utils import Intervals, Positions  # pragma: no cover
 
 
 class _OptionalQualityProperty(t.TypedDict, total=False):

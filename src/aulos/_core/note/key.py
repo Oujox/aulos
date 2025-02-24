@@ -1,6 +1,8 @@
 import typing as t
+from typing import cast
 
 from aulos._core.object import AulosObject
+from aulos._core.utils import classproperty
 
 from .pitchclass import BasePitchClass
 from .schemas import KeySchema
@@ -14,8 +16,7 @@ class BaseKey[PITCHCLASS: BasePitchClass](AulosObject[KeySchema]):
     It includes properties and methods to handle key names, key classes, and key signatures.
     """
 
-    PitchClass: type[PITCHCLASS]
-    """The type of pitch class associated with the key."""
+    _PitchClass: t.ClassVar[type[BasePitchClass]]
 
     _keyname: str
     _keyclass: int
@@ -48,7 +49,12 @@ class BaseKey[PITCHCLASS: BasePitchClass](AulosObject[KeySchema]):
             pitchclass.schema,
         )
         super().__init_subclass__(schema=schema)
-        cls.PitchClass = pitchclass
+        cls._PitchClass = pitchclass
+
+    @classproperty
+    def PitchClass(self) -> type[PITCHCLASS]:  # noqa: N802
+        """The type of pitch class associated with the key."""
+        return cast(type[PITCHCLASS], self._PitchClass)
 
     @property
     def keyname(self) -> str:

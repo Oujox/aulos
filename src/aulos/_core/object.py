@@ -1,5 +1,6 @@
 import typing as t
 from abc import ABCMeta, abstractmethod
+from typing import cast
 
 from .schema import Schema
 from .setting import Setting
@@ -15,7 +16,7 @@ class AulosObject[T: Schema](metaclass=ABCMeta):
     the correct schema and provides utility methods for schema and setting management.
     """
 
-    _schema: T | None
+    _schema: t.ClassVar[Schema | None]
     _setting: Setting | None
 
     def __new__(cls, *_args: t.Any, **_kwargs: t.Any) -> t.Self:
@@ -38,7 +39,7 @@ class AulosObject[T: Schema](metaclass=ABCMeta):
         if self._schema is None:
             msg = "unreachable error"
             raise RuntimeError(msg)
-        return self._schema
+        return cast(T, self._schema)
 
     @property
     def setting(self) -> Setting | None:

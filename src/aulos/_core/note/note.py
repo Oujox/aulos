@@ -1,10 +1,10 @@
 from __future__ import annotations
 
 import typing as t
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, cast
 
 from aulos._core.object import AulosObject
-from aulos._core.utils import index
+from aulos._core.utils import classproperty, index
 
 from .pitchclass import BasePitchClass
 from .schemas import NoteSchema
@@ -34,11 +34,7 @@ class BaseNote[PITCHCLASS: BasePitchClass](AulosObject[NoteSchema]):
     to handle note numbers, note names, and their relationships with pitch classes and scales.
     """
 
-    PitchClass: type[PITCHCLASS]
-    """The type of pitch class associated with the note."""
-
-    octave_default: t.ClassVar[int]
-    """The default octave for the note."""
+    _PitchClass: t.ClassVar[type[BasePitchClass]]
 
     _notenumber: int
     _notenames: tuple[str | None, ...]
@@ -102,8 +98,12 @@ class BaseNote[PITCHCLASS: BasePitchClass](AulosObject[NoteSchema]):
             pitchclass.schema,
         )
         super().__init_subclass__(schema=schema)
-        cls.PitchClass = pitchclass
-        cls.octave_default = schema.get_octave(schema.reference_notenumber)
+        cls._PitchClass = pitchclass
+
+    @classproperty
+    def PitchClass(self) -> type[PITCHCLASS]:  # noqa: N802
+        """The type of pitch class associated with the note."""
+        return cast(type[PITCHCLASS], self._PitchClass)
 
     @property
     def notenumber(self) -> int:

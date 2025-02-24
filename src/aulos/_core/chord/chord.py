@@ -9,10 +9,10 @@ from aulos._core.object import AulosObject
 from .schemas import ChordSchema
 
 if TYPE_CHECKING:
-    from aulos._core.scale import Scale
-    from aulos._core.tuner import Tuner
+    from aulos._core.scale import Scale  # pragma: no cover
+    from aulos._core.tuner import Tuner  # pragma: no cover
 
-    from .quality import Quality, QualityProperty
+    from .quality import Quality, QualityProperty  # pragma: no cover
 
 
 class BaseChord[NOTE: BaseNote](AulosObject[ChordSchema]):
@@ -37,7 +37,7 @@ class BaseChord[NOTE: BaseNote](AulosObject[ChordSchema]):
 
         if (parsed := self.schema.parse(name)) is not None:
             root_notename = self.schema.note.convert_pitchname_to_notename(
-                parsed.root, octave or self.Note.octave_default
+                parsed.root, octave or self.schema.note.get_octave(self.schema.note.reference_notenumber)
             )
             self._root = self.Note(root_notename)
             self._quality = parsed.quality
