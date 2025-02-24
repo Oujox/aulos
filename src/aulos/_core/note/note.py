@@ -1,17 +1,17 @@
 from __future__ import annotations
 
 import typing as t
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, cast
 
-from aulos._core import AulosObject
-from aulos._core.utils import index
+from aulos._core.object import AulosObject
+from aulos._core.utils import classproperty, index
 
 from .pitchclass import BasePitchClass
 from .schemas import NoteSchema
 
 if TYPE_CHECKING:
-    from aulos.scale import Scale  # pragma: no cover
-    from aulos.tuner import Tuner  # pragma: no cover
+    from aulos._core.scale import Scale  # pragma: no cover
+    from aulos._core.tuner import Tuner  # pragma: no cover
 
 
 def resolve_notename_from_scale(notenumber: int, scale: Scale | None, schema: NoteSchema) -> str | None:
@@ -34,16 +34,13 @@ class BaseNote[PITCHCLASS: BasePitchClass](AulosObject[NoteSchema]):
     to handle note numbers, note names, and their relationships with pitch classes and scales.
     """
 
-    PitchClass: type[PITCHCLASS]
-    """The type of pitch class associated with the note."""
+    _PitchClass: t.ClassVar[type[BasePitchClass]]
 
     _notenumber: int
     _notenames: tuple[str | None, ...]
     _notename: str | None
     _tuner: Tuner | None
     _scale: Scale | None
-
-    __slots__ = "_notename", "_notenames", "_notenumber", "_scale", "_tuner"
 
     def __init__(
         self,
@@ -91,15 +88,22 @@ class BaseNote[PITCHCLASS: BasePitchClass](AulosObject[NoteSchema]):
         *,
         symbols_notenumber: t.Sequence[int],
         symbols_octave: t.Sequence[str],
+        reference_notenumber: int,
         pitchclass: type[PITCHCLASS],
     ) -> None:
         schema = NoteSchema(
             tuple(symbols_notenumber),
             tuple(symbols_octave),
+            reference_notenumber,
             pitchclass.schema,
         )
         super().__init_subclass__(schema=schema)
-        cls.PitchClass = pitchclass
+        cls._PitchClass = pitchclass
+
+    @classproperty
+    def PitchClass(self) -> type[PITCHCLASS]:  # noqa: N802
+        """The type of pitch class associated with the note."""
+        return cast(type[PITCHCLASS], self._PitchClass)
 
     @property
     def notenumber(self) -> int:
@@ -135,9 +139,13 @@ class BaseNote[PITCHCLASS: BasePitchClass](AulosObject[NoteSchema]):
 
     def to_pitchclass(self) -> PITCHCLASS:
         """Returns the pitch class of the note."""
-        pitchlass = self.schema.convert_notenumber_to_pitchclass(self._notenumber)
+        identify = (
+            self.schema.convert_notename_to_pitchname(self._notename)
+            if self._notename is not None
+            else self.schema.convert_notenumber_to_pitchclass(self._notenumber)
+        )
         return self.PitchClass(
-            pitchlass,
+            identify,
             scale=self._scale,
             setting=self._setting,
         )
@@ -163,15 +171,17 @@ class BaseNote[PITCHCLASS: BasePitchClass](AulosObject[NoteSchema]):
     def __add__(self, other: t.SupportsInt) -> t.Self:
         return self.__class__(
             int(self) + int(other),
-            scale=self.scale,
-            setting=self.setting,
+            scale=self._scale,
+            tuner=self._tuner,
+            setting=self._setting,
         )
 
     def __sub__(self, other: t.SupportsInt) -> t.Self:
         return self.__class__(
             int(self) - int(other),
-            scale=self.scale,
-            setting=self.setting,
+            scale=self._scale,
+            tuner=self._tuner,
+            setting=self._setting,
         )
 
     def __int__(self) -> int:

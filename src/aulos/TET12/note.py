@@ -1,4 +1,4 @@
-from aulos.note import BaseKey, BaseNote, BasePitchClass
+from aulos._core import BaseKey, BaseNote, BasePitchClass
 
 
 class PitchClass(
@@ -31,6 +31,7 @@ class Note(
         "<N>8",
         "<N>9",
     ),
+    reference_notenumber=60,
     pitchclass=PitchClass,
 ):
     """

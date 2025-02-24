@@ -3,7 +3,7 @@ from dataclasses import dataclass, field
 from functools import cached_property
 from itertools import accumulate, chain
 
-from aulos._core import Schema
+from aulos._core.schema import Schema
 from aulos._errors import ValidationError
 
 
@@ -129,7 +129,7 @@ class PitchClassSchema(Schema):
         )
         return ([*finded, None])[0]
 
-    def count_accidental(self, pitchname: str) -> int:
+    def get_accidental(self, pitchname: str) -> int:
         self.ensure_valid_pitchname(pitchname)
         pitchclass = self.convert_pitchname_to_picthclass(pitchname)
         pitchnames = self.convert_pitchclass_to_pitchnames(pitchclass)
@@ -161,7 +161,7 @@ class PitchClassSchema(Schema):
 
     def convert_pitchname_to_symbol(self, pitchname: str) -> str:
         self.ensure_valid_pitchname(pitchname)
-        accidental = self.count_accidental(pitchname)
+        accidental = self.get_accidental(pitchname)
         pitchclass = self.convert_pitchname_to_picthclass(pitchname)
         pitchclass = (pitchclass - accidental) % self.cardinality
         symbol = self.convert_pitchclass_to_pitchname(pitchclass, 0)

@@ -1,9 +1,10 @@
 import typing as t
 from itertools import accumulate, starmap
+from typing import cast
 
-from aulos._core import AulosObject
+from aulos._core.note import BaseKey, BasePitchClass
+from aulos._core.object import AulosObject
 from aulos._core.utils import classproperty
-from aulos.note import BaseKey, BasePitchClass
 
 from .schemas import ScaleSchema
 
@@ -17,17 +18,10 @@ class Scale[KEY: BaseKey, PITCHCLASS: BasePitchClass](AulosObject[ScaleSchema]):
     in a theoretical context, supporting various musical keys and pitch classes.
     """
 
-    Key: type[KEY]
-    """The type of key associated with the scale."""
-
-    PitchClass: type[PITCHCLASS]
-    """The type of pitch class associated with the scale."""
-
+    _Key: t.ClassVar[type[BaseKey]]
+    _PitchClass: t.ClassVar[type[BasePitchClass]]
     _intervals: t.ClassVar[tuple[int, ...]]
-    """The sequence of intervals that define the scale."""
-
     _positions: t.ClassVar[tuple[int, ...]]
-    """The positions of the notes in the scale."""
 
     _key: KEY
     _signatures: tuple[int, ...]
@@ -74,25 +68,35 @@ class Scale[KEY: BaseKey, PITCHCLASS: BasePitchClass](AulosObject[ScaleSchema]):
             return
         schema = ScaleSchema(key.schema.pitchclass)
         super().__init_subclass__(schema=schema)
-        cls.Key = key
-        cls.PitchClass = key.PitchClass
+        cls._Key = key
+        cls._PitchClass = key.PitchClass
         cls._intervals = tuple(intervals)
         cls._positions = tuple(accumulate((0,) + cls._intervals[:-1]))
+
+    @classproperty
+    def Key(self) -> type[KEY]:  # noqa: N802
+        """The type of key associated with the scale."""
+        return cast(type[KEY], self._Key)
+
+    @classproperty
+    def PitchClass(self) -> type[PITCHCLASS]:  # noqa: N802
+        """The type of pitch class associated with the scale."""
+        return cast(type[PITCHCLASS], self._PitchClass)
+
+    @classproperty
+    def intervals(self) -> tuple[int, ...]:
+        """The sequence of intervals that define the scale."""
+        return self._intervals
+
+    @classproperty
+    def positions(self) -> tuple[int, ...]:
+        """The positions of the notes in the scale."""
+        return self._positions
 
     @property
     def key(self) -> KEY:
         """Returns the key of the scale."""
         return self._key
-
-    @classproperty
-    def intervals(self) -> tuple[int, ...]:
-        """Returns the intervals of the scale."""
-        return self._intervals
-
-    @classproperty
-    def positions(self) -> tuple[int, ...]:
-        """Returns the positions of the notes in the scale."""
-        return self._positions
 
     @property
     def signatures(self) -> tuple[int, ...]:

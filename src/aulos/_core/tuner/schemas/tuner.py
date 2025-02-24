@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 
-from aulos._core import Schema
+from aulos._core.note.schemas import NoteSchema, PitchClassSchema
+from aulos._core.schema import Schema
 from aulos._errors import ValidationError
-from aulos.note.schemas import NoteSchema, PitchClassSchema
 
 
 @dataclass(frozen=True)

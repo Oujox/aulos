@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 from itertools import starmap
 
-from aulos._core import Schema
-from aulos.note.schemas import PitchClassSchema
+from aulos._core.note.schemas import PitchClassSchema
+from aulos._core.schema import Schema
 
 
 @dataclass(frozen=True, slots=True)

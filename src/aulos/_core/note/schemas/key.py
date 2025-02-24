@@ -2,11 +2,18 @@ import typing as t
 from dataclasses import dataclass
 from functools import cached_property
 
-from aulos._core import Schema
-from aulos._core.utils import cyclic_difference
+from aulos._core.schema import Schema
 from aulos._errors import ValidationError
 
 from .pitchclass import PitchClassSchema
+
+
+def cyclic_difference(lhs: int, rhs: int, cycle_length: int | None = None) -> int:
+    if cycle_length is not None:
+        result1 = lhs - rhs
+        result2 = (lhs + (cycle_length if lhs < rhs else 0)) - (rhs + (cycle_length if lhs > rhs else 0))
+        return result1 if abs(result1) < abs(result2) else result2
+    return lhs - rhs
 
 
 @dataclass(frozen=True, slots=True)
@@ -34,7 +41,7 @@ class KeySchema(Schema):
         keynames = [
             pitchname
             for pitchname in self.pitchclass.pitchnames
-            if abs(self.pitchclass.count_accidental(pitchname)) <= self.accidental
+            if abs(self.pitchclass.get_accidental(pitchname)) <= self.accidental
         ]
         return tuple(keynames)
 
