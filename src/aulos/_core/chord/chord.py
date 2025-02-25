@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING
 
 from aulos._core.note import BaseNote
 from aulos._core.object import AulosObject
+from aulos._core.utils import classproperty
 
 from .schemas import ChordSchema
 
@@ -16,7 +17,8 @@ if TYPE_CHECKING:
 
 
 class BaseChord[NOTE: BaseNote](AulosObject[ChordSchema]):
-    Note: type[NOTE]
+    _Note: t.ClassVar[t.Type[BaseNote]]
+    _base: t.ClassVar[t.Type[Scale]]
 
     _root: NOTE
     _on: NOTE | None
@@ -55,13 +57,18 @@ class BaseChord[NOTE: BaseNote](AulosObject[ChordSchema]):
         else:
             raise TypeError
 
-    def __init_subclass__(cls, qualities: t.Sequence[QualityProperty], note: type[NOTE]) -> None:
+    def __init_subclass__(cls, qualities: t.Sequence[QualityProperty], base: type[Scale], note: type[NOTE]) -> None:
         schema = ChordSchema(
             tuple(qualities),
             note.schema,
         )
         super().__init_subclass__(schema=schema)
-        cls.Note = note
+        cls._Note = note
+        cls._base = base
+
+    @classproperty
+    def Note(self) -> type[NOTE]:
+        return self._Note
 
     @property
     def root(self) -> NOTE:

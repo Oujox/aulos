@@ -1,6 +1,7 @@
 from aulos._core import BaseChord
 
 from .note import Note
+from .scale import Major
 
 
 class Chord(
@@ -24,6 +25,7 @@ class Chord(
         {"name": "m7b5", "positions": (0, 3, 6, 10)},
         # Altered Chords
     ),
+    base=Major,
     note=Note,
 ):
     """

@@ -9,10 +9,6 @@ them available for use in the library.
 Modules and Classes:
 - TET12, TET24: Modules for handling 12-tone and 24-tone equal temperament systems.
 - Setting: Core settings management for the library.
-- BaseKey, BaseNote, BasePitchClass: Fundamental classes for musical keys, notes, and pitch classes.
-- DiatonicScale, NondiatonicScale, Scale: Classes for representing musical scales.
-- Tuner: Class for tuning systems.
-- _errors, _warnings: Modules for handling errors and warnings.
 
 The `__all__` list defines the public API of the module, specifying which components
 are accessible when the module is imported.
