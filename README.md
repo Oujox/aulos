@@ -63,6 +63,24 @@ print(Pentatonic(Key("C")).components)
 ```
 
 ```python
+from aulos.TET12 import Chord
+from aulos.TET12 import Major
+
+print(Chord("C").components)
+# stdout:
+# (<Note: ['Dbb4', 'C4', 'B#3', 'A###3'], scale: None>,
+#  <Note: ['Gbbb4', 'Fb4', 'E4', 'D##4'], scale: None>,
+#  <Note: ['Abb4', 'G4', 'F##4', 'E###4'], scale: None>)
+
+print(Chord("CM7", scale=Major("C")).components)
+# stdout:
+# (<Note: C4, scale: <Major: <Key: C>>>,
+#  <Note: E4, scale: <Major: <Key: C>>>,
+#  <Note: G4, scale: <Major: <Key: C>>>,
+#  <Note: B4, scale: <Major: <Key: C>>>)
+```
+
+```python
 from aulos.TET12 import Note
 from aulos.TET12 import JustIntonationTuner, Equal12Tuner
 

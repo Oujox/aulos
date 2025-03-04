@@ -1,4 +1,3 @@
-import typing as t
 from dataclasses import dataclass, field
 
 from aulos._core.chord.quality import Quality, QualityProperty
@@ -10,8 +9,8 @@ from aulos._core.utils import Positions
 @dataclass(frozen=True, slots=True)
 class ChordComponents:
     root: str
+    base: str | None
     quality: Quality
-    on: str | None
 
 
 @dataclass(frozen=True, slots=True)
@@ -59,20 +58,23 @@ class ChordSchema(Schema):
 
             rest = name.split(root, 1)[1]
             quality = self.name2quality[rest]
-            return ChordComponents(root=root, quality=quality, on=None)
-        root_quality, maybe_on = name.split("/", 1)
-        on = self.note.pitchclass.find_pitchname(maybe_on)
+            return ChordComponents(root=root, quality=quality, base=None)
+        root_quality, maybe_base = name.split("/", 1)
+        base = self.note.pitchclass.find_pitchname(maybe_base)
         root = self.note.pitchclass.find_pitchname(root_quality)
 
-        if root is None or on is None:
+        if root is None or base is None:
             return None
 
         rest = root_quality.split(root, 1)[1]
         quality = self.name2quality[rest]
-        return ChordComponents(root=root, quality=quality, on=on)
+        return ChordComponents(root=root, quality=quality, base=base)
 
-    def is_chord(self, name: object) -> t.TypeGuard[str]:
-        return isinstance(name, str) and self.parse(name) is not None
-
-    def is_onchord(self, name: object) -> t.TypeGuard[str]:
-        return isinstance(name, str) and (parsed := self.parse(name)) is not None and parsed.on is not None
+    def convert_to_chord_notenames(
+        self, root_pitchname: str, base_pitchname: str | None, octave: int
+    ) -> tuple[str, str | None]:
+        root_notename = self.note.convert_pitchname_to_notename(root_pitchname, octave)
+        if base_pitchname is None:
+            return (root_notename, None)
+        base_notename = self.note.find_nearest_notename(root_notename, base_pitchname, "down")
+        return (root_notename, base_notename)
