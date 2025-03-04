@@ -62,7 +62,10 @@ class Quality:
     def inverse(self, inversion: int) -> Quality:
         intervals = self.intervals.left(inversion)
         return Quality(
-            name=self.name, positions=intervals.to_positions(), inversion=inversion % len(intervals), base=self.base
+            name=self.name,
+            positions=intervals.to_positions(),
+            inversion=(self.inversion + inversion) % len(intervals),
+            base=self.base,
         )
 
     def from_base(self, base: int) -> Quality:
