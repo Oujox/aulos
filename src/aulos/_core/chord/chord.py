@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import typing as t
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, cast
 
 from aulos._core.note import BaseNote
 from aulos._core.object import AulosObject
@@ -17,58 +17,88 @@ if TYPE_CHECKING:
 
 
 class BaseChord[NOTE: BaseNote](AulosObject[ChordSchema]):
-    _Note: t.ClassVar[t.Type[BaseNote]]
-    _base: t.ClassVar[t.Type[Scale]]
+    """
+    Represents a musical chord, which is a combination of notes played simultaneously.
+
+    This class extends the BaseChord and provides specific qualities and positions for various chord types,
+    including triads, seventh chords, and altered chords. It allows for the representation and manipulation
+    of chords in a musical context, using the Note class for individual notes.
+    """
+
+    _Note: t.ClassVar[type[BaseNote]]
 
     _root: NOTE
-    _on: NOTE | None
+    _base: NOTE | None
     _quality: Quality
     _tuner: Tuner | None
     _scale: Scale | None
 
     def __init__(
         self,
-        name: str,
+        identify: str | tuple[str, int],
         *,
-        octave: int | None = None,
         tuner: Tuner | None = None,
         scale: Scale | None = None,
         **kwargs: t.Any,
     ) -> None:
         super().__init__(**kwargs)
 
-        if (parsed := self.schema.parse(name)) is not None:
-            root_notename = self.schema.note.convert_pitchname_to_notename(
-                parsed.root, octave or self.schema.note.get_octave(self.schema.note.reference_notenumber)
-            )
-            self._root = self.Note(root_notename)
-            self._quality = parsed.quality
-            self._tuner = tuner
-            self._scale = scale
+        if isinstance(identify, str):
+            if (parsed := self.schema.parse(identify)) is not None:
+                root_notename, base_notename = self.schema.convert_to_chord_notenames(
+                    parsed.root,
+                    parsed.base,
+                    self.schema.note.get_octave(self.schema.note.reference_notenumber),
+                )
 
-            if parsed.on is not None:
-                on_notename = self.schema.note.find_nearest_notename(root_notename, parsed.on, "down") or ""
-                self._on = self.Note(on_notename)
-                self._quality = self._quality.inverse_from_on(self._on.notenumber - self._root.notenumber)
+                if base_notename is None:
+                    self._root = self.Note(root_notename)
+                    self._base = None
+                    self._quality = parsed.quality
+                    self._tuner = tuner
+                    self._scale = scale
 
-            else:
-                self._on = None
+                else:
+                    self._root = self.Note(root_notename)
+                    self._base = self.Note(base_notename)
+                    self._quality = parsed.quality.from_base(self._base.notenumber - self._root.notenumber)
+                    self._tuner = tuner
+                    self._scale = scale
+
+        elif isinstance(identify, tuple) and isinstance(identify[0], str) and isinstance(identify[1], int):
+            if (parsed := self.schema.parse(identify[0])) is not None:
+                root_notename, base_notename = self.schema.convert_to_chord_notenames(
+                    parsed.root, parsed.base, identify[1]
+                )
+
+                if base_notename is None:
+                    self._root = self.Note(root_notename)
+                    self._base = None
+                    self._quality = parsed.quality
+                    self._tuner = tuner
+                    self._scale = scale
+
+                else:
+                    self._root = self.Note(root_notename)
+                    self._base = self.Note(base_notename)
+                    self._quality = parsed.quality.from_base(self._base.notenumber - self._root.notenumber)
+                    self._tuner = tuner
+                    self._scale = scale
 
         else:
             raise TypeError
 
-    def __init_subclass__(cls, qualities: t.Sequence[QualityProperty], base: type[Scale], note: type[NOTE]) -> None:
+    def __init_subclass__(cls, qualities: t.Sequence[QualityProperty], note: type[NOTE]) -> None:
         schema = ChordSchema(
             tuple(qualities),
             note.schema,
         )
         super().__init_subclass__(schema=schema)
         cls._Note = note
-        cls._base = base
 
     @classproperty
-    def Note(self) -> type[NOTE]:
-        return self._Note
+    def Note(self) -> type[NOTE]:  # noqa: N802
+        return cast(type[NOTE], self._Note)
 
     @property
     def root(self) -> NOTE:
@@ -79,8 +109,8 @@ class BaseChord[NOTE: BaseNote](AulosObject[ChordSchema]):
         return self._quality
 
     @property
-    def on(self) -> NOTE | None:
-        return self._on
+    def base(self) -> NOTE | None:
+        return self._base
 
     @property
     def tuner(self) -> Tuner | None:
@@ -102,9 +132,27 @@ class BaseChord[NOTE: BaseNote](AulosObject[ChordSchema]):
 
     @property
     def components(self) -> tuple[NOTE, ...]:
+        if self._quality.is_onchord():
+            return (
+                self.Note(
+                    int(self._root) + self._quality.base,
+                    tuner=self._tuner,
+                    scale=self._scale,
+                    setting=self._setting,
+                ),
+                *tuple(
+                    self.Note(
+                        int(self._root) + p,
+                        tuner=self._tuner,
+                        scale=self._scale,
+                        setting=self._setting,
+                    )
+                    for p in self._quality.positions
+                ),
+            )
         return tuple(
             self.Note(
-                int(self._on or self._root) + p,
+                int(self._root) + self._quality.root + p,
                 tuner=self._tuner,
                 scale=self._scale,
                 setting=self._setting,
@@ -115,24 +163,16 @@ class BaseChord[NOTE: BaseNote](AulosObject[ChordSchema]):
     def inverse(self, num: int = 1) -> None:
         self._quality = self._quality.inverse(num)
 
-    @classmethod
-    def is_chord(cls, name: object) -> t.TypeGuard[str]:
-        return cls.schema.is_chord(name)
-
-    @classmethod
-    def is_onchord(cls, name: object) -> t.TypeGuard[str]:
-        return cls.schema.is_onchord(name)
-
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, BaseChord):
             return NotImplemented
-        return self.root == other.root and self.quality == other.quality and self.on == other.on
+        return self.root == other.root and self.quality == other.quality and self.base == other.base
 
     def __ne__(self, other: object) -> bool:
         return not self.__eq__(other)
 
     def __str__(self) -> str:
-        return f"<Chord: {self.root}{self.quality.name}{self.on}>"
+        return f"<Chord: {self.root}{self.quality.name}{self.base}>"
 
     def __repr__(self) -> str:
-        return f"<Chord: {self.root}{self.quality.name}{self.on}>"
+        return f"<Chord: {self.root}{self.quality.name}{self.base}>"
