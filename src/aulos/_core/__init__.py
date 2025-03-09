@@ -3,11 +3,10 @@
 """
 
 # utils, framework
-from . import utils
-from .chord import BaseChord
+from . import context, utils
 
 # implementation
-from .context import Context
+from .chord import BaseChord
 from .note import BaseKey, BaseNote, BasePitchClass
 from .object import AulosObject
 from .scale import DiatonicScale, NondiatonicScale, Scale
@@ -21,12 +20,12 @@ __all__ = [
     "BaseKey",
     "BaseNote",
     "BasePitchClass",
-    "Context",
     "DiatonicScale",
     "NondiatonicScale",
     "Scale",
     "Schema",
     "Setting",
     "Tuner",
+    "context",
     "utils",
 ]

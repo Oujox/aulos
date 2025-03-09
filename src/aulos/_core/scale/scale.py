@@ -2,6 +2,7 @@ import typing as t
 from itertools import accumulate, starmap
 from typing import cast
 
+from aulos._core.context import inject
 from aulos._core.note import BaseKey, BasePitchClass
 from aulos._core.object import AulosObject
 from aulos._core.utils import classproperty
@@ -26,6 +27,7 @@ class Scale[KEY: BaseKey, PITCHCLASS: BasePitchClass](AulosObject[ScaleSchema]):
     _key: KEY
     _signatures: tuple[int, ...]
 
+    @inject
     def __init__(self, key: str | KEY, **kwargs: t.Any) -> None:
         super().__init__(**kwargs)
 

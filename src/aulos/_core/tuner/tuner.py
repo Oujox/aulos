@@ -1,6 +1,7 @@
 import typing as t
 from typing import cast
 
+from aulos._core.context import inject
 from aulos._core.note import BaseNote
 from aulos._core.object import AulosObject
 from aulos._core.utils import classproperty
@@ -23,6 +24,7 @@ class Tuner[NOTE: BaseNote](AulosObject[TunerSchema]):
 
     _root: float
 
+    @inject
     def __init__(self, root: float, **kwargs: t.Any) -> None:
         super().__init__(**kwargs)
         self._root = root

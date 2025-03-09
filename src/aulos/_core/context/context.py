@@ -3,21 +3,17 @@ from contextlib import ContextDecorator
 from contextvars import ContextVar
 from types import TracebackType
 
-from .object import AulosObject
-from .setting import Setting
+from aulos._core.object import AulosObject
 
 
 class Context(ContextDecorator):
-    setting: t.ClassVar[ContextVar[Setting]] = ContextVar("setting")
-    data: t.ClassVar[ContextVar[dict[str, t.Any]]] = ContextVar("data")
+    injectables: t.ClassVar[ContextVar[dict[str, t.Any]]] = ContextVar("injectables")
 
     def __init__(
         self,
-        setting: Setting,
-        **data: AulosObject,
+        **injectables: AulosObject,
     ) -> None:
-        self.__setting = self.setting.set(setting)
-        self.__data = self.data.set(data)
+        self.__injectables = self.injectables.set(injectables)
 
     def __enter__(self) -> t.Self:
         return self
@@ -28,5 +24,4 @@ class Context(ContextDecorator):
         exc_value: BaseException | None,
         traceback: TracebackType | None,
     ) -> None:
-        self.setting.reset(self.__setting)
-        self.data.reset(self.__data)
+        self.injectables.reset(self.__injectables)

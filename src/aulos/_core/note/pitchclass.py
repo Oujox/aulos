@@ -3,6 +3,7 @@ from __future__ import annotations
 import typing as t
 from typing import TYPE_CHECKING
 
+from aulos._core.context import inject
 from aulos._core.object import AulosObject
 from aulos._core.utils import index
 
@@ -37,6 +38,7 @@ class BasePitchClass(AulosObject[PitchClassSchema]):
     _pitchname: str | None
     _scale: Scale | None
 
+    @inject
     def __init__(
         self,
         identify: int | str | t.Self,
