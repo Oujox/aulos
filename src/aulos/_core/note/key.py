@@ -1,6 +1,7 @@
 import typing as t
 from typing import cast
 
+from aulos._core.context import inject
 from aulos._core.object import AulosObject
 from aulos._core.utils import classproperty
 
@@ -22,6 +23,7 @@ class BaseKey[PITCHCLASS: BasePitchClass](AulosObject[KeySchema]):
     _keyclass: int
     _signatures: tuple[int, ...]
 
+    @inject
     def __init__(self, identify: str | t.Self, **kwargs: t.Any) -> None:
         super().__init__(**kwargs)
 

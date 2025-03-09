@@ -3,6 +3,7 @@ from __future__ import annotations
 import typing as t
 from typing import TYPE_CHECKING, cast
 
+from aulos._core.context import inject
 from aulos._core.note import BaseNote
 from aulos._core.object import AulosObject
 from aulos._core.utils import classproperty
@@ -33,6 +34,7 @@ class BaseChord[NOTE: BaseNote](AulosObject[ChordSchema]):
     _tuner: Tuner | None
     _scale: Scale | None
 
+    @inject
     def __init__(
         self,
         identify: str | tuple[str, int],
