@@ -100,7 +100,7 @@ class BaseChord[NOTE: BaseNote](AulosObject[ChordSchema]):
 
     @classproperty
     def Note(self) -> type[NOTE]:  # noqa: N802
-        return cast(type[NOTE], self._Note)
+        return cast("type[NOTE]", self._Note)
 
     @property
     def root(self) -> NOTE:

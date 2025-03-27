@@ -78,12 +78,12 @@ class Scale[KEY: BaseKey, PITCHCLASS: BasePitchClass](AulosObject[ScaleSchema]):
     @classproperty
     def Key(self) -> type[KEY]:  # noqa: N802
         """The type of key associated with the scale."""
-        return cast(type[KEY], self._Key)
+        return cast("type[KEY]", self._Key)
 
     @classproperty
     def PitchClass(self) -> type[PITCHCLASS]:  # noqa: N802
         """The type of pitch class associated with the scale."""
-        return cast(type[PITCHCLASS], self._PitchClass)
+        return cast("type[PITCHCLASS]", self._PitchClass)
 
     @classproperty
     def intervals(self) -> tuple[int, ...]:

@@ -39,7 +39,7 @@ class AulosObject[T: Schema](metaclass=ABCMeta):
         if self._schema is None:
             msg = "unreachable error"
             raise RuntimeError(msg)
-        return cast(T, self._schema)
+        return cast("T", self._schema)
 
     @property
     def setting(self) -> Setting | None:
