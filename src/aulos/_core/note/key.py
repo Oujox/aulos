@@ -56,7 +56,7 @@ class BaseKey[PITCHCLASS: BasePitchClass](AulosObject[KeySchema]):
     @classproperty
     def PitchClass(self) -> type[PITCHCLASS]:  # noqa: N802
         """The type of pitch class associated with the key."""
-        return cast(type[PITCHCLASS], self._PitchClass)
+        return cast("type[PITCHCLASS]", self._PitchClass)
 
     @property
     def keyname(self) -> str:

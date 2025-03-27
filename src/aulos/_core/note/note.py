@@ -105,7 +105,7 @@ class BaseNote[PITCHCLASS: BasePitchClass](AulosObject[NoteSchema]):
     @classproperty
     def PitchClass(self) -> type[PITCHCLASS]:  # noqa: N802
         """The type of pitch class associated with the note."""
-        return cast(type[PITCHCLASS], self._PitchClass)
+        return cast("type[PITCHCLASS]", self._PitchClass)
 
     @property
     def notenumber(self) -> int:

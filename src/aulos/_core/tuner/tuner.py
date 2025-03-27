@@ -49,7 +49,7 @@ class Tuner[NOTE: BaseNote](AulosObject[TunerSchema]):
     @classproperty
     def Note(self) -> type[NOTE]:  # noqa: N802
         """The type of note associated with the tuner."""
-        return cast(type[NOTE], self._Note)
+        return cast("type[NOTE]", self._Note)
 
     @classproperty
     def ratios(self) -> tuple[float, ...]:
