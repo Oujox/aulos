@@ -10,7 +10,7 @@ permissions:
   contents: read
 
 jobs:
-  setup:
+  test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -48,15 +48,18 @@ jobs:
       
       - name: Lint with ruff
         run: |
+          alias ruff=/opt/hostedtoolcache/Python/${{ env.python_version }}/x64/bin/ruff
           ruff check ./src/aulos ./tests/aulos
       
       - name: Type-check with mypy
         run: |
+          alias mypy=/opt/hostedtoolcache/Python/${{ env.python_version }}/x64/bin/mypy
           mypy ./src/aulos
       
       - name: Test with pytest
         run: |
-          python -m pytest ./tests/aulos --cov=./src/aulos --cov-report=xml
+          alias pytest=/opt/hostedtoolcache/Python/${{ env.python_version }}/x64/bin/pytest
+          pytest ./tests/aulos --cov=./src/aulos --cov-report=xml
   
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
