@@ -48,17 +48,17 @@ jobs:
       
       - name: Lint with ruff
         run: |
-          alias ruff=/opt/hostedtoolcache/Python/${{ env.python_version }}/x64/bin/ruff
+          alias ruff=/opt/hostedtoolcache/Python/${{ matrix.python-version }}/x64/bin/ruff
           ruff check ./src/aulos ./tests/aulos
       
       - name: Type-check with mypy
         run: |
-          alias mypy=/opt/hostedtoolcache/Python/${{ env.python_version }}/x64/bin/mypy
+          alias mypy=/opt/hostedtoolcache/Python/${{ matrix.python-version }}/x64/bin/mypy
           mypy ./src/aulos
       
       - name: Test with pytest
         run: |
-          alias pytest=/opt/hostedtoolcache/Python/${{ env.python_version }}/x64/bin/pytest
+          alias pytest=/opt/hostedtoolcache/Python/${{ matrix.python-version }}/x64/bin/pytest
           pytest ./tests/aulos --cov=./src/aulos --cov-report=xml
   
       - name: Upload coverage reports to Codecov
