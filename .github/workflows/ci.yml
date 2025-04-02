@@ -16,6 +16,10 @@ jobs:
       matrix:
         python-version: ["3.12", "3.13"]
     steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
       - name: Setup the Python
         uses: ./.github/actions/setup_python
         with:
@@ -36,6 +40,10 @@ jobs:
       matrix:
         python-version: ["3.12", "3.13"]
     steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
       - name: Setup the Python
         uses: ./.github/actions/setup_python
         with:
@@ -51,6 +59,10 @@ jobs:
       matrix:
         python-version: ["3.12", "3.13"]
     steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          
       - name: Setup the Python
         uses: ./.github/actions/setup_python
         with:
