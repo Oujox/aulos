@@ -77,12 +77,11 @@ jobs:
     runs-on: ubuntu-latest
     if: always()
     steps:
-      - name: Notify on success
-        if: success()
+      - name: Check job status
         run: |
-          echo "All jobs completed successfully!"
-      
-      - name: Notify on failure
-        if: failure()
-        run: |
-          echo "Some jobs failed."
+          if [ "${{ needs.test.result }}" = "failure" ] || [ "${{ needs.lint.result }}" = "failure" ] || [ "${{ needs.typecheck.result }}" = "failure" ]; then
+            echo "Some jobs failed."
+            exit 1
+          else
+            echo "All jobs completed successfully!"
+          fi
