@@ -24,7 +24,15 @@ jobs:
         uses: ./.github/actions/setup_python
         with:
           python-version: '${{ matrix.python-version }}'
-      
+       
+      - name: Cache pytest cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pytest
+          key: ${{ runner.os }}-pytest-${{ matrix.python-version }}-${{ hashFiles('./tests/aulos') }}
+          restore-keys: |
+            ${{ runner.os }}-pytest-${{ matrix.python-version }}-
+          
       - name: Test with pytest
         run: |
           python -m pytest ./tests/aulos --cov=./src/aulos --cov-report=xml
@@ -43,6 +51,14 @@ jobs:
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
+      
+      - name: Cache ruff cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ruff
+          key: ${{ runner.os }}-ruff-${{ matrix.python-version }}-${{ hashFiles('./src/aulos') }}
+          restore-keys: |
+            ${{ runner.os }}-ruff-${{ matrix.python-version }}-
 
       - name: Setup the Python
         uses: ./.github/actions/setup_python
@@ -62,6 +78,14 @@ jobs:
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
+      
+      - name: Cache mypy cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/mypy
+          key: ${{ runner.os }}-mypy-${{ matrix.python-version }}-${{ hashFiles('./src/aulos') }}
+          restore-keys: |
+            ${{ runner.os }}-mypy-${{ matrix.python-version }}-
           
       - name: Setup the Python
         uses: ./.github/actions/setup_python
