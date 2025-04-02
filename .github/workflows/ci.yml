@@ -1,4 +1,4 @@
-name: Test
+name: Python CI/CD Pipeline
 
 on:
   push:
@@ -15,48 +15,62 @@ jobs:
     strategy:
       matrix:
         python-version: ["3.12", "3.13"]
-
     steps:
-      - uses: actions/checkout@v4
+      - name: Setup the Python
+        uses: ./.github/actions/setup_python
         with:
-          persist-credentials: false
-
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ matrix.python-version }}
-          cache: 'pip'
-
-      - name: Cache pip
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('./requirements-dev.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-${{ matrix.python-version }}-
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          if [ -f ./requirements-dev.txt ]; then pip install -r ./requirements-dev.txt; fi
-      
-      - name: Install local packages
-        run: |
-          python -m pip install -e .
-      
-      - name: Lint with ruff
-        run: |
-          python -m ruff check ./src/aulos ./tests/aulos
-      
-      - name: Type-check with mypy
-        run: |
-          python -m mypy ./src/aulos
+          python-version: '${{ matrix.python-version }}'
       
       - name: Test with pytest
         run: |
           python -m pytest ./tests/aulos --cov=./src/aulos --cov-report=xml
-  
+    
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+  
+  lint:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.12", "3.13"]
+    steps:
+      - name: Setup the Python
+        uses: ./.github/actions/setup_python
+        with:
+          python-version: '${{ matrix.python-version }}'
+
+      - name: Lint with ruff
+        run: |
+          python -m ruff check ./src/aulos ./tests/aulos
+  
+  typecheck:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.12", "3.13"]
+    steps:
+      - name: Setup the Python
+        uses: ./.github/actions/setup_python
+        with:
+          python-version: '${{ matrix.python-version }}'
+    
+      - name: Type-check with mypy
+        run: |
+          python -m mypy ./src/aulos
+
+  notify:
+    needs: [test, lint, typecheck]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Notify on success
+        if: success()
+        run: |
+          echo "All jobs completed successfully!"
+      
+      - name: Notify on failure
+        if: failure()
+        run: |
+          echo "Some jobs failed."
