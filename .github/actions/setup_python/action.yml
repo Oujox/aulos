@@ -12,10 +12,6 @@ outputs:
 runs:
   using: 'composite'
   steps:
-    - uses: actions/checkout@v4
-      with:
-        persist-credentials: false
-
     - name: Setup Python ${{ inputs.python-version }}
       id: setup-python
       uses: actions/setup-python@v5
@@ -34,7 +30,9 @@ runs:
       run: |
         python -m pip install --upgrade pip
         if [ -f ./requirements-dev.txt ]; then pip install -r ./requirements-dev.txt; fi
+      shell: bash
       
     - name: Install local packages
       run: |
         python -m pip install -e .
+      shell: bash
