@@ -28,7 +28,7 @@ jobs:
       - name: Cache pytest cache
         uses: actions/cache@v4
         with:
-          path: ~/.cache/pytest_cache
+          path: ~/.pytest_cache
           key: ${{ runner.os }}-pytest-${{ matrix.python-version }}-${{ hashFiles('./tests/aulos') }}
           restore-keys: |
             ${{ runner.os }}-pytest-${{ matrix.python-version }}-
@@ -55,7 +55,7 @@ jobs:
       - name: Cache ruff cache
         uses: actions/cache@v4
         with:
-          path: ~/.cache/ruff_cache
+          path: ~/.ruff_cache
           key: ${{ runner.os }}-ruff-${{ matrix.python-version }}-${{ hashFiles('./src/aulos') }}
           restore-keys: |
             ${{ runner.os }}-ruff-${{ matrix.python-version }}-
@@ -82,7 +82,7 @@ jobs:
       - name: Cache mypy cache
         uses: actions/cache@v4
         with:
-          path: ~/.cache/mypy_cache
+          path: ~/.mypy_cache
           key: ${{ runner.os }}-mypy-${{ matrix.python-version }}-${{ hashFiles('./src/aulos') }}
           restore-keys: |
             ${{ runner.os }}-mypy-${{ matrix.python-version }}-
