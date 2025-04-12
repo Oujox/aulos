@@ -37,7 +37,7 @@ class BaseChord[NOTE: BaseNote](AulosObject[ChordSchema]):
     @inject
     def __init__(
         self,
-        identify: str | tuple[str, int],
+        identify: tuple[str, int],
         *,
         tuner: Tuner | None = None,
         scale: Scale | None = None,
@@ -45,29 +45,7 @@ class BaseChord[NOTE: BaseNote](AulosObject[ChordSchema]):
     ) -> None:
         super().__init__(**kwargs)
 
-        if isinstance(identify, str):
-            if (parsed := self.schema.parse(identify)) is not None:
-                root_notename, base_notename = self.schema.convert_to_chord_notenames(
-                    parsed.root,
-                    parsed.base,
-                    self.schema.note.get_octave(self.schema.note.reference_notenumber),
-                )
-
-                if base_notename is None:
-                    self._root = self.Note(root_notename)
-                    self._base = None
-                    self._quality = parsed.quality
-                    self._tuner = tuner
-                    self._scale = scale
-
-                else:
-                    self._root = self.Note(root_notename)
-                    self._base = self.Note(base_notename)
-                    self._quality = parsed.quality.from_base(self._base.notenumber - self._root.notenumber)
-                    self._tuner = tuner
-                    self._scale = scale
-
-        elif isinstance(identify, tuple) and isinstance(identify[0], str) and isinstance(identify[1], int):
+        if isinstance(identify, tuple) and isinstance(identify[0], str) and isinstance(identify[1], int):
             if (parsed := self.schema.parse(identify[0])) is not None:
                 root_notename, base_notename = self.schema.convert_to_chord_notenames(
                     parsed.root, parsed.base, identify[1]

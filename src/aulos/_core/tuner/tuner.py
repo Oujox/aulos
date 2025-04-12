@@ -64,8 +64,8 @@ class Tuner[NOTE: BaseNote](AulosObject[TunerSchema]):
     def hz(self, notenumber: int) -> float:
         """Converts a note number to its corresponding frequency in hertz."""
         ref = notenumber - self.schema.reference_notenumber
-        octnumber = ref // self.schema.pitchclass.cardinality
-        pitchclass = ref % self.schema.pitchclass.cardinality
+        octnumber = ref // self.schema.pitchclass.classes
+        pitchclass = ref % self.schema.pitchclass.classes
         return self._root * (2**octnumber) * self.ratios[pitchclass]
 
     def __eq__(self, other: object) -> bool:

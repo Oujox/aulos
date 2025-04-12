@@ -36,8 +36,8 @@ class ChordSchema(Schema):
                 positions=positions,
             )
 
-        cardinality = self.note.pitchclass.cardinality
-        qualities = tuple(to_quality(q, cardinality) for q in self.qualities_property)
+        classes = self.note.pitchclass.classes
+        qualities = tuple(to_quality(q, classes) for q in self.qualities_property)
 
         name2quality = {q.name: q for q in qualities}
         quality2name = {q: q.name for q in qualities}

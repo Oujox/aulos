@@ -23,7 +23,6 @@ def convert_pitchname_to_notename(pitchname: str, symbol_octave: str) -> str:
 class NoteSchema(Schema):
     symbols_notenumber: tuple[int, ...]
     symbols_octave: tuple[str, ...]
-    reference_notenumber: int
     pitchclass: PitchClassSchema
 
     name2number: dict[str, int] = field(init=False)
@@ -47,11 +46,6 @@ class NoteSchema(Schema):
             msg = ""
             raise ValidationError(msg)
         if not all(bool(v.find("<N>")) or bool(v.find("<n>")) for v in self.symbols_octave):
-            msg = ""
-            raise ValidationError(msg)
-
-        # [check] reference_notenumber
-        if self.reference_notenumber not in self.symbols_notenumber:
             msg = ""
             raise ValidationError(msg)
 
@@ -85,7 +79,7 @@ class NoteSchema(Schema):
         ) -> list[str | None]:
             sequence: list[str | None] = []
             for symbol_octave in self.symbols_octave:
-                for deg in range(self.pitchclass.cardinality):
+                for deg in range(self.pitchclass.classes):
                     if deg in self.pitchclass.positions:
                         index = self.pitchclass.positions.index(deg)
                         pitchname = prefix + self.pitchclass.symbols_pitchclass[index] + suffix
@@ -175,7 +169,7 @@ class NoteSchema(Schema):
 
     def get_octave(self, notenumber: int) -> int:
         self.ensure_valid_notenumber(notenumber)
-        return notenumber // self.pitchclass.cardinality
+        return notenumber // self.pitchclass.classes
 
     def convert_notenumber_to_notename(
         self,
@@ -198,11 +192,11 @@ class NoteSchema(Schema):
 
     def convert_notenumber_to_pitchclass(self, notenumber: int) -> int:
         self.ensure_valid_notenumber(notenumber)
-        return notenumber % self.pitchclass.cardinality
+        return notenumber % self.pitchclass.classes
 
     def convert_pitchclass_to_notenumber(self, pitchclass: int, octave: int) -> int:
         self.pitchclass.ensure_valid_pitchclass(pitchclass)
-        return pitchclass + (self.pitchclass.cardinality * octave)
+        return pitchclass + (self.pitchclass.classes * octave)
 
     def convert_notename_to_pitchname(self, notename: str) -> str:
         self.ensure_valid_notename(notename)

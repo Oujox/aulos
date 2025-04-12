@@ -18,7 +18,7 @@ if TYPE_CHECKING:
 def resolve_notename_from_scale(notenumber: int, scale: Scale | None, schema: NoteSchema) -> str | None:
     if scale is not None:
         relative_pitchclass = schema.convert_notenumber_to_pitchclass(notenumber)
-        relative_pitchclass = (relative_pitchclass - int(scale.key)) % schema.pitchclass.cardinality
+        relative_pitchclass = (relative_pitchclass - int(scale.key)) % schema.pitchclass.classes
         if (idx := index(scale.positions, relative_pitchclass)) is not None:
             return schema.convert_notenumber_to_notename(
                 notenumber,
@@ -90,13 +90,11 @@ class BaseNote[PITCHCLASS: BasePitchClass](AulosObject[NoteSchema]):
         *,
         symbols_notenumber: t.Sequence[int],
         symbols_octave: t.Sequence[str],
-        reference_notenumber: int,
         pitchclass: type[PITCHCLASS],
     ) -> None:
         schema = NoteSchema(
             tuple(symbols_notenumber),
             tuple(symbols_octave),
-            reference_notenumber,
             pitchclass.schema,
         )
         super().__init_subclass__(schema=schema)

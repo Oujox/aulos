@@ -3,7 +3,9 @@ from dataclasses import dataclass, field
 from functools import cached_property
 from itertools import accumulate, chain
 
+from aulos._core.pitch.schemas import PitchSchema
 from aulos._core.schema import Schema
+from aulos._core.utils import Intervals, Positions
 from aulos._errors import ValidationError
 
 
@@ -12,8 +14,9 @@ class PitchClassSchema(Schema):
     intervals: tuple[int, ...]
     symbols_pitchclass: tuple[str, ...]
     symbols_accidental: tuple[str, ...]
+    pitch: PitchSchema
 
-    cardinality: int = field(init=False)
+    classes: int = field(init=False)
     accidental: int = field(init=False)
     positions: tuple[int, ...] = field(init=False)
     name2class: dict[str, int] = field(init=False)
@@ -51,7 +54,7 @@ class PitchClassSchema(Schema):
             raise ValidationError(msg)
 
     def initialize(self) -> None:
-        cardinality = sum(self.intervals)
+        classes = sum(self.intervals)
         positions = tuple(accumulate((0,) + self.intervals[:-1]))
 
         accidental = len(self.symbols_accidental) // 2
@@ -82,7 +85,7 @@ class PitchClassSchema(Schema):
             suffix: str = "",
         ) -> list[str | None]:
             sequence: list[str | None] = []
-            for deg in range(cardinality):
+            for deg in range(classes):
                 if deg in positions:
                     index = positions.index(deg)
                     sequence.append(prefix + self.symbols_pitchclass[index] + suffix)
@@ -106,7 +109,7 @@ class PitchClassSchema(Schema):
         ]
         class2name = [(index, name) for index, name in enumerate(accidental_sequences)]
 
-        object.__setattr__(self, "cardinality", cardinality)
+        object.__setattr__(self, "classes", classes)
         object.__setattr__(self, "accidental", accidental)
         object.__setattr__(self, "positions", positions)
         object.__setattr__(self, "name2class", dict(chain.from_iterable(name2class)))
@@ -163,7 +166,7 @@ class PitchClassSchema(Schema):
         self.ensure_valid_pitchname(pitchname)
         accidental = self.get_accidental(pitchname)
         pitchclass = self.convert_pitchname_to_picthclass(pitchname)
-        pitchclass = (pitchclass - accidental) % self.cardinality
+        pitchclass = (pitchclass - accidental) % self.classes
         symbol = self.convert_pitchclass_to_pitchname(pitchclass, 0)
         if symbol is None:
             msg = "unreachable error"
