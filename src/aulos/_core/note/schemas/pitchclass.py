@@ -5,7 +5,6 @@ from itertools import accumulate, chain
 
 from aulos._core.pitch.schemas import PitchSchema
 from aulos._core.schema import Schema
-from aulos._core.utils import Intervals, Positions
 from aulos._errors import ValidationError
 
 
