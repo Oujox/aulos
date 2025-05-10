@@ -4,16 +4,17 @@ from aulos._core.schema import Schema
 
 OVERTONE_RATIO = 2.0
 
+
 def normalize_to_overtone_ratio(ratio: float) -> float:
     while not (1 <= ratio <= OVERTONE_RATIO):
         ratio = ratio / 2 if ratio > OVERTONE_RATIO else ratio * 2
     return ratio
 
 
-@dataclass(frozen=True)
+@dataclass(init=False, frozen=True, slots=True)
 class PitchSchema(Schema):
-    def initialize(self) -> None:
-        pass
+    def __init__(self) -> None:
+        super(Schema, self).__init__()
 
     def validate(self) -> None:
         pass

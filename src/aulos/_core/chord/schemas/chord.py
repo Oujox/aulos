@@ -1,4 +1,4 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 from aulos._core.chord.quality import Quality, QualityProperty
 from aulos._core.note.schemas import NoteSchema
@@ -13,20 +13,21 @@ class ChordComponents:
     quality: Quality
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass(init=False, frozen=True, slots=True)
 class ChordSchema(Schema):
-    qualities_property: tuple[QualityProperty, ...]
+    qualities: tuple[Quality, ...]
+    name2quality: dict[str, Quality]
+    quality2name: dict[Quality, str]
     note: NoteSchema
 
-    qualities: tuple[Quality, ...] = field(init=False)
-    name2quality: dict[str, Quality] = field(init=False)
-    quality2name: dict[Quality, str] = field(init=False)
+    def __init__(
+        self,
+        /,
+        qualities_property: tuple[QualityProperty, ...],
+        note: NoteSchema,
+    ) -> None:
+        super(Schema, self).__init__()
 
-    def __post_init__(self) -> None:
-        self.validate()
-        self.initialize()
-
-    def initialize(self) -> None:
         def to_quality(quality: QualityProperty, cardinality: int) -> Quality:
             while not all(p < cardinality for p in quality["positions"]):
                 cardinality *= 2
@@ -36,8 +37,8 @@ class ChordSchema(Schema):
                 positions=positions,
             )
 
-        classes = self.note.pitchclass.classes
-        qualities = tuple(to_quality(q, classes) for q in self.qualities_property)
+        classes = note.pitchclass.classes
+        qualities = tuple(to_quality(q, classes) for q in qualities_property)
 
         name2quality = {q.name: q for q in qualities}
         quality2name = {q: q.name for q in qualities}
@@ -45,6 +46,7 @@ class ChordSchema(Schema):
         object.__setattr__(self, "qualities", qualities)
         object.__setattr__(self, "name2quality", name2quality)
         object.__setattr__(self, "quality2name", quality2name)
+        object.__setattr__(self, "note", note)
 
     def validate(self) -> None:
         pass

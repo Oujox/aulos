@@ -1,124 +1,147 @@
 import typing as t
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from functools import cached_property
 from itertools import chain
 
 from aulos._core.schema import Schema
-from aulos._errors import ValidationError
+from aulos._core.utils import Positions
 
 from .pitchclass import PitchClassSchema
 
 
-def convert_pitchname_to_notename(pitchname: str, symbol_octave: str) -> str:
-    # <N>
+def create_upper_sequences(
+    symbols_pitchclass: tuple[str, ...],
+    symbols_accidental: tuple[str, ...],
+    symbols_octave: tuple[str, ...],
+    standard_positions: Positions,
+) -> list[list[str | None]]:
+    accidentals = symbols_accidental[get_accidental_count(symbols_accidental) :]
+    return [
+        create_natural_sequence(symbols_pitchclass, (acc,), symbols_octave, standard_positions)[0][-i:]
+        + create_natural_sequence(symbols_pitchclass, (acc,), symbols_octave, standard_positions)[0][:-i]
+        for i, acc in enumerate(accidentals, start=1)
+    ]
+
+
+def create_lower_sequences(
+    symbols_pitchclass: tuple[str, ...],
+    symbols_accidental: tuple[str, ...],
+    symbols_octave: tuple[str, ...],
+    standard_positions: Positions,
+) -> list[list[str | None]]:
+    accidentals = symbols_accidental[: get_accidental_count(symbols_accidental)]
+    return [
+        create_natural_sequence(symbols_pitchclass, (acc,), symbols_octave, standard_positions)[0][i:]
+        + create_natural_sequence(symbols_pitchclass, (acc,), symbols_octave, standard_positions)[0][:i]
+        for i, acc in enumerate(reversed(accidentals), start=1)
+    ]
+
+
+def create_natural_sequence(
+    symbols_pitchclass: tuple[str, ...],
+    symbols_accidental: tuple[str, ...],
+    symbols_octave: tuple[str, ...],
+    standard_positions: Positions,
+) -> list[list[str | None]]:
+    return [
+        [
+            get_formated_notename(
+                get_formated_pitchname(symbols_pitchclass[standard_positions.index(pos)], symbol_accidental),
+                symbol_octave,
+            )
+            if pos in standard_positions
+            else None
+            for symbol_octave in symbols_octave
+            for pos in range(standard_positions.limit)
+        ]
+        for symbol_accidental in symbols_accidental
+    ]
+
+
+def get_formated_pitchname(
+    symbols_pitchclass: str,
+    symbols_accidental: str,
+) -> str:
+    if symbols_accidental.find("<P>") >= 0:
+        return symbols_accidental.replace("<P>", symbols_pitchclass)
+    if symbols_accidental.find("<p>") >= 0:
+        return symbols_accidental.replace("<p>", symbols_pitchclass)
+    return f"{symbols_pitchclass}{symbols_accidental}"
+
+
+def get_formated_notename(pitchname: str, symbol_octave: str) -> str:
     if symbol_octave.find("<N>") >= 0:
-        return symbol_octave.replace("<N>", pitchname, 1)
-    # <n>
+        return symbol_octave.replace("<N>", pitchname)
     if symbol_octave.find("<n>") >= 0:
-        return symbol_octave.replace("<n>", pitchname, 1)
-    return symbol_octave + pitchname
+        return symbol_octave.replace("<n>", pitchname)
+    return f"{pitchname}{symbol_octave}"
 
 
-@dataclass(frozen=True, slots=True)
+def get_accidental_count(symbols_accidental: tuple[str, ...]) -> int:
+    return len(symbols_accidental) // 2
+
+
+@dataclass(init=False, frozen=True, slots=True)
 class NoteSchema(Schema):
     symbols_notenumber: tuple[int, ...]
     symbols_octave: tuple[str, ...]
+    name2number: dict[str, int]
+    number2name: dict[int, tuple[str | None]]
     pitchclass: PitchClassSchema
 
-    name2number: dict[str, int] = field(init=False)
-    number2name: dict[int, tuple[str | None]] = field(init=False)
+    def __init__(
+        self,
+        /,
+        symbols_notenumber: tuple[int, ...],
+        symbols_octave: tuple[str, ...],
+        pitchclass: PitchClassSchema,
+    ) -> None:
+        super(Schema, self).__init__()
 
-    def __post_init__(self) -> None:
-        self.validate()
-        self.initialize()
-
-    def validate(self) -> None:
-        # [check] symbols_notenumber
-        if not len(self.symbols_notenumber) > 0:
-            msg = ""
-            raise ValidationError(msg)
-        if not all(v >= 0 for v in self.symbols_notenumber):
-            msg = ""
-            raise ValidationError(msg)
-
-        # [check] symbols_octave
-        if not len(self.symbols_octave) > 0:
-            msg = ""
-            raise ValidationError(msg)
-        if not all(bool(v.find("<N>")) or bool(v.find("<n>")) for v in self.symbols_octave):
-            msg = ""
-            raise ValidationError(msg)
-
-    def initialize(self) -> None:
-        accidental = len(self.pitchclass.symbols_accidental) // 2
-        upper_accidentals = self.pitchclass.symbols_accidental[accidental:]
-        lower_accidentals = reversed(self.pitchclass.symbols_accidental[:accidental])
-
-        def create_upper_sequences() -> list[list[str | None]]:
-            sequences = []
-            for i, acc in enumerate(upper_accidentals, start=1):
-                sequence = create_symbol_sequence(suffix=acc)
-                for _ in range(i):
-                    sequence.insert(0, sequence.pop())
-                sequences.append(sequence)
-            return sequences
-
-        def create_lower_sequences() -> list[list[str | None]]:
-            sequences = []
-            for i, acc in enumerate(lower_accidentals, start=1):
-                sequence = create_symbol_sequence(suffix=acc)
-                for _ in range(i):
-                    sequence.append(sequence.pop(0))
-                sequences.append(sequence)
-            return sequences
-
-        def create_symbol_sequence(
-            *,
-            prefix: str = "",
-            suffix: str = "",
-        ) -> list[str | None]:
-            sequence: list[str | None] = []
-            for symbol_octave in self.symbols_octave:
-                for deg in range(self.pitchclass.classes):
-                    if deg in self.pitchclass.positions:
-                        index = self.pitchclass.positions.index(deg)
-                        pitchname = prefix + self.pitchclass.symbols_pitchclass[index] + suffix
-                        notename = convert_pitchname_to_notename(
-                            pitchname,
-                            symbol_octave,
-                        )
-                        sequence.append(notename)
-                    else:
-                        sequence.append(None)
-            return sequence
-
-        no_accidental_sequence = create_symbol_sequence()
-        accidental_upper_sequences = create_upper_sequences()
-        accidental_lower_sequences = reversed(create_lower_sequences())
+        accidental_natural_sequences = create_natural_sequence(
+            pitchclass.symbols_pitchclass,
+            ("",),
+            symbols_octave,
+            pitchclass.standard_positions,
+        )
+        accidental_upper_sequences = create_upper_sequences(
+            pitchclass.symbols_pitchclass,
+            pitchclass.symbols_accidental,
+            symbols_octave,
+            pitchclass.standard_positions,
+        )
+        accidental_lower_sequences = reversed(
+            create_lower_sequences(
+                pitchclass.symbols_pitchclass,
+                pitchclass.symbols_accidental,
+                symbols_octave,
+                pitchclass.standard_positions,
+            )
+        )
         accidental_sequences = tuple(
             zip(
                 *accidental_lower_sequences,
-                no_accidental_sequence,
+                *accidental_natural_sequences,
                 *accidental_upper_sequences,
                 strict=False,
             ),
         )
 
-        name2number = dict(
-            chain.from_iterable(
-                [
-                    [(name, index) for name in names if name is not None]
-                    for index, names in enumerate(accidental_sequences)
-                    if index in self.symbols_notenumber
-                ],
-            ),
-        )
-        number2name = {
-            index: name for index, name in enumerate(accidental_sequences) if index in self.symbols_notenumber
-        }
+        name2number = [
+            [(name, index) for name in names if name is not None]
+            for index, names in enumerate(accidental_sequences)
+            if index in symbols_notenumber
+        ]
+        number2name = [(index, name) for index, name in enumerate(accidental_sequences) if index in symbols_notenumber]
 
-        object.__setattr__(self, "name2number", name2number)
-        object.__setattr__(self, "number2name", number2name)
+        object.__setattr__(self, "symbols_notenumber", symbols_notenumber)
+        object.__setattr__(self, "symbols_octave", symbols_octave)
+        object.__setattr__(self, "name2number", dict(chain.from_iterable(name2number)))
+        object.__setattr__(self, "number2name", dict(number2name))
+        object.__setattr__(self, "pitchclass", pitchclass)
+
+    def validate(self) -> None:
+        pass
 
     @cached_property
     def notenames(self) -> tuple[str, ...]:
