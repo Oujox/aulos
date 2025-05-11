@@ -6,6 +6,8 @@ from aulos._core.context import inject
 from aulos._core.note import BaseKey, BasePitchClass
 from aulos._core.object import AulosObject
 from aulos._core.utils import classproperty
+from aulos._core.utils import Intervals
+from aulos._core.utils import Positions
 
 from .schemas import ScaleSchema
 
@@ -21,8 +23,8 @@ class Scale[KEY: BaseKey, PITCHCLASS: BasePitchClass](AulosObject[ScaleSchema]):
 
     _Key: t.ClassVar[type[BaseKey]]
     _PitchClass: t.ClassVar[type[BasePitchClass]]
-    _intervals: t.ClassVar[tuple[int, ...]]
-    _positions: t.ClassVar[tuple[int, ...]]
+    _intervals: t.ClassVar[Intervals]
+    _positions: t.ClassVar[Positions]
 
     _key: KEY
     _signatures: tuple[int, ...]
@@ -72,8 +74,8 @@ class Scale[KEY: BaseKey, PITCHCLASS: BasePitchClass](AulosObject[ScaleSchema]):
         super().__init_subclass__(schema=schema)
         cls._Key = key
         cls._PitchClass = key.PitchClass
-        cls._intervals = tuple(intervals)
-        cls._positions = tuple(accumulate((0,) + cls._intervals[:-1]))
+        cls._intervals = Intervals(intervals)
+        cls._positions = cls._intervals.to_positions()
 
     @classproperty
     def Key(self) -> type[KEY]:  # noqa: N802
@@ -86,12 +88,12 @@ class Scale[KEY: BaseKey, PITCHCLASS: BasePitchClass](AulosObject[ScaleSchema]):
         return cast("type[PITCHCLASS]", self._PitchClass)
 
     @classproperty
-    def intervals(self) -> tuple[int, ...]:
+    def intervals(self) -> Intervals:
         """The sequence of intervals that define the scale."""
         return self._intervals
 
     @classproperty
-    def positions(self) -> tuple[int, ...]:
+    def positions(self) -> Positions:
         """The positions of the notes in the scale."""
         return self._positions
 

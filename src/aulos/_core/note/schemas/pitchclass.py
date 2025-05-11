@@ -155,6 +155,21 @@ class PitchClassSchema(Schema):
         )
         return ([*finded, None])[0]
 
+    def get_intervals(self, pitchname: str) -> Intervals:
+        positions = self.get_positions(pitchname)
+        return positions.to_intervals()
+
+    def get_positions(self, pitchname: str) -> Positions:
+        self.ensure_valid_pitchname(pitchname)
+        pitchclass = self.convert_pitchname_to_picthclass(pitchname)
+        accidental = self.get_accidental(pitchname)
+        positions = [
+            pos
+            for pos in range(self.classes)
+            if self.convert_pitchclass_to_pitchname((pos + pitchclass) % self.classes, accidental) is not None
+        ]
+        return Positions(positions, limit=self.classes)
+
     def get_accidental(self, pitchname: str) -> int:
         self.ensure_valid_pitchname(pitchname)
         pitchclass = self.convert_pitchname_to_picthclass(pitchname)

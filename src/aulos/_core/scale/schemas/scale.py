@@ -3,6 +3,7 @@ from itertools import starmap
 
 from aulos._core.note.schemas import PitchClassSchema
 from aulos._core.schema import Schema
+from aulos._core.utils import Intervals
 
 
 @dataclass(init=False, frozen=True, slots=True)
@@ -16,15 +17,12 @@ class ScaleSchema(Schema):
     def validate(self) -> None:
         pass
 
-    def generate_scale_signatures(self, intervals: tuple[int, ...]) -> tuple[int, ...]:
-        diff = list(
-            starmap(lambda x, y: y - x, zip(self.pitchclass.standard_intervals, intervals, strict=False)),
+    def generate_scale_signatures(self, intervals: Intervals) -> tuple[int, ...]:
+        std_positions = self.pitchclass.standard_positions
+        scale_positions = intervals.to_positions()
+        return tuple(
+            starmap(
+                lambda x, y: y - x,
+                zip(std_positions, scale_positions, strict=False),
+            )
         )
-        signature = []
-        for i in range(len(self.pitchclass.standard_intervals)):
-            cur = i % len(self.pitchclass.standard_intervals)
-            nxt = (i + 1) % len(self.pitchclass.standard_intervals)
-            signature.append(diff[cur])
-            diff[nxt] = diff[nxt] + diff[cur]
-            diff[cur] = 0
-        return tuple(signature[-1:] + signature[:-1])
