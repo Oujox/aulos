@@ -16,10 +16,10 @@ class Mode[KEY: BaseKey, PITCHCLASS: BasePitchClass](AulosObject[ModeSchema]):
     _PitchClass: t.ClassVar[type[BasePitchClass]]
     _intervals: t.ClassVar[Intervals]
     _positions: t.ClassVar[Positions]
+    _base: t.ClassVar[type[Scale]]
 
     _key: KEY
     _signatures: tuple[int, ...]
-    _base: t.ClassVar[type[Scale]]
 
     @inject
     def __init__(self, key: str | KEY, **kwargs: t.Any) -> None:
@@ -77,6 +77,10 @@ class Mode[KEY: BaseKey, PITCHCLASS: BasePitchClass](AulosObject[ModeSchema]):
     @classproperty
     def positions(self) -> Positions:
         return self._positions
+
+    @classproperty
+    def base(self) -> type[Scale]:
+        return self._base
 
     @property
     def key(self) -> KEY:
