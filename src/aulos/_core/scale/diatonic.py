@@ -1,7 +1,7 @@
 import typing as t
 from typing import TYPE_CHECKING
 
-from aulos._core.utils import Intervals, Positions, classproperty, rotated
+from aulos._core.utils import Intervals, Positions, classproperty
 
 from .scale import Scale
 
@@ -17,18 +17,6 @@ class DiatonicScale[KEY: BaseKey, PITCHCLASS: BasePitchClass](Scale[KEY, PITCHCL
     This class provides the foundational structure for creating and manipulating diatonic scales,
     allowing for the specification of intervals, key, and optional shifts in the scale's starting point.
     """
-
-    def __init_subclass__(
-        cls,
-        *,
-        intervals: t.Sequence[int],
-        shift: int = 0,
-        key: type[KEY],
-    ) -> None:
-        super().__init_subclass__(
-            intervals=rotated(intervals, -shift),
-            key=key,
-        )
 
 
 class NondiatonicScale[KEY: BaseKey, PITCHCLASS: BasePitchClass](

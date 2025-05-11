@@ -11,10 +11,11 @@ from aulos._core.utils import index
 from .schemas import PitchClassSchema
 
 if TYPE_CHECKING:
+    from aulos._core.mode import Mode  # pragma: no cover
     from aulos._core.scale import Scale  # pragma: no cover
 
 
-def resolve_pitchname_from_scale(pitchclass: int, scale: Scale | None, schema: PitchClassSchema) -> str | None:
+def resolve_pitchname_from_scale(pitchclass: int, scale: Scale | Mode | None, schema: PitchClassSchema) -> str | None:
     if scale is not None:
         relative_pitchclass = (pitchclass - int(scale.key)) % schema.classes
         if (idx := index(scale.positions, relative_pitchclass)) is not None:
@@ -37,14 +38,14 @@ class BasePitchClass(AulosObject[PitchClassSchema]):
     _pitchclass: int
     _pitchnames: tuple[str | None, ...]
     _pitchname: str | None
-    _scale: Scale | None
+    _scale: Scale | Mode | None
 
     @inject
     def __init__(
         self,
         identify: int | str | t.Self,
         *,
-        scale: Scale | None = None,
+        scale: Scale | Mode | None = None,
         **kwargs: t.Any,
     ) -> None:
         super().__init__(**kwargs)
@@ -108,7 +109,7 @@ class BasePitchClass(AulosObject[PitchClassSchema]):
         return self._pitchname
 
     @property
-    def scale(self) -> Scale | None:
+    def scale(self) -> Scale | Mode | None:
         """Returns the scale associated with the pitch class."""
         return self._scale
 

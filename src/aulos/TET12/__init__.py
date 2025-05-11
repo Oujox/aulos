@@ -17,21 +17,13 @@ are accessible when the module is imported.
 """
 
 from .chord import Chord
-from .note import Key, Note, PitchClass
-
-# Scales
-# Modes
-from .scale import (
+from .mode import (
     Aeorian,
     Aeorian_f5,
     AlteredSuperLocrian,
-    Bluenote,
-    CombDiminish,
-    Diminish,
     Dorian,
     Dorian_f2,
     Dorian_s4,
-    HarmonicMinor,
     Ionian,
     Ionian_s5,
     Locrian,
@@ -40,16 +32,26 @@ from .scale import (
     Lydian_f7,
     Lydian_s2,
     Lydian_s5,
+    Mixolydian,
+    Mixolydian_f6,
+    Mixolydian_f9,
+    Phrygian,
+    SuperLocrian,
+)
+from .note import Key, Note, PitchClass
+
+# Scales
+# Modes
+from .scale import (
+    Bluenote,
+    CombDiminish,
+    Diminish,
+    HarmonicMinor,
     Major,
     MelodicMinor,
     Minor,
     MinorPentatonic,
-    Mixolydian,
-    Mixolydian_f6,
-    Mixolydian_f9,
     Pentatonic,
-    Phrygian,
-    SuperLocrian,
     Wholetone,
 )
 from .tuner import Equal12Tuner, JustIntonationTuner, MeantoneTuner, PythagoreanTuner
