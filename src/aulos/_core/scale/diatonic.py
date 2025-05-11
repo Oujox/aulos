@@ -1,8 +1,7 @@
 import typing as t
-from itertools import pairwise
 from typing import TYPE_CHECKING
 
-from aulos._core.utils import classproperty, rotated
+from aulos._core.utils import Intervals, Positions, classproperty, rotated
 
 from .scale import Scale
 
@@ -61,12 +60,15 @@ class NondiatonicScale[KEY: BaseKey, PITCHCLASS: BasePitchClass](
         cls._extensions = tuple(tuple(inner) for inner in extensions)
 
     @classproperty
-    def intervals(self) -> tuple[int, ...]:
-        return tuple(b - a for a, b in pairwise((*self.positions, sum(super().intervals))))
+    def intervals(self) -> Intervals:
+        return self.positions.to_intervals()
 
     @classproperty
-    def positions(self) -> tuple[int, ...]:
-        return tuple(pos + ext for pos, exts in zip(super().positions, self._extensions, strict=False) for ext in exts)
+    def positions(self) -> Positions:
+        return Positions(
+            [pos + ext for pos, exts in zip(super().positions, self._extensions, strict=False) for ext in exts],
+            super().positions.limit,
+        )
 
     @property
     def signatures(self) -> tuple[int, ...]:
