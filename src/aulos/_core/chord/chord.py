@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING, cast
 from aulos._core.context import inject
 from aulos._core.note import BaseNote
 from aulos._core.object import AulosObject
-from aulos._core.utils import classproperty
+from aulos._core.utils import Intervals, Positions, classproperty
 
 from .schemas import ChordSchema
 
@@ -103,12 +103,12 @@ class BaseChord[NOTE: BaseNote](AulosObject[ChordSchema]):
         return self._scale
 
     @property
-    def intervals(self) -> tuple[int, ...]:
-        return tuple(self._quality.intervals)
+    def intervals(self) -> Intervals:
+        return self._quality.intervals
 
     @property
-    def positions(self) -> tuple[int, ...]:
-        return tuple(self._quality.positions)
+    def positions(self) -> Positions:
+        return self._quality.positions
 
     @property
     def components(self) -> tuple[NOTE, ...]:
