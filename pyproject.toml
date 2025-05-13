@@ -41,6 +41,8 @@ aulos = "aulos.__main__:main"
 [tool.setuptools]
 package-dir = { "" = "src" }
 
+[tool.setuptools_scm]
+
 [tool.pytest.ini_options]
 addopts = [
     "--import-mode=importlib",
