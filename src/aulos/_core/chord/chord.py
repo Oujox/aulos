@@ -11,8 +11,8 @@ from aulos._core.utils import Intervals, Positions, classproperty
 from .schemas import ChordSchema
 
 if TYPE_CHECKING:
-    from aulos._core.scale import Scale  # pragma: no cover
     from aulos._core.mode import Mode  # pragma: no cover
+    from aulos._core.scale import Scale  # pragma: no cover
     from aulos._core.tuner import Tuner  # pragma: no cover
 
     from .quality import Quality, QualityProperty  # pragma: no cover
@@ -114,7 +114,7 @@ class BaseChord[NOTE: BaseNote](AulosObject[ChordSchema]):
     @property
     def components(self) -> tuple[NOTE, ...]:
         components = []
-        if self._quality.is_onchord():
+        if isinstance(self._base, BaseNote) and self._quality.is_onchord():
             components.append(
                 self.Note(
                     self._base,
@@ -123,15 +123,15 @@ class BaseChord[NOTE: BaseNote](AulosObject[ChordSchema]):
                     setting=self._setting,
                 )
             )
-        for q in self._quality:
-            components.append(
-                self.Note(
-                    int(self._root) + q,
-                    tuner=self._tuner,
-                    scale=self._scale,
-                    setting=self._setting,
-                )
+        components.extend(
+            self.Note(
+                int(self._root) + q,
+                tuner=self._tuner,
+                scale=self._scale,
+                setting=self._setting,
             )
+            for q in self._quality.intervals
+        )
         return tuple(components)
 
     def inverse(self, num: int = 1) -> None:

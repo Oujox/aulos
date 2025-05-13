@@ -58,10 +58,10 @@ class Quality(t.Sequence[int]):
     @property
     def base_candidates(self) -> tuple[int, ...]:
         return tuple(-sum(self.intervals[inv:]) for inv in range(len(self.intervals)))
-    
+
     @property
     def components(self) -> tuple[int, ...]:
-        return tuple(map(lambda x: x + self.root, self.positions))
+        return tuple(p + self.root for p in self.positions)
 
     def inverse(self, inversion: int) -> Quality:
         intervals = self.intervals.left(inversion)
@@ -80,7 +80,7 @@ class Quality(t.Sequence[int]):
 
     def is_onchord(self) -> bool:
         return self.base != 0
-    
+
     def __iter__(self) -> t.Iterator[int]:
         return self.components.__iter__()
 
