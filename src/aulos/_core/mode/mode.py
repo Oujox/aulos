@@ -5,24 +5,18 @@ from typing import cast
 from aulos._core.context import inject
 from aulos._core.note import BaseKey, BasePitchClass
 from aulos._core.object import AulosObject
+from aulos._core.scale import Scale
 from aulos._core.utils import Intervals, Positions, classproperty
 
-from .schemas import ScaleSchema
+from .schemas import ModeSchema
 
 
-class Scale[KEY: BaseKey, PITCHCLASS: BasePitchClass](AulosObject[ScaleSchema]):
-    """
-    Represents a musical scale with a specific key and pitch class.
-
-    This class provides the foundational structure for defining musical scales, including properties and methods
-    to handle intervals, positions, and key signatures. It allows for the creation and manipulation of scales
-    in a theoretical context, supporting various musical keys and pitch classes.
-    """
-
+class Mode[KEY: BaseKey, PITCHCLASS: BasePitchClass](AulosObject[ModeSchema]):
     _Key: t.ClassVar[type[BaseKey]]
     _PitchClass: t.ClassVar[type[BasePitchClass]]
     _intervals: t.ClassVar[Intervals]
     _positions: t.ClassVar[Positions]
+    _base: t.ClassVar[type[Scale]]
 
     _key: KEY
     _signatures: tuple[int, ...]
@@ -38,7 +32,7 @@ class Scale[KEY: BaseKey, PITCHCLASS: BasePitchClass](AulosObject[ScaleSchema]):
                     lambda x, y: x + y,
                     zip(
                         self._key.signature,
-                        self.schema.generate_scale_signatures(self._intervals),
+                        self.schema.scale.generate_scale_signatures(self._intervals),
                         strict=False,
                     ),
                 ),
@@ -51,7 +45,7 @@ class Scale[KEY: BaseKey, PITCHCLASS: BasePitchClass](AulosObject[ScaleSchema]):
                     lambda x, y: x + y,
                     zip(
                         self._key.signature,
-                        self.schema.generate_scale_signatures(self._intervals),
+                        self.schema.scale.generate_scale_signatures(self._intervals),
                         strict=False,
                     ),
                 ),
@@ -60,54 +54,44 @@ class Scale[KEY: BaseKey, PITCHCLASS: BasePitchClass](AulosObject[ScaleSchema]):
         else:
             raise TypeError
 
-    def __init_subclass__(
-        cls,
-        *,
-        intervals: t.Sequence[int] | None = None,
-        key: type[KEY] | None = None,
-    ) -> None:
-        if intervals is None or key is None:
-            return
-        schema = ScaleSchema(key.schema.pitchclass)
+    def __init_subclass__(cls, *, base: type[Scale], shift: int, key: type[KEY]) -> None:
+        schema = ModeSchema(base.schema)
         super().__init_subclass__(schema=schema)
         cls._Key = key
         cls._PitchClass = key.PitchClass
-        cls._intervals = Intervals(intervals)
+        cls._intervals = Intervals(base.intervals).left(shift)
         cls._positions = cls._intervals.to_positions()
 
     @classproperty
     def Key(self) -> type[KEY]:  # noqa: N802
-        """The type of key associated with the scale."""
         return cast("type[KEY]", self._Key)
 
     @classproperty
     def PitchClass(self) -> type[PITCHCLASS]:  # noqa: N802
-        """The type of pitch class associated with the scale."""
         return cast("type[PITCHCLASS]", self._PitchClass)
 
     @classproperty
     def intervals(self) -> Intervals:
-        """The sequence of intervals that define the scale."""
         return self._intervals
 
     @classproperty
     def positions(self) -> Positions:
-        """The positions of the notes in the scale."""
         return self._positions
+
+    @classproperty
+    def base(self) -> type[Scale]:
+        return self._base
 
     @property
     def key(self) -> KEY:
-        """Returns the key of the scale."""
         return self._key
 
     @property
     def signatures(self) -> tuple[int, ...]:
-        """Returns the key signatures of the scale."""
         return self._signatures
 
     @property
     def components(self) -> tuple[PITCHCLASS, ...]:
-        """Returns the pitch class components of the scale."""
         components = []
         root = self.PitchClass(self._key.keyname, scale=self, setting=self.setting)
         for pos in self.positions:

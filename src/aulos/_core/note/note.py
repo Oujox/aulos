@@ -11,14 +11,15 @@ from .pitchclass import BasePitchClass
 from .schemas import NoteSchema
 
 if TYPE_CHECKING:
+    from aulos._core.mode import Mode  # pragma: no cover
     from aulos._core.scale import Scale  # pragma: no cover
     from aulos._core.tuner import Tuner  # pragma: no cover
 
 
-def resolve_notename_from_scale(notenumber: int, scale: Scale | None, schema: NoteSchema) -> str | None:
+def resolve_notename_from_scale(notenumber: int, scale: Scale | Mode | None, schema: NoteSchema) -> str | None:
     if scale is not None:
         relative_pitchclass = schema.convert_notenumber_to_pitchclass(notenumber)
-        relative_pitchclass = (relative_pitchclass - int(scale.key)) % schema.pitchclass.cardinality
+        relative_pitchclass = (relative_pitchclass - int(scale.key)) % schema.pitchclass.classes
         if (idx := index(scale.positions, relative_pitchclass)) is not None:
             return schema.convert_notenumber_to_notename(
                 notenumber,
@@ -41,7 +42,7 @@ class BaseNote[PITCHCLASS: BasePitchClass](AulosObject[NoteSchema]):
     _notenames: tuple[str | None, ...]
     _notename: str | None
     _tuner: Tuner | None
-    _scale: Scale | None
+    _scale: Scale | Mode | None
 
     @inject
     def __init__(
@@ -49,7 +50,7 @@ class BaseNote[PITCHCLASS: BasePitchClass](AulosObject[NoteSchema]):
         identify: int | str | t.Self,
         *,
         tuner: Tuner | None = None,
-        scale: Scale | None = None,
+        scale: Scale | Mode | None = None,
         **kwargs: t.Any,
     ) -> None:
         super().__init__(**kwargs)
@@ -90,13 +91,11 @@ class BaseNote[PITCHCLASS: BasePitchClass](AulosObject[NoteSchema]):
         *,
         symbols_notenumber: t.Sequence[int],
         symbols_octave: t.Sequence[str],
-        reference_notenumber: int,
         pitchclass: type[PITCHCLASS],
     ) -> None:
         schema = NoteSchema(
             tuple(symbols_notenumber),
             tuple(symbols_octave),
-            reference_notenumber,
             pitchclass.schema,
         )
         super().__init_subclass__(schema=schema)
@@ -128,7 +127,7 @@ class BaseNote[PITCHCLASS: BasePitchClass](AulosObject[NoteSchema]):
         return self._tuner
 
     @property
-    def scale(self) -> Scale | None:
+    def scale(self) -> Scale | Mode | None:
         """Returns the scale of the note."""
         return self._scale
 

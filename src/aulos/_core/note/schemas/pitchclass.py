@@ -1,102 +1,121 @@
 import typing as t
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from functools import cached_property
-from itertools import accumulate, chain
+from itertools import chain
 
+from aulos._core.pitch.schemas import PitchSchema
 from aulos._core.schema import Schema
-from aulos._errors import ValidationError
+from aulos._core.utils import Intervals, Positions
 
 
-@dataclass(frozen=True, slots=True)
+def create_upper_sequences(
+    symbols_pitchclass: tuple[str, ...],
+    symbols_accidental: tuple[str, ...],
+    standard_positions: Positions,
+) -> list[list[str | None]]:
+    accidentals = symbols_accidental[get_accidental_count(symbols_accidental) :]
+    return [
+        create_natural_sequence(symbols_pitchclass, (acc,), standard_positions)[0][-i:]
+        + create_natural_sequence(symbols_pitchclass, (acc,), standard_positions)[0][:-i]
+        for i, acc in enumerate(accidentals, start=1)
+    ]
+
+
+def create_lower_sequences(
+    symbols_pitchclass: tuple[str, ...],
+    symbols_accidental: tuple[str, ...],
+    standard_positions: Positions,
+) -> list[list[str | None]]:
+    accidentals = symbols_accidental[: get_accidental_count(symbols_accidental)]
+    return [
+        create_natural_sequence(symbols_pitchclass, (acc,), standard_positions)[0][i:]
+        + create_natural_sequence(symbols_pitchclass, (acc,), standard_positions)[0][:i]
+        for i, acc in enumerate(reversed(accidentals), start=1)
+    ]
+
+
+def create_natural_sequence(
+    symbols_pitchclass: tuple[str, ...],
+    symbols_accidental: tuple[str, ...],
+    standard_positions: Positions,
+) -> list[list[str | None]]:
+    return [
+        [
+            get_formated_pitchname(
+                symbols_pitchclass[standard_positions.index(pos)],
+                acc,
+            )
+            if pos in standard_positions
+            else None
+            for pos in range(standard_positions.limit)
+        ]
+        for acc in symbols_accidental
+    ]
+
+
+def get_formated_pitchname(
+    symbols_pitchclass: str,
+    symbols_accidental: str,
+) -> str:
+    if symbols_accidental.find("<P>") >= 0:
+        return symbols_accidental.replace("<P>", symbols_pitchclass.upper())
+    if symbols_accidental.find("<p>") >= 0:
+        return symbols_accidental.replace("<p>", symbols_pitchclass.lower())
+    return f"{symbols_pitchclass}{symbols_accidental}"
+
+
+def get_accidental_count(symbols_accidental: tuple[str, ...]) -> int:
+    return len(symbols_accidental) // 2
+
+
+@dataclass(init=False, frozen=True, slots=True)
 class PitchClassSchema(Schema):
-    intervals: tuple[int, ...]
+    classes: int
+    accidental: int
     symbols_pitchclass: tuple[str, ...]
     symbols_accidental: tuple[str, ...]
+    standard_intervals: Intervals
+    standard_positions: Positions
+    name2class: dict[str, int]
+    class2name: dict[int, tuple[str | None, ...]]
+    pitch: PitchSchema
 
-    cardinality: int = field(init=False)
-    accidental: int = field(init=False)
-    positions: tuple[int, ...] = field(init=False)
-    name2class: dict[str, int] = field(init=False)
-    class2name: dict[int, tuple[str | None, ...]] = field(init=False)
+    def __init__(
+        self,
+        /,
+        intervals: tuple[int, ...],
+        symbols_pitchclass: tuple[str, ...],
+        symbols_accidental: tuple[str, ...],
+        pitch: PitchSchema,
+    ) -> None:
+        super(Schema, self).__init__()
 
-    def __post_init__(self) -> None:
-        self.validate()
-        self.initialize()
+        standard_intervals = Intervals(intervals)
+        standard_positions = standard_intervals.to_positions()
+        classes = standard_positions.limit
+        accidental = get_accidental_count(symbols_accidental)
 
-    def validate(self) -> None:
-        # [check] intervals
-        if not len(self.intervals) > 0:
-            msg = ""
-            raise ValidationError(msg)
-        if not all(v >= 0 for v in self.intervals):
-            msg = ""
-            raise ValidationError(msg)
-
-        # [check] symbols_pitchclass
-        if not len(self.symbols_pitchclass) > 0:
-            msg = ""
-            raise ValidationError(msg)
-
-        # [check] symbols_accidental
-        if not len(self.symbols_accidental) > 0:
-            msg = ""
-            raise ValidationError(msg)
-        if len(self.symbols_accidental) % 2 != 0:
-            msg = ""
-            raise ValidationError(msg)
-
-        # [cross-field check]
-        if len(self.intervals) != len(self.symbols_pitchclass):
-            msg = ""
-            raise ValidationError(msg)
-
-    def initialize(self) -> None:
-        cardinality = sum(self.intervals)
-        positions = tuple(accumulate((0,) + self.intervals[:-1]))
-
-        accidental = len(self.symbols_accidental) // 2
-        upper_accidentals = self.symbols_accidental[accidental:]
-        lower_accidentals = reversed(self.symbols_accidental[:accidental])
-
-        def create_upper_sequences() -> list[list[str | None]]:
-            sequences = []
-            for i, acc in enumerate(upper_accidentals, start=1):
-                sequence = create_symbol_sequence(suffix=acc)
-                for _ in range(i):
-                    sequence.insert(0, sequence.pop())
-                sequences.append(sequence)
-            return sequences
-
-        def create_lower_sequences() -> list[list[str | None]]:
-            sequences = []
-            for i, acc in enumerate(lower_accidentals, start=1):
-                sequence = create_symbol_sequence(suffix=acc)
-                for _ in range(i):
-                    sequence.append(sequence.pop(0))
-                sequences.append(sequence)
-            return sequences
-
-        def create_symbol_sequence(
-            *,
-            prefix: str = "",
-            suffix: str = "",
-        ) -> list[str | None]:
-            sequence: list[str | None] = []
-            for deg in range(cardinality):
-                if deg in positions:
-                    index = positions.index(deg)
-                    sequence.append(prefix + self.symbols_pitchclass[index] + suffix)
-                else:
-                    sequence.append(None)
-            return sequence
-
-        no_accidental_sequence = create_symbol_sequence()
-        accidental_upper_sequences = create_upper_sequences()
-        accidental_lower_sequences = reversed(create_lower_sequences())
+        accidental_natural_sequence = create_natural_sequence(
+            symbols_pitchclass,
+            ("",),
+            standard_positions,
+        )
+        accidental_upper_sequences = create_upper_sequences(
+            symbols_pitchclass,
+            symbols_accidental,
+            standard_positions,
+        )
+        accidental_lower_sequences = reversed(
+            create_lower_sequences(
+                symbols_pitchclass,
+                symbols_accidental,
+                standard_positions,
+            )
+        )
         accidental_sequences = tuple(
             zip(
                 *accidental_lower_sequences,
-                no_accidental_sequence,
+                *accidental_natural_sequence,
                 *accidental_upper_sequences,
                 strict=False,
             ),
@@ -106,11 +125,18 @@ class PitchClassSchema(Schema):
         ]
         class2name = [(index, name) for index, name in enumerate(accidental_sequences)]
 
-        object.__setattr__(self, "cardinality", cardinality)
+        object.__setattr__(self, "classes", classes)
         object.__setattr__(self, "accidental", accidental)
-        object.__setattr__(self, "positions", positions)
+        object.__setattr__(self, "symbols_pitchclass", symbols_pitchclass)
+        object.__setattr__(self, "symbols_accidental", symbols_accidental)
+        object.__setattr__(self, "standard_intervals", standard_intervals)
+        object.__setattr__(self, "standard_positions", standard_positions)
         object.__setattr__(self, "name2class", dict(chain.from_iterable(name2class)))
         object.__setattr__(self, "class2name", dict(class2name))
+        object.__setattr__(self, "pitch", pitch)
+
+    def validate(self) -> None:
+        pass
 
     @cached_property
     def pitchnames(self) -> tuple[str, ...]:
@@ -128,6 +154,21 @@ class PitchClassSchema(Schema):
             reverse=True,
         )
         return ([*finded, None])[0]
+
+    def get_intervals(self, pitchname: str) -> Intervals:
+        positions = self.get_positions(pitchname)
+        return positions.to_intervals()
+
+    def get_positions(self, pitchname: str) -> Positions:
+        self.ensure_valid_pitchname(pitchname)
+        pitchclass = self.convert_pitchname_to_picthclass(pitchname)
+        accidental = self.get_accidental(pitchname)
+        positions = [
+            pos
+            for pos in range(self.classes)
+            if self.convert_pitchclass_to_pitchname((pos + pitchclass) % self.classes, accidental) is not None
+        ]
+        return Positions(positions, limit=self.classes)
 
     def get_accidental(self, pitchname: str) -> int:
         self.ensure_valid_pitchname(pitchname)
@@ -163,7 +204,7 @@ class PitchClassSchema(Schema):
         self.ensure_valid_pitchname(pitchname)
         accidental = self.get_accidental(pitchname)
         pitchclass = self.convert_pitchname_to_picthclass(pitchname)
-        pitchclass = (pitchclass - accidental) % self.cardinality
+        pitchclass = (pitchclass - accidental) % self.classes
         symbol = self.convert_pitchclass_to_pitchname(pitchclass, 0)
         if symbol is None:
             msg = "unreachable error"

@@ -5,17 +5,19 @@ from typing import TYPE_CHECKING
 
 from aulos._core.context import inject
 from aulos._core.object import AulosObject
+from aulos._core.pitch.schemas import PitchSchema
 from aulos._core.utils import index
 
 from .schemas import PitchClassSchema
 
 if TYPE_CHECKING:
+    from aulos._core.mode import Mode  # pragma: no cover
     from aulos._core.scale import Scale  # pragma: no cover
 
 
-def resolve_pitchname_from_scale(pitchclass: int, scale: Scale | None, schema: PitchClassSchema) -> str | None:
+def resolve_pitchname_from_scale(pitchclass: int, scale: Scale | Mode | None, schema: PitchClassSchema) -> str | None:
     if scale is not None:
-        relative_pitchclass = (pitchclass - int(scale.key)) % schema.cardinality
+        relative_pitchclass = (pitchclass - int(scale.key)) % schema.classes
         if (idx := index(scale.positions, relative_pitchclass)) is not None:
             return schema.convert_pitchclass_to_pitchname(
                 pitchclass,
@@ -36,14 +38,14 @@ class BasePitchClass(AulosObject[PitchClassSchema]):
     _pitchclass: int
     _pitchnames: tuple[str | None, ...]
     _pitchname: str | None
-    _scale: Scale | None
+    _scale: Scale | Mode | None
 
     @inject
     def __init__(
         self,
         identify: int | str | t.Self,
         *,
-        scale: Scale | None = None,
+        scale: Scale | Mode | None = None,
         **kwargs: t.Any,
     ) -> None:
         super().__init__(**kwargs)
@@ -87,6 +89,7 @@ class BasePitchClass(AulosObject[PitchClassSchema]):
             tuple(intervals),
             tuple(symbols_pitchclass),
             tuple(symbols_accidental),
+            PitchSchema(),
         )
         super().__init_subclass__(schema=schema)
 
@@ -106,7 +109,7 @@ class BasePitchClass(AulosObject[PitchClassSchema]):
         return self._pitchname
 
     @property
-    def scale(self) -> Scale | None:
+    def scale(self) -> Scale | Mode | None:
         """Returns the scale associated with the pitch class."""
         return self._scale
 
@@ -129,11 +132,11 @@ class BasePitchClass(AulosObject[PitchClassSchema]):
         return not self.__eq__(other)
 
     def __add__(self, other: t.SupportsInt) -> t.Self:
-        pitchclass = (int(self) + int(other)) % self.schema.cardinality
+        pitchclass = (int(self) + int(other)) % self.schema.classes
         return self.__class__(pitchclass, scale=self.scale, setting=self.setting)
 
     def __sub__(self, other: t.SupportsInt) -> t.Self:
-        pitchclass = (int(self) - int(other)) % self.schema.cardinality
+        pitchclass = (int(self) - int(other)) % self.schema.classes
         return self.__class__(pitchclass, scale=self.scale, setting=self.setting)
 
     def __int__(self) -> int:

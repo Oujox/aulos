@@ -7,6 +7,7 @@ from . import context, utils
 
 # implementation
 from .chord import BaseChord
+from .mode import Mode
 from .note import BaseKey, BaseNote, BasePitchClass
 from .object import AulosObject
 from .scale import DiatonicScale, NondiatonicScale, Scale
@@ -21,6 +22,7 @@ __all__ = [
     "BaseNote",
     "BasePitchClass",
     "DiatonicScale",
+    "Mode",
     "NondiatonicScale",
     "Scale",
     "Schema",

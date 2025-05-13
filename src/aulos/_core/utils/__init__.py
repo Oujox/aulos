@@ -7,9 +7,10 @@ Provides generic helpers for intervals, positions, indexing, and type operations
 """
 
 from .dataclass import from_dict
+from .intervals import Intervals
+from .positions import Positions
 from .property import classproperty
-from .representation import Intervals, Positions
-from .sequence import index, rotated
+from .sequence import index
 
 __all__ = [
     "Intervals",
@@ -17,5 +18,4 @@ __all__ = [
     "classproperty",
     "from_dict",
     "index",
-    "rotated",
 ]

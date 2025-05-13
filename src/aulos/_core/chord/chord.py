@@ -6,11 +6,12 @@ from typing import TYPE_CHECKING, cast
 from aulos._core.context import inject
 from aulos._core.note import BaseNote
 from aulos._core.object import AulosObject
-from aulos._core.utils import classproperty
+from aulos._core.utils import Intervals, Positions, classproperty
 
 from .schemas import ChordSchema
 
 if TYPE_CHECKING:
+    from aulos._core.mode import Mode  # pragma: no cover
     from aulos._core.scale import Scale  # pragma: no cover
     from aulos._core.tuner import Tuner  # pragma: no cover
 
@@ -32,42 +33,20 @@ class BaseChord[NOTE: BaseNote](AulosObject[ChordSchema]):
     _base: NOTE | None
     _quality: Quality
     _tuner: Tuner | None
-    _scale: Scale | None
+    _scale: Scale | Mode | None
 
     @inject
     def __init__(
         self,
-        identify: str | tuple[str, int],
+        identify: tuple[str, int],
         *,
         tuner: Tuner | None = None,
-        scale: Scale | None = None,
+        scale: Scale | Mode | None = None,
         **kwargs: t.Any,
     ) -> None:
         super().__init__(**kwargs)
 
-        if isinstance(identify, str):
-            if (parsed := self.schema.parse(identify)) is not None:
-                root_notename, base_notename = self.schema.convert_to_chord_notenames(
-                    parsed.root,
-                    parsed.base,
-                    self.schema.note.get_octave(self.schema.note.reference_notenumber),
-                )
-
-                if base_notename is None:
-                    self._root = self.Note(root_notename)
-                    self._base = None
-                    self._quality = parsed.quality
-                    self._tuner = tuner
-                    self._scale = scale
-
-                else:
-                    self._root = self.Note(root_notename)
-                    self._base = self.Note(base_notename)
-                    self._quality = parsed.quality.from_base(self._base.notenumber - self._root.notenumber)
-                    self._tuner = tuner
-                    self._scale = scale
-
-        elif isinstance(identify, tuple) and isinstance(identify[0], str) and isinstance(identify[1], int):
+        if isinstance(identify, tuple) and isinstance(identify[0], str) and isinstance(identify[1], int):
             if (parsed := self.schema.parse(identify[0])) is not None:
                 root_notename, base_notename = self.schema.convert_to_chord_notenames(
                     parsed.root, parsed.base, identify[1]
@@ -120,47 +99,40 @@ class BaseChord[NOTE: BaseNote](AulosObject[ChordSchema]):
         return self._tuner
 
     @property
-    def scale(self) -> Scale | None:
+    def scale(self) -> Scale | Mode | None:
         """Returns the scale of the note."""
         return self._scale
 
     @property
-    def intervals(self) -> tuple[int, ...]:
-        return tuple(self._quality.intervals)
+    def intervals(self) -> Intervals:
+        return self._quality.intervals
 
     @property
-    def positions(self) -> tuple[int, ...]:
-        return tuple(self._quality.positions)
+    def positions(self) -> Positions:
+        return self._quality.positions
 
     @property
     def components(self) -> tuple[NOTE, ...]:
-        if self._quality.is_onchord():
-            return (
+        components = []
+        if isinstance(self._base, BaseNote) and self._quality.is_onchord():
+            components.append(
                 self.Note(
-                    int(self._root) + self._quality.base,
+                    self._base,
                     tuner=self._tuner,
                     scale=self._scale,
                     setting=self._setting,
-                ),
-                *tuple(
-                    self.Note(
-                        int(self._root) + p,
-                        tuner=self._tuner,
-                        scale=self._scale,
-                        setting=self._setting,
-                    )
-                    for p in self._quality.positions
-                ),
+                )
             )
-        return tuple(
+        components.extend(
             self.Note(
-                int(self._root) + self._quality.root + p,
+                int(self._root) + q,
                 tuner=self._tuner,
                 scale=self._scale,
                 setting=self._setting,
             )
-            for p in self._quality.positions
+            for q in self._quality
         )
+        return tuple(components)
 
     def inverse(self, num: int = 1) -> None:
         self._quality = self._quality.inverse(num)
