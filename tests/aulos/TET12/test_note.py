@@ -1,6 +1,6 @@
 import pytest
 
-from src.aulos.TET12 import Note
+from aulos.TET12 import Note
 
 
 def test_Note_init_from_notename(data_notenames):
