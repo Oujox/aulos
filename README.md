@@ -107,15 +107,7 @@ The following libraries are used during development and testing **but are not in
 
 - [**pytest**](https://docs.pytest.org/en/latest/)
 - [**pytest-cov**](https://github.com/pytest-dev/pytest-cov)
-- [**ruff**](https://docs.astral.sh/ruff)
-- [**mypy**](https://www.mypy-lang.org/)
 
-### GitHub Actions ⚙️
-
-- [**robvanderleek/create-issue-branch**](https://github.com/robvanderleek/create-issue-branch)
-- [**release-drafter/release-drafter**](https://github.com/release-drafter/release-drafter)
-- [**pypa/gh-action-pypi-publish**](https://github.com/pypa/gh-action-pypi-publish)
-- [**codecov/codecov-action**](https://github.com/codecov/codecov-action)
 
 ## License 📜
 
