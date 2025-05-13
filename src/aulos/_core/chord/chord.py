@@ -130,7 +130,7 @@ class BaseChord[NOTE: BaseNote](AulosObject[ChordSchema]):
                 scale=self._scale,
                 setting=self._setting,
             )
-            for q in self._quality.intervals
+            for q in self._quality
         )
         return tuple(components)
 
