@@ -4,7 +4,7 @@ Python library for speech processing and analysis from a music theory perspectiv
 
 | | |
 | --- | --- |
-| CI/CD | [![Test](https://github.com/Oujox/aulos/actions/workflows/ci.yml/badge.svg)](https://github.com/Oujox/aulos/actions/workflows/ci.yml) [![Build & Publish](https://github.com/Oujox/aulos/actions/workflows/cd.yml/badge.svg)](https://github.com/Oujox/aulos/actions/workflows/cd.yml) |
+| CI/CD | [![Test](https://github.com/Oujox/aulos/actions/workflows/ci.yml/badge.svg)](https://github.com/Oujox/aulos/actions/workflows/ci.yml) [![Build & Publish](https://github.com/Oujox/aulos/actions/workflows/deploy.yml/badge.svg)](https://github.com/Oujox/aulos/actions/workflows/deploy.yml) |
 | Package | [![pypi - version](https://img.shields.io/pypi/v/aulos.svg?&label=PyPI)](https://pypi.org/project/aulos/) [![pypi - python versions](https://img.shields.io/pypi/pyversions/aulos.svg?&label=Python)](https://pypi.org/project/aulos/) |
 | Meta | [![codecov](https://codecov.io/gh/Oujox/aulos/graph/badge.svg?token=UP6ZQP7HMK)](https://codecov.io/gh/Oujox/aulos) [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff) [![mypy](https://img.shields.io/badge/types-mypy-blue.svg)](https://github.com/python/mypy) [![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://github.com/Oujox/aulos/blob/main/LICENSE)  |
 

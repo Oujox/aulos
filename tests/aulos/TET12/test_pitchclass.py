@@ -1,6 +1,6 @@
 import pytest
 
-from src.aulos.TET12 import PitchClass
+from aulos.TET12 import PitchClass
 
 
 def test_PitchClass_init_from_pitchname(data_pitchname):
