@@ -22,8 +22,8 @@ class QualityProperty(_RequiredQualityProperty, _OptionalQualityProperty):
     """ """
 
 
-@dataclass(init=False, frozen=True, slots=False)
-class Quality:
+@dataclass(init=False, frozen=True, slots=True)
+class Quality(t.Sequence[int]):
     name: str
     intervals: Intervals
     inversion: int
@@ -58,6 +58,10 @@ class Quality:
     @property
     def base_candidates(self) -> tuple[int, ...]:
         return tuple(-sum(self.intervals[inv:]) for inv in range(len(self.intervals)))
+    
+    @property
+    def components(self) -> tuple[int, ...]:
+        return tuple(map(lambda x: x + self.root, self.positions))
 
     def inverse(self, inversion: int) -> Quality:
         intervals = self.intervals.left(inversion)
@@ -76,3 +80,16 @@ class Quality:
 
     def is_onchord(self) -> bool:
         return self.base != 0
+    
+    def __iter__(self) -> t.Iterator[int]:
+        return self.components.__iter__()
+
+    def __len__(self) -> int:
+        return self.components.__len__()
+
+    @t.overload
+    def __getitem__(self, index: int) -> int: ...
+    @t.overload
+    def __getitem__(self, index: slice) -> tuple[int, ...]: ...
+    def __getitem__(self, index: int | slice) -> int | tuple[int, ...]:
+        return self.components.__getitem__(index)
