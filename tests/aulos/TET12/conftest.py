@@ -2,8 +2,8 @@ import pytest
 
 
 @pytest.fixture(scope="module")
-def data_pitchclass() -> list[int]:
-    return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+def data_pitchclass() -> tuple[int, ...]:
+    return (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11)
 
 
 @pytest.fixture(scope="module")
@@ -1329,3 +1329,7 @@ def data_map_notenumber_to_notenames() -> dict[int, tuple[str | None, ...]]:
         126: ("Abbb9", None, "Gb9", None, "F#9", "E##9", None),
         127: (None, "Abb9", None, "G9", None, "F##9", "E###9"),
     }
+
+@pytest.fixture(scope="module")
+def data_keynames() -> list[str]:
+    return ['C', 'B#', 'Db', 'C#', 'D', 'Eb', 'D#', 'Fb', 'E', 'F', 'E#', 'Gb', 'F#', 'G', 'Ab', 'G#', 'A', 'Bb', 'A#', 'Cb', 'B',]
