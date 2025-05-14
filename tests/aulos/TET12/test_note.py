@@ -1,20 +1,18 @@
 import pytest
 
-from aulos.TET12 import Note
 from aulos.TET12 import (
-    Major,
-    Minor,
-    HarmonicMinor,
-    Pentatonic,
     Bluenote,
+    Equal12Tuner,
+    HarmonicMinor,
     Ionian,
     Ionian_s5,
+    JustIntonationTuner,
     Locrian,
     Lydian_f7,
-)
-from aulos.TET12 import (
-    Equal12Tuner,
-    JustIntonationTuner,
+    Major,
+    Minor,
+    Note,
+    Pentatonic,
     PythagoreanTuner,
 )
 
@@ -27,6 +25,7 @@ def test_Note_init_from_notename(data_notenames):
 def test_Note_init_from_notenumber(data_notenumbers):
     for pitchclass in data_notenumbers:
         assert isinstance(Note(pitchclass), Note)
+
 
 def test_Note_init_from_note_object(data_notenumbers):
     for notenumber in data_notenumbers:
@@ -81,6 +80,7 @@ def test_Note_dunder_eqne(data_map_notename_to_notenumber):
         assert not Note(notename) != Note(notenumber)
         assert not Note(notenumber) != Note(notename)
 
+
 def test_PitchClass_dunder_eqne_notimplemented(data_notenumbers):
     for notenumber in data_notenumbers:
         assert not Note(notenumber) == object()
@@ -122,6 +122,7 @@ def test_Note_dunder_str(
     for notename in data_notenames:
         assert str(Note(notename)) == f"<Note: {notename}, scale: None>"
 
+
 def test_Note_dunder_repr(
     data_notenumbers,
     data_notenames,
@@ -133,18 +134,19 @@ def test_Note_dunder_repr(
     for notename in data_notenames:
         assert repr(Note(notename)) == f"<Note: {notename}, scale: None>"
 
+
 @pytest.mark.parametrize(
-    "scale, key, notenumber, expected",
+    ("scale", "key", "notenumber", "expected"),
     [
-        [Major, "C", 64, "E4"],
-        [Minor, "C", 64, None],
-        [HarmonicMinor, "C", 64, None],
-        [Pentatonic, "C", 64, "E4"],
-        [Bluenote, "C", 64, "E4"],
-        [Ionian, "C", 64, "E4"],
-        [Ionian_s5, "C", 64, "E4"],
-        [Locrian, "C", 64, None],
-        [Lydian_f7, "C", 64, "E4"],
+        (Major, "C", 64, "E4"),
+        (Minor, "C", 64, None),
+        (HarmonicMinor, "C", 64, None),
+        (Pentatonic, "C", 64, "E4"),
+        (Bluenote, "C", 64, "E4"),
+        (Ionian, "C", 64, "E4"),
+        (Ionian_s5, "C", 64, "E4"),
+        (Locrian, "C", 64, None),
+        (Lydian_f7, "C", 64, "E4"),
     ],
 )
 def test_Note_init_with_scale(scale, key, notenumber, expected):
@@ -152,12 +154,13 @@ def test_Note_init_with_scale(scale, key, notenumber, expected):
     assert isinstance(pc, Note)
     assert pc.notename == expected
 
+
 @pytest.mark.parametrize(
-    "tuner, root, notenumber, expected",
+    ("tuner", "root", "notenumber", "expected"),
     [
-        [JustIntonationTuner, 440, 67, 660.],
-        [PythagoreanTuner, 440, 67, 660.],
-        [Equal12Tuner, 440, 67, 659.2551138257401],
+        (JustIntonationTuner, 440, 67, 660.0),
+        (PythagoreanTuner, 440, 67, 660.0),
+        (Equal12Tuner, 440, 67, 659.2551138257401),
     ],
 )
 def test_Note_init_with_tuner(tuner, root, notenumber, expected):

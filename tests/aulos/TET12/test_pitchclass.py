@@ -1,18 +1,17 @@
 import pytest
 
-from aulos.TET12 import PitchClass
 from aulos.TET12 import (
-    Major,
-    Minor,
-    HarmonicMinor,
-    Pentatonic,
     Bluenote,
+    HarmonicMinor,
     Ionian,
     Ionian_s5,
     Locrian,
     Lydian_f7,
+    Major,
+    Minor,
+    Pentatonic,
+    PitchClass,
 )
-
 
 
 def test_PitchClass_init_from_pitchname(data_pitchname):
@@ -82,7 +81,7 @@ def test_PitchClass_dunder_eqne(data_map_pitchname_to_pitchclass):
 def test_PitchClass_dunder_eqne_notimplemented(data_pitchclass):
     for pitchclass in data_pitchclass:
         assert not PitchClass(pitchclass) == object()
-            
+
 
 def test_PitchClass_dunder_add(data_pitchclass):
     for pitchclass in data_pitchclass:
@@ -126,21 +125,21 @@ def test_PitchClass_dunder_repr(
         pitchnames = [name for name in data_map_pitchclass_to_pitchnames[pitchclass] if name is not None]
         assert repr(PitchClass(pitchclass)) == f"<PitchClass: {pitchnames}, scale: None>"
     for pitchname in data_pitchname:
-        assert repr(PitchClass(pitchname)) == f"<PitchClass: {pitchname}, scale: None>" 
+        assert repr(PitchClass(pitchname)) == f"<PitchClass: {pitchname}, scale: None>"
 
 
 @pytest.mark.parametrize(
-    "scale, key, pitchclass, expected",
+    ("scale", "key", "pitchclass", "expected"),
     [
-        [Major, "C", 4, "E"],
-        [Minor, "C", 4, None],
-        [HarmonicMinor, "C", 4, None],
-        [Pentatonic, "C", 4, "E"],
-        [Bluenote, "C", 4, "E"],
-        [Ionian, "C", 4, "E"],
-        [Ionian_s5, "C", 4, "E"],
-        [Locrian, "C", 4, None],
-        [Lydian_f7, "C", 4, "E"],
+        (Major, "C", 4, "E"),
+        (Minor, "C", 4, None),
+        (HarmonicMinor, "C", 4, None),
+        (Pentatonic, "C", 4, "E"),
+        (Bluenote, "C", 4, "E"),
+        (Ionian, "C", 4, "E"),
+        (Ionian_s5, "C", 4, "E"),
+        (Locrian, "C", 4, None),
+        (Lydian_f7, "C", 4, "E"),
     ],
 )
 def test_PitchClass_init_with_scale(scale, key, pitchclass, expected):

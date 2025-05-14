@@ -4,7 +4,7 @@ from aulos.TET12 import Chord
 
 
 @pytest.mark.parametrize(
-    "chord, octave",
+    ("chord", "octave"),
     [
         ("C", 5),
         ("Cm", 5),
