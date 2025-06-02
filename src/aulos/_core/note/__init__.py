@@ -1,15 +1,7 @@
-"""Note
----
-"""
-
-from . import schemas
-from .key import BaseKey
 from .note import BaseNote
-from .pitchclass import BasePitchClass
+from .schemas import NoteSchema
 
 __all__ = [
-    "BaseKey",
     "BaseNote",
-    "BasePitchClass",
-    "schemas",
+    "NoteSchema",
 ]

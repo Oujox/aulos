@@ -7,7 +7,7 @@ from .scale import Scale
 
 # type annotaion
 if TYPE_CHECKING:
-    from aulos._core.note import BaseKey, BasePitchClass  # pragma: no cover
+    from aulos._core.pitchclass import BaseKey, BasePitchClass  # pragma: no cover
 
 
 class DiatonicScale[KEY: BaseKey, PITCHCLASS: BasePitchClass](Scale[KEY, PITCHCLASS]):

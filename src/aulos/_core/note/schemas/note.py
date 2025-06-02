@@ -3,10 +3,9 @@ from dataclasses import dataclass
 from functools import cached_property
 from itertools import chain
 
+from aulos._core.pitchclass import PitchClassSchema
 from aulos._core.schema import Schema
 from aulos._core.utils import Positions
-
-from .pitchclass import PitchClassSchema
 
 
 def create_upper_sequences(

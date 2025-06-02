@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from itertools import starmap
 
-from aulos._core.note.schemas import PitchClassSchema
+from aulos._core.pitchclass import PitchClassSchema
 from aulos._core.schema import Schema
 from aulos._core.utils import Intervals
 

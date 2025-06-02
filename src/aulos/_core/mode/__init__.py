@@ -1,7 +1,7 @@
-from . import schemas
 from .mode import Mode
+from .schemas import ModeSchema
 
 __all__ = [
     "Mode",
-    "schemas",
+    "ModeSchema",
 ]

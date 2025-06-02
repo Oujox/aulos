@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from functools import cached_property
 from itertools import chain
 
-from aulos._core.pitch.schemas import PitchSchema
+from aulos._core.pitch import PitchSchema
 from aulos._core.schema import Schema
 from aulos._core.utils import Intervals, Positions
 

@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 from aulos._core.chord.quality import Quality, QualityProperty
-from aulos._core.note.schemas import NoteSchema
+from aulos._core.note import NoteSchema
 from aulos._core.schema import Schema
 from aulos._core.utils import Positions
 

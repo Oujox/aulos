@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from aulos._core.scale.schemas import ScaleSchema
+from aulos._core.scale import ScaleSchema
 from aulos._core.schema import Schema
 
 

@@ -5,9 +5,9 @@ from typing import TYPE_CHECKING, cast
 
 from aulos._core.context import inject
 from aulos._core.object import AulosObject
+from aulos._core.pitchclass import BasePitchClass
 from aulos._core.utils import classproperty, index
 
-from .pitchclass import BasePitchClass
 from .schemas import NoteSchema
 
 if TYPE_CHECKING:

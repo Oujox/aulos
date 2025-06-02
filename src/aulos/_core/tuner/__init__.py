@@ -2,10 +2,10 @@
 ---
 """
 
-from . import schemas
+from .schemas import TunerSchema
 from .tuner import Tuner
 
 __all__ = [
     "Tuner",
-    "schemas",
+    "TunerSchema",
 ]

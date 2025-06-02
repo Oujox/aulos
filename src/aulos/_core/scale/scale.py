@@ -3,8 +3,8 @@ from itertools import starmap
 from typing import cast
 
 from aulos._core.context import inject
-from aulos._core.note import BaseKey, BasePitchClass
 from aulos._core.object import AulosObject
+from aulos._core.pitchclass import BaseKey, BasePitchClass
 from aulos._core.utils import Intervals, Positions, classproperty
 
 from .schemas import ScaleSchema
