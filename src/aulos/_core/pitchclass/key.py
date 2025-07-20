@@ -2,14 +2,14 @@ import typing as t
 from typing import cast
 
 from aulos._core.context import inject
-from aulos._core.object import AulosObject
+from aulos._core.object import AulosSchemaObject
 from aulos._core.utils import classproperty
 
 from .pitchclass import BasePitchClass
 from .schemas import KeySchema
 
 
-class BaseKey[PITCHCLASS: BasePitchClass](AulosObject[KeySchema]):
+class BaseKey[PITCHCLASS: BasePitchClass](AulosSchemaObject[KeySchema]):
     """
     BaseKey class represents a musical key in a theoretical context.
 

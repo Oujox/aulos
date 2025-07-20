@@ -3,13 +3,13 @@ from typing import cast
 
 from aulos._core.context import inject
 from aulos._core.note import BaseNote
-from aulos._core.object import AulosObject
+from aulos._core.object import AulosSchemaObject
 from aulos._core.utils import classproperty
 
 from .schemas import TunerSchema
 
 
-class Tuner[NOTE: BaseNote](AulosObject[TunerSchema]):
+class Tuner[NOTE: BaseNote](AulosSchemaObject[TunerSchema]):
     """
     Represents a musical tuner that can convert note numbers to their corresponding
     frequencies in hertz (Hz) based on a specified tuning system.

@@ -3,7 +3,7 @@ from itertools import starmap
 from typing import cast
 
 from aulos._core.context import inject
-from aulos._core.object import AulosObject
+from aulos._core.object import AulosSchemaObject
 from aulos._core.pitchclass import BaseKey, BasePitchClass
 from aulos._core.scale import Scale
 from aulos._core.utils import Intervals, Positions, classproperty
@@ -11,7 +11,7 @@ from aulos._core.utils import Intervals, Positions, classproperty
 from .schemas import ModeSchema
 
 
-class Mode[KEY: BaseKey, PITCHCLASS: BasePitchClass](AulosObject[ModeSchema]):
+class Mode[KEY: BaseKey, PITCHCLASS: BasePitchClass](AulosSchemaObject[ModeSchema]):
     _Key: t.ClassVar[type[BaseKey]]
     _PitchClass: t.ClassVar[type[BasePitchClass]]
     _intervals: t.ClassVar[Intervals]

@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING, cast
 
 from aulos._core.context import inject
 from aulos._core.note import BaseNote
-from aulos._core.object import AulosObject
+from aulos._core.object import AulosSchemaObject
 from aulos._core.utils import Intervals, Positions, classproperty
 
 from .schemas import ChordSchema
@@ -18,7 +18,7 @@ if TYPE_CHECKING:
     from .quality import Quality, QualityProperty  # pragma: no cover
 
 
-class BaseChord[NOTE: BaseNote](AulosObject[ChordSchema]):
+class BaseChord[NOTE: BaseNote](AulosSchemaObject[ChordSchema]):
     """
     Represents a musical chord, which is a combination of notes played simultaneously.
 

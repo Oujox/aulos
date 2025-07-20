@@ -4,7 +4,7 @@ import typing as t
 from typing import TYPE_CHECKING, cast
 
 from aulos._core.context import inject
-from aulos._core.object import AulosObject
+from aulos._core.object import AulosSchemaObject
 from aulos._core.pitchclass import BasePitchClass
 from aulos._core.utils import classproperty, index
 
@@ -28,7 +28,7 @@ def resolve_notename_from_scale(notenumber: int, scale: Scale | Mode | None, sch
     return None
 
 
-class BaseNote[PITCHCLASS: BasePitchClass](AulosObject[NoteSchema]):
+class BaseNote[PITCHCLASS: BasePitchClass](AulosSchemaObject[NoteSchema]):
     """
     BaseNote class represents a musical note with various properties and methods for manipulation.
 

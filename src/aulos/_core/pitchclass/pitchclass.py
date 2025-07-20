@@ -4,7 +4,7 @@ import typing as t
 from typing import TYPE_CHECKING
 
 from aulos._core.context import inject
-from aulos._core.object import AulosObject
+from aulos._core.object import AulosSchemaObject
 from aulos._core.pitch.schemas import PitchSchema
 from aulos._core.utils import index
 
@@ -26,7 +26,7 @@ def resolve_pitchname_from_scale(pitchclass: int, scale: Scale | Mode | None, sc
     return None
 
 
-class BasePitchClass(AulosObject[PitchClassSchema]):
+class BasePitchClass(AulosSchemaObject[PitchClassSchema]):
     """
     BasePitchClass represents a musical pitch class, which is
     a set of all pitches that are a whole number of octaves apart.
