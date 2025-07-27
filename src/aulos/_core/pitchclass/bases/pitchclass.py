@@ -6,8 +6,9 @@ from typing import TYPE_CHECKING
 from aulos._core.context import inject
 from aulos._core.object import AulosSchemaCollection, AulosSchemaObject
 from aulos._core.pitch import PitchSchema
-from aulos._core.pitchclass import PitchClassCollectionSchema, PitchClassSchema
 from aulos._core.utils import index
+
+from ..schemas import PitchClassCollectionSchema, PitchClassSchema
 
 if TYPE_CHECKING:
     from aulos._core.mode import BaseMode  # pragma: no cover
@@ -15,7 +16,7 @@ if TYPE_CHECKING:
 
 
 def resolve_pitchname_from_scale(
-    pitchclass: int, scale: BaseScale | BaseMode | None, schema: PitchClassSchema
+    pitchclass: int, scale: BaseScale | BaseMode | None, schema: PitchClassSchema,
 ) -> str | None:
     if scale is not None:
         relative_pitchclass = (pitchclass - int(scale.key)) % schema.classes
@@ -151,7 +152,7 @@ class BasePitchClass(AulosSchemaObject[PitchClassSchema]):
 
 
 class BasePitchClassCollection[PITCHCLASS: BasePitchClass](
-    AulosSchemaCollection[PITCHCLASS, PitchClassCollectionSchema]
+    AulosSchemaCollection[PITCHCLASS, PitchClassCollectionSchema],
 ):
     @inject
     def __init__(

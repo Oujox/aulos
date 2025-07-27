@@ -3,11 +3,12 @@ from __future__ import annotations
 import typing as t
 from typing import TYPE_CHECKING, cast
 
-from aulos._core.chord import ChordSchema
 from aulos._core.context import inject
 from aulos._core.note import BaseNote
 from aulos._core.object import AulosSchemaObject
 from aulos._core.utils import Intervals, Positions, classproperty
+
+from ..schemas import ChordSchema
 
 if TYPE_CHECKING:
     from aulos._core.chord.quality import Quality, QualityProperty  # pragma: no cover
@@ -47,7 +48,7 @@ class BaseChord[NOTE: BaseNote](AulosSchemaObject[ChordSchema]):
         if isinstance(identify, tuple) and isinstance(identify[0], str) and isinstance(identify[1], int):
             if (parsed := self.schema.parse(identify[0])) is not None:
                 root_notename, base_notename = self.schema.convert_to_chord_notenames(
-                    parsed.root, parsed.base, identify[1]
+                    parsed.root, parsed.base, identify[1],
                 )
 
                 if base_notename is None:
@@ -119,7 +120,7 @@ class BaseChord[NOTE: BaseNote](AulosSchemaObject[ChordSchema]):
                     tuner=self._tuner,
                     scale=self._scale,
                     setting=self._setting,
-                )
+                ),
             )
         components.extend(
             self.Note(

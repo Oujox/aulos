@@ -24,5 +24,5 @@ class ScaleSchema(Schema):
             starmap(
                 lambda x, y: y - x,
                 zip(std_positions, scale_positions, strict=False),
-            )
+            ),
         )

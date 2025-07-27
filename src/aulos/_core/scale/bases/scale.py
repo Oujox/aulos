@@ -5,8 +5,9 @@ from typing import cast
 from aulos._core.context import inject
 from aulos._core.object import AulosSchemaObject
 from aulos._core.pitchclass import BaseKey, BasePitchClass
-from aulos._core.scale import ScaleSchema
 from aulos._core.utils import Intervals, Positions, classproperty
+
+from ..schemas import ScaleSchema
 
 
 class BaseScale[KEY: BaseKey, PITCHCLASS: BasePitchClass](AulosSchemaObject[ScaleSchema]):

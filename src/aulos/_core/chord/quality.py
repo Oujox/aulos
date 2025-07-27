@@ -3,10 +3,7 @@ from __future__ import annotations
 import typing as t
 from dataclasses import dataclass
 
-from aulos._core.utils import index
-
-if t.TYPE_CHECKING:
-    from aulos._core.utils import Intervals, Positions  # pragma: no cover
+from aulos._core.utils import Intervals, Positions, index
 
 
 class _OptionalQualityProperty(t.TypedDict, total=False):
@@ -30,7 +27,7 @@ class Quality(t.Sequence[int]):
     base: int
 
     def __init__(
-        self, *, name: str, positions: Positions, inversion: int | None = None, base: int | None = None
+        self, *, name: str, positions: Positions, inversion: int | None = None, base: int | None = None,
     ) -> None:
         object.__setattr__(self, "name", name)
         object.__setattr__(self, "intervals", positions.to_intervals())

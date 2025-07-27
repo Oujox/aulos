@@ -4,8 +4,9 @@ from typing import cast
 from aulos._core.context import inject
 from aulos._core.note import BaseNote
 from aulos._core.object import AulosSchemaObject
-from aulos._core.tuner import TunerSchema
 from aulos._core.utils import classproperty
+
+from ..schemas import TunerSchema
 
 
 class BaseTuner[NOTE: BaseNote](AulosSchemaObject[TunerSchema]):

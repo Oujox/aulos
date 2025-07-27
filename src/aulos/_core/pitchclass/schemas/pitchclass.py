@@ -110,7 +110,7 @@ class PitchClassSchema(Schema):
                 symbols_pitchclass,
                 symbols_accidental,
                 standard_positions,
-            )
+            ),
         )
         accidental_sequences = tuple(
             zip(
