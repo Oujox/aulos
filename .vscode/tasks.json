@@ -23,19 +23,19 @@
     {
       "label": "format",
       "type": "shell",
-      "command": "uvx ruff format ./src/aulos ./tests/aulos ; uvx ruff check ./src/aulos ./tests/aulos --select I --fix-only --exit-zero",
+      "command": "uv run ruff format ./src/aulos ./tests/aulos ; uv run ruff check ./src/aulos ./tests/aulos --select I --fix-only --exit-zero",
       "problemMatcher": []
     },
     {
       "label": "lint",
       "type": "shell",
-      "command": "uvx ruff check ./src/aulos ./tests/aulos",
+      "command": "uv run ruff check ./src/aulos ./tests/aulos",
       "problemMatcher": []
     },
     {
       "label": "type-check",
       "type": "shell",
-      "command": "uvx mypy ./src/aulos",
+      "command": "uv run mypy ./src/aulos",
       "problemMatcher": []
     }
   ]
