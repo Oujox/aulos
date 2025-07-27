@@ -4,11 +4,10 @@ import typing as t
 from typing import TYPE_CHECKING
 
 from aulos._core.context import inject
-from aulos._core.object import AulosSchemaObject
-from aulos._core.pitch.schemas import PitchSchema
+from aulos._core.object import AulosSchemaCollection, AulosSchemaObject
+from aulos._core.pitch import PitchSchema
+from aulos._core.pitchclass import PitchClassCollectionSchema, PitchClassSchema
 from aulos._core.utils import index
-
-from ..schemas import PitchClassSchema
 
 if TYPE_CHECKING:
     from aulos._core.mode import BaseMode  # pragma: no cover
@@ -149,3 +148,43 @@ class BasePitchClass(AulosSchemaObject[PitchClassSchema]):
 
     def __repr__(self) -> str:
         return f"<PitchClass: {self.pitchname or self.pitchnames}, scale: {self.scale}>"
+
+
+class BasePitchClassCollection[PITCHCLASS: BasePitchClass](
+    AulosSchemaCollection[PITCHCLASS, PitchClassCollectionSchema]
+):
+    @inject
+    def __init__(
+        self,
+        pitchclasses: t.Iterable[PITCHCLASS],
+        **kwargs: t.Any,
+    ) -> None:
+        super().__init__(pitchclasses, **kwargs)
+
+    def __init_subclass__(cls) -> None:
+        schema = PitchClassCollectionSchema()
+        super().__init_subclass__(schema=schema)
+
+    @property
+    def pitchclasses(self) -> tuple[PITCHCLASS, ...]:
+        return self._objects
+
+    def transpose(self, num: int) -> t.Self:
+        return self.__class__([(pitchclass + num) for pitchclass in self._objects])
+
+    def inverse(self, num: int) -> t.Self:
+        return self.__class__(list(self._objects[num:] + self._objects[:num]))
+
+    def __eq__(self, other: object) -> bool:
+        if isinstance(other, BasePitchClassCollection):
+            return self._objects.__eq__(other)
+        return NotImplemented
+
+    def __ne__(self, other: object) -> bool:
+        return not self.__eq__(other)
+
+    def __str__(self) -> str:
+        return self._objects.__str__()
+
+    def __repr__(self) -> str:
+        return self._objects.__repr__()

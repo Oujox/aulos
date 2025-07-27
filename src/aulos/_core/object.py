@@ -55,3 +55,34 @@ class AulosSchemaObject[S: Schema](AulosObject):
             msg = "unreachable error"
             raise RuntimeError(msg)
         return cast("S", self._schema)
+
+
+class AulosSchemaCollection[T: AulosSchemaObject[S], S: Schema](
+    t.Sequence[T],
+    AulosSchemaObject[S],
+):
+    """
+    AulosSchemaCollection is a base class for collections of AulosSchemaObjects.
+    It provides a common interface for collections, including methods for accessing and manipulating the collection.
+    """
+
+    _objects: tuple[T, ...]
+
+    def __init__(self, items: t.Iterable[T], **kwargs: t.Any) -> None:
+        super().__init__(**kwargs)
+        self._objects = tuple(items)
+
+    def __iter__(self) -> t.Iterator[T]:
+        return iter(self._objects)
+
+    def __len__(self) -> int:
+        return len(self._objects)
+
+    @t.overload
+    def __getitem__(self, index: int) -> T: ...
+
+    @t.overload
+    def __getitem__(self, index: slice) -> tuple[T, ...]: ...
+
+    def __getitem__(self, index: int | slice) -> T | tuple[T, ...]:
+        return self._objects.__getitem__(index)

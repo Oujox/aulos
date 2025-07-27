@@ -23,6 +23,6 @@ __all__ = [
     "TET12",
     "TET24",
     "BaseScale",
-    "Setting",
     "BaseTuner",
+    "Setting",
 ]

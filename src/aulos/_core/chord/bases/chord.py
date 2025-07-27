@@ -3,19 +3,17 @@ from __future__ import annotations
 import typing as t
 from typing import TYPE_CHECKING, cast
 
+from aulos._core.chord import ChordSchema
 from aulos._core.context import inject
 from aulos._core.note import BaseNote
 from aulos._core.object import AulosSchemaObject
 from aulos._core.utils import Intervals, Positions, classproperty
 
-from ..schemas import ChordSchema
-
 if TYPE_CHECKING:
+    from aulos._core.chord.quality import Quality, QualityProperty  # pragma: no cover
     from aulos._core.mode import BaseMode  # pragma: no cover
     from aulos._core.scale import BaseScale  # pragma: no cover
     from aulos._core.tuner import BaseTuner  # pragma: no cover
-
-    from ..quality import Quality, QualityProperty  # pragma: no cover
 
 
 class BaseChord[NOTE: BaseNote](AulosSchemaObject[ChordSchema]):

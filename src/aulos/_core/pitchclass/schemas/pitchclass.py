@@ -247,3 +247,12 @@ class PitchClassSchema(Schema):
             raise ValueError(
                 msg,
             )
+
+
+@dataclass(init=False, frozen=True, slots=True)
+class PitchClassCollectionSchema(Schema):
+    def __init__(self) -> None:
+        super(Schema, self).__init__()
+
+    def validate(self) -> None:
+        pass

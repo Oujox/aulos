@@ -4,11 +4,10 @@ import typing as t
 from typing import TYPE_CHECKING, cast
 
 from aulos._core.context import inject
+from aulos._core.note import NoteSchema
 from aulos._core.object import AulosSchemaObject
 from aulos._core.pitchclass import BasePitchClass
 from aulos._core.utils import classproperty, index
-
-from ..schemas import NoteSchema
 
 if TYPE_CHECKING:
     from aulos._core.mode import BaseMode  # pragma: no cover

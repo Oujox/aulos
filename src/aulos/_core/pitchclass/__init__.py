@@ -1,9 +1,13 @@
 from .bases import BaseKey, BasePitchClass
-from .schemas import KeySchema, PitchClassSchema
+from .pitchclass import PitchClassCollection
+from .schemas import KeySchema, PitchClassCollectionSchema, PitchClassSchema
 
 __all__ = [
     "BaseKey",
     "BasePitchClass",
+    "BasePitchClassCollection",
     "KeySchema",
+    "PitchClassCollection",
+    "PitchClassCollectionSchema",
     "PitchClassSchema",
 ]
