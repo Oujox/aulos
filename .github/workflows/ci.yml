@@ -38,8 +38,8 @@ jobs:
       
       - name: Lint with ruff
         run: |
-          uvx ruff check ./src/aulos ./tests/aulos
+          uv run --frozen ruff check ./src/aulos ./tests/aulos
       
       - name: Type-check with mypy
         run: |
-          uvx mypy ./src/aulos
+          uv run --frozen mypy ./src/aulos
