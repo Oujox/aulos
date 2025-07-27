@@ -57,7 +57,7 @@ class AulosSchemaObject[S: Schema](AulosObject):
         return cast("S", self._schema)
 
 
-class AulosSchemaCollection[T: AulosSchemaObject[S], S: Schema](
+class AulosSchemaCollection[T: AulosObject, S: Schema](
     t.Sequence[T],
     AulosSchemaObject[S],
 ):
