@@ -3,14 +3,14 @@ from typing import TYPE_CHECKING
 
 from aulos._core.utils import Intervals, Positions, classproperty
 
-from .scale import Scale
+from .bases import BaseScale
 
 # type annotaion
 if TYPE_CHECKING:
     from aulos._core.pitchclass import BaseKey, BasePitchClass  # pragma: no cover
 
 
-class DiatonicScale[KEY: BaseKey, PITCHCLASS: BasePitchClass](Scale[KEY, PITCHCLASS]):
+class DiatonicScale[KEY: BaseKey, PITCHCLASS: BasePitchClass](BaseScale[KEY, PITCHCLASS]):
     """
     Represents a diatonic scale, which is a musical scale consisting of seven distinct pitch classes.
 
@@ -20,7 +20,7 @@ class DiatonicScale[KEY: BaseKey, PITCHCLASS: BasePitchClass](Scale[KEY, PITCHCL
 
 
 class NondiatonicScale[KEY: BaseKey, PITCHCLASS: BasePitchClass](
-    Scale[KEY, PITCHCLASS],
+    BaseScale[KEY, PITCHCLASS],
 ):
     """
     Represents a nondiatonic scale, which extends a diatonic scale with additional intervals.
@@ -31,7 +31,7 @@ class NondiatonicScale[KEY: BaseKey, PITCHCLASS: BasePitchClass](
     """
 
     _extensions: t.ClassVar[tuple[tuple[int, ...], ...]]
-    _base: t.ClassVar[type[Scale]]
+    _base: t.ClassVar[type[BaseScale]]
 
     def __init_subclass__(
         cls,

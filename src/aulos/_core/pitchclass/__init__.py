@@ -1,5 +1,4 @@
-from .key import BaseKey
-from .pitchclass import BasePitchClass
+from .bases import BaseKey, BasePitchClass
 from .schemas import KeySchema, PitchClassSchema
 
 __all__ = [

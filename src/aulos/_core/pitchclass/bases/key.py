@@ -5,8 +5,8 @@ from aulos._core.context import inject
 from aulos._core.object import AulosSchemaObject
 from aulos._core.utils import classproperty
 
+from ..schemas import KeySchema
 from .pitchclass import BasePitchClass
-from .schemas import KeySchema
 
 
 class BaseKey[PITCHCLASS: BasePitchClass](AulosSchemaObject[KeySchema]):

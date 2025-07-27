@@ -8,14 +8,14 @@ from aulos._core.note import BaseNote
 from aulos._core.object import AulosSchemaObject
 from aulos._core.utils import Intervals, Positions, classproperty
 
-from .schemas import ChordSchema
+from ..schemas import ChordSchema
 
 if TYPE_CHECKING:
-    from aulos._core.mode import Mode  # pragma: no cover
-    from aulos._core.scale import Scale  # pragma: no cover
-    from aulos._core.tuner import Tuner  # pragma: no cover
+    from aulos._core.mode import BaseMode  # pragma: no cover
+    from aulos._core.scale import BaseScale  # pragma: no cover
+    from aulos._core.tuner import BaseTuner  # pragma: no cover
 
-    from .quality import Quality, QualityProperty  # pragma: no cover
+    from ..quality import Quality, QualityProperty  # pragma: no cover
 
 
 class BaseChord[NOTE: BaseNote](AulosSchemaObject[ChordSchema]):
@@ -32,16 +32,16 @@ class BaseChord[NOTE: BaseNote](AulosSchemaObject[ChordSchema]):
     _root: NOTE
     _base: NOTE | None
     _quality: Quality
-    _tuner: Tuner | None
-    _scale: Scale | Mode | None
+    _tuner: BaseTuner | None
+    _scale: BaseScale | BaseMode | None
 
     @inject
     def __init__(
         self,
         identify: tuple[str, int],
         *,
-        tuner: Tuner | None = None,
-        scale: Scale | Mode | None = None,
+        tuner: BaseTuner | None = None,
+        scale: BaseScale | BaseMode | None = None,
         **kwargs: t.Any,
     ) -> None:
         super().__init__(**kwargs)
@@ -94,12 +94,12 @@ class BaseChord[NOTE: BaseNote](AulosSchemaObject[ChordSchema]):
         return self._base
 
     @property
-    def tuner(self) -> Tuner | None:
+    def tuner(self) -> BaseTuner | None:
         """Returns the tuner of the note."""
         return self._tuner
 
     @property
-    def scale(self) -> Scale | Mode | None:
+    def scale(self) -> BaseScale | BaseMode | None:
         """Returns the scale of the note."""
         return self._scale
 

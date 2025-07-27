@@ -8,15 +8,15 @@ from aulos._core.object import AulosSchemaObject
 from aulos._core.pitchclass import BasePitchClass
 from aulos._core.utils import classproperty, index
 
-from .schemas import NoteSchema
+from ..schemas import NoteSchema
 
 if TYPE_CHECKING:
-    from aulos._core.mode import Mode  # pragma: no cover
-    from aulos._core.scale import Scale  # pragma: no cover
-    from aulos._core.tuner import Tuner  # pragma: no cover
+    from aulos._core.mode import BaseMode  # pragma: no cover
+    from aulos._core.scale import BaseScale  # pragma: no cover
+    from aulos._core.tuner import BaseTuner  # pragma: no cover
 
 
-def resolve_notename_from_scale(notenumber: int, scale: Scale | Mode | None, schema: NoteSchema) -> str | None:
+def resolve_notename_from_scale(notenumber: int, scale: BaseScale | BaseMode | None, schema: NoteSchema) -> str | None:
     if scale is not None:
         relative_pitchclass = schema.convert_notenumber_to_pitchclass(notenumber)
         relative_pitchclass = (relative_pitchclass - int(scale.key)) % schema.pitchclass.classes
@@ -41,16 +41,16 @@ class BaseNote[PITCHCLASS: BasePitchClass](AulosSchemaObject[NoteSchema]):
     _notenumber: int
     _notenames: tuple[str | None, ...]
     _notename: str | None
-    _tuner: Tuner | None
-    _scale: Scale | Mode | None
+    _tuner: BaseTuner | None
+    _scale: BaseScale | BaseMode | None
 
     @inject
     def __init__(
         self,
         identify: int | str | t.Self,
         *,
-        tuner: Tuner | None = None,
-        scale: Scale | Mode | None = None,
+        tuner: BaseTuner | None = None,
+        scale: BaseScale | BaseMode | None = None,
         **kwargs: t.Any,
     ) -> None:
         super().__init__(**kwargs)
@@ -122,12 +122,12 @@ class BaseNote[PITCHCLASS: BasePitchClass](AulosSchemaObject[NoteSchema]):
         return self._notename
 
     @property
-    def tuner(self) -> Tuner | None:
+    def tuner(self) -> BaseTuner | None:
         """Returns the tuner of the note."""
         return self._tuner
 
     @property
-    def scale(self) -> Scale | Mode | None:
+    def scale(self) -> BaseScale | BaseMode | None:
         """Returns the scale of the note."""
         return self._scale
 

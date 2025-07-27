@@ -1,11 +1,12 @@
-from aulos._core import Mode
+from aulos._core import BaseMode
 
-from .note import Key, PitchClass
+from .key import Key
+from .pitchclass import PitchClass
 from .scale import HarmonicMinor, Major, MelodicMinor
 
 
 class Ionian(
-    Mode[Key, PitchClass],
+    BaseMode[Key, PitchClass],
     base=Major,
     shift=0,
     key=Key,
@@ -22,7 +23,7 @@ class Ionian(
 
 
 class Dorian(
-    Mode[Key, PitchClass],
+    BaseMode[Key, PitchClass],
     base=Major,
     shift=1,
     key=Key,
@@ -39,7 +40,7 @@ class Dorian(
 
 
 class Phrygian(
-    Mode[Key, PitchClass],
+    BaseMode[Key, PitchClass],
     base=Major,
     shift=2,
     key=Key,
@@ -56,7 +57,7 @@ class Phrygian(
 
 
 class Lydian(
-    Mode[Key, PitchClass],
+    BaseMode[Key, PitchClass],
     base=Major,
     shift=3,
     key=Key,
@@ -72,7 +73,7 @@ class Lydian(
 
 
 class Mixolydian(
-    Mode[Key, PitchClass],
+    BaseMode[Key, PitchClass],
     base=Major,
     shift=4,
     key=Key,
@@ -89,7 +90,7 @@ class Mixolydian(
 
 
 class Aeorian(
-    Mode[Key, PitchClass],
+    BaseMode[Key, PitchClass],
     base=Major,
     shift=5,
     key=Key,
@@ -106,7 +107,7 @@ class Aeorian(
 
 
 class Locrian(
-    Mode[Key, PitchClass],
+    BaseMode[Key, PitchClass],
     base=Major,
     shift=6,
     key=Key,
@@ -123,7 +124,7 @@ class Locrian(
 
 
 class Dorian_f2(  # noqa: N801
-    Mode[Key, PitchClass],
+    BaseMode[Key, PitchClass],
     base=MelodicMinor,
     shift=1,
     key=Key,
@@ -139,7 +140,7 @@ class Dorian_f2(  # noqa: N801
 
 
 class Lydian_s5(  # noqa: N801
-    Mode[Key, PitchClass],
+    BaseMode[Key, PitchClass],
     base=MelodicMinor,
     shift=2,
     key=Key,
@@ -156,7 +157,7 @@ class Lydian_s5(  # noqa: N801
 
 
 class Lydian_f7(  # noqa: N801
-    Mode[Key, PitchClass],
+    BaseMode[Key, PitchClass],
     base=MelodicMinor,
     shift=3,
     key=Key,
@@ -172,7 +173,7 @@ class Lydian_f7(  # noqa: N801
 
 
 class Mixolydian_f6(  # noqa: N801
-    Mode[Key, PitchClass],
+    BaseMode[Key, PitchClass],
     base=MelodicMinor,
     shift=4,
     key=Key,
@@ -189,7 +190,7 @@ class Mixolydian_f6(  # noqa: N801
 
 
 class Aeorian_f5(  # noqa: N801
-    Mode[Key, PitchClass],
+    BaseMode[Key, PitchClass],
     base=MelodicMinor,
     shift=5,
     key=Key,
@@ -205,7 +206,7 @@ class Aeorian_f5(  # noqa: N801
 
 
 class SuperLocrian(
-    Mode[Key, PitchClass],
+    BaseMode[Key, PitchClass],
     base=MelodicMinor,
     shift=6,
     key=Key,
@@ -222,7 +223,7 @@ class SuperLocrian(
 
 
 class Locrian_n6(  # noqa: N801
-    Mode[Key, PitchClass],
+    BaseMode[Key, PitchClass],
     base=HarmonicMinor,
     shift=1,
     key=Key,
@@ -238,7 +239,7 @@ class Locrian_n6(  # noqa: N801
 
 
 class Ionian_s5(  # noqa: N801
-    Mode[Key, PitchClass],
+    BaseMode[Key, PitchClass],
     base=HarmonicMinor,
     shift=2,
     key=Key,
@@ -254,7 +255,7 @@ class Ionian_s5(  # noqa: N801
 
 
 class Dorian_s4(  # noqa: N801
-    Mode[Key, PitchClass],
+    BaseMode[Key, PitchClass],
     base=HarmonicMinor,
     shift=3,
     key=Key,
@@ -270,7 +271,7 @@ class Dorian_s4(  # noqa: N801
 
 
 class Mixolydian_f9(  # noqa: N801
-    Mode[Key, PitchClass],
+    BaseMode[Key, PitchClass],
     base=HarmonicMinor,
     shift=4,
     key=Key,
@@ -286,7 +287,7 @@ class Mixolydian_f9(  # noqa: N801
 
 
 class Lydian_s2(  # noqa: N801
-    Mode[Key, PitchClass],
+    BaseMode[Key, PitchClass],
     base=HarmonicMinor,
     shift=5,
     key=Key,
@@ -302,7 +303,7 @@ class Lydian_s2(  # noqa: N801
 
 
 class AlteredSuperLocrian(
-    Mode[Key, PitchClass],
+    BaseMode[Key, PitchClass],
     base=HarmonicMinor,
     shift=6,
     key=Key,

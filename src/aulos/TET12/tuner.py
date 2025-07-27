@@ -1,11 +1,11 @@
-from aulos._core import Tuner
+from aulos._core import BaseTuner
 
 from .note import Note
 from .utils import fivelimit_tuning_table, standard_tuning_table
 
 
 class JustIntonationTuner(
-    Tuner[Note],
+    BaseTuner[Note],
     ratios=fivelimit_tuning_table(),
     reference_notenumber=60,
     note=Note,
@@ -22,7 +22,7 @@ class JustIntonationTuner(
 
 
 class MeantoneTuner(
-    Tuner[Note],
+    BaseTuner[Note],
     ratios=standard_tuning_table(5**0.25),
     reference_notenumber=60,
     note=Note,
@@ -39,7 +39,7 @@ class MeantoneTuner(
 
 
 class PythagoreanTuner(
-    Tuner[Note],
+    BaseTuner[Note],
     ratios=standard_tuning_table(1.5),
     reference_notenumber=60,
     note=Note,
@@ -55,7 +55,7 @@ class PythagoreanTuner(
 
 
 class Equal12Tuner(
-    Tuner[Note],
+    BaseTuner[Note],
     ratios=standard_tuning_table(2 ** (1 / 12)),
     reference_notenumber=60,
     note=Note,

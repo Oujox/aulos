@@ -7,10 +7,10 @@ from aulos._core.object import AulosSchemaObject
 from aulos._core.pitchclass import BaseKey, BasePitchClass
 from aulos._core.utils import Intervals, Positions, classproperty
 
-from .schemas import ScaleSchema
+from ..schemas import ScaleSchema
 
 
-class Scale[KEY: BaseKey, PITCHCLASS: BasePitchClass](AulosSchemaObject[ScaleSchema]):
+class BaseScale[KEY: BaseKey, PITCHCLASS: BasePitchClass](AulosSchemaObject[ScaleSchema]):
     """
     Represents a musical scale with a specific key and pitch class.
 
@@ -117,7 +117,7 @@ class Scale[KEY: BaseKey, PITCHCLASS: BasePitchClass](AulosSchemaObject[ScaleSch
         return tuple(components)
 
     def __eq__(self, other: object) -> bool:
-        if not isinstance(other, Scale):
+        if not isinstance(other, BaseScale):
             return NotImplemented
         return self._intervals == other._intervals and self._key == other._key
 

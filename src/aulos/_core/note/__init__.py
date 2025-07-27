@@ -1,4 +1,4 @@
-from .note import BaseNote
+from .bases import BaseNote
 from .schemas import NoteSchema
 
 __all__ = [
