@@ -1,15 +1,11 @@
-"""Note
----
-"""
-
-from . import schemas
-from .key import BaseKey
-from .note import BaseNote
-from .pitchclass import BasePitchClass
+from .bases import BaseNote, BaseNoteCollection
+from .note import NoteCollection
+from .schemas import NoteCollectionSchema, NoteSchema
 
 __all__ = [
-    "BaseKey",
     "BaseNote",
-    "BasePitchClass",
-    "schemas",
+    "BaseNoteCollection",
+    "NoteCollection",
+    "NoteCollectionSchema",
+    "NoteSchema",
 ]

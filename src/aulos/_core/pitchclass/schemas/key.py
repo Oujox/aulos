@@ -38,7 +38,7 @@ class KeySchema(Schema):
             starmap(
                 lambda x, y: x - y,
                 zip(std_positions, key_positions, strict=False),
-            )
+            ),
         )
 
     def is_keyname(self, value: object) -> t.TypeGuard[str]:

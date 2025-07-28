@@ -17,6 +17,7 @@ are accessible when the module is imported.
 """
 
 from .chord import Chord
+from .key import Key
 from .mode import (
     Aeorian,
     Aeorian_f5,
@@ -38,7 +39,8 @@ from .mode import (
     Phrygian,
     SuperLocrian,
 )
-from .note import Key, Note, PitchClass
+from .note import Note
+from .pitchclass import PitchClass
 
 # Scales
 # Modes

@@ -3,20 +3,20 @@ from itertools import starmap
 from typing import cast
 
 from aulos._core.context import inject
-from aulos._core.note import BaseKey, BasePitchClass
-from aulos._core.object import AulosObject
-from aulos._core.scale import Scale
+from aulos._core.object import AulosSchemaObject
+from aulos._core.pitchclass import BaseKey, BasePitchClass, PitchClassCollection
+from aulos._core.scale import BaseScale
 from aulos._core.utils import Intervals, Positions, classproperty
 
-from .schemas import ModeSchema
+from ..schemas import ModeSchema
 
 
-class Mode[KEY: BaseKey, PITCHCLASS: BasePitchClass](AulosObject[ModeSchema]):
+class BaseMode[KEY: BaseKey, PITCHCLASS: BasePitchClass](AulosSchemaObject[ModeSchema]):
     _Key: t.ClassVar[type[BaseKey]]
     _PitchClass: t.ClassVar[type[BasePitchClass]]
     _intervals: t.ClassVar[Intervals]
     _positions: t.ClassVar[Positions]
-    _base: t.ClassVar[type[Scale]]
+    _base: t.ClassVar[type[BaseScale]]
 
     _key: KEY
     _signatures: tuple[int, ...]
@@ -54,7 +54,7 @@ class Mode[KEY: BaseKey, PITCHCLASS: BasePitchClass](AulosObject[ModeSchema]):
         else:
             raise TypeError
 
-    def __init_subclass__(cls, *, base: type[Scale], shift: int, key: type[KEY]) -> None:
+    def __init_subclass__(cls, *, base: type[BaseScale], shift: int, key: type[KEY]) -> None:
         schema = ModeSchema(base.schema)
         super().__init_subclass__(schema=schema)
         cls._Key = key
@@ -79,7 +79,7 @@ class Mode[KEY: BaseKey, PITCHCLASS: BasePitchClass](AulosObject[ModeSchema]):
         return self._positions
 
     @classproperty
-    def base(self) -> type[Scale]:
+    def base(self) -> type[BaseScale]:
         return self._base
 
     @property
@@ -91,17 +91,17 @@ class Mode[KEY: BaseKey, PITCHCLASS: BasePitchClass](AulosObject[ModeSchema]):
         return self._signatures
 
     @property
-    def components(self) -> tuple[PITCHCLASS, ...]:
+    def components(self) -> PitchClassCollection[PITCHCLASS]:
         components = []
         root = self.PitchClass(self._key.keyname, scale=self, setting=self.setting)
         for pos in self.positions:
             pitchclass = (root + pos).pitchclass
             note = self.PitchClass(pitchclass, scale=self, setting=self.setting)
             components.append(note)
-        return tuple(components)
+        return PitchClassCollection(components)
 
     def __eq__(self, other: object) -> bool:
-        if not isinstance(other, Scale):
+        if not isinstance(other, BaseScale):
             return NotImplemented
         return self._intervals == other._intervals and self._key == other._key
 

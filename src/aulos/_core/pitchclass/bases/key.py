@@ -2,14 +2,14 @@ import typing as t
 from typing import cast
 
 from aulos._core.context import inject
-from aulos._core.object import AulosObject
+from aulos._core.object import AulosSchemaObject
 from aulos._core.utils import classproperty
 
+from ..schemas import KeySchema
 from .pitchclass import BasePitchClass
-from .schemas import KeySchema
 
 
-class BaseKey[PITCHCLASS: BasePitchClass](AulosObject[KeySchema]):
+class BaseKey[PITCHCLASS: BasePitchClass](AulosSchemaObject[KeySchema]):
     """
     BaseKey class represents a musical key in a theoretical context.
 
@@ -20,7 +20,7 @@ class BaseKey[PITCHCLASS: BasePitchClass](AulosObject[KeySchema]):
     _PitchClass: t.ClassVar[type[BasePitchClass]]
 
     _keyname: str
-    _keyclass: int
+    _pitchclass: int
     _signatures: tuple[int, ...]
 
     @inject
@@ -29,12 +29,12 @@ class BaseKey[PITCHCLASS: BasePitchClass](AulosObject[KeySchema]):
 
         if isinstance(identify, BaseKey):
             self._keyname = identify.keyname
-            self._keyclass = self.schema.pitchclass.convert_pitchname_to_picthclass(identify.keyname)
+            self._pitchclass = self.schema.pitchclass.convert_pitchname_to_picthclass(identify.keyname)
             self._signatures = self.schema.generate_key_signatures(identify.keyname)
 
         elif self.is_keyname(identify):
             self._keyname = identify
-            self._keyclass = self.schema.pitchclass.convert_pitchname_to_picthclass(identify)
+            self._pitchclass = self.schema.pitchclass.convert_pitchname_to_picthclass(identify)
             self._signatures = self.schema.generate_key_signatures(identify)
 
         else:
@@ -86,7 +86,7 @@ class BaseKey[PITCHCLASS: BasePitchClass](AulosObject[KeySchema]):
         return not self.__eq__(other)
 
     def __int__(self) -> int:
-        return self._keyclass
+        return self._pitchclass
 
     def __str__(self) -> str:
         return f"<Key: {self.keyname}>"

@@ -3,10 +3,9 @@ from dataclasses import dataclass
 from functools import cached_property
 from itertools import chain
 
+from aulos._core.pitchclass import PitchClassSchema
 from aulos._core.schema import Schema
 from aulos._core.utils import Positions
-
-from .pitchclass import PitchClassSchema
 
 
 def create_upper_sequences(
@@ -116,7 +115,7 @@ class NoteSchema(Schema):
                 pitchclass.symbols_accidental,
                 symbols_octave,
                 pitchclass.standard_positions,
-            )
+            ),
         )
         accidental_sequences = tuple(
             zip(
@@ -152,7 +151,10 @@ class NoteSchema(Schema):
         return tuple(self.number2name.keys())
 
     def find_nearest_notename(
-        self, reference_notename: str, target_pitchname: str, direction: t.Literal["up", "down"] = "down"
+        self,
+        reference_notename: str,
+        target_pitchname: str,
+        direction: t.Literal["up", "down"] = "down",
     ) -> str | None:
         self.ensure_valid_notename(reference_notename)
         self.pitchclass.ensure_valid_pitchname(target_pitchname)
@@ -268,3 +270,12 @@ class NoteSchema(Schema):
             raise ValueError(
                 msg,
             )
+
+
+@dataclass(init=False, frozen=True, slots=True)
+class NoteCollectionSchema(Schema):
+    def __init__(self) -> None:
+        super(Schema, self).__init__()
+
+    def validate(self) -> None:
+        pass

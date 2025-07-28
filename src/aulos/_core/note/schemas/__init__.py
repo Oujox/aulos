@@ -1,9 +1,6 @@
-from .key import KeySchema
-from .note import NoteSchema
-from .pitchclass import PitchClassSchema
+from .note import NoteCollectionSchema, NoteSchema
 
 __all__ = [
-    "KeySchema",
+    "NoteCollectionSchema",
     "NoteSchema",
-    "PitchClassSchema",
 ]

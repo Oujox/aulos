@@ -15,14 +15,14 @@ are accessible when the module is imported.
 """
 
 from . import TET12, TET24
-from ._core import Scale, Setting, Tuner
+from ._core import BaseScale, BaseTuner, Setting
 from ._errors import *  # noqa: F403
 from ._warnings import *  # noqa: F403
 
 __all__ = [
     "TET12",
     "TET24",
-    "Scale",
+    "BaseScale",
+    "BaseTuner",
     "Setting",
-    "Tuner",
 ]

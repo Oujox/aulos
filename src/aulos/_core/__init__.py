@@ -7,27 +7,29 @@ from . import context, utils
 
 # implementation
 from .chord import BaseChord
-from .mode import Mode
-from .note import BaseKey, BaseNote, BasePitchClass
-from .object import AulosObject
-from .scale import DiatonicScale, NondiatonicScale, Scale
+from .mode import BaseMode
+from .note import BaseNote
+from .object import AulosObject, AulosSchemaObject
+from .pitchclass import BaseKey, BasePitchClass
+from .scale import BaseScale, DiatonicScale, NondiatonicScale
 from .schema import Schema
 from .setting import Setting
-from .tuner import Tuner
+from .tuner import BaseTuner
 
 __all__ = [
     "AulosObject",
+    "AulosSchemaObject",
     "BaseChord",
     "BaseKey",
+    "BaseMode",
     "BaseNote",
     "BasePitchClass",
+    "BaseScale",
+    "BaseTuner",
     "DiatonicScale",
-    "Mode",
     "NondiatonicScale",
-    "Scale",
     "Schema",
     "Setting",
-    "Tuner",
     "context",
     "utils",
 ]

@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 
-from aulos._core.note.schemas import NoteSchema, PitchClassSchema
+from aulos._core.note import NoteSchema
+from aulos._core.pitchclass import PitchClassSchema
 from aulos._core.schema import Schema
 
 

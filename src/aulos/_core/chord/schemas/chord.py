@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 from aulos._core.chord.quality import Quality, QualityProperty
-from aulos._core.note.schemas import NoteSchema
+from aulos._core.note import NoteSchema
 from aulos._core.schema import Schema
 from aulos._core.utils import Positions
 
@@ -73,7 +73,10 @@ class ChordSchema(Schema):
         return ChordComponents(root=root, quality=quality, base=base)
 
     def convert_to_chord_notenames(
-        self, root_pitchname: str, base_pitchname: str | None, octave: int
+        self,
+        root_pitchname: str,
+        base_pitchname: str | None,
+        octave: int,
     ) -> tuple[str, str | None]:
         root_notename = self.note.convert_pitchname_to_notename(root_pitchname, octave)
         if base_pitchname is None:

@@ -4,18 +4,22 @@ import typing as t
 from typing import TYPE_CHECKING
 
 from aulos._core.context import inject
-from aulos._core.object import AulosObject
-from aulos._core.pitch.schemas import PitchSchema
+from aulos._core.object import AulosSchemaCollection, AulosSchemaObject
+from aulos._core.pitch import PitchSchema
 from aulos._core.utils import index
 
-from .schemas import PitchClassSchema
+from ..schemas import PitchClassCollectionSchema, PitchClassSchema
 
 if TYPE_CHECKING:
-    from aulos._core.mode import Mode  # pragma: no cover
-    from aulos._core.scale import Scale  # pragma: no cover
+    from aulos._core.mode import BaseMode  # pragma: no cover
+    from aulos._core.scale import BaseScale  # pragma: no cover
 
 
-def resolve_pitchname_from_scale(pitchclass: int, scale: Scale | Mode | None, schema: PitchClassSchema) -> str | None:
+def resolve_pitchname_from_scale(
+    pitchclass: int,
+    scale: BaseScale | BaseMode | None,
+    schema: PitchClassSchema,
+) -> str | None:
     if scale is not None:
         relative_pitchclass = (pitchclass - int(scale.key)) % schema.classes
         if (idx := index(scale.positions, relative_pitchclass)) is not None:
@@ -26,7 +30,7 @@ def resolve_pitchname_from_scale(pitchclass: int, scale: Scale | Mode | None, sc
     return None
 
 
-class BasePitchClass(AulosObject[PitchClassSchema]):
+class BasePitchClass(AulosSchemaObject[PitchClassSchema]):
     """
     BasePitchClass represents a musical pitch class, which is
     a set of all pitches that are a whole number of octaves apart.
@@ -38,14 +42,14 @@ class BasePitchClass(AulosObject[PitchClassSchema]):
     _pitchclass: int
     _pitchnames: tuple[str | None, ...]
     _pitchname: str | None
-    _scale: Scale | Mode | None
+    _scale: BaseScale | BaseMode | None
 
     @inject
     def __init__(
         self,
         identify: int | str | t.Self,
         *,
-        scale: Scale | Mode | None = None,
+        scale: BaseScale | BaseMode | None = None,
         **kwargs: t.Any,
     ) -> None:
         super().__init__(**kwargs)
@@ -109,7 +113,7 @@ class BasePitchClass(AulosObject[PitchClassSchema]):
         return self._pitchname
 
     @property
-    def scale(self) -> Scale | Mode | None:
+    def scale(self) -> BaseScale | BaseMode | None:
         """Returns the scale associated with the pitch class."""
         return self._scale
 
@@ -147,3 +151,43 @@ class BasePitchClass(AulosObject[PitchClassSchema]):
 
     def __repr__(self) -> str:
         return f"<PitchClass: {self.pitchname or self.pitchnames}, scale: {self.scale}>"
+
+
+class BasePitchClassCollection[PITCHCLASS: BasePitchClass](
+    AulosSchemaCollection[PITCHCLASS, PitchClassCollectionSchema],
+):
+    @inject
+    def __init__(
+        self,
+        pitchclasses: t.Iterable[PITCHCLASS],
+        **kwargs: t.Any,
+    ) -> None:
+        super().__init__(pitchclasses, **kwargs)
+
+    def __init_subclass__(cls) -> None:
+        schema = PitchClassCollectionSchema()
+        super().__init_subclass__(schema=schema)
+
+    @property
+    def pitchclasses(self) -> tuple[PITCHCLASS, ...]:
+        return self._objects
+
+    def transpose(self, num: int) -> t.Self:
+        return self.__class__([(pitchclass + num) for pitchclass in self._objects])
+
+    def inverse(self, num: int) -> t.Self:
+        return self.__class__(list(self._objects[num:] + self._objects[:num]))
+
+    def __eq__(self, other: object) -> bool:
+        if isinstance(other, BasePitchClassCollection):
+            return self._objects.__eq__(other)
+        return NotImplemented
+
+    def __ne__(self, other: object) -> bool:
+        return not self.__eq__(other)
+
+    def __str__(self) -> str:
+        return self._objects.__str__()
+
+    def __repr__(self) -> str:
+        return self._objects.__repr__()

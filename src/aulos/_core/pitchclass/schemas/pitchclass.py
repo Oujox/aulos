@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from functools import cached_property
 from itertools import chain
 
-from aulos._core.pitch.schemas import PitchSchema
+from aulos._core.pitch import PitchSchema
 from aulos._core.schema import Schema
 from aulos._core.utils import Intervals, Positions
 
@@ -110,7 +110,7 @@ class PitchClassSchema(Schema):
                 symbols_pitchclass,
                 symbols_accidental,
                 standard_positions,
-            )
+            ),
         )
         accidental_sequences = tuple(
             zip(
@@ -247,3 +247,12 @@ class PitchClassSchema(Schema):
             raise ValueError(
                 msg,
             )
+
+
+@dataclass(init=False, frozen=True, slots=True)
+class PitchClassCollectionSchema(Schema):
+    def __init__(self) -> None:
+        super(Schema, self).__init__()
+
+    def validate(self) -> None:
+        pass

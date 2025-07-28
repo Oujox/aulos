@@ -34,7 +34,7 @@ target-version = "py312"
 
 [lint]
 select = ["ALL"]
-ignore = ["D", "COM812"]
+ignore = ["D", "TID252", "COM812"]
 fixable = ["ALL"]
 
 [lint.mccabe]

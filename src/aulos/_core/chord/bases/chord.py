@@ -4,21 +4,20 @@ import typing as t
 from typing import TYPE_CHECKING, cast
 
 from aulos._core.context import inject
-from aulos._core.note import BaseNote
-from aulos._core.object import AulosObject
+from aulos._core.note import BaseNote, NoteCollection
+from aulos._core.object import AulosSchemaObject
 from aulos._core.utils import Intervals, Positions, classproperty
 
-from .schemas import ChordSchema
+from ..schemas import ChordSchema
 
 if TYPE_CHECKING:
-    from aulos._core.mode import Mode  # pragma: no cover
-    from aulos._core.scale import Scale  # pragma: no cover
-    from aulos._core.tuner import Tuner  # pragma: no cover
+    from aulos._core.chord.quality import Quality, QualityProperty  # pragma: no cover
+    from aulos._core.mode import BaseMode  # pragma: no cover
+    from aulos._core.scale import BaseScale  # pragma: no cover
+    from aulos._core.tuner import BaseTuner  # pragma: no cover
 
-    from .quality import Quality, QualityProperty  # pragma: no cover
 
-
-class BaseChord[NOTE: BaseNote](AulosObject[ChordSchema]):
+class BaseChord[NOTE: BaseNote](AulosSchemaObject[ChordSchema]):
     """
     Represents a musical chord, which is a combination of notes played simultaneously.
 
@@ -32,16 +31,16 @@ class BaseChord[NOTE: BaseNote](AulosObject[ChordSchema]):
     _root: NOTE
     _base: NOTE | None
     _quality: Quality
-    _tuner: Tuner | None
-    _scale: Scale | Mode | None
+    _tuner: BaseTuner | None
+    _scale: BaseScale | BaseMode | None
 
     @inject
     def __init__(
         self,
         identify: tuple[str, int],
         *,
-        tuner: Tuner | None = None,
-        scale: Scale | Mode | None = None,
+        tuner: BaseTuner | None = None,
+        scale: BaseScale | BaseMode | None = None,
         **kwargs: t.Any,
     ) -> None:
         super().__init__(**kwargs)
@@ -49,7 +48,9 @@ class BaseChord[NOTE: BaseNote](AulosObject[ChordSchema]):
         if isinstance(identify, tuple) and isinstance(identify[0], str) and isinstance(identify[1], int):
             if (parsed := self.schema.parse(identify[0])) is not None:
                 root_notename, base_notename = self.schema.convert_to_chord_notenames(
-                    parsed.root, parsed.base, identify[1]
+                    parsed.root,
+                    parsed.base,
+                    identify[1],
                 )
 
                 if base_notename is None:
@@ -94,12 +95,12 @@ class BaseChord[NOTE: BaseNote](AulosObject[ChordSchema]):
         return self._base
 
     @property
-    def tuner(self) -> Tuner | None:
+    def tuner(self) -> BaseTuner | None:
         """Returns the tuner of the note."""
         return self._tuner
 
     @property
-    def scale(self) -> Scale | Mode | None:
+    def scale(self) -> BaseScale | BaseMode | None:
         """Returns the scale of the note."""
         return self._scale
 
@@ -112,7 +113,7 @@ class BaseChord[NOTE: BaseNote](AulosObject[ChordSchema]):
         return self._quality.positions
 
     @property
-    def components(self) -> tuple[NOTE, ...]:
+    def components(self) -> NoteCollection[NOTE]:
         components = []
         if isinstance(self._base, BaseNote) and self._quality.is_onchord():
             components.append(
@@ -121,7 +122,7 @@ class BaseChord[NOTE: BaseNote](AulosObject[ChordSchema]):
                     tuner=self._tuner,
                     scale=self._scale,
                     setting=self._setting,
-                )
+                ),
             )
         components.extend(
             self.Note(
@@ -132,7 +133,7 @@ class BaseChord[NOTE: BaseNote](AulosObject[ChordSchema]):
             )
             for q in self._quality
         )
-        return tuple(components)
+        return NoteCollection(components)
 
     def inverse(self, num: int = 1) -> None:
         self._quality = self._quality.inverse(num)

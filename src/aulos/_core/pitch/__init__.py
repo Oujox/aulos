@@ -1,5 +1,5 @@
-from . import schemas
+from .schemas import PitchSchema
 
 __all__ = [
-    "schemas",
+    "PitchSchema",
 ]

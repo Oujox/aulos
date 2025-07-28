@@ -1,6 +1,7 @@
 from aulos._core import DiatonicScale, NondiatonicScale
 
-from .note import Key, PitchClass
+from .key import Key
+from .pitchclass import PitchClass
 
 
 class Major(
