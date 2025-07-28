@@ -16,7 +16,9 @@ if TYPE_CHECKING:
 
 
 def resolve_pitchname_from_scale(
-    pitchclass: int, scale: BaseScale | BaseMode | None, schema: PitchClassSchema,
+    pitchclass: int,
+    scale: BaseScale | BaseMode | None,
+    schema: PitchClassSchema,
 ) -> str | None:
     if scale is not None:
         relative_pitchclass = (pitchclass - int(scale.key)) % schema.classes

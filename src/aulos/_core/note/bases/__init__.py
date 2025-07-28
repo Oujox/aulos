@@ -1,5 +1,6 @@
-from .note import BaseNote
+from .note import BaseNote, BaseNoteCollection
 
 __all__ = [
     "BaseNote",
+    "BaseNoteCollection",
 ]

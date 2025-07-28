@@ -4,7 +4,7 @@ import typing as t
 from typing import TYPE_CHECKING, cast
 
 from aulos._core.context import inject
-from aulos._core.note import BaseNote
+from aulos._core.note import BaseNote, NoteCollection
 from aulos._core.object import AulosSchemaObject
 from aulos._core.utils import Intervals, Positions, classproperty
 
@@ -48,7 +48,9 @@ class BaseChord[NOTE: BaseNote](AulosSchemaObject[ChordSchema]):
         if isinstance(identify, tuple) and isinstance(identify[0], str) and isinstance(identify[1], int):
             if (parsed := self.schema.parse(identify[0])) is not None:
                 root_notename, base_notename = self.schema.convert_to_chord_notenames(
-                    parsed.root, parsed.base, identify[1],
+                    parsed.root,
+                    parsed.base,
+                    identify[1],
                 )
 
                 if base_notename is None:
@@ -111,7 +113,7 @@ class BaseChord[NOTE: BaseNote](AulosSchemaObject[ChordSchema]):
         return self._quality.positions
 
     @property
-    def components(self) -> tuple[NOTE, ...]:
+    def components(self) -> NoteCollection[NOTE]:
         components = []
         if isinstance(self._base, BaseNote) and self._quality.is_onchord():
             components.append(
@@ -131,7 +133,7 @@ class BaseChord[NOTE: BaseNote](AulosSchemaObject[ChordSchema]):
             )
             for q in self._quality
         )
-        return tuple(components)
+        return NoteCollection(components)
 
     def inverse(self, num: int = 1) -> None:
         self._quality = self._quality.inverse(num)

@@ -4,11 +4,11 @@ import typing as t
 from typing import TYPE_CHECKING, cast
 
 from aulos._core.context import inject
-from aulos._core.object import AulosSchemaObject
+from aulos._core.object import AulosSchemaCollection, AulosSchemaObject
 from aulos._core.pitchclass import BasePitchClass
 from aulos._core.utils import classproperty, index
 
-from ..schemas import NoteSchema
+from ..schemas import NoteCollectionSchema, NoteSchema
 
 if TYPE_CHECKING:
     from aulos._core.mode import BaseMode  # pragma: no cover
@@ -193,3 +193,38 @@ class BaseNote[PITCHCLASS: BasePitchClass](AulosSchemaObject[NoteSchema]):
 
     def __repr__(self) -> str:
         return f"<Note: {self.notename or self.notenames}, scale: {self.scale}>"
+
+
+class BaseNoteCollection[NOTE: BaseNote](AulosSchemaCollection[NOTE, NoteCollectionSchema]):
+    @inject
+    def __init__(
+        self,
+        notes: t.Iterable[NOTE],
+        **kwargs: t.Any,
+    ) -> None:
+        super().__init__(notes, **kwargs)
+
+    def __init_subclass__(cls) -> None:
+        schema = NoteCollectionSchema()
+        super().__init_subclass__(schema=schema)
+
+    @property
+    def notes(self) -> tuple[NOTE, ...]:
+        return self._objects
+
+    def transpose(self, num: int) -> t.Self:
+        return self.__class__([(note + num) for note in self._objects])
+
+    def __eq__(self, other: object) -> bool:
+        if isinstance(other, BaseNoteCollection):
+            return self._objects.__eq__(other)
+        return NotImplemented
+
+    def __ne__(self, other: object) -> bool:
+        return not self.__eq__(other)
+
+    def __str__(self) -> str:
+        return self._objects.__str__()
+
+    def __repr__(self) -> str:
+        return self._objects.__repr__()

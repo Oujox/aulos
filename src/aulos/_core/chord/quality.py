@@ -27,7 +27,12 @@ class Quality(t.Sequence[int]):
     base: int
 
     def __init__(
-        self, *, name: str, positions: Positions, inversion: int | None = None, base: int | None = None,
+        self,
+        *,
+        name: str,
+        positions: Positions,
+        inversion: int | None = None,
+        base: int | None = None,
     ) -> None:
         object.__setattr__(self, "name", name)
         object.__setattr__(self, "intervals", positions.to_intervals())
