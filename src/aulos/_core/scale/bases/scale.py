@@ -4,7 +4,7 @@ from typing import cast
 
 from aulos._core.context import inject
 from aulos._core.object import AulosSchemaObject
-from aulos._core.pitchclass import BaseKey, BasePitchClass
+from aulos._core.pitchclass import BaseKey, BasePitchClass, PitchClassCollection
 from aulos._core.utils import Intervals, Positions, classproperty
 
 from ..schemas import ScaleSchema
@@ -77,44 +77,37 @@ class BaseScale[KEY: BaseKey, PITCHCLASS: BasePitchClass](AulosSchemaObject[Scal
 
     @classproperty
     def Key(self) -> type[KEY]:  # noqa: N802
-        """The type of key associated with the scale."""
         return cast("type[KEY]", self._Key)
 
     @classproperty
     def PitchClass(self) -> type[PITCHCLASS]:  # noqa: N802
-        """The type of pitch class associated with the scale."""
         return cast("type[PITCHCLASS]", self._PitchClass)
 
     @classproperty
     def intervals(self) -> Intervals:
-        """The sequence of intervals that define the scale."""
         return self._intervals
 
     @classproperty
     def positions(self) -> Positions:
-        """The positions of the notes in the scale."""
         return self._positions
 
     @property
     def key(self) -> KEY:
-        """Returns the key of the scale."""
         return self._key
 
     @property
     def signatures(self) -> tuple[int, ...]:
-        """Returns the key signatures of the scale."""
         return self._signatures
 
     @property
-    def components(self) -> tuple[PITCHCLASS, ...]:
-        """Returns the pitch class components of the scale."""
+    def components(self) -> PitchClassCollection[PITCHCLASS]:
         components = []
         root = self.PitchClass(self._key.keyname, scale=self, setting=self.setting)
         for pos in self.positions:
             pitchclass = (root + pos).pitchclass
             note = self.PitchClass(pitchclass, scale=self, setting=self.setting)
             components.append(note)
-        return tuple(components)
+        return PitchClassCollection(components)
 
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, BaseScale):

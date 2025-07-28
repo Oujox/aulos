@@ -4,7 +4,7 @@ from typing import cast
 
 from aulos._core.context import inject
 from aulos._core.object import AulosSchemaObject
-from aulos._core.pitchclass import BaseKey, BasePitchClass
+from aulos._core.pitchclass import BaseKey, BasePitchClass, PitchClassCollection
 from aulos._core.scale import BaseScale
 from aulos._core.utils import Intervals, Positions, classproperty
 
@@ -91,14 +91,14 @@ class BaseMode[KEY: BaseKey, PITCHCLASS: BasePitchClass](AulosSchemaObject[ModeS
         return self._signatures
 
     @property
-    def components(self) -> tuple[PITCHCLASS, ...]:
+    def components(self) -> PitchClassCollection[PITCHCLASS]:
         components = []
         root = self.PitchClass(self._key.keyname, scale=self, setting=self.setting)
         for pos in self.positions:
             pitchclass = (root + pos).pitchclass
             note = self.PitchClass(pitchclass, scale=self, setting=self.setting)
             components.append(note)
-        return tuple(components)
+        return PitchClassCollection(components)
 
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, BaseScale):
