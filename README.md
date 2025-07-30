@@ -106,7 +106,9 @@ This project's final product depends only on Python's **standard library**. No t
 The following libraries are used during development and testing **but are not included in the final product**
 
 - [**pytest**](https://docs.pytest.org/en/latest/)
-- [**pytest-cov**](https://github.com/pytest-dev/pytest-cov)
+- [**pytest-cov**](https://pytest-cov.readthedocs.io/en/latest/)
+- [**ruff**](https://docs.astral.sh/ruff/)
+- [**mypy**](https://mypy.readthedocs.io/en/stable/index.html)
 
 
 ## License 📜
