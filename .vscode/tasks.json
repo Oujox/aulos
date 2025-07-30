@@ -4,7 +4,7 @@
     {
       "label": "test",
       "type": "shell",
-      "command": "uv run pytest tests",
+      "command": "uv run pytest",
       "group": {
         "kind": "test",
         "isDefault": true
@@ -23,13 +23,13 @@
     {
       "label": "format",
       "type": "shell",
-      "command": "uv run ruff format ./src/aulos ./tests/aulos ; uv run ruff check ./src/aulos ./tests/aulos --select I --fix-only --exit-zero",
+      "command": "uv run ruff format ./src/aulos; uv run ruff check ./src/aulos --select I --fix-only --exit-zero",
       "problemMatcher": []
     },
     {
       "label": "lint",
       "type": "shell",
-      "command": "uv run ruff check ./src/aulos ./tests/aulos",
+      "command": "uv run ruff check ./src/aulos",
       "problemMatcher": []
     },
     {

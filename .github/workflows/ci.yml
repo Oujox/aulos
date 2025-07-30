@@ -28,7 +28,7 @@ jobs:
       
       - name: Test with pytest
         run: |
-          uv run --frozen pytest ./tests/aulos --cov=./src/aulos --cov-report=xml
+          uv run --frozen pytest --cov=./src/aulos --cov-report=xml
       
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
@@ -38,7 +38,7 @@ jobs:
       
       - name: Lint with ruff
         run: |
-          uv run --frozen ruff check ./src/aulos ./tests/aulos
+          uv run --frozen ruff check ./src/aulos
       
       - name: Type-check with mypy
         run: |
