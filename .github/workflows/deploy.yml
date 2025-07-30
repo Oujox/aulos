@@ -17,17 +17,14 @@ jobs:
         with:
           persist-credentials: false
       
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Install the latest version of uv
+        uses: astral-sh/setup-uv@v6
         with:
-          python-version: "3.13"
-      
-      - name: Install pypa/build
-        run: |
-          python3 -m pip install build --user
+          version: "latest"
+          python-version: "3.12"
       
       - name: Build a binary wheel and a source tarball
-        run: python3 -m build
+        run: uv build -o dist/
 
       - name: Store the distribution packages
         uses: actions/upload-artifact@v4
