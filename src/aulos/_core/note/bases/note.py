@@ -55,7 +55,7 @@ class BaseNote[PITCHCLASS: BasePitchClass](AulosSchemaObject[NoteSchema]):
     ) -> None:
         super().__init__(**kwargs)
 
-        if isinstance(identify, BaseNote):
+        if isinstance(identify, self.__class__):
             notenames = self.schema.convert_notenumber_to_notenames(identify.notenumber)
             notename = resolve_notename_from_scale(identify.notenumber, scale, self.schema)
             self._notenumber = identify.notenumber

@@ -54,7 +54,7 @@ class BasePitchClass(AulosSchemaObject[PitchClassSchema]):
     ) -> None:
         super().__init__(**kwargs)
 
-        if isinstance(identify, BasePitchClass):
+        if isinstance(identify, self.__class__):
             pitchnames = self.schema.convert_pitchclass_to_pitchnames(identify.pitchclass)
             pitchname = resolve_pitchname_from_scale(identify.pitchclass, scale, self.schema)
             self._pitchclass = identify.pitchclass
