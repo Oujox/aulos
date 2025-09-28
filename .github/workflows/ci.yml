@@ -36,7 +36,7 @@ jobs:
       
       - name: Type-check with mypy
         run: |
-          uv run mypy ./src/aulos
+          uv run ty check ./src/aulos
 
       - name: Test with pytest
         run: |

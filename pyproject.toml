@@ -16,23 +16,23 @@ requires-python = ">=3.12"
 dynamic = ["version"]
 
 [project.urls]
-Homepage = "https://github.com/Oujox/aulos-py"
-Repository = "https://github.com/Oujox/aulos-py"
+Homepage = "https://github.com/Oujox/aulos"
+Repository = "https://github.com/Oujox/aulos"
 
 [project.scripts]
 aulos = "aulos.__main__:main"
 
-[build-system]
-requires = ["hatchling", "hatch-vcs"]
-build-backend = "hatchling.build"
-
 [dependency-groups]
 dev = [
-    "mypy>=1.17.0",
     "pytest>=8.3.5",
     "pytest-cov>=6.1.1",
     "ruff==0.11.13",
+    "ty>=0.0.1a21",
 ]
+
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
 
 [tool.uv]
 cache-keys = [
