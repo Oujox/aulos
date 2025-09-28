@@ -1,6 +1,6 @@
 [project]
 name = "aulos"
-description = "Python library for speech processing and analysis from a music theory perspective."
+description = "Aulos is a Python library for flexible music theory objects and tuning systems."
 readme = "README.md"
 license = { file = "LICENSE" }
 classifiers = [
