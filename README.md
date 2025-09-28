@@ -1,18 +1,23 @@
 # aulos
 
-Python library for speech processing and analysis from a music theory perspective.
+Aulos is a Python library for flexible music theory objects and tuning systems.
+
+> [!WARNING]
+> 
+> Aulos is currently under development. The API is subject to change.
 
 | | |
 | --- | --- |
-| CI/CD | [![Test](https://github.com/Oujox/aulos-py/actions/workflows/ci.yml/badge.svg)](https://github.com/Oujox/aulos-py/actions/workflows/ci.yml) [![Build & Publish](https://github.com/Oujox/aulos-py/actions/workflows/deploy.yml/badge.svg)](https://github.com/Oujox/aulos-py/actions/workflows/deploy.yml) |
+| CI/CD | [![Test](https://github.com/Oujox/aulos/actions/workflows/ci.yml/badge.svg)](https://github.com/Oujox/aulos/actions/workflows/ci.yml) [![Build & Publish](https://github.com/Oujox/aulos/actions/workflows/deploy.yml/badge.svg)](https://github.com/Oujox/aulos/actions/workflows/deploy.yml) |
 | Package | [![pypi - version](https://img.shields.io/pypi/v/aulos.svg?&label=PyPI)](https://pypi.org/project/aulos/) [![pypi - python versions](https://img.shields.io/pypi/pyversions/aulos.svg?&label=Python)](https://pypi.org/project/aulos/) |
-| Meta |[![codecov](https://codecov.io/gh/Oujox/aulos-py/graph/badge.svg?token=UP6ZQP7HMK)](https://codecov.io/gh/Oujox/aulos-py) [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff) [![mypy](https://img.shields.io/badge/types-mypy-blue.svg)](https://github.com/python/mypy) [![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://github.com/Oujox/aulos-py/blob/main/LICENSE)  |
+| Meta |  [![codecov](https://codecov.io/gh/Oujox/aulos/graph/badge.svg?token=UP6ZQP7HMK)](https://codecov.io/gh/Oujox/aulos) [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff) [![ty](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ty/main/assets/badge/v0.json)](https://github.com/astral-sh/ty) [![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://github.com/Oujox/aulos/blob/main/LICENSE)  |
 
 ## Features ✨
 
-- Comprehensive tools for audio processing and analysis based on music theory principles.
-- A structured framework for organizing and working with music theory objects.
-- Flexible and extensible design, allowing seamless customization and expansion.
+- Object-oriented design for notes, chords, scales, modes, and tuners
+- Supports multiple tuning systems (12-TET, 24-TET, just intonation, Pythagorean, etc.)
+- Extensible and customizable API
+- No external dependencies
 
 ## Installation 🛠️
 
@@ -108,12 +113,14 @@ The following libraries are used during development and testing **but are not in
 - [**pytest**](https://docs.pytest.org/en/latest/)
 - [**pytest-cov**](https://pytest-cov.readthedocs.io/en/latest/)
 - [**ruff**](https://docs.astral.sh/ruff/)
-- [**mypy**](https://mypy.readthedocs.io/en/stable/index.html)
+- [**ty**](https://docs.astral.sh/ty/)
+- [**hatch**](https://hatch.pypa.io/latest/) (build system)
+- [**hatch-vcs**](https://pypi.org/project/hatch-vcs/) (build system)
 
 
 ## License 📜
 
-This project is distributed under the MIT License. For more information, refer to the [LICENSE](https://github.com/Oujox/aulos-py/blob/main/LICENSE) file.
+This project is distributed under the MIT License. For more information, refer to the [LICENSE](https://github.com/Oujox/aulos/blob/main/LICENSE) file.
 
 ## Contact 📬
 

@@ -1,6 +1,6 @@
 [project]
 name = "aulos"
-description = "Python library for speech processing and analysis from a music theory perspective."
+description = "Aulos is a Python library for flexible music theory objects and tuning systems."
 readme = "README.md"
 license = { file = "LICENSE" }
 classifiers = [
@@ -16,23 +16,26 @@ requires-python = ">=3.12"
 dynamic = ["version"]
 
 [project.urls]
-Homepage = "https://github.com/Oujox/aulos-py"
-Repository = "https://github.com/Oujox/aulos-py"
+Homepage = "https://github.com/Oujox/aulos"
+Repository = "https://github.com/Oujox/aulos"
 
 [project.scripts]
 aulos = "aulos.__main__:main"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3.5",
+    "pytest-cov>=6.1.1",
+    "ruff==0.11.13",
+    "ty>=0.0.1a21",
+]
 
 [build-system]
 requires = ["hatchling", "hatch-vcs"]
 build-backend = "hatchling.build"
 
-[dependency-groups]
-dev = [
-    "mypy>=1.17.0",
-    "pytest>=8.3.5",
-    "pytest-cov>=6.1.1",
-    "ruff==0.11.13",
-]
+[tool.hatch.version]
+source = "vcs"
 
 [tool.uv]
 cache-keys = [
@@ -40,8 +43,33 @@ cache-keys = [
     { git = { commit = true, tags = true } },
 ]
 
-[tool.hatch.version]
-source = "vcs"
+[tool.ruff]
+exclude = ["tests"]
+line-length = 120
+indent-width = 4
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    "D", 
+    "ANN401",
+    "COM812",
+    "TID252", 
+]
+fixable = ["ALL"]
+unfixable = []
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+docstring-code-format = false
+docstring-code-line-length = "dynamic"
+
+[tool.ty.src]
+exclude = ["tests"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
