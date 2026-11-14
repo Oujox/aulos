@@ -2,8 +2,14 @@
 
 English | [日本語](https://github.com/Oujox/aulos/blob/main/README.ja.md)
 
+> [!WARNING]
+>
+> Aulos is currently under development. The API is subject to change.
+
 A Python library for pitches, chords, scales, tuning, and rhythm.
 Notation, tuning, and display are defined separately, with exact rational values for interval ratios and time.
+
+Aulos is developed collaboratively by its author and AI.
 
 Python 3.13+ · No runtime dependencies · [MIT License](https://github.com/Oujox/aulos/blob/main/LICENCE)
 

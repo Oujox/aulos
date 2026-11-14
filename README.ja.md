@@ -2,8 +2,14 @@
 
 [English](https://github.com/Oujox/aulos/blob/main/README.md) | 日本語
 
+> [!WARNING]
+>
+> Aulos は現在開発中です。API は変更される可能性があります。
+
 音高・和音・音階、調律、リズムを扱う Python ライブラリ。
 記譜・調律・表示を分離し、音程比と時間を有理数で表します。
+
+Aulos は作者と AI による共作です。
 
 Python 3.13+ · 必須依存なし · [MIT License](https://github.com/Oujox/aulos/blob/main/LICENCE)
 
