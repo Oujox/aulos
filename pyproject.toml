@@ -1,0 +1,80 @@
+[project]
+name = "aulos"
+version = "0.2.0"
+description = "A music theory library that keeps notation, tuning, and display apart, with exact algebra for pitch and rhythm."
+readme = "README.md"
+license = { file = "LICENCE" }
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: 3.15",
+    "Topic :: Multimedia :: Sound/Audio :: Analysis",
+    "Operating System :: OS Independent",
+    "Typing :: Typed",
+]
+requires-python = ">=3.13"
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/Oujox/aulos"
+Repository = "https://github.com/Oujox/aulos"
+
+[build-system]
+requires = ["uv_build>=0.13.7,<0.14.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "hypothesis>=6.170.14",
+    "pytest>=9.2.0",
+    "pytest-benchmark>=5.3.1",
+    "pytest-cov>=7.1.0",
+    "pytest-xdist>=3.8.0",
+    "ruff>=0.17.3",
+    "ty>=0.0.97",
+]
+
+[tool.uv]
+preview-features = ["audit"]
+exclude-newer = "P3D"
+
+[tool.ruff]
+line-length = 120
+target-version = "py314"
+exclude = ["temp", ".temp", "README.md", "README.ja.md"]
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = ["COM812", "CPY001"]
+
+[tool.ruff.lint.per-file-ignores]
+"src/aulos/core/**" = ["D1", "SLF001"]
+"src/aulos/base/**" = ["SLF001"]
+"tests/**" = ["ANN", "D", "INP001", "PLR2004", "S101", "SLF001"]
+"examples/**" = ["ANN", "D", "INP001", "T201", "T203"]
+
+[tool.ruff.lint.isort]
+force-single-line = true
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.format]
+docstring-code-format = true
+docstring-code-line-length = "dynamic"
+
+[tool.pytest]
+testpaths = ["tests"]
+addopts = ["-ra", "--strict-markers", "--strict-config"]
+markers = []
+
+[tool.coverage.run]
+branch = true
+source = ["src/aulos"]
+
+[tool.coverage.report]
+fail_under = 95
+show_missing = true
+skip_empty = true

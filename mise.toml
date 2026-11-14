@@ -1,0 +1,43 @@
+[tools]
+uv = "0.13.7"
+
+# Tasks
+[tasks.build]
+run = "uv build --no-sources"
+
+[tasks.test]
+run = "uv run pytest"
+
+[tasks."test:py314"]
+run = "uv run --locked --python 3.14 -- pytest"
+env.UV_PROJECT_ENVIRONMENT = ".venv-3.14"
+
+[tasks."test:py313"]
+run = "uv run --locked --python 3.13 -- pytest"
+env.UV_PROJECT_ENVIRONMENT = ".venv-3.13"
+
+[tasks.testcov]
+run = "uv run pytest --cov=./src/aulos --cov-report=html:./coverage"
+
+[tasks.lint]
+run = "uv run ruff check ."
+
+[tasks.typecheck]
+run = "uv run ty check"
+
+[tasks.format]
+run = "uv run ruff format ."
+
+[tasks.formatcheck]
+run = "uv run ruff format --check ."
+
+[tasks.check]
+depends = ["lint", "typecheck", "formatcheck"]
+
+# CI/CD
+[tasks.ci]
+depends = ["check", "test"]
+
+[tasks.cd]
+run = "uv publish"
+depends = ["build"]
